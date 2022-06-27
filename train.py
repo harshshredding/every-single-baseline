@@ -1,20 +1,18 @@
 from nn_utils import *
 from models import SeqLabeler
-import sys
 import numpy as np
 
-sys.path.insert(1, '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner')
 from transformers import AutoTokenizer
 from read_gate_output import *
 
-
 sample_to_token_data = get_sample_to_token_data('/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/train-2.json')
+all_sample_to_token_data = get_all_sample_to_token_data('/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner')
+print(len(sample_to_token_data))
+print(len(all_sample_to_token_data))
 bert_tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
 seq_labeler_model = SeqLabeler(1, 128, 1, 2)
 loss_function = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(seq_labeler_model.parameters(), lr=1e-5)
-
-
 for epoch in range(2):
     epoch_loss = []
     for sample_id in sample_to_token_data:

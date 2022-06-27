@@ -16,6 +16,24 @@ def get_sample_to_token_data(file_path):
     return sample_to_tokens
 
 
+def get_all_sample_to_token_data(directory_path):
+    sample_to_tokens = {}
+    for file_index in range(5):
+        file_index += 1
+        file_path = directory_path + f'/train-{file_index}.json'
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        for token_data in data:
+            assert 'tweet_text' in token_data
+            assert len(token_data['tweet_text']) == 1
+        for token_data in data:
+            sample_id = token_data['tweet_text'][0]['twitter_id']
+            sample_tokens = sample_to_tokens.get(sample_id, [])
+            sample_tokens.append(token_data)
+            sample_to_tokens[sample_id] = sample_tokens
+    return sample_to_tokens
+
+
 def get_token_strings(sample_data):
     only_token_strings = []
     for token_data in sample_data:
