@@ -1,8 +1,7 @@
 import pandas as pd
 
 
-def get_annos_dict():
-    annos_file_path = '/home/claclab/harsh/smm4h-2022-social-dis-ner/socialdisner-data/mentions.tsv'
+def get_annos_dict(annos_file_path):
     df = pd.read_csv(annos_file_path, sep='\t')
     tweet_to_annos = {}
     for i, row in df.iterrows():

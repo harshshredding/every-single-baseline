@@ -1,18 +1,20 @@
 import os
 import csv
 from train_annos import get_annos_dict
-tweet_to_annos = get_annos_dict()
-task_name = 'task_10_disease'
+annos_file_path = '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/socialdisner-data/mentions.tsv'
+input_folder_path = '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/socialdisner-data/train-valid-txt-files' \
+                    '/validation'
+output_folder_path = '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/gate-input/valid'
+tweet_to_annos = get_annos_dict(annos_file_path)
 print(len(tweet_to_annos))
-train_folder_path = '/home/claclab/harsh/smm4h-2022-social-dis-ner/socialdisner-data/train-valid-txt-files/training'
 for file_index in range(5):
-    with open(f'gate_input_{task_name}_{file_index+1}.csv', 'w') as csv_output:
+    with open(output_folder_path + f'/gate_input_{file_index+1}.csv', 'w') as csv_output:
         writer = csv.writer(csv_output)
         header = ['twitter_id', 'tweet_text', 'spans']
         writer.writerow(header)
-        data_files_list = os.listdir(train_folder_path)[file_index*1000:(file_index+1)*1000]
+        data_files_list = os.listdir(input_folder_path)[file_index * 1000:(file_index + 1) * 1000]
         for filename in data_files_list:
-            data_file_path = os.path.join(train_folder_path, filename)
+            data_file_path = os.path.join(input_folder_path, filename)
             with open(data_file_path, 'r') as f:
                 data = f.read()
                 new_str = str()
