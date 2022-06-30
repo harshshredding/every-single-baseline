@@ -1,5 +1,4 @@
 import torch
-from sklearn_crfsuite.metrics import flat_accuracy_score
 
 
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
