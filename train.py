@@ -38,6 +38,7 @@ for epoch in range(args['num_epochs']):
         epoch_loss.append(loss.cpu().detach().numpy())
         break
     print(f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}")
+    torch.save(model.state_dict(), args['save_models_dir'] + f'/Epoch_{epoch}')
     # Validation starts
     model.eval()
     with torch.no_grad():
