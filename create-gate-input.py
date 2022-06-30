@@ -1,7 +1,8 @@
 import os
 import csv
 from train_annos import get_annos_dict
-annos_file_path = '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/socialdisner-data/mentions.tsv'
+from args import args
+annos_file_path = args['annotations_file_path']
 input_folder_path = '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/socialdisner-data/train-valid-txt-files' \
                     '/validation'
 output_folder_path = '/home/claclab/harsh/smm4h/smm4h-2022-social-dis-ner/gate-input/valid'
@@ -23,7 +24,7 @@ for file_index in range(5):
                         new_str = new_str + char
                     else:
                         new_str = new_str + ' '
-                data=new_str
+                data = new_str
             twitter_id = filename[:-4]
             tweet_annos = tweet_to_annos.get(twitter_id, [])
             spans = "@".join([f"{anno['begin']}:{anno['end']}" for anno in tweet_annos])
