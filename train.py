@@ -21,8 +21,9 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 for epoch in range(args['num_epochs']):
     epoch_loss = []
     # Training starts
+    print(f"Train epoch {epoch}", flush=True)
     model.train()
-    for sample_id in sample_to_token_data_train:
+    for i, sample_id in enumerate(sample_to_token_data_train):
         optimizer.zero_grad()
         tokens = get_token_strings(sample_to_token_data_train[sample_id])
         labels = get_labels(sample_to_token_data_train[sample_id])
@@ -36,8 +37,7 @@ for epoch in range(args['num_epochs']):
         loss.backward()
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())
-        break
-    print(f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}")
+    print(f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}", flush=True)
     torch.save(model.state_dict(), args['save_models_dir'] + f'/Epoch_{epoch}')
     # Validation starts
     model.eval()
@@ -75,6 +75,5 @@ for epoch in range(args['num_epochs']):
             TN = 0
             F1 = f1(TP, FP, FN)
             f1_list.append(F1)
-            break
-        print("Token Level Accuracy", np.array(token_level_accuracy_list).mean())
-        print("F1", np.array(f1_list).mean())
+        print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(), flush=True)
+        print("F1", np.array(f1_list).mean(), flush=True)
