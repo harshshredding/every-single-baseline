@@ -4,7 +4,8 @@ import numpy as np
 import math
 from nn_utils import Embedding
 
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("using device", device)
 # noinspection PyUnresolvedReferences
 
 class GroupLinearLayer(nn.Module):
@@ -27,7 +28,7 @@ class InputSelection(torch.nn.Module):
         self.val_layer = nn.Linear(input_size, val_size)
 
     def forward(self, input, h_prev):
-        augmented_input = torch.cat((torch.zeros(1, self.input_size), input), dim=0)
+        augmented_input = torch.cat((torch.zeros(1, self.input_size, device=device), input), dim=0)
         query = self.query_layer(h_prev)
         key = self.key_layer(augmented_input)
         value = self.val_layer(augmented_input)
@@ -64,12 +65,10 @@ class MI_RIM(torch.nn.Module):
         self.mechanisms = nn.ModuleList([Mechanism(self.rnn_type, 768, hidden_size, 768, 768, 768),
                                          Mechanism(self.rnn_type, 768, hidden_size, 768, 768, 768),
                                          ])
-
         self.inter_query_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
         self.inter_key_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
         self.inter_val_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
-
-        self.intitial_hiddens = torch.zeros(self.num_mechanisms, 1, self.hidden_size)
+        self.intitial_hiddens = torch.zeros(self.num_mechanisms, 1, self.hidden_size, device=device)
 
     def interaction(self, hiddens, mask):
         query = self.inter_query_layer(hiddens)
@@ -84,12 +83,12 @@ class MI_RIM(torch.nn.Module):
         seq_len = len(inputs[0])
         prev_hiddens = self.intitial_hiddens
         if self.rnn_type == 'lstm':
-            prev_cells = torch.zeros(self.num_mechanisms, 1, self.hidden_size)
+            prev_cells = torch.zeros(self.num_mechanisms, 1, self.hidden_size, device=device)
         all_hiddens = list()
         all_activation = list()
         for t in range(seq_len):
-            temp_cells = torch.zeros(self.num_mechanisms, 1, self.hidden_size)
-            selection_att_scores = torch.empty(self.num_mechanisms, 2)
+            temp_cells = torch.zeros(self.num_mechanisms, 1, self.hidden_size, device=device)
+            selection_att_scores = torch.empty(self.num_mechanisms, 2, device=device)
             selected_inputs = list()
             for mech_indx in range(self.num_mechanisms):
                 att_score, selected_input = self.mechanisms[mech_indx].input_selection(
@@ -101,7 +100,7 @@ class MI_RIM(torch.nn.Module):
 
             all_activation.append(active_idx)
 
-            mask = torch.zeros(1, self.num_mechanisms)
+            mask = torch.zeros(1, self.num_mechanisms, device=device)
             mask[:, active_idx] = 1
             mask = mask.view(self.num_mechanisms, 1, 1)
 

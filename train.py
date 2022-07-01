@@ -55,7 +55,7 @@ for epoch in range(args['num_epochs']):
             expanded_labels = expand_labels(batch_encoding, labels)
             expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
             output = model(batch_encoding)
-            pred_labels_expanded = torch.argmax(output, dim=1).detach().numpy()
+            pred_labels_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
             token_level_accuracy = accuracy_score(list(pred_labels_expanded), list(expanded_labels))
             token_level_accuracy_list.append(token_level_accuracy)
             pred_spans_token_index = get_spans_from_seq_labels(pred_labels_expanded, batch_encoding)
