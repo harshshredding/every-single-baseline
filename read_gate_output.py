@@ -76,3 +76,13 @@ def get_token_offsets(sample_data):
         offsets_list.append((token_data['Token'][0]['startOffset'] - tweet_start,
                              token_data['Token'][0]['endOffset'] - tweet_start))
     return offsets_list
+
+
+def get_umls_data(sample_data):
+    umls_tags = []
+    for token_data in sample_data:
+        if 'UMLS' in token_data:
+            umls_tags.append(token_data['UMLS'])
+        else:
+            umls_tags.append('o')
+    return umls_tags

@@ -28,3 +28,15 @@ def expand_labels(batch_encoding, labels):
         word_idx = batch_encoding.token_to_word(token_idx)
         new_labels.append(labels[word_idx])
     return new_labels
+
+
+def read_umls_file(umls_file_path):
+    umls_embedding_dict = {}
+    with open(umls_file_path, 'r') as f:
+        for line in f.readlines():
+            line = line.strip()
+            line_split = line.split(',')
+            assert len(line_split) == 51
+            umls_embedding_dict[line_split[0]] = line_split[1:len(line_split)]
+            break
+    return umls_embedding_dict

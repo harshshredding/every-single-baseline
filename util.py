@@ -2,6 +2,7 @@ import torch
 from args import args
 import os
 
+
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
     span_list = []
     start = None

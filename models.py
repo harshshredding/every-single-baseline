@@ -4,6 +4,7 @@ import torch
 from mi_rim import *
 import pytorch_lightning as pl
 
+
 class SeqLabeler(torch.nn.Module):
     def __init__(self, num_mechanisms, hidden_size, top_k, num_class):
         super(SeqLabeler, self).__init__()
