@@ -5,4 +5,5 @@ args = {
     "bert_model_name": "bert-base-uncased",
     "num_epochs": 10,
     "save_models_dir": "./models",
+    "raw_validation_files_path": "./socialdisner-data/train-valid-txt-files/validation"
 }

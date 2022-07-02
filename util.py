@@ -1,5 +1,6 @@
 import torch
-
+from args import args
+import os
 
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
     span_list = []
@@ -33,3 +34,16 @@ def f1(TP, FP, FN):
         return 0
     else:
         return 2 * (precision * recall) / (precision + recall)
+
+
+def get_raw_validation_data():
+    output_dict = {}
+    input_folder_path = args['raw_validation_files_path']
+    data_files_list = os.listdir(input_folder_path)
+    for filename in data_files_list:
+        data_file_path = os.path.join(input_folder_path, filename)
+        with open(data_file_path, 'r') as f:
+            data = f.read()
+        twitter_id = filename[:-4]
+        output_dict[twitter_id] = data
+    return output_dict
