@@ -1,21 +1,30 @@
 import torch
 from nn_utils import *
-from models import SeqLabeler
+from models import *
 import numpy as np
+import sys
 from util import *
 from transformers import AutoTokenizer
 from read_gate_output import *
 from sklearn.metrics import accuracy_score
 from train_annos import get_annos_dict
 from args import args
-
+print(args)
 tweet_to_annos = get_annos_dict(args['annotations_file_path'])
+if args['include_umls']:
+    if args['testing_mode']:
+        umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
+    else:
+        umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
 sample_to_token_data_train = get_train_data(args['training_data_folder_path'])
 sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
-model = SeqLabeler(1, 128, 1, 2).to(device)
+if args['include_umls']:
+    model = SeqLabelerUMLS().to(device)
+else:
+    model = SeqLabeler().to(device)
 loss_function = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
 for epoch in range(args['num_epochs']):
@@ -25,18 +34,34 @@ for epoch in range(args['num_epochs']):
     model.train()
     for i, sample_id in enumerate(sample_to_token_data_train):
         optimizer.zero_grad()
-        tokens = get_token_strings(sample_to_token_data_train[sample_id])
-        labels = get_labels(sample_to_token_data_train[sample_id])
+        sample_data = sample_to_token_data_train[sample_id]
+        tokens = get_token_strings(sample_data)
+        labels = get_labels(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
+        if args['include_umls']:
+            umls_data = get_umls_data(sample_data)
+            umls_ids = [umls if umls == 'o' else umls[0]['CUI'] for umls in umls_data]
+            umls_embeds = [torch.zeros(50)
+                           if umls_id == 'o'
+                           else torch.Tensor(umls_embedding_dict.get(umls_id, torch.zeros(50)))
+                           for umls_id in umls_ids]
+            umls_embeds = expand_labels(batch_encoding, umls_embeds)
+            umls_embeds = torch.stack(umls_embeds).to(device)
         expanded_labels = expand_labels(batch_encoding, labels)
         expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
         expanded_labels = torch.tensor(expanded_labels).to(device)
-        output = model(batch_encoding)
+        if args['include_umls']:
+            model_input = (batch_encoding, umls_embeds)
+        else:
+            model_input = batch_encoding
+        output = model(*model_input)
         loss = loss_function(output, expanded_labels)
         loss.backward()
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())
+        if args['testing_mode']:
+            break
     print(f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}")
     torch.save(model.state_dict(), args['save_models_dir'] + f'/Epoch_{epoch}')
     # Validation starts
@@ -45,16 +70,28 @@ for epoch in range(args['num_epochs']):
         token_level_accuracy_list = []
         f1_list = []
         for sample_id in sample_to_token_data_valid:
-            token_data = sample_to_token_data_valid[sample_id]
-            tokens = get_token_strings(token_data)
-            labels = get_labels(token_data)
-            offsets_list = get_token_offsets(token_data)
-            assert len(tokens) == len(labels) == len(offsets_list)
+            sample_data = sample_to_token_data_valid[sample_id]
+            tokens = get_token_strings(sample_data)
+            labels = get_labels(sample_data)
+            offsets_list = get_token_offsets(sample_data)
             batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
+            if args['include_umls']:
+                umls_data = get_umls_data(sample_data)
+                umls_ids = [umls if umls == 'o' else umls[0]['CUI'] for umls in umls_data]
+                umls_embeds = [torch.zeros(50)
+                               if umls_id == 'o'
+                               else torch.Tensor(umls_embedding_dict.get(umls_id, torch.zeros(50)))
+                               for umls_id in umls_ids]
+                umls_embeds = expand_labels(batch_encoding, umls_embeds)
+                umls_embeds = torch.stack(umls_embeds).to(device)
             expanded_labels = expand_labels(batch_encoding, labels)
             expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
-            output = model(batch_encoding)
+            if args['include_umls']:
+                model_input = (batch_encoding, umls_embeds)
+            else:
+                model_input = batch_encoding
+            output = model(*model_input)
             pred_labels_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
             token_level_accuracy = accuracy_score(list(pred_labels_expanded), list(expanded_labels))
             token_level_accuracy_list.append(token_level_accuracy)
@@ -75,5 +112,7 @@ for epoch in range(args['num_epochs']):
             TN = 0
             F1 = f1(TP, FP, FN)
             f1_list.append(F1)
+            if args['testing_mode']:
+                break
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean())
         print("F1", np.array(f1_list).mean())

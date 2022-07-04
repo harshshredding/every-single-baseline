@@ -37,6 +37,21 @@ def read_umls_file(umls_file_path):
             line = line.strip()
             line_split = line.split(',')
             assert len(line_split) == 51
-            umls_embedding_dict[line_split[0]] = line_split[1:len(line_split)]
+            umls_id = line_split[0]
+            embedding_vector = [float(val) for val in line_split[1:len(line_split)]]
+            umls_embedding_dict[umls_id] = embedding_vector
+    return umls_embedding_dict
+
+
+def read_umls_file_small(umls_file_path):
+    umls_embedding_dict = {}
+    with open(umls_file_path, 'r') as f:
+        for line in f.readlines():
+            line = line.strip()
+            line_split = line.split(',')
+            assert len(line_split) == 51
+            umls_id = line_split[0]
+            embedding_vector = [float(val) for val in line_split[1:len(line_split)]]
+            umls_embedding_dict[umls_id] = embedding_vector
             break
     return umls_embedding_dict

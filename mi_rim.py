@@ -6,6 +6,8 @@ from nn_utils import Embedding
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device", device)
+
+
 # noinspection PyUnresolvedReferences
 
 class GroupLinearLayer(nn.Module):
@@ -56,15 +58,14 @@ class Mechanism(torch.nn.Module):
 
 
 class MI_RIM(torch.nn.Module):
-    def __init__(self, rnn_type, num_mech, num_active, hidden_size):
+    def __init__(self, rnn_type, num_mech, num_active, hidden_size, input_sizes):
         super(MI_RIM, self).__init__()
         self.num_mechanisms = num_mech
         self.num_active = num_active
         self.hidden_size = hidden_size
         self.rnn_type = rnn_type
-        self.mechanisms = nn.ModuleList([Mechanism(self.rnn_type, 768, hidden_size, 768, 768, 768),
-                                         Mechanism(self.rnn_type, 768, hidden_size, 768, 768, 768),
-                                         ])
+        self.mechanisms = nn.ModuleList([Mechanism(self.rnn_type, input_sizes[i], hidden_size, input_q_size=256,
+                                                   input_key_size=256, input_val_size=input_sizes[i]) for i in range(num_mech)])
         self.inter_query_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
         self.inter_key_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
         self.inter_val_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
@@ -74,9 +75,9 @@ class MI_RIM(torch.nn.Module):
         query = self.inter_query_layer(hiddens)
         key = self.inter_key_layer(hiddens)
         value = self.inter_val_layer(hiddens)
-        att_scores = torch.softmax(torch.matmul(query.squeeze(dim=0), torch.transpose(key.squeeze(dim=0), 0, 1)), dim=1)
+        att_scores = torch.softmax(torch.matmul(query.squeeze(), torch.transpose(key.squeeze(), 0, 1)), dim=1)
         att_scores = torch.bmm(mask, att_scores.view(self.num_mechanisms, 1, -1))
-        new_hiddens = torch.matmul(att_scores.squeeze(dim=0), value.squeeze(dim=0)).view(self.num_mechanisms, 1, -1)
+        new_hiddens = torch.matmul(att_scores.squeeze(), value.squeeze()).view(self.num_mechanisms, 1, -1)
         return new_hiddens
 
     def forward(self, inputs):
