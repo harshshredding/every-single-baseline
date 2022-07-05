@@ -48,3 +48,16 @@ def get_raw_validation_data():
         twitter_id = filename[:-4]
         output_dict[twitter_id] = data
     return output_dict
+
+
+def get_raw_train_data():
+    output_dict = {}
+    input_folder_path = args['raw_train_files_path']
+    data_files_list = os.listdir(input_folder_path)
+    for filename in data_files_list:
+        data_file_path = os.path.join(input_folder_path, filename)
+        with open(data_file_path, 'r') as f:
+            data = f.read()
+        twitter_id = filename[:-4]
+        output_dict[twitter_id] = data
+    return output_dict

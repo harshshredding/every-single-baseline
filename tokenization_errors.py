@@ -4,10 +4,12 @@ from util import *
 from train_annos import *
 from nn_utils import *
 from transformers import AutoTokenizer
+import csv
 
 tweet_to_annos = get_annos_dict(args['annotations_file_path'])
 sample_to_token_data = get_train_data(args['training_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
+train_raw_data = get_raw_train_data()
 
 
 def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
@@ -29,10 +31,22 @@ def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
         gold_spans_char_offsets = [(anno['begin'], anno['end']) for anno in gold_annos]
         label_spans_set = set(label_spans_char_offsets)
         gold_spans_set = set(gold_spans_char_offsets)
-        if not label_spans_set == gold_spans_set:
-            errors.append((sample_id, label_spans_set, gold_spans_set))
-            print(sample_id, label_spans_set, gold_spans_set)
+        mistake_spans = gold_spans_set.difference(label_spans_set)
+        for mistake_span in mistake_spans:
+            errors.append((sample_id, mistake_span))
     return errors
 
 
 errors = get_tokenization_errors(sample_to_token_data, bert_tokenizer)
+with open('tokenization_errors_new.tsv', 'w') as f:
+    writer = csv.writer(f, delimiter='\t')
+    header = ['sample_id', 'start', 'end', 'extraction', 'context']
+    writer.writerow(header)
+    for sample_id, (begin, end) in errors:
+        sample_data = train_raw_data[sample_id]
+        begin_soft = int(begin) - 20
+        end_soft = int(end) + 20
+        if begin_soft < 0:
+            begin_soft = 0
+        row = [sample_id, begin, end, sample_data[int(begin):int(end)], sample_data[begin_soft:end_soft]]
+        writer.writerow(row)
