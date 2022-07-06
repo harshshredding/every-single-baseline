@@ -86,3 +86,24 @@ def get_umls_data(sample_data):
         else:
             umls_tags.append('o')
     return umls_tags
+
+
+def get_pos_data(sample_data):
+    pos_tags = []
+    for token_data in sample_data:
+        pos_tags.append(token_data['Token'][0]['category'])
+    return pos_tags
+
+
+def get_umls_indices(sample_data, umls_key_to_index):
+    umls_data = get_umls_data(sample_data)
+    umls_keys = ['DEFAULT' if umls == 'o' else umls[0]['CUI'] for umls in umls_data]
+    default_index = umls_key_to_index['DEFAULT']
+    umls_indices = [umls_key_to_index.get(key, default_index) for key in umls_keys]
+    return umls_indices
+
+
+def get_pos_indices(sample_data, pos_key_to_index):
+    pos_tags = get_pos_data(sample_data)
+    pos_indices = [pos_key_to_index[tag] for tag in pos_tags]
+    return pos_indices

@@ -1,14 +1,17 @@
 import torch.nn as nn
 import torch
+from read_gate_output import *
+from args import args
+from args import device
+import pandas as pd
 
 
 class Embedding(nn.Module):
     def __init__(self, emb_dim, vocab_size, initialize_emb, word_to_ix):
         super(Embedding, self).__init__()
-        self.embedding = nn.Embedding(vocab_size, emb_dim)
+        self.embedding = nn.Embedding(vocab_size, emb_dim).requires_grad_(False)
         if initialize_emb:
             inv_dic = {v: k for k, v in word_to_ix.items()}
-
             for key in initialize_emb.keys():
                 if key in word_to_ix:
                     ind = word_to_ix[key]
@@ -43,6 +46,13 @@ def read_umls_file(umls_file_path):
     return umls_embedding_dict
 
 
+def get_key_to_index(some_dict):
+    key_to_index = {}
+    for index, key in enumerate(some_dict.keys()):
+        key_to_index[key] = index
+    return key_to_index
+
+
 def read_umls_file_small(umls_file_path):
     umls_embedding_dict = {}
     with open(umls_file_path, 'r') as f:
@@ -55,3 +65,14 @@ def read_umls_file_small(umls_file_path):
             umls_embedding_dict[umls_id] = embedding_vector
             break
     return umls_embedding_dict
+
+
+def extract_labels(sample_data, batch_encoding):
+    labels = get_labels(sample_data)
+    expanded_labels = expand_labels(batch_encoding, labels)
+    expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
+    return torch.tensor(expanded_labels).to(device)
+
+
+def read_pos_embeddings_file():
+    return pd.read_pickle(args['pos_embeddings_path'])

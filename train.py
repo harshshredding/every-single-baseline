@@ -9,20 +9,31 @@ from read_gate_output import *
 from sklearn.metrics import accuracy_score
 from train_annos import get_annos_dict
 from args import args
+from args import device
+import time
+
 print(args)
 tweet_to_annos = get_annos_dict(args['annotations_file_path'])
-if args['include_umls']:
+if args['resources']:
     if args['testing_mode']:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
+        umls_embedding_dict['DEFAULT'] = [0 for _ in range(50)]
+        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
+        umls_key_to_index = get_key_to_index(umls_embedding_dict)
     else:
         umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
+        umls_embedding_dict['DEFAULT'] = [0 for _ in range(50)]
+        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
+        umls_key_to_index = get_key_to_index(umls_embedding_dict)
+    pos_dict = read_pos_embeddings_file()
+    pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
+    pos_to_index = get_key_to_index(pos_dict)
 sample_to_token_data_train = get_train_data(args['training_data_folder_path'])
 sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("using device:", device)
-if args['include_umls']:
-    model = SeqLabelerUMLS().to(device)
+if args['resources']:
+    model = SeqLabelerAllResources(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
+                                   pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
 else:
     model = SeqLabeler().to(device)
 loss_function = nn.CrossEntropyLoss()
@@ -31,28 +42,22 @@ for epoch in range(args['num_epochs']):
     epoch_loss = []
     # Training starts
     print(f"Train epoch {epoch}")
+    train_start_time = time.time()
     model.train()
     for i, sample_id in enumerate(sample_to_token_data_train):
         optimizer.zero_grad()
         sample_data = sample_to_token_data_train[sample_id]
         tokens = get_token_strings(sample_data)
-        labels = get_labels(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
-        if args['include_umls']:
-            umls_data = get_umls_data(sample_data)
-            umls_ids = [umls if umls == 'o' else umls[0]['CUI'] for umls in umls_data]
-            umls_embeds = [torch.zeros(50)
-                           if umls_id == 'o'
-                           else torch.Tensor(umls_embedding_dict.get(umls_id, torch.zeros(50)))
-                           for umls_id in umls_ids]
-            umls_embeds = expand_labels(batch_encoding, umls_embeds)
-            umls_embeds = torch.stack(umls_embeds).to(device)
-        expanded_labels = expand_labels(batch_encoding, labels)
-        expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
-        expanded_labels = torch.tensor(expanded_labels).to(device)
-        if args['include_umls']:
-            model_input = (batch_encoding, umls_embeds)
+        expanded_labels = extract_labels(sample_data, batch_encoding)
+        if args['resources']:
+            umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
+                                        device=device)
+            pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
+                                       device=device)
+        if args['resources']:
+            model_input = (batch_encoding, umls_indices, pos_indices)
         else:
             model_input = batch_encoding
         output = model(*model_input)
@@ -62,33 +67,29 @@ for epoch in range(args['num_epochs']):
         epoch_loss.append(loss.cpu().detach().numpy())
         if args['testing_mode']:
             break
-    print(f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}")
-    torch.save(model.state_dict(), args['save_models_dir'] + f'/Epoch_{epoch}')
+    print(
+        f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training time: {str(time.time() - train_start_time)} seconds")
+    torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{args['experiment_name']}")
     # Validation starts
     model.eval()
     with torch.no_grad():
+        validation_start_time = time.time()
         token_level_accuracy_list = []
         f1_list = []
         for sample_id in sample_to_token_data_valid:
             sample_data = sample_to_token_data_valid[sample_id]
             tokens = get_token_strings(sample_data)
-            labels = get_labels(sample_data)
             offsets_list = get_token_offsets(sample_data)
             batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
-            if args['include_umls']:
-                umls_data = get_umls_data(sample_data)
-                umls_ids = [umls if umls == 'o' else umls[0]['CUI'] for umls in umls_data]
-                umls_embeds = [torch.zeros(50)
-                               if umls_id == 'o'
-                               else torch.Tensor(umls_embedding_dict.get(umls_id, torch.zeros(50)))
-                               for umls_id in umls_ids]
-                umls_embeds = expand_labels(batch_encoding, umls_embeds)
-                umls_embeds = torch.stack(umls_embeds).to(device)
-            expanded_labels = expand_labels(batch_encoding, labels)
-            expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
-            if args['include_umls']:
-                model_input = (batch_encoding, umls_embeds)
+            expanded_labels = extract_labels(sample_data, batch_encoding)
+            if args['resources']:
+                umls_indices = torch.tensor(
+                    expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)), device=device)
+                pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
+                                           device=device)
+            if args['resources']:
+                model_input = (batch_encoding, umls_indices, pos_indices)
             else:
                 model_input = batch_encoding
             output = model(*model_input)
@@ -114,5 +115,6 @@ for epoch in range(args['num_epochs']):
             f1_list.append(F1)
             if args['testing_mode']:
                 break
-        print("Token Level Accuracy", np.array(token_level_accuracy_list).mean())
+        print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
+              f"Validation time : {str(time.time() - validation_start_time)} seconds")
         print("F1", np.array(f1_list).mean())
