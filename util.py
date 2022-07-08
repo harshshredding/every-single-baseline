@@ -1,6 +1,7 @@
 import torch
 from args import args
 import os
+import pandas as pd
 
 
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
@@ -61,3 +62,12 @@ def get_raw_train_data():
         twitter_id = filename[:-4]
         output_dict[twitter_id] = data
     return output_dict
+
+
+def read_disease_gazetteer():
+    disease_list = []
+    df = pd.read_csv(args['disease_gazetteer_path'], sep='\t')
+    for _, row in df.iterrows():
+        disease_term = row['term']
+        disease_list.append(disease_term)
+    return disease_list

@@ -10,6 +10,7 @@ from sklearn.metrics import accuracy_score
 from train_annos import get_annos_dict
 from args import args
 from args import device
+from args import default_key
 import time
 
 print(args)
@@ -17,19 +18,24 @@ tweet_to_annos = get_annos_dict(args['annotations_file_path'])
 if args['resources']:
     if args['testing_mode']:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
-        umls_embedding_dict['DEFAULT'] = [0 for _ in range(50)]
+        umls_embedding_dict[default_key] = [0 for _ in range(50)]
         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
         umls_key_to_index = get_key_to_index(umls_embedding_dict)
     else:
         umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
-        umls_embedding_dict['DEFAULT'] = [0 for _ in range(50)]
+        umls_embedding_dict[default_key] = [0 for _ in range(50)]
         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
         umls_key_to_index = get_key_to_index(umls_embedding_dict)
     pos_dict = read_pos_embeddings_file()
+    pos_dict[default_key] = [0 for _ in range(20)]
     pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
     pos_to_index = get_key_to_index(pos_dict)
-sample_to_token_data_train = get_train_data(args['training_data_folder_path'])
-sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
+if args['testing_mode']:
+    sample_to_token_data_train = get_train_data_small(args['training_data_folder_path'])
+    sample_to_token_data_valid = get_valid_data_small(args['validation_data_folder_path'])
+else:
+    sample_to_token_data_train = get_train_data(args['training_data_folder_path'])
+    sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 if args['resources']:
     model = SeqLabelerAllResources(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,

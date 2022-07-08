@@ -9,7 +9,6 @@ print("using device", device)
 
 
 # noinspection PyUnresolvedReferences
-
 class GroupLinearLayer(nn.Module):
     def __init__(self, d_in, d_out, num_mechanisms):
         super(GroupLinearLayer, self).__init__()
@@ -21,6 +20,11 @@ class GroupLinearLayer(nn.Module):
 
 
 class InputSelection(torch.nn.Module):
+    """
+    A module to help the mechanism choose its input. Less the attention
+    on the input, less the inclination to choose the input.
+    """
+
     def __init__(self, input_size, hidden_size, query_size, key_size, val_size):
         super(InputSelection, self).__init__()
         self.input_size = input_size
@@ -36,10 +40,13 @@ class InputSelection(torch.nn.Module):
         value = self.val_layer(augmented_input)
         att_score = torch.softmax(torch.matmul(query, torch.transpose(key, 1, 0)) / math.sqrt(self.key_size), dim=1)
         selected_input = torch.matmul(att_score, value)
-        return (att_score, selected_input)
+        return att_score, selected_input
 
 
 class Mechanism(torch.nn.Module):
+    """
+    The module representing each mechanism. Currently, we only support rnn's and lstms as encoders.
+    """
     def __init__(self, rnn_type, input_size, hidden_size, input_q_size, input_key_size, input_val_size):
         super(Mechanism, self).__init__()
         self.input_selection = InputSelection(input_size, hidden_size, input_q_size, input_key_size, input_val_size)
@@ -65,7 +72,8 @@ class MI_RIM(torch.nn.Module):
         self.hidden_size = hidden_size
         self.rnn_type = rnn_type
         self.mechanisms = nn.ModuleList([Mechanism(self.rnn_type, input_sizes[i], hidden_size, input_q_size=256,
-                                                   input_key_size=256, input_val_size=input_sizes[i]) for i in range(num_mech)])
+                                                   input_key_size=256, input_val_size=input_sizes[i]) for i in
+                                         range(num_mech)])
         self.inter_query_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
         self.inter_key_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
         self.inter_val_layer = GroupLinearLayer(hidden_size, hidden_size, self.num_mechanisms)
