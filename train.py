@@ -50,7 +50,10 @@ for epoch in range(args['num_epochs']):
     print(f"Train epoch {epoch}")
     train_start_time = time.time()
     model.train()
-    for i, sample_id in enumerate(sample_to_token_data_train):
+    sample_ids = list(sample_to_token_data_train.keys())
+    if args['testing_mode']:
+        sample_ids = sample_ids[:10]
+    for sample_id in sample_ids:
         optimizer.zero_grad()
         sample_data = sample_to_token_data_train[sample_id]
         tokens = get_token_strings(sample_data)
@@ -71,8 +74,6 @@ for epoch in range(args['num_epochs']):
         loss.backward()
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())
-        if args['testing_mode']:
-            break
     print(
         f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training time: {str(time.time() - train_start_time)} seconds")
     torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{args['experiment_name']}")
@@ -82,7 +83,10 @@ for epoch in range(args['num_epochs']):
         validation_start_time = time.time()
         token_level_accuracy_list = []
         f1_list = []
-        for sample_id in sample_to_token_data_valid:
+        sample_ids = list(sample_to_token_data_valid.keys())
+        if args['testing_mode']:
+            sample_ids = sample_ids[:10]
+        for sample_id in sample_ids:
             sample_data = sample_to_token_data_valid[sample_id]
             tokens = get_token_strings(sample_data)
             offsets_list = get_token_offsets(sample_data)
@@ -119,8 +123,6 @@ for epoch in range(args['num_epochs']):
             TN = 0
             F1 = f1(TP, FP, FN)
             f1_list.append(F1)
-            if args['testing_mode']:
-                break
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
               f"Validation time : {str(time.time() - validation_start_time)} seconds")
         print("F1", np.array(f1_list).mean())
