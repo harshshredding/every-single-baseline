@@ -70,7 +70,8 @@ for epoch in range(args['num_epochs']):
         else:
             model_input = batch_encoding
         output = model(*model_input)
-        loss = loss_function(output, expanded_labels)
+        expanded_labels_tensor = torch.tensor(expanded_labels).to(device)
+        loss = loss_function(output, expanded_labels_tensor)
         loss.backward()
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())

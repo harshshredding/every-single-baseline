@@ -71,7 +71,7 @@ def extract_labels(sample_data, batch_encoding):
     labels = get_labels(sample_data)
     expanded_labels = expand_labels(batch_encoding, labels)
     expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
-    return torch.tensor(expanded_labels).to(device)
+    return expanded_labels
 
 
 def read_pos_embeddings_file():
