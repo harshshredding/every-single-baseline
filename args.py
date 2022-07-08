@@ -1,3 +1,6 @@
+import torch
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("using device:", device)
 args = {
     "annotations_file_path": "./mentions.tsv",
     "training_data_folder_path": "./gate-output/train",
@@ -8,6 +11,10 @@ args = {
     "raw_validation_files_path": "./socialdisner-data/train-valid-txt-files/validation",
     "raw_train_files_path": "./socialdisner-data/train-valid-txt-files/training",
     "umls_embeddings_path": "/home/claclab/embeddings.csv",
-    "include_umls": True,
-    "testing_mode": True
+    "resources": True,
+    "testing_mode": True,
+    "experiment_name": "include_pos",
+    "pos_embeddings_path": './spanish_pos_emb.p',
+    "disease_gazetteer_path": './dictionary_distemist.tsv',
 }
+default_key = "DEFAULT"
