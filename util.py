@@ -1,7 +1,26 @@
 import torch
-from args import args
+from args import args, device
 import os
 import pandas as pd
+from nn_utils import *
+import numpy as np
+from models import *
+
+if args['model_name'] != 'base':
+    if args['testing_mode']:
+        umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
+        umls_embedding_dict[default_key] = [0 for _ in range(50)]
+        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
+        umls_key_to_index = get_key_to_index(umls_embedding_dict)
+    else:
+        umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
+        umls_embedding_dict[default_key] = [0 for _ in range(50)]
+        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
+        umls_key_to_index = get_key_to_index(umls_embedding_dict)
+    pos_dict = read_pos_embeddings_file()
+    pos_dict[default_key] = [0 for _ in range(20)]
+    pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
+    pos_to_index = get_key_to_index(pos_dict)
 
 
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
@@ -81,3 +100,22 @@ def read_disease_gazetteer():
         disease_term = row['term']
         disease_list.append(disease_term)
     return disease_list
+
+
+def prepare_model_input(batch_encoding, sample_data):
+    if args['model_name'] != 'base':
+        umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
+                                    device=device)
+        pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
+                                   device=device)
+    if args['model_name'] != 'base':
+        model_input = (batch_encoding, umls_indices, pos_indices)
+    else:
+        model_input = batch_encoding
+    return model_input
+
+
+def prepare_model():
+    if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
+        return SeqLabelerAllResourcesSmallerTopK(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
+                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)

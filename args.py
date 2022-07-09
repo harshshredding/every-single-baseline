@@ -11,11 +11,11 @@ args = {
     "raw_validation_files_path": "./socialdisner-data/train-valid-txt-files/validation",
     "raw_train_files_path": "./socialdisner-data/train-valid-txt-files/training",
     "umls_embeddings_path": "/home/claclab/embeddings.csv",
-    "resources": True,
     "testing_mode": True,
     "experiment_name": "include_pos",
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
-    "errors_dir": './errors'
+    "errors_dir": './errors',
+    "model_name": "SeqLabelerAllResourcesSmallerTopK"
 }
 default_key = "DEFAULT"

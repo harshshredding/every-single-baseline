@@ -16,13 +16,13 @@ sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
-if args['resources']:
+if args['model_name'] != 'base':
     model = SeqLabelerAllResources().to(device)
 else:
     model = SeqLabeler().to(device)
 model.load_state_dict(torch.load(submission_model_path))
 raw_validation_data = get_raw_validation_data()
-if args['resources']:
+if args['model_name'] != 'base':
     if args['testing_mode']:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
     else:

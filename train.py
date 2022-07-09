@@ -1,8 +1,3 @@
-import torch
-from nn_utils import *
-from models import *
-import numpy as np
-import sys
 from util import *
 from transformers import AutoTokenizer
 from read_gate_output import *
@@ -10,26 +5,10 @@ from sklearn.metrics import accuracy_score
 from train_annos import get_annos_dict
 from args import args
 from args import device
-from args import default_key
 import time
 
 print(args)
 tweet_to_annos = get_annos_dict(args['gold_file_path'])
-if args['resources']:
-    if args['testing_mode']:
-        umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
-        umls_embedding_dict[default_key] = [0 for _ in range(50)]
-        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
-        umls_key_to_index = get_key_to_index(umls_embedding_dict)
-    else:
-        umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
-        umls_embedding_dict[default_key] = [0 for _ in range(50)]
-        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
-        umls_key_to_index = get_key_to_index(umls_embedding_dict)
-    pos_dict = read_pos_embeddings_file()
-    pos_dict[default_key] = [0 for _ in range(20)]
-    pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
-    pos_to_index = get_key_to_index(pos_dict)
 if args['testing_mode']:
     sample_to_token_data_train = get_train_data_small(args['training_data_folder_path'])
     sample_to_token_data_valid = get_valid_data_small(args['validation_data_folder_path'])
@@ -38,13 +17,11 @@ else:
     sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
 raw_validation_data = get_raw_validation_data()
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
-if args['resources']:
-    model = SeqLabelerAllResources(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                                   pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-else:
-    model = SeqLabeler().to(device)
+model = prepare_model()
+print("Model Instance", type(model))
 loss_function = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+
 for epoch in range(args['num_epochs']):
     epoch_loss = []
     # Training starts
@@ -61,15 +38,7 @@ for epoch in range(args['num_epochs']):
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
         expanded_labels = extract_labels(sample_data, batch_encoding)
-        if args['resources']:
-            umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
-                                        device=device)
-            pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
-                                       device=device)
-        if args['resources']:
-            model_input = (batch_encoding, umls_indices, pos_indices)
-        else:
-            model_input = batch_encoding
+        model_input = prepare_model_input(batch_encoding, sample_data)
         output = model(*model_input)
         expanded_labels_tensor = torch.tensor(expanded_labels).to(device)
         loss = loss_function(output, expanded_labels_tensor)
@@ -81,11 +50,9 @@ for epoch in range(args['num_epochs']):
     torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{args['experiment_name']}")
     # Validation starts
     model.eval()
-    with open(args['save_models_dir'] + f"/validation_predictions_{args['experiment_name']}_epoch_{epoch}.tsv", 'w')\
-            as predictions_file, open(args['errors_dir'] + f"/errors_{args['experiment_name']}_epoch_{epoch}.tsv", 'w') \
-            as error_file:
+    with open(args['save_models_dir'] + f"/validation_predictions_{args['experiment_name']}_epoch_{epoch}.tsv", 'w') \
+            as predictions_file:
         predictions_file.write('\t'.join(['tweets_id', 'begin', 'end', 'type', 'extraction']))
-        error_file.write("tweets_id\tbegin\tend\terror_type")
         with torch.no_grad():
             validation_start_time = time.time()
             token_level_accuracy_list = []
@@ -101,15 +68,7 @@ for epoch in range(args['num_epochs']):
                 batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                                 add_special_tokens=False, truncation=True, max_length=512).to(device)
                 expanded_labels = extract_labels(sample_data, batch_encoding)
-                if args['resources']:
-                    umls_indices = torch.tensor(
-                        expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)), device=device)
-                    pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
-                                               device=device)
-                if args['resources']:
-                    model_input = (batch_encoding, umls_indices, pos_indices)
-                else:
-                    model_input = batch_encoding
+                model_input = prepare_model_input(batch_encoding, sample_data)
                 output = model(*model_input)
                 pred_labels_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
                 token_level_accuracy = accuracy_score(list(pred_labels_expanded), list(expanded_labels))
@@ -140,15 +99,6 @@ for epoch in range(args['num_epochs']):
                     extraction = raw_text[start_offset: end_offset]
                     predictions_file.write(
                         '\n' + '\t'.join([sample_id, str(start_offset), str(end_offset), 'ENFERMEDAD', extraction]))
-                # Create error files
-                for span in FP:
-                    start_offset = span[0]
-                    end_offset = span[1]
-                    error_file.write(f"\n{sample_id}\t{start_offset}\t{end_offset}\tFP")
-                for span in FN:
-                    start_offset = span[0]
-                    end_offset = span[1]
-                    error_file.write(f"\n{sample_id}\t{start_offset}\t{end_offset}\tFN")
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
               f"Validation time : {str(time.time() - validation_start_time)} seconds")
         print("F1", np.array(f1_list).mean())
