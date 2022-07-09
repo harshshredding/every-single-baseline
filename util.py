@@ -51,6 +51,16 @@ def get_raw_validation_data():
     return output_dict
 
 
+def get_validation_ids():
+    output = []
+    input_folder_path = args['raw_validation_files_path']
+    data_files_list = os.listdir(input_folder_path)
+    for filename in data_files_list:
+        twitter_id = filename[:-4]
+        output.append(twitter_id)
+    return output
+
+
 def get_raw_train_data():
     output_dict = {}
     input_folder_path = args['raw_train_files_path']

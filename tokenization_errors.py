@@ -6,7 +6,7 @@ from nn_utils import *
 from transformers import AutoTokenizer
 import csv
 
-tweet_to_annos = get_annos_dict(args['annotations_file_path'])
+tweet_to_annos = get_annos_dict(args['gold_file_path'])
 sample_to_token_data = get_train_data(args['training_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 train_raw_data = get_raw_train_data()

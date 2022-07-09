@@ -1,6 +1,6 @@
 import torch
 from nn_utils import *
-from models import SeqLabeler, SeqLabelerUMLS
+from models import SeqLabeler, SeqLabelerUMLS, SeqLabelerAllResources
 import numpy as np
 from util import *
 from transformers import AutoTokenizer
@@ -11,18 +11,18 @@ from args import args
 from util import get_raw_validation_data
 
 submission_model_path = './models/Epoch_9'
-tweet_to_annos = get_annos_dict(args['annotations_file_path'])
+tweet_to_annos = get_annos_dict(args['gold_file_path'])
 sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
-if args['include_umls']:
-    model = SeqLabelerUMLS().to(device)
+if args['resources']:
+    model = SeqLabelerAllResources().to(device)
 else:
     model = SeqLabeler().to(device)
 model.load_state_dict(torch.load(submission_model_path))
 raw_validation_data = get_raw_validation_data()
-if args['include_umls']:
+if args['resources']:
     if args['testing_mode']:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
     else:

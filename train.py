@@ -14,7 +14,7 @@ from args import default_key
 import time
 
 print(args)
-tweet_to_annos = get_annos_dict(args['annotations_file_path'])
+tweet_to_annos = get_annos_dict(args['gold_file_path'])
 if args['resources']:
     if args['testing_mode']:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
@@ -36,6 +36,7 @@ if args['testing_mode']:
 else:
     sample_to_token_data_train = get_train_data(args['training_data_folder_path'])
     sample_to_token_data_valid = get_valid_data(args['validation_data_folder_path'])
+raw_validation_data = get_raw_validation_data()
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 if args['resources']:
     model = SeqLabelerAllResources(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
@@ -80,50 +81,74 @@ for epoch in range(args['num_epochs']):
     torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{args['experiment_name']}")
     # Validation starts
     model.eval()
-    with torch.no_grad():
-        validation_start_time = time.time()
-        token_level_accuracy_list = []
-        f1_list = []
-        sample_ids = list(sample_to_token_data_valid.keys())
-        if args['testing_mode']:
-            sample_ids = sample_ids[:10]
-        for sample_id in sample_ids:
-            sample_data = sample_to_token_data_valid[sample_id]
-            tokens = get_token_strings(sample_data)
-            offsets_list = get_token_offsets(sample_data)
-            batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
-                                            add_special_tokens=False, truncation=True, max_length=512).to(device)
-            expanded_labels = extract_labels(sample_data, batch_encoding)
-            if args['resources']:
-                umls_indices = torch.tensor(
-                    expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)), device=device)
-                pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
-                                           device=device)
-            if args['resources']:
-                model_input = (batch_encoding, umls_indices, pos_indices)
-            else:
-                model_input = batch_encoding
-            output = model(*model_input)
-            pred_labels_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
-            token_level_accuracy = accuracy_score(list(pred_labels_expanded), list(expanded_labels))
-            token_level_accuracy_list.append(token_level_accuracy)
-            pred_spans_token_index = get_spans_from_seq_labels(pred_labels_expanded, batch_encoding)
-            pred_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
-                                       pred_spans_token_index]
-            label_spans_token_index = get_spans_from_seq_labels(expanded_labels, batch_encoding)
-            label_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
-                                        label_spans_token_index]
-            gold_annos = tweet_to_annos.get(sample_id, [])
-            gold_spans_char_offsets = [(anno['begin'], anno['end']) for anno in gold_annos]
-            label_spans_set = set(label_spans_char_offsets)
-            gold_spans_set = set(gold_spans_char_offsets)
-            pred_spans_set = set(pred_spans_char_offsets)
-            TP = len(gold_spans_set.intersection(pred_spans_set))
-            FP = len(pred_spans_set.difference(gold_spans_set))
-            FN = len(gold_spans_set.difference(pred_spans_set))
-            TN = 0
-            F1 = f1(TP, FP, FN)
-            f1_list.append(F1)
+    with open(args['save_models_dir'] + f"/validation_predictions_{args['experiment_name']}_epoch_{epoch}.tsv", 'w')\
+            as predictions_file, open(args['errors_dir'] + f"/errors_{args['experiment_name']}_epoch_{epoch}.tsv", 'w') \
+            as error_file:
+        predictions_file.write('\t'.join(['tweets_id', 'begin', 'end', 'type', 'extraction']))
+        error_file.write("tweets_id\tbegin\tend\terror_type")
+        with torch.no_grad():
+            validation_start_time = time.time()
+            token_level_accuracy_list = []
+            f1_list = []
+            sample_ids = list(sample_to_token_data_valid.keys())
+            if args['testing_mode']:
+                sample_ids = sample_ids[:10]
+            for sample_id in sample_ids:
+                raw_text = raw_validation_data[sample_id]
+                sample_data = sample_to_token_data_valid[sample_id]
+                tokens = get_token_strings(sample_data)
+                offsets_list = get_token_offsets(sample_data)
+                batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
+                                                add_special_tokens=False, truncation=True, max_length=512).to(device)
+                expanded_labels = extract_labels(sample_data, batch_encoding)
+                if args['resources']:
+                    umls_indices = torch.tensor(
+                        expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)), device=device)
+                    pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
+                                               device=device)
+                if args['resources']:
+                    model_input = (batch_encoding, umls_indices, pos_indices)
+                else:
+                    model_input = batch_encoding
+                output = model(*model_input)
+                pred_labels_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
+                token_level_accuracy = accuracy_score(list(pred_labels_expanded), list(expanded_labels))
+                token_level_accuracy_list.append(token_level_accuracy)
+                pred_spans_token_index = get_spans_from_seq_labels(pred_labels_expanded, batch_encoding)
+                pred_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
+                                           pred_spans_token_index]
+                label_spans_token_index = get_spans_from_seq_labels(expanded_labels, batch_encoding)
+                label_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
+                                            label_spans_token_index]
+                gold_annos = tweet_to_annos.get(sample_id, [])
+                gold_spans_char_offsets = [(anno['begin'], anno['end']) for anno in gold_annos]
+                label_spans_set = set(label_spans_char_offsets)
+                gold_spans_set = set(gold_spans_char_offsets)
+                pred_spans_set = set(pred_spans_char_offsets)
+                TP = gold_spans_set.intersection(pred_spans_set)
+                FP = pred_spans_set.difference(gold_spans_set)
+                FN = gold_spans_set.difference(pred_spans_set)
+                num_TP = len(TP)
+                num_FP = len(FP)
+                num_FN = len(FN)
+                num_TN = 0
+                F1 = f1(num_TP, num_FP, num_FN)
+                f1_list.append(F1)
+                for span in pred_spans_set:
+                    start_offset = span[0]
+                    end_offset = span[1]
+                    extraction = raw_text[start_offset: end_offset]
+                    predictions_file.write(
+                        '\n' + '\t'.join([sample_id, str(start_offset), str(end_offset), 'ENFERMEDAD', extraction]))
+                # Create error files
+                for span in FP:
+                    start_offset = span[0]
+                    end_offset = span[1]
+                    error_file.write(f"\n{sample_id}\t{start_offset}\t{end_offset}\tFP")
+                for span in FN:
+                    start_offset = span[0]
+                    end_offset = span[1]
+                    error_file.write(f"\n{sample_id}\t{start_offset}\t{end_offset}\tFN")
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
               f"Validation time : {str(time.time() - validation_start_time)} seconds")
         print("F1", np.array(f1_list).mean())

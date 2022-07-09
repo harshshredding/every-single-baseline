@@ -2,7 +2,7 @@ import torch
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
 args = {
-    "annotations_file_path": "./mentions.tsv",
+    "gold_file_path": "./mentions.tsv",
     "training_data_folder_path": "./gate-output/train",
     "validation_data_folder_path": "./gate-output/valid",
     "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
@@ -16,5 +16,6 @@ args = {
     "experiment_name": "include_pos",
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
+    "errors_dir": './errors'
 }
 default_key = "DEFAULT"
