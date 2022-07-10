@@ -111,8 +111,15 @@ def prepare_model_input(batch_encoding, sample_data):
     if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
         model_input = (batch_encoding, umls_indices, pos_indices)
     elif args['model_name'] == 'SeqLabelerDisGaz':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)), device=device)
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings)
+    elif args['model_name'] == 'SeqLabelerUMLSDisGaz':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
     else:
         model_input = batch_encoding
     return model_input
@@ -124,4 +131,8 @@ def prepare_model():
                                                  pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
     if args['model_name'] == 'SeqLabelerDisGaz':
         return SeqLabelerDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
+                                pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
+    if args['model_name'] == 'SeqLabelerUMLSDisGaz':
+        return SeqLabelerUMLSDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
+                                    pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
+    raise Exception(f"something wrong with model name {args['model_name']}")
