@@ -10,12 +10,12 @@ args = {
     "save_models_dir": "./models",
     "raw_validation_files_path": "./socialdisner-data/train-valid-txt-files/validation",
     "raw_train_files_path": "./socialdisner-data/train-valid-txt-files/training",
-    "umls_embeddings_path": "/home/claclab/embeddings.csv",
-    "testing_mode": True,
+    "umls_embeddings_path": "./embeddings.csv",
+    "testing_mode": False,
     "experiment_name": "include_pos",
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
-    "model_name": "SeqLabelerAllResourcesSmallerTopK"
+    "model_name": "SeqLabelerDisGaz"
 }
 default_key = "DEFAULT"

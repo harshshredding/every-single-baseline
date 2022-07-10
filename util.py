@@ -108,8 +108,11 @@ def prepare_model_input(batch_encoding, sample_data):
                                     device=device)
         pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
                                    device=device)
-    if args['model_name'] != 'base':
+    if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
         model_input = (batch_encoding, umls_indices, pos_indices)
+    elif args['model_name'] == 'SeqLabelerDisGaz':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)), device=device)
+        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings)
     else:
         model_input = batch_encoding
     return model_input
@@ -118,4 +121,7 @@ def prepare_model_input(batch_encoding, sample_data):
 def prepare_model():
     if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
         return SeqLabelerAllResourcesSmallerTopK(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
+                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
+    if args['model_name'] == 'SeqLabelerDisGaz':
+        return SeqLabelerDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
                                                  pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)

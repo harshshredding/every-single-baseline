@@ -11,8 +11,12 @@ pos_to_index = get_key_to_index(pos_dict)
 pos_tag_set = set()
 for sample_id in sample_to_token_data_train:
     sample_data = sample_to_token_data_train[sample_id]
-    diz_gaz = get_dis_gaz_data(sample_data)
+    diz_gaz = get_dis_gaz_labels(sample_data)
+    one_hot = get_dis_gaz_one_hot(sample_data)
     tokens = get_token_strings(sample_data)
     labels = get_labels(sample_data)
+    umls_labels = get_umls_data(sample_data)
+    print(umls_labels)
     print(list(zip(diz_gaz, tokens, labels)))
+    print(list(zip(diz_gaz, one_hot)))
     break

@@ -127,7 +127,7 @@ def get_umls_data(sample_data):
     return umls_tags
 
 
-def get_dis_gaz_data(sample_data):
+def get_dis_gaz_labels(sample_data):
     output = []
     for token_data in sample_data:
         if 'DisGaz' in token_data:
@@ -135,6 +135,11 @@ def get_dis_gaz_data(sample_data):
         else:
             output.append('o')
     return output
+
+
+def get_dis_gaz_one_hot(sample_data):
+    dis_labels = get_dis_gaz_labels(sample_data)
+    return [[1,0] if label == 'o' else [0,1] for label in dis_labels]
 
 
 def get_pos_data(sample_data):
