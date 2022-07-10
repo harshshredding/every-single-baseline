@@ -142,6 +142,21 @@ def get_dis_gaz_one_hot(sample_data):
     return [[1,0] if label == 'o' else [0,1] for label in dis_labels]
 
 
+def get_umls_diz_gaz_labels(sample_data):
+    output = []
+    for token_data in sample_data:
+        if 'UMLS_Disease' in token_data:
+            output.append('UmlsDisGaz')
+        else:
+            output.append('o')
+    return output
+
+
+def get_umls_dis_gaz_one_hot(sample_data):
+    dis_labels = get_umls_diz_gaz_labels(sample_data)
+    return [[1, 0] if label == 'o' else [0, 1] for label in dis_labels]
+
+
 def get_pos_data(sample_data):
     pos_tags = []
     for token_data in sample_data:
