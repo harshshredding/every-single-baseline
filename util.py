@@ -136,3 +136,15 @@ def prepare_model():
         return SeqLabelerUMLSDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
                                     pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
     raise Exception(f"something wrong with model name {args['model_name']}")
+
+
+def get_tweet_data(folder_path):
+    id_to_data = {}
+    data_files_list = os.listdir(folder_path)
+    for filename in data_files_list:
+        data_file_path = os.path.join(folder_path, filename)
+        with open(data_file_path, 'r') as f:
+            data = f.read()
+        twitter_id = filename[:-4]
+        id_to_data[twitter_id] = data
+    return id_to_data

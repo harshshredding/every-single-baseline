@@ -1,6 +1,6 @@
 from train_annos import get_annos_dict
 from util import *
-validation_file_path = './validation_predictions.tsv'
+validation_file_path = './submissions/validation_predictions_include_umls_disease_gaz_epoch_2.tsv'
 error_file_path = './errors.tsv'
 gold_annos = get_annos_dict(args['gold_file_path'])
 pred_annos = get_annos_dict(validation_file_path)
