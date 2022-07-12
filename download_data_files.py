@@ -1,7 +1,7 @@
 import gdown
 import zipfile
 
-url = "https://drive.google.com/file/d/1OQuQ4qxTB8fPeLfEoGujUkiin2Tg1isU/view?usp=sharing"
+url = "https://drive.google.com/file/d/1FFkl0eFXnnQZGQyARgtUPBzVJg0AbABk/view?usp=sharing"
 output = "gate_output.zip"
 gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 
