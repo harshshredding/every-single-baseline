@@ -221,7 +221,7 @@ def evaluate():
     ###
     ###if len(sys.argv) != 4:
     ###    log.error("Invalid input parameters. Format:\
-    ###              \n python evaluation.py [input_dir] [output_dir] [Detection/Resolution]")
+    ###              \n python evaluation_util.py [input_dir] [output_dir] [Detection/Resolution]")
     ###    sys.exit(0)
 
 

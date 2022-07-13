@@ -34,10 +34,11 @@ for epoch in range(args['num_epochs']):
     for sample_id in sample_ids:
         optimizer.zero_grad()
         sample_data = sample_to_token_data_train[sample_id]
+        annos = tweet_to_annos.get(sample_id, [])
         tokens = get_token_strings(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
-        expanded_labels = extract_labels(sample_data, batch_encoding)
+        expanded_labels = extract_labels(sample_data, batch_encoding, annos)
         model_input = prepare_model_input(batch_encoding, sample_data)
         output = model(*model_input)
         expanded_labels_tensor = torch.tensor(expanded_labels).to(device)
@@ -46,7 +47,8 @@ for epoch in range(args['num_epochs']):
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())
     print(
-        f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training time: {str(time.time() - train_start_time)} seconds")
+        f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training time: {str(time.time() - train_start_time)} "
+        f"seconds")
     torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{args['experiment_name']}")
     # Validation starts
     model.eval()
@@ -63,11 +65,12 @@ for epoch in range(args['num_epochs']):
             for sample_id in sample_ids:
                 raw_text = raw_validation_data[sample_id]
                 sample_data = sample_to_token_data_valid[sample_id]
+                annos = tweet_to_annos.get(sample_id, [])
                 tokens = get_token_strings(sample_data)
                 offsets_list = get_token_offsets(sample_data)
                 batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                                 add_special_tokens=False, truncation=True, max_length=512).to(device)
-                expanded_labels = extract_labels(sample_data, batch_encoding)
+                expanded_labels = extract_labels(sample_data, batch_encoding, annos)
                 model_input = prepare_model_input(batch_encoding, sample_data)
                 output = model(*model_input)
                 pred_labels_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
@@ -76,12 +79,8 @@ for epoch in range(args['num_epochs']):
                 pred_spans_token_index = get_spans_from_seq_labels(pred_labels_expanded, batch_encoding)
                 pred_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
                                            pred_spans_token_index]
-                label_spans_token_index = get_spans_from_seq_labels(expanded_labels, batch_encoding)
-                label_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
-                                            label_spans_token_index]
                 gold_annos = tweet_to_annos.get(sample_id, [])
                 gold_spans_char_offsets = [(anno['begin'], anno['end']) for anno in gold_annos]
-                label_spans_set = set(label_spans_char_offsets)
                 gold_spans_set = set(gold_spans_char_offsets)
                 pred_spans_set = set(pred_spans_char_offsets)
                 TP = gold_spans_set.intersection(pred_spans_set)

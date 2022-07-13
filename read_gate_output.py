@@ -108,6 +108,26 @@ def get_labels(sample_data):
     return disease_tags
 
 
+def get_labels_rich(sample_data, annos):
+    labels = get_labels(sample_data)
+    offsets = get_token_offsets(sample_data)
+    new_labels = []
+    for (label, offset) in zip(labels, offsets):
+        if label == 'Disease':
+            anno_same_start = [anno for anno in annos if anno['begin'] == offset[0]]
+            if len(anno_same_start) > 0:
+                new_labels.append('DiseaseStart')
+            else:
+                # avoid DiseaseMid without a DiseaseStart
+                if (len(new_labels) > 0) and (new_labels[-1] != 'o'):
+                    new_labels.append('DiseaseMid')
+                else:
+                    new_labels.append('o')
+        else:
+            new_labels.append('o')
+    return new_labels
+
+
 def get_token_offsets(sample_data):
     offsets_list = []
     for token_data in sample_data:
@@ -139,7 +159,7 @@ def get_dis_gaz_labels(sample_data):
 
 def get_dis_gaz_one_hot(sample_data):
     dis_labels = get_dis_gaz_labels(sample_data)
-    return [[1,0] if label == 'o' else [0,1] for label in dis_labels]
+    return [[1, 0] if label == 'o' else [0, 1] for label in dis_labels]
 
 
 def get_umls_diz_gaz_labels(sample_data):

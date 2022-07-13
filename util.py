@@ -23,7 +23,7 @@ if args['model_name'] != 'base':
     pos_to_index = get_key_to_index(pos_dict)
 
 
-def get_spans_from_seq_labels(predictions_sub, batch_encoding):
+def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
     span_list = []
     start = None
     for i, label in enumerate(predictions_sub):
@@ -40,6 +40,36 @@ def get_spans_from_seq_labels(predictions_sub, batch_encoding):
     span_list_word = [(batch_encoding.token_to_word(span[0]), batch_encoding.token_to_word(span[1])) for span in
                       span_list]
     return span_list_word
+
+
+def get_spans_from_seq_labels(predictions_sub, batch_encoding):
+    if '3Classes' in args['model_name']:
+        return get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding)
+    else:
+        return get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
+
+
+def get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding):
+    span_list = []
+    start = None
+    for i, label in enumerate(predictions_sub):
+        if label == 0:
+            if start is not None:
+                span_list.append((start, i - 1))
+                start = None
+        elif label == 1:
+            if start is not None:
+                span_list.append((start, i - 1))
+            start = i
+        elif label == 2:
+            assert start is not None
+        else:
+            raise Exception(f'Illegal label {label}')
+    if start is not None:
+        span_list.append((start, len(predictions_sub) - 1))
+    span_list_word_idx = [(batch_encoding.token_to_word(span[0]), batch_encoding.token_to_word(span[1])) for span in
+                          span_list]
+    return span_list_word_idx
 
 
 def f1(TP, FP, FN):
@@ -120,8 +150,14 @@ def prepare_model_input(batch_encoding, sample_data):
         umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
                                                device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
+    elif args['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
     else:
-        model_input = batch_encoding
+        raise Exception('Not implemented!')
     return model_input
 
 
@@ -135,6 +171,9 @@ def prepare_model():
     if args['model_name'] == 'SeqLabelerUMLSDisGaz':
         return SeqLabelerUMLSDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
                                     pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
+    if args['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
+        return SeqLabelerUMLSDisGaz3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
+                                            pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
     raise Exception(f"something wrong with model name {args['model_name']}")
 
 
