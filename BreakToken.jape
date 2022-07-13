@@ -1,0 +1,57 @@
+Imports: {
+import static gate.Utils.*;
+}
+
+
+Phase:firstpass
+Input: Token
+Options: control = all 
+Rule: Token
+(
+{Token}
+): Token
+-->
+{
+
+gate.AnnotationSet TokenAS = (gate.AnnotationSet)bindings.get("Token") ;
+
+
+
+
+
+
+	for(Annotation TokenAno: TokenAS)
+
+	{
+
+	String token_string=(String) TokenAno.getFeatures().get("string") ;
+	Long token_st_of= (Long) TokenAno.getStartNode().getOffset();
+
+	String[] arrOfStr = token_string.split("((?<=-)|(?=-))");
+
+		if (arrOfStr.length>1)
+		{
+		inputAS.remove(TokenAno);
+		System.out.println("====================") ;
+			for (String token_str:arrOfStr)
+			{System.out.println(token_str) ;
+				FeatureMap features =Factory.newFeatureMap() ;
+				Long token_len=Long.valueOf(token_str.length());
+				features.put("string",token_str) ;
+				try{
+				outputAS.add(token_st_of,token_st_of+token_len, "Token",features) ;
+				token_st_of=token_st_of+token_len ;
+				}
+				catch(Exception e){
+
+				}
+			}
+
+
+		}
+
+	}
+
+
+
+}
