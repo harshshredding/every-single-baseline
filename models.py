@@ -155,7 +155,8 @@ class SeqLabelerUMLSDisGaz3Classes(torch.nn.Module):
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 3
-        self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, input_sizes=[768, 50, 20, 2, 2])
+        self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k,
+                          self.hidden_size, input_sizes=[args['bert_model_output_dim'], 50, 20, 2, 2])
         self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
