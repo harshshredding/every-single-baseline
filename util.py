@@ -62,7 +62,8 @@ def get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding):
                 span_list.append((start, i - 1))
             start = i
         elif label == 2:
-            assert start is not None
+            if start is None:
+                start = i
         else:
             raise Exception(f'Illegal label {label}')
     if start is not None:
