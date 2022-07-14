@@ -7,8 +7,7 @@ from transformers import AutoTokenizer
 import csv
 
 tweet_to_annos = get_annos_dict(args['gold_file_path'])
-sample_to_token_data = get_train_data('/home/harsh/projects/smm4h-social-dis-ner/preprocessing-test/train-dis-gaz'
-                                      '-final/train')
+sample_to_token_data = get_train_data('/home/harsh/projects/smm4h-social-dis-ner/preprocessing-test/silver-final/train')
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 train_raw_data = get_raw_train_data()
 
@@ -21,14 +20,12 @@ def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
         token_data = sample_to_token_data[sample_id]
         tokens = get_token_strings(token_data)
         gold_annos = tweet_to_annos.get(sample_id, [])
-        labels = get_labels_rich(token_data, gold_annos)
         # print(sample_id, labels)
         offsets_list = get_token_offsets(token_data)
-        assert len(tokens) == len(labels) == len(offsets_list)
         # print(tokens)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512)
-        expanded_labels = expand_labels_rich(batch_encoding, labels)
+        expanded_labels = extract_labels(token_data, batch_encoding, gold_annos)
         label_spans_token_index = get_spans_from_seq_labels_3_classes(expanded_labels, batch_encoding)
         label_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
                                     label_spans_token_index]
@@ -45,7 +42,7 @@ def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
 
 
 errors = get_tokenization_errors(sample_to_token_data, bert_tokenizer)
-with open('tokenization_errors_latest_rich_labels.tsv', 'w') as f:
+with open('tokenization_errors_silver.tsv', 'w') as f:
     writer = csv.writer(f, delimiter='\t')
     header = ['sample_id', 'start', 'end', 'extraction', 'context']
     writer.writerow(header)

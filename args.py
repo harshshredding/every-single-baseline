@@ -3,6 +3,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
 args = {
     "gold_file_path": "./mentions.tsv",
+    "silver_file_path": "./silver_disease_mentions.tsv",
     "training_data_folder_path": "/home/harsh/projects/smm4h-social-dis-ner/preprocessing-test/train-dis-gaz-final/train",
     "validation_data_folder_path": "./gate-output/valid",
     # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
