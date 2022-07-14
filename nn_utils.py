@@ -93,11 +93,12 @@ def extract_labels(sample_data, batch_encoding, annos):
         expanded_labels = expand_labels_rich(batch_encoding, labels)
         expanded_labels = [0 if label == 'o' else 1 if label == 'DiseaseStart' else 2 for label in expanded_labels]
         return expanded_labels
-    else:
+    elif '2Classes' in args['model_name']:
         labels = get_labels(sample_data)
         expanded_labels = expand_labels(batch_encoding, labels)
         expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
         return expanded_labels
+    raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
 
 def read_pos_embeddings_file():

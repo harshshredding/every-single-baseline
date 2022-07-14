@@ -45,8 +45,10 @@ def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
     if '3Classes' in args['model_name']:
         return get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding)
-    else:
+    elif '2Classes' in args['model_name']:
         return get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
+    else:
+        raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
 
 def get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding):
@@ -165,6 +167,14 @@ def prepare_model_input(batch_encoding, sample_data):
                                              device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
                        silver_dis_embeddings)
+    elif args['model_name'] == 'LightWeightRIM3Classes':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
+                                             device=device)
+        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -186,7 +196,9 @@ def prepare_model():
     if args['model_name'] == 'Silver3Classes':
         return Silver3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
                               pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    raise Exception(f"something wrong with model name {args['model_name']}")
+    if args['model_name'] == 'LightWeightRIM3Classes':
+        return LightWeightRIM3Classes().to(device)
+    raise Exception(f"no code to prepare model {args['model_name']}")
 
 
 def get_tweet_data(folder_path):

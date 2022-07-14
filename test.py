@@ -18,6 +18,10 @@ labels = get_labels(sample_data)
 offsets_list = get_token_offsets(sample_data)
 annos = tweet_to_annos[tweet_id]
 new_labels = get_labels_rich(sample_data, annos)
+silver_labels_one_hot = get_silver_dis_one_hot(sample_data)
+silver_labels = get_silver_dis_labels(sample_data)
+print(silver_labels)
+print(silver_labels_one_hot)
 print(new_labels)
 batch_encoding = tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                            add_special_tokens=False, truncation=True, max_length=512)
