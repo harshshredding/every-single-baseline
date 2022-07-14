@@ -183,6 +183,14 @@ def prepare_model_input(batch_encoding, sample_data):
         silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
                                              device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
+    elif args['model_name'] == 'TransformerEncoder3Classes':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
+                                             device=device)
+        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -208,6 +216,8 @@ def prepare_model():
         return LightWeightRIM3Classes().to(device)
     if args['model_name'] == 'OneEncoder3Classes':
         return OneEncoder3Classes().to(device)
+    if args['model_name'] == 'TransformerEncoder3Classes':
+        return TransformerEncoder3Classes().to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 
