@@ -1,5 +1,4 @@
 #!/bin/sh
-git clone https://github.com/harshshredding/smm4h-social-dis-ner.git
 cd smm4h-social-dis-ner/
 pip install -r requirements.txt
 apt-get install vim
