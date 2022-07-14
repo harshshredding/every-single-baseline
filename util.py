@@ -134,11 +134,10 @@ def read_disease_gazetteer():
 
 
 def prepare_model_input(batch_encoding, sample_data):
-    if args['model_name'] != 'base':
-        umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
-                                    device=device)
-        pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
-                                   device=device)
+    umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
+                                device=device)
+    pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
+                               device=device)
     if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
         model_input = (batch_encoding, umls_indices, pos_indices)
     elif args['model_name'] == 'SeqLabelerDisGaz':
@@ -157,6 +156,15 @@ def prepare_model_input(batch_encoding, sample_data):
         umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
                                                device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
+    elif args['model_name'] == 'Silver3Classes':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
+                                             device=device)
+        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
+                       silver_dis_embeddings)
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -175,6 +183,9 @@ def prepare_model():
     if args['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
         return SeqLabelerUMLSDisGaz3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
                                             pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
+    if args['model_name'] == 'Silver3Classes':
+        return Silver3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
+                              pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
     raise Exception(f"something wrong with model name {args['model_name']}")
 
 

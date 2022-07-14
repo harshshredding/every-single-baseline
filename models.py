@@ -174,6 +174,34 @@ class SeqLabelerUMLSDisGaz3Classes(torch.nn.Module):
         return self.classifier(rim_output_hidden_states)
 
 
+class Silver3Classes(torch.nn.Module):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+        super(Silver3Classes, self).__init__()
+        self.num_mechanisms = 6
+        self.top_k = 3
+        self.hidden_size = 128
+        self.num_class = 3
+        self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k,
+                          self.hidden_size, input_sizes=[args['bert_model_output_dim'], 50, 20, 2, 2, 2])
+        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
+        self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
+        self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
+
+    def forward(self, bert_encoding, umls_indices, pos_indices, dis_gaz_embedding, umls_dis_gaz_embedding,
+                silver_gaz_embedding):
+        x = bert_encoding
+        bert_embeddings = self.bert_model(x['input_ids'], return_dict=True)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        pos_embeddings = self.pos(pos_indices)
+        umls_embeddings = self.umls(umls_indices)
+        rim_input = [bert_embeddings, umls_embeddings, pos_embeddings, dis_gaz_embedding, umls_dis_gaz_embedding,
+                     silver_gaz_embedding]
+        rim_output = self.rim(rim_input)
+        rim_output_hidden_states = rim_output[0]
+        return self.classifier(rim_output_hidden_states)
+
+
 class LITSeqLabeler(pl.LightningModule):
     def __init__(self, num_mechanisms, hidden_size, top_k, num_class):
         super(LITSeqLabeler, self).__init__()
