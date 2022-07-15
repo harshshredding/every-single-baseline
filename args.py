@@ -9,7 +9,7 @@ args = {
     # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
     "bert_model_name": "xlm-roberta-large",
     "bert_model_output_dim": 1024,
-    "num_epochs": 10,
+    "num_epochs": 15,
     "save_models_dir": "./models",
     "raw_validation_files_path": "./socialdisner-data/train-valid-txt-files/validation",
     "raw_train_files_path": "./socialdisner-data/train-valid-txt-files/training",
