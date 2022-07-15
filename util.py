@@ -207,6 +207,15 @@ def prepare_model_input(batch_encoding, sample_data):
         silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
                                              device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
+    elif args['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
+                                             device=device)
+        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
+                       silver_dis_embeddings)
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -238,6 +247,11 @@ def prepare_model():
         return PositionalTransformerEncoder3Classes().to(device)
     if args['model_name'] == 'SmallPositionalTransformerEncoder3Classes':
         return SmallPositionalTransformerEncoder3Classes().to(device)
+    if args['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
+        return ComprehensivePositionalTransformerEncoder3Classes(umls_pretrained=umls_embedding_dict,
+                                                                 umls_to_idx=umls_key_to_index,
+                                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index)\
+            .to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 

@@ -300,3 +300,30 @@ class SmallPositionalTransformerEncoder3Classes(torch.nn.Module):
         x = self.pos_encoder(x)
         out = self.encoder_layer(x)
         return self.classifier(out)
+
+
+class ComprehensivePositionalTransformerEncoder3Classes(torch.nn.Module):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+        super(ComprehensivePositionalTransformerEncoder3Classes, self).__init__()
+        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.input_dim = 1100
+        self.num_class = 3
+        self.num_heads = 10
+        self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
+        self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
+        self.pos_encoder = PositionalEncoding(d_model=self.input_dim)
+        self.classifier = nn.Linear(self.input_dim, self.num_class)
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.input_dim, nhead=self.num_heads)
+        self.encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
+
+    def forward(self, bert_encoding, umls_indices, pos_indices, dis_gaz_embedding, umls_dis_gaz_embedding,
+                silver_gaz_embedding):
+        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        pos_embeddings = self.pos(pos_indices)
+        umls_embeddings = self.umls(umls_indices)
+        x = torch.cat((bert_embeddings, pos_embeddings, umls_embeddings,
+                       dis_gaz_embedding, umls_dis_gaz_embedding, silver_gaz_embedding), 1)
+        x = self.pos_encoder(x)
+        out = self.encoder(x)
+        return self.classifier(out)

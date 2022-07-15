@@ -15,10 +15,10 @@ args = {
     "raw_train_files_path": "./socialdisner-data/train-valid-txt-files/training",
     "umls_embeddings_path": "./embeddings.csv",
     "testing_mode": True,
-    "experiment_name": "small_positional_encoding",
+    "experiment_name": "comprehensive_positional_encoding",
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
-    "model_name": "SmallPositionalTransformerEncoder3Classes"
+    "model_name": "ComprehensivePositionalTransformerEncoder3Classes"
 }
 default_key = "DEFAULT"
