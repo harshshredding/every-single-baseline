@@ -8,6 +8,9 @@ import numpy as np
 from train_annos import get_annos_dict
 from nn_utils import *
 from torch.nn import TransformerEncoderLayer
+import math
+from torch import Tensor
+
 
 # tokenizer = AutoTokenizer.from_pretrained('xlm-roberta-large')
 # model = AutoModel.from_pretrained('xlm-roberta-large')
@@ -31,7 +34,8 @@ from torch.nn import TransformerEncoderLayer
 # x = 2
 
 
-encoder_layer = nn.TransformerEncoderLayer(d_model=512, nhead=8)
-src = torch.rand(10, 512)
-out = encoder_layer(src)
+
+p_encoding = PositionalEncoding(d_model=1030)
+x = torch.rand((10, 1, 1030))
+out = p_encoding(x)
 x = 2

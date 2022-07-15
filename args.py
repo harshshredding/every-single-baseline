@@ -19,6 +19,6 @@ args = {
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
-    "model_name": "TransformerEncoder3Classes"
+    "model_name": "PositionalTransformerEncoder3Classes"
 }
 default_key = "DEFAULT"
