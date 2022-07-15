@@ -280,3 +280,23 @@ class PositionalTransformerEncoder3Classes(torch.nn.Module):
         x = self.pos_encoder(x)
         out = self.encoder(x)
         return self.classifier(out)
+
+
+class SmallPositionalTransformerEncoder3Classes(torch.nn.Module):
+    def __init__(self):
+        super(SmallPositionalTransformerEncoder3Classes, self).__init__()
+        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.input_dim = 1030
+        self.num_class = 3
+        self.num_heads = 10
+        self.pos_encoder = PositionalEncoding(d_model=self.input_dim)
+        self.classifier = nn.Linear(self.input_dim, self.num_class)
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.input_dim, nhead=self.num_heads)
+
+    def forward(self, bert_encoding, dis_gaz_embedding, umls_dis_gaz_embedding, silver_gaz_embedding):
+        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        x = torch.cat((bert_embeddings, dis_gaz_embedding, umls_dis_gaz_embedding, silver_gaz_embedding), 1)
+        x = self.pos_encoder(x)
+        out = self.encoder_layer(x)
+        return self.classifier(out)
