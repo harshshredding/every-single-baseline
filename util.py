@@ -238,6 +238,15 @@ def prepare_model_input(batch_encoding, sample_data):
                                              device=device)
         # silver embeddings are going to be ignored during training
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
+    elif args['model_name'] == 'PosEncod3ClassesNoSilverBig':
+        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
+                                          device=device)
+        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
+                                               device=device)
+        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
+                                             device=device)
+        # silver embeddings are going to be ignored during training
+        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -276,6 +285,8 @@ def prepare_model():
             .to(device)
     if args['model_name'] == 'PosEncod3ClassesNoSilverNewGaz':
         return PosEncod3ClassesNoSilverNewGaz().to(device)
+    if args['model_name'] == 'PosEncod3ClassesNoSilverBig':
+        return PosEncod3ClassesNoSilverBig().to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 
