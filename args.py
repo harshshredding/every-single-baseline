@@ -4,8 +4,8 @@ print("using device:", device)
 args = {
     "gold_file_path": "./mentions.tsv",
     "silver_file_path": "./silver_disease_mentions.tsv",
-    "training_data_folder_path": "./gate-output-big-diz-gaz/train",
-    "validation_data_folder_path": "./gate-output-big-diz-gaz/valid",
+    "training_data_folder_path": "./gate-output-new-matching/train",
+    "validation_data_folder_path": "./gate-output-new-matching/valid",
     "test_data_folder_path": "./gate-output-test",
     # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
     "bert_model_name": "xlm-roberta-large",
@@ -22,6 +22,7 @@ args = {
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
     "model_name": "PosEncod3ClassesNoSilverNewGaz",
-    "optimizer": "Adam"
+    "optimizer": "Adam",
+    "learning_rate": 2e-5
 }
 default_key = "DEFAULT"

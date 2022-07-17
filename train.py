@@ -24,11 +24,11 @@ model = prepare_model()
 print("Model Instance", type(model))
 loss_function = nn.CrossEntropyLoss()
 if args['optimizer'] == 'Ranger':
-    optimizer = torch_optimizer.Ranger(model.parameters(), lr=1e-5)
+    optimizer = torch_optimizer.Ranger(model.parameters(), args['learning_rate'])
 elif args['optimizer'] == 'Adam':
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+    optimizer = torch.optim.Adam(model.parameters(), args['learning_rate'])
 elif args['optimizer'] == 'AdamW':
-    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
+    optimizer = torch.optim.AdamW(model.parameters(), args['learning_rate'])
 else:
     raise Exception(f"optimizer not found: {args['optimizer']}")
 
