@@ -1,3 +1,5 @@
+import torch.optim
+
 from util import *
 from transformers import AutoTokenizer
 from read_gate_output import *
@@ -6,7 +8,7 @@ from train_annos import get_annos_dict
 from args import args
 from args import device
 import time
-from ranger import Ranger
+import torch_optimizer
 
 print(args)
 tweet_to_annos = get_annos_dict(args['gold_file_path'])
@@ -22,9 +24,11 @@ model = prepare_model()
 print("Model Instance", type(model))
 loss_function = nn.CrossEntropyLoss()
 if args['optimizer'] == 'Ranger':
-    optimizer = Ranger(model.parameters(), lr=1e-5)
+    optimizer = torch_optimizer.Ranger(model.parameters(), lr=1e-5)
 elif args['optimizer'] == 'Adam':
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+elif args['optimizer'] == 'AdamW':
+    optimizer = torch.optim.AdamW(model.parameters(), lr=1e-5)
 else:
     raise Exception(f"optimizer not found: {args['optimizer']}")
 
