@@ -8,7 +8,7 @@ args = {
     "validation_data_folder_path": "./gate-output-new-matching/valid",
     "test_data_folder_path": "./gate-output-test",
     # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
-    "bert_model_name": "xlm-roberta-large",
+    "bert_model_name": "facebook/xlm-roberta-xl",
     "bert_model_output_dim": 1024,
     "num_epochs": 15,
     "save_models_dir": "./models",
