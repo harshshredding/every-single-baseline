@@ -1,5 +1,6 @@
 import json
 from args import default_key
+import os
 
 
 def get_sample_to_token_data(file_path):
@@ -59,6 +60,25 @@ def get_valid_data(directory_path):
     for file_index in range(3):
         file_index += 1
         file_path = directory_path + f'/valid-{file_index}.json'
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        for token_data in data:
+            assert 'tweet_text' in token_data
+            assert len(token_data['tweet_text']) == 1
+        for token_data in data:
+            sample_id = token_data['tweet_text'][0]['twitter_id']
+            sample_tokens = sample_to_tokens.get(sample_id, [])
+            sample_tokens.append(token_data)
+            sample_to_tokens[sample_id] = sample_tokens
+    return sample_to_tokens
+
+
+def get_test_data(directory_path):
+    sample_to_tokens = {}
+    test_files_list = os.listdir(directory_path)
+    assert len(test_files_list) == 24
+    for test_file in test_files_list:
+        file_path = directory_path + f'/{test_file}'
         with open(file_path, 'r') as f:
             data = json.load(f)
         for token_data in data:

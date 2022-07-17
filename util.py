@@ -103,6 +103,19 @@ def get_raw_validation_data():
     return output_dict
 
 
+def get_raw_test_data():
+    output_dict = {}
+    input_folder_path = args['raw_test_files_path']
+    data_files_list = os.listdir(input_folder_path)
+    for filename in data_files_list:
+        data_file_path = os.path.join(input_folder_path, filename)
+        with open(data_file_path, 'r') as f:
+            data = f.read()
+        twitter_id = filename[:-4]
+        output_dict[twitter_id] = data
+    return output_dict
+
+
 def get_validation_ids():
     output = []
     input_folder_path = args['raw_validation_files_path']
@@ -259,7 +272,7 @@ def prepare_model():
     if args['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
         return ComprehensivePositionalTransformerEncoder3Classes(umls_pretrained=umls_embedding_dict,
                                                                  umls_to_idx=umls_key_to_index,
-                                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index)\
+                                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index) \
             .to(device)
     if args['model_name'] == 'PosEncod3ClassesNoSilverNewGaz':
         return PosEncod3ClassesNoSilverNewGaz().to(device)
