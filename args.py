@@ -17,7 +17,7 @@ args = {
     "raw_test_files_path": "./test_data/test-data/test-data-txt-files",
     "umls_embeddings_path": "./embeddings.csv",
     "testing_mode": True,
-    "experiment_name": "rim_final",
+    "experiment_name": "encoder_with_final_data",
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
