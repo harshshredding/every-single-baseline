@@ -20,3 +20,8 @@ gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 url = "https://drive.google.com/file/d/1kWLlXosdCEcZ4kyd13qU2dcPrYBNLMDs/view?usp=sharing"
 output = "gate-output-test.zip"
 gdown.download(url=url, output=output, quiet=False, fuzzy=True)
+
+
+url = "https://drive.google.com/file/d/1FFkl0eFXnnQZGQyARgtUPBzVJg0AbABk/view?usp=sharing"
+output = "gate-output-old.zip"
+gdown.download(url=url, output=output, quiet=False, fuzzy=True)
