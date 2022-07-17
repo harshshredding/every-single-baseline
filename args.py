@@ -21,7 +21,7 @@ args = {
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
-    "model_name": "SeqLabelerUMLSDisGaz3Classes",
+    "model_name": "PosEncod3ClassesNoSilverNewGaz",
     "optimizer": "Adam"
 }
 default_key = "DEFAULT"
