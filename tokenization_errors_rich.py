@@ -7,7 +7,7 @@ from transformers import AutoTokenizer
 import csv
 
 tweet_to_annos = get_annos_dict(args['gold_file_path'])
-sample_to_token_data = get_train_data('/home/harsh/projects/smm4h-social-dis-ner/gate-output-new-matching/train')
+sample_to_token_data = get_train_data('/home/harsh/projects/smm4h-social-dis-ner/gate-output-big-diz-gaz/train')
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 train_raw_data = get_raw_train_data()
 

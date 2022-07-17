@@ -25,3 +25,8 @@ gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 url = "https://drive.google.com/file/d/1FFkl0eFXnnQZGQyARgtUPBzVJg0AbABk/view?usp=sharing"
 output = "gate-output-old.zip"
 gdown.download(url=url, output=output, quiet=False, fuzzy=True)
+
+
+url = "https://drive.google.com/file/d/1JFY94OfozrihfCvp1QdDL3HeOxY0zW3n/view?usp=sharing"
+output = "gate-output-big-diz-gaz.zip"
+gdown.download(url=url, output=output, quiet=False, fuzzy=True)

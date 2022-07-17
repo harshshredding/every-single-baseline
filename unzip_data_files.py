@@ -17,3 +17,6 @@ with zipfile.ZipFile('./gate-output-test.zip', 'r') as zip_ref:
 
 with zipfile.ZipFile('./gate-output-old.zip', 'r') as zip_ref:
     zip_ref.extractall('./')
+
+with zipfile.ZipFile('./gate-output-big-diz-gaz.zip', 'r') as zip_ref:
+    zip_ref.extractall('./')
