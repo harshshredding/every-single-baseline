@@ -4,8 +4,8 @@ print("using device:", device)
 args = {
     "gold_file_path": "./mentions.tsv",
     "silver_file_path": "./silver_disease_mentions.tsv",
-    "training_data_folder_path": "./gate-output/train",
-    "validation_data_folder_path": "./gate-output/valid",
+    "training_data_folder_path": "./gate-output-big-diz-gaz/train",
+    "validation_data_folder_path": "./gate-output-big-diz-gaz/valid",
     "test_data_folder_path": "./gate-output-test",
     # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
     "bert_model_name": "xlm-roberta-large",
