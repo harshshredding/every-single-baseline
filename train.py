@@ -6,6 +6,7 @@ from train_annos import get_annos_dict
 from args import args
 from args import device
 import time
+from ranger import Ranger
 
 print(args)
 tweet_to_annos = get_annos_dict(args['gold_file_path'])
@@ -20,7 +21,12 @@ bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 model = prepare_model()
 print("Model Instance", type(model))
 loss_function = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+if args['optimizer'] == 'Ranger':
+    optimizer = Ranger(model.parameters(), lr=1e-5)
+elif args['optimizer'] == 'Adam':
+    optimizer = torch.optim.Adam(model.parameters(), lr=1e-5)
+else:
+    raise Exception(f"optimizer not found: {args['optimizer']}")
 
 for epoch in range(args['num_epochs']):
     epoch_loss = []
