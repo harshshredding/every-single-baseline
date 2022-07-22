@@ -21,8 +21,8 @@ args = {
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
-    "model_name": "PosEncod3ClassesNoSilverNewGaz",
+    "model_name": "PosEncod3ClassesOnlyRoberta",
     "optimizer": "Adam",
-    "learning_rate": 2e-5
+    "learning_rate": 1e-5
 }
 default_key = "DEFAULT"

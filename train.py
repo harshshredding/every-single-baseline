@@ -21,6 +21,7 @@ else:
 raw_validation_data = get_raw_validation_data()
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 model = prepare_model()
+print("Experiment Name : ", args['experiment_name'])
 print("Model Instance", type(model))
 loss_function = nn.CrossEntropyLoss()
 if args['optimizer'] == 'Ranger':
