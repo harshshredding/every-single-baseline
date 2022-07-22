@@ -257,7 +257,7 @@ def prepare_model_input(batch_encoding, sample_data):
         # silver embeddings are going to be ignored during training
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
     elif args['model_name'] == 'PosEncod3ClassesOnlyRoberta':
-        model_input = (batch_encoding)
+        model_input = [batch_encoding]
     else:
         raise Exception('Not implemented!')
     return model_input
