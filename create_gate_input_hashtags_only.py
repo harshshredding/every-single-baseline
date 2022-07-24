@@ -4,8 +4,8 @@ from train_annos import get_annos_dict
 from args import args
 annos_file_path = args['gold_file_path']
 input_folder_path = './socialdisner-data/train-valid-txt-files' \
-                    '/validation'
-output_folder_path = './gate-input/valid'
+                    '/training'
+output_folder_path = './gate-input/train'
 tweet_to_annos = get_annos_dict(annos_file_path)
 print(len(tweet_to_annos))
 for file_index in range(5):
