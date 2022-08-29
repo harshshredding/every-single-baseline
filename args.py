@@ -17,11 +17,11 @@ args = {
     "raw_test_files_path": "./test_data/test-data/test-data-txt-files",
     "umls_embeddings_path": "./embeddings.csv",
     "testing_mode": True,
-    "experiment_name": "no_custom_tokenization",
+    "experiment_name": "only_roberta_without_custom_tokenization",
     "pos_embeddings_path": './spanish_pos_emb.p',
     "disease_gazetteer_path": './dictionary_distemist.tsv',
     "errors_dir": './errors',
-    "model_name": "PosEncod3ClassesNoSilverNewGaz",
+    "model_name": "OnlyRoberta3Classes",
     "optimizer": "Adam",
     "learning_rate": 1e-5
 }

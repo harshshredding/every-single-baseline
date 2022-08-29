@@ -258,6 +258,8 @@ def prepare_model_input(batch_encoding, sample_data):
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
     elif args['model_name'] == 'PosEncod3ClassesOnlyRoberta':
         model_input = [batch_encoding]
+    elif args['model_name'] == 'OnlyRoberta3Classes':
+        model_input = [batch_encoding]
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -302,6 +304,8 @@ def prepare_model():
         return PosEncod3ClassesNoSilverSpanish().to(device)
     if args['model_name'] == 'PosEncod3ClassesOnlyRoberta':
         return PosEncod3ClassesOnlyRoberta().to(device)
+    if args['model_name'] == 'OnlyRoberta3Classes':
+        return OnlyRoberta3Classes().to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 
