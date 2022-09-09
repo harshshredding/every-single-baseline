@@ -5,9 +5,10 @@ import pandas as pd
 from nn_utils import *
 import numpy as np
 from models import *
+import torch_optimizer
 
 if args['model_name'] != 'base':
-    if args['testing_mode']:
+    if testing_mode:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
         umls_embedding_dict[default_key] = [0 for _ in range(50)]
         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
@@ -21,6 +22,45 @@ if args['model_name'] != 'base':
     pos_dict[default_key] = [0 for _ in range(20)]
     pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
     pos_to_index = get_key_to_index(pos_dict)
+
+
+def print_args():
+    for arg in sorted(list(args.keys())):
+        print(arg, args[arg])
+
+
+def get_extraction(tokens, offsets, start, end):
+    extraction = []
+    for i, (start_offset, end_offset) in enumerate(offsets):
+        if start_offset >= start and end_offset <= end:
+            extraction.append(tokens[i])
+    return ' '.join(extraction)
+
+
+def get_label_idx_dicts():
+    label_to_idx_dict = {}
+    with open(args['types_file_path'], 'r') as types_file:
+        for line in types_file.readlines():
+            type_string = line.strip()
+            if len(type_string):
+                label_to_idx_dict[Label(type_string, BioTag.begin)] = len(label_to_idx_dict)
+                label_to_idx_dict[Label(type_string, BioTag.inside)] = len(label_to_idx_dict)
+    label_to_idx_dict[Label.get_outside_label()] = len(label_to_idx_dict)
+    idx_to_label_dict = {}
+    for t in label_to_idx_dict:
+        idx_to_label_dict[label_to_idx_dict[t]] = t
+    return label_to_idx_dict, idx_to_label_dict
+
+
+def get_optimizer(model):
+    if args['optimizer'] == 'Ranger':
+        return torch_optimizer.Ranger(model.parameters(), args['learning_rate'])
+    elif args['optimizer'] == 'Adam':
+        return torch.optim.Adam(model.parameters(), args['learning_rate'])
+    elif args['optimizer'] == 'AdamW':
+        return torch.optim.AdamW(model.parameters(), args['learning_rate'])
+    else:
+        raise Exception(f"optimizer not found: {args['optimizer']}")
 
 
 def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
@@ -51,27 +91,32 @@ def get_spans_from_seq_labels(predictions_sub, batch_encoding):
         raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
 
-def get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding):
+def get_spans_from_seq_labels_3_classes(predictions_sub: List[Label], batch_encoding):
     span_list = []
     start = None
+    start_label = None
     for i, label in enumerate(predictions_sub):
-        if label == 0:
+        if label.bio_tag == BioTag.out:
             if start is not None:
-                span_list.append((start, i - 1))
+                span_list.append((start, i - 1, start_label))
                 start = None
-        elif label == 1:
+                start_label = None
+        elif label.bio_tag == BioTag.begin:
             if start is not None:
-                span_list.append((start, i - 1))
+                span_list.append((start, i - 1, start_label))
             start = i
-        elif label == 2:
-            if start is None:
-                start = i
+            start_label = label.label_type
+        elif label.bio_tag == BioTag.inside:
+            if (start is not None) and (start_label != label.label_type):
+                span_list.append((start, i - 1, start_label))
+                start = None
+                start_label = None
         else:
             raise Exception(f'Illegal label {label}')
     if start is not None:
-        span_list.append((start, len(predictions_sub) - 1))
-    span_list_word_idx = [(batch_encoding.token_to_word(span[0]), batch_encoding.token_to_word(span[1])) for span in
-                          span_list]
+        span_list.append((start, len(predictions_sub) - 1, start_label))
+    span_list_word_idx = [(batch_encoding.token_to_word(span[0]), batch_encoding.token_to_word(span[1]), span[2])
+                          for span in span_list]
     return span_list_word_idx
 
 
@@ -148,11 +193,13 @@ def read_disease_gazetteer():
     return disease_list
 
 
-def prepare_model_input(batch_encoding, sample_data):
-    umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
-                                device=device)
-    pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
-                               device=device)
+def prepare_model_input(batch_encoding, sample_data: List[TokenData]):
+    # umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
+    #                             device=device)
+    # pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
+    #                            device=device)
+    umls_indices = None
+    pos_indices = None
     if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
         model_input = (batch_encoding, umls_indices, pos_indices)
     elif args['model_name'] == 'SeqLabelerDisGaz':

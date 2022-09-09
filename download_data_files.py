@@ -32,3 +32,7 @@ gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 url = "https://drive.google.com/file/d/1_fam3KPUyGWeOynHo7nWzIqTgH_PfSyT/view?usp=sharing"
 output = "gate-output-no-custom-tokenization.zip"
 gdown.download(url=url, output=output, quiet=False, fuzzy=True)
+
+url = "https://drive.google.com/file/d/1w1yt9a1R667PjEWAEz5k5hppE_fMzGwr/view?usp=sharing"
+output = "few-nerd-dataset.zip"
+gdown.download(url=url, output=output, quiet=False, fuzzy=True)

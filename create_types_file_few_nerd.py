@@ -1,5 +1,3 @@
-from nn_utils import *
-
 with open(f'./few-nerd-dataset/supervised/train.txt', 'r') as f:
     labels = set()
     for line in f.readlines():

@@ -27,7 +27,7 @@ def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512)
         expanded_labels = expand_labels(batch_encoding, labels)
-        expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
+        expanded_labels = [0 if label == OUTSIDE_LABEL_STRING else 1 for label in expanded_labels]
         label_spans_token_index = get_spans_from_seq_labels(expanded_labels, batch_encoding)
         label_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1]) for span in
                                     label_spans_token_index]

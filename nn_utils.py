@@ -62,7 +62,7 @@ def expand_labels(batch_encoding, labels):
     return new_labels
 
 
-def expand_labels_rich(batch_encoding, labels):
+def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
     """
     return a list of labels with each label in the list
     corresponding to each token in batch_encoding
@@ -73,8 +73,8 @@ def expand_labels_rich(batch_encoding, labels):
     for token_idx in range(len(batch_encoding.tokens())):
         word_idx = batch_encoding.token_to_word(token_idx)
         label = labels[word_idx]
-        if (label == 'DiseaseStart') and (prev_label == label) and (prev_word_idx == word_idx):
-            new_labels.append('DiseaseMid')
+        if (label.bio_tag == BioTag.begin) and (prev_word_idx == word_idx):
+            new_labels.append(Label(label_type=prev_label.label_type, bio_tag=BioTag.inside))
         else:
             new_labels.append(labels[word_idx])
         prev_word_idx = word_idx
@@ -116,16 +116,14 @@ def read_umls_file_small(umls_file_path):
     return umls_embedding_dict
 
 
-def extract_labels(sample_data, batch_encoding, annos):
+def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
     if '3Classes' in args['model_name']:
         labels = get_labels_rich(sample_data, annos)
         expanded_labels = expand_labels_rich(batch_encoding, labels)
-        expanded_labels = [0 if label == 'o' else 1 if label == 'DiseaseStart' else 2 for label in expanded_labels]
         return expanded_labels
     elif '2Classes' in args['model_name']:
         labels = get_labels(sample_data)
         expanded_labels = expand_labels(batch_encoding, labels)
-        expanded_labels = [0 if label == 'o' else 1 for label in expanded_labels]
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 

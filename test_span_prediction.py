@@ -24,4 +24,4 @@ silver_labels_one_hot = get_silver_dis_one_hot(sample_data)
 silver_labels = get_silver_dis_labels(sample_data)
 batch_encoding = tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                             add_special_tokens=False, truncation=True, max_length=512)
-extract_labels(sample_data, batch_encoding, )
+extract_expanded_labels(sample_data, batch_encoding, )

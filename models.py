@@ -424,7 +424,7 @@ class OnlyRoberta3Classes(torch.nn.Module):
         super(OnlyRoberta3Classes, self).__init__()
         self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
         self.input_dim = 1024
-        self.num_class = 3
+        self.num_class = (args['num_types'] * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
 
     def forward(self, bert_encoding):
