@@ -20,6 +20,8 @@ if args['model_name'] != 'base':
 
 
 def print_args():
+    print("EXPERIMENT:", EXPERIMENT)
+    print("TESTING_MODE", TESTING_MODE)
     for arg in sorted(list(args.keys())):
         print(arg, args[arg])
 
