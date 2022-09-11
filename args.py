@@ -4,7 +4,7 @@ from structs import *
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
 TESTING_MODE = True
-EXPERIMENT = 'social-dis-ner-new-framework'
+EXPERIMENT = 'social-dis-ner-test'
 curr_dataset = Dataset.social_dis_ner
 if curr_dataset == Dataset.few_nerd:
     args = {
