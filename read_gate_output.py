@@ -47,7 +47,7 @@ def read_data_from_folder(data_folder) -> Dict[str, List[TokenData]]:
             sample_tokens = sample_to_tokens.get(sample_id, [])
             sample_tokens.append(parsed_token_data)
             sample_to_tokens[sample_id] = sample_tokens
-        return sample_to_tokens
+    return sample_to_tokens
 
 
 def get_train_data() -> Dict[str, List[TokenData]]:
