@@ -1,14 +1,9 @@
-import torch
-from args import args, device
-import os
-import pandas as pd
 from nn_utils import *
-import numpy as np
 from models import *
 import torch_optimizer
 
 if args['model_name'] != 'base':
-    if testing_mode:
+    if TESTING_MODE:
         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
         umls_embedding_dict[default_key] = [0 for _ in range(50)]
         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
@@ -47,8 +42,9 @@ def get_label_idx_dicts():
                 label_to_idx_dict[Label(type_string, BioTag.inside)] = len(label_to_idx_dict)
     label_to_idx_dict[Label.get_outside_label()] = len(label_to_idx_dict)
     idx_to_label_dict = {}
-    for t in label_to_idx_dict:
-        idx_to_label_dict[label_to_idx_dict[t]] = t
+    for label in label_to_idx_dict:
+        idx_to_label_dict[label_to_idx_dict[label]] = label
+    assert len(label_to_idx_dict) == len(idx_to_label_dict)
     return label_to_idx_dict, idx_to_label_dict
 
 
@@ -84,14 +80,14 @@ def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
 
 def get_spans_from_seq_labels(predictions_sub, batch_encoding):
     if '3Classes' in args['model_name']:
-        return get_spans_from_seq_labels_3_classes(predictions_sub, batch_encoding)
+        return get_spans_from_bio_labels(predictions_sub, batch_encoding)
     elif '2Classes' in args['model_name']:
         return get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
     else:
         raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
 
-def get_spans_from_seq_labels_3_classes(predictions_sub: List[Label], batch_encoding):
+def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding):
     span_list = []
     start = None
     start_label = None
@@ -130,9 +126,10 @@ def f1(TP, FP, FN):
     else:
         recall = TP / (FN + TP)
     if (precision is None) or (recall is None) or ((precision + recall) == 0):
-        return 0
+        return 0, 0, 0
     else:
-        return 2 * (precision * recall) / (precision + recall)
+        f1_score = 2 * (precision * recall) / (precision + recall)
+        return f1_score, precision, recall
 
 
 def get_raw_validation_data():

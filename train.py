@@ -25,7 +25,7 @@ for epoch in range(args['num_epochs']):
     train_start_time = time.time()
     model.train()
     sample_ids = list(sample_to_token_data_train.keys())
-    if testing_mode:
+    if TESTING_MODE:
         sample_ids = sample_ids[:10]
     for sample_id in sample_ids:
         optimizer.zero_grad()
@@ -34,7 +34,7 @@ for epoch in range(args['num_epochs']):
         tokens = get_token_strings(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
-        expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos)
+        expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos, label_to_idx_dict)
         expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
         model_input = prepare_model_input(batch_encoding, sample_data)
         output = model(*model_input)
@@ -46,12 +46,12 @@ for epoch in range(args['num_epochs']):
     print(
         f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training time: {str(time.time() - train_start_time)} "
         f"seconds")
-    torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{args['experiment_name']}")
+    torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{EXPERIMENT}")
     # Validation starts
     model.eval()
-    with open(args['save_models_dir'] + f"/predictions_{args['experiment_name']}_epoch_{epoch}.tsv", 'w') \
+    with open(args['save_models_dir'] + f"/predictions_{EXPERIMENT}_epoch_{epoch}.tsv", 'w') \
             as predictions_file, \
-            open(args['save_models_dir'] + f"/errors_{args['experiment_name']}_epoch_{epoch}.tsv", 'w') as errors_file:
+            open(args['save_models_dir'] + f"/errors_{EXPERIMENT}_epoch_{epoch}.tsv", 'w') as errors_file:
         predictions_file.write('\t'.join(['sample_id', 'begin', 'end', 'type', 'extraction']))
         errors_file.write('\t'.join(['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']))
         with torch.no_grad():
@@ -59,8 +59,11 @@ for epoch in range(args['num_epochs']):
             token_level_accuracy_list = []
             f1_list = []
             sample_ids = list(sample_to_token_data_valid.keys())
-            if testing_mode:
+            if TESTING_MODE:
                 sample_ids = sample_ids[:10]
+            num_TP_total = 0
+            num_FP_total = 0
+            num_FN_total = 0
             for sample_id in sample_ids:
                 sample_data = sample_to_token_data_valid[sample_id]
                 annos = sample_to_annos_valid.get(sample_id, [])
@@ -68,7 +71,7 @@ for epoch in range(args['num_epochs']):
                 offsets_list = get_token_offsets(sample_data)
                 batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                                 add_special_tokens=False, truncation=True, max_length=512).to(device)
-                expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos)
+                expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos, label_to_idx_dict)
                 expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
                 model_input = prepare_model_input(batch_encoding, sample_data)
                 output = model(*model_input)
@@ -87,11 +90,14 @@ for epoch in range(args['num_epochs']):
                 FP = pred_spans_set.difference(gold_spans_set)
                 FN = gold_spans_set.difference(pred_spans_set)
                 num_TP = len(TP)
+                num_TP_total += num_TP
                 num_FP = len(FP)
+                num_FP_total += num_FP
                 num_FN = len(FN)
+                num_FN_total += num_FN
                 num_TN = 0
                 F1 = f1(num_TP, num_FP, num_FN)
-                f1_list.append(F1)
+                f1_list.append(F1[0])
                 # write predictions
                 for span in pred_spans_set:
                     start_offset = span[0]
@@ -115,4 +121,5 @@ for epoch in range(args['num_epochs']):
                         '\n' + '\t'.join([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN']))
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
               f"Validation time : {str(time.time() - validation_start_time)} seconds")
-        print("F1", np.array(f1_list).mean())
+        print("F1 macro", np.array(f1_list).mean())
+        print("F1 micro", f1(num_TP_total, num_FP_total, num_FN_total))

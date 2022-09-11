@@ -20,7 +20,7 @@ def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
     for sample_id in sample_to_token_data:
         token_data = sample_to_token_data[sample_id]
         tokens = get_token_strings(token_data)
-        labels = get_labels(token_data)
+        labels = get_label_strings(token_data)
         offsets_list = get_token_offsets(token_data)
         assert len(tokens) == len(labels) == len(offsets_list)
         # print(tokens)

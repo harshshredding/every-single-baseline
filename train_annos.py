@@ -7,7 +7,7 @@ from typing import List
 
 def get_train_annos_dict() -> Dict[str, List[Anno]]:
     if curr_dataset == Dataset.social_dis_ner:
-        df = pd.read_csv(args['gold_file_path'], sep='\t')
+        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
         sample_to_annos = {}
         for i, row in df.iterrows():
             annos_list = sample_to_annos.get(str(row['tweets_id']), [])
@@ -26,7 +26,7 @@ def get_train_annos_dict() -> Dict[str, List[Anno]]:
 
 def get_valid_annos_dict() -> Dict[str, List[Anno]]:
     if curr_dataset == Dataset.social_dis_ner:
-        df = pd.read_csv(args['gold_file_path'], sep='\t')
+        df = pd.read_csv(args['valid_annos_file_path'], sep='\t')
         sample_to_annos = {}
         for i, row in df.iterrows():
             annos_list = sample_to_annos.get(str(row['tweets_id']), [])

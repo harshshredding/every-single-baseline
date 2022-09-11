@@ -3,7 +3,7 @@ import json
 
 
 def create_annos_file(split):
-    with open(f'./few-nerd-dataset/supervised/{split}.txt', 'r') as f:
+    with open(f'../../datasets/few-nerd-dataset/supervised/{split}.txt', 'r') as f:
         labels = []
         curr_sample_labels = []
         prev_label = None
@@ -44,7 +44,7 @@ def create_annos_file(split):
                 label_start = None
                 offset = 0
                 curr_extraction = None
-        with open(f'./few-nerd-dataset/gold-annos/few_nerd_{split}_annos.tsv', 'w') as output_file:
+        with open(f'../../datasets/few-nerd-dataset/gold-annos/few_nerd_{split}_annos.tsv', 'w') as output_file:
             writer = csv.writer(output_file, delimiter='\t')
             header = ['sample_id', 'begin', 'end', 'type', 'extraction']
             writer.writerow(header)
@@ -55,7 +55,7 @@ def create_annos_file(split):
 
 
 def create_model_input_files(split, small=False):
-    with open(f'./few-nerd-dataset/supervised/{split}.txt', 'r') as f:
+    with open(f'../../datasets/few-nerd-dataset/supervised/{split}.txt', 'r') as f:
         sample_id = 0
         all_tokens = []
         offset = 0
@@ -77,10 +77,10 @@ def create_model_input_files(split, small=False):
                     break
                 offset = 0
         output_file_name = f"{split}.json"
-        output_folder_name = f'./few-nerd-dataset/input_files_{split}'
+        output_folder_name = f'../../datasets/few-nerd-dataset/input_files_{split}'
         if small:
             output_file_name = f"{split}_small.json"
-            output_folder_name = f'./few-nerd-dataset/input_files_{split}_small'
+            output_folder_name = f'../../datasets/few-nerd-dataset/input_files_{split}_small'
         with open(f'{output_folder_name}/{output_file_name}', 'w') as output_file:
             json.dump(all_tokens, output_file)
 

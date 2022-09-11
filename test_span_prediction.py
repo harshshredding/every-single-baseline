@@ -1,7 +1,7 @@
 import torch
 from transformers import AutoTokenizer, AutoModel
 
-from util import read_disease_gazetteer, get_tweet_data, get_spans_from_seq_labels_3_classes
+from util import read_disease_gazetteer, get_tweet_data, get_spans_from_bio_labels
 from read_gate_output import *
 from args import args
 import numpy as np
@@ -16,10 +16,10 @@ tweet_to_annos = get_annos_dict(args['gold_file_path'])
 train_data = sample_to_token_data_train = get_train_data(args['training_data_folder_path'])
 sample_data = train_data[tweet_id]
 tokens = get_token_strings(sample_data)
-labels = get_labels(sample_data)
+labels = get_label_strings(sample_data)
 offsets_list = get_token_offsets(sample_data)
 annos = tweet_to_annos[tweet_id]
-new_labels = get_labels_rich(sample_data, annos)
+new_labels = get_labels_bio(sample_data, annos)
 silver_labels_one_hot = get_silver_dis_one_hot(sample_data)
 silver_labels = get_silver_dis_labels(sample_data)
 batch_encoding = tokenizer(tokens, return_tensors="pt", is_split_into_words=True,

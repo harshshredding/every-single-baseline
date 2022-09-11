@@ -9,6 +9,7 @@ import csv
 sample_to_annos = get_train_annos_dict()
 sample_to_token_data = get_train_data()
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
+label_to_idx_dict, idx_to_label_dict = get_label_idx_dicts()
 
 
 def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
@@ -22,8 +23,8 @@ def get_tokenization_errors(sample_to_token_data, bert_tokenizer):
         offsets_list = get_token_offsets(token_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512)
-        expanded_labels = extract_expanded_labels(token_data, batch_encoding, gold_annos)
-        label_spans_token_index = get_spans_from_seq_labels_3_classes(expanded_labels, batch_encoding)
+        expanded_labels = extract_expanded_labels(token_data, batch_encoding, gold_annos, label_to_idx_dict)
+        label_spans_token_index = get_spans_from_bio_labels(expanded_labels, batch_encoding)
         label_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
                                     label_spans_token_index]
         gold_spans_char_offsets = [(anno.begin_offset, anno.end_offset, anno.label_type) for anno in gold_annos]

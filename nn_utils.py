@@ -116,13 +116,13 @@ def read_umls_file_small(umls_file_path):
     return umls_embedding_dict
 
 
-def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
+def extract_expanded_labels(sample_data, batch_encoding, annos, labels_dict) -> List[Label]:
     if '3Classes' in args['model_name']:
-        labels = get_labels_rich(sample_data, annos)
+        labels = get_labels_bio(sample_data, annos, labels_dict)
         expanded_labels = expand_labels_rich(batch_encoding, labels)
         return expanded_labels
     elif '2Classes' in args['model_name']:
-        labels = get_labels(sample_data)
+        labels = get_label_strings(sample_data, labels_dict)
         expanded_labels = expand_labels(batch_encoding, labels)
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + args['model_name'])

@@ -5,14 +5,14 @@ from typing import List, Dict
 from structs import *
 
 
-def parse_token_data(token_data_raw):
+def parse_token_data(token_data_raw) -> TokenData:
     """
     in: a json object representing a token
     out: a TokenData object parsed from the input json object
     """
     if curr_dataset == Dataset.few_nerd:
         return TokenData(
-            token_data_raw['Sample'][0]['id'],
+            str(token_data_raw['Sample'][0]['id']),
             token_data_raw['Sample'][0]['startOffset'],
             token_data_raw['Token'][0]['string'],
             token_data_raw['Token'][0]['length'],
@@ -20,8 +20,18 @@ def parse_token_data(token_data_raw):
             token_data_raw['Token'][0]['endOffset'],
             token_data_raw['Span'][0]['type'] if 'Span' in token_data_raw else None
         )
+    elif curr_dataset == Dataset.social_dis_ner:
+        return TokenData(
+            sample_id=str(token_data_raw['tweet_text'][0]['twitter_id']),
+            sample_start_offset=token_data_raw['tweet_text'][0]['startOffset'],
+            token_string=token_data_raw['Token'][0]['string'],
+            token_len=token_data_raw['Token'][0]['length'],
+            token_start=token_data_raw['Token'][0]['startOffset'],
+            token_end=token_data_raw['Token'][0]['endOffset'],
+            label='Disease' if 'Span' in token_data_raw else None
+        )
     else:
-        raise NotImplementedError('implement parsing for social-dis-ner data')
+        raise NotImplementedError(f"implement token data parsing for dataset {args['dataset_name']}")
 
 
 def read_data_from_folder(data_folder) -> Dict[str, List[TokenData]]:
@@ -59,32 +69,34 @@ def get_token_strings(sample_data: List[TokenData]):
     return only_token_strings
 
 
-def get_labels(sample_data: List[TokenData]):
+def get_label_strings(sample_data: List[TokenData], label_dict):
     tags = []
+    all_possible_labels = [label.label_type for label in label_dict.keys()]
     for token_data in sample_data:
         if token_data.label is not None:
+            assert token_data.label in all_possible_labels, f"label {token_data.label} is not in types file: {label_dict}"
             tags.append(token_data.label)
         else:
             tags.append(OUTSIDE_LABEL_STRING)
     return tags
 
 
-def get_labels_rich(sample_data: List[TokenData], annos: List[Anno]) -> List[Label]:
-    labels = get_labels(sample_data)
+def get_labels_bio(sample_data: List[TokenData], annos: List[Anno], types_dict) -> List[Label]:
+    labels = get_label_strings(sample_data, types_dict)
     offsets = get_token_offsets(sample_data)
     new_labels = []
-    for (label, curr_offset) in zip(labels, offsets):
-        if label != OUTSIDE_LABEL_STRING:
+    for (label_string, curr_offset) in zip(labels, offsets):
+        if label_string != OUTSIDE_LABEL_STRING:
             anno_same_start = [anno for anno in annos if anno.begin_offset == curr_offset[0]]
             in_anno = [anno for anno in annos if
                        (curr_offset[0] >= anno.begin_offset) and (curr_offset[1] <= anno.end_offset)]
             if len(anno_same_start) > 0:
-                new_labels.append(Label(label, BioTag.begin))
+                new_labels.append(Label(label_string, BioTag.begin))
             else:
                 # avoid DiseaseMid without a DiseaseStart
                 if (len(new_labels) > 0) and (new_labels[-1].bio_tag != BioTag.out) \
-                        and (label == new_labels[-1].label_type) and len(in_anno):
-                    new_labels.append(Label(label, BioTag.inside))
+                        and (label_string == new_labels[-1].label_type) and len(in_anno):
+                    new_labels.append(Label(label_string, BioTag.inside))
                 else:
                     new_labels.append(Label.get_outside_label())
         else:
