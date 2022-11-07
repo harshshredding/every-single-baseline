@@ -1,5 +1,5 @@
 from enum import Enum
-
+from dataclasses import dataclass
 OUTSIDE_LABEL_STRING = 'o'
 
 
@@ -12,6 +12,9 @@ class BioTag(Enum):
 class Dataset(Enum):
     social_dis_ner = 1
     few_nerd = 2
+    genia = 3
+    living_ner = 4
+    multiconer = 5
 
 
 class Label:
@@ -43,20 +46,20 @@ class Label:
         return Label(OUTSIDE_LABEL_STRING, BioTag.out)
 
 
+@dataclass
 class Anno:
-    def __init__(self, begin_offset, end_offset, label_type, extraction):
-        self.begin_offset = begin_offset
-        self.end_offset = end_offset
-        self.label_type = label_type
-        self.extraction = extraction
+    begin_offset: int
+    end_offset: int
+    label_type: str
+    extraction: str
 
 
+@dataclass
 class TokenData:
-    def __init__(self, sample_id, sample_start_offset, token_string, token_len, token_start, token_end, label):
-        self.sample_id = sample_id
-        self.sample_start_offset = sample_start_offset
-        self.token_string = token_string
-        self.token_len = token_len
-        self.token_start_offset = token_start
-        self.token_end_offset = token_end
-        self.label = label
+    sample_id: str
+    sample_start_offset: int
+    token_string: str
+    token_len: int
+    token_start_offset: int
+    token_end_offset: int
+    label: str

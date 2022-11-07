@@ -2,7 +2,6 @@ from transformers import AutoModel, AutoTokenizer
 import torch.nn as nn
 import torch
 from mi_rim import *
-import pytorch_lightning as pl
 from args import args
 from nn_utils import PositionalEncoding
 

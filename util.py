@@ -1,5 +1,8 @@
+import csv
+
 from nn_utils import *
 from models import *
+from gatenlp import Document
 import torch_optimizer
 
 if args['model_name'] != 'base':
@@ -59,6 +62,51 @@ def get_optimizer(model):
         return torch.optim.AdamW(model.parameters(), args['learning_rate'])
     else:
         raise Exception(f"optimizer not found: {args['optimizer']}")
+
+
+def print_list(some_list):
+    print('\n'.join([str(el) for el in some_list]))
+
+
+def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, List[TokenData]],
+                           annos_dict: Dict[str, List[Anno]], num_samples=None):
+    with open(output_file_path, 'w') as output_file:
+        writer = csv.writer(output_file)
+        header = ['sample_id', 'text', 'spans']
+        writer.writerow(header)
+        sample_list = list(sample_to_token_data.keys())
+        if num_samples is not None:
+            sample_list = sample_list[:num_samples]
+        for sample_id in sample_list:
+            gold_annos = annos_dict.get(sample_id, [])
+            sample_data = sample_to_token_data[sample_id]
+            sample_text = ''.join(get_token_strings(sample_data))
+            spans = "@".join([f"{anno.begin_offset}:{anno.end_offset}" for anno in gold_annos])
+            row_to_write = [sample_id, sample_text, spans]
+            writer.writerow(row_to_write)
+
+
+def create_gate_file(file_name_without_extension, sample_to_token_data: Dict[str, List[TokenData]],
+                     annos_dict: Dict[str, List[Anno]], num_samples=None):
+    sample_list = list(sample_to_token_data.keys())
+    if num_samples is not None:
+        sample_list = sample_list[:num_samples]
+    curr_sample_offset = 0
+    document_text = ''
+    all_gate_annos = []
+    for sample_id in sample_list:
+        gold_annos = annos_dict.get(sample_id, [])
+        sample_data = sample_to_token_data[sample_id]
+        sample_text = ''.join(get_token_strings(sample_data)) + '\n'
+        all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,
+                           anno.label_type) for anno in gold_annos])
+        document_text += sample_text
+        curr_sample_offset += len(sample_text)
+    gate_document = Document(document_text)
+    default_ann_set = gate_document.annset()
+    for gate_anno in all_gate_annos:
+        default_ann_set.add(int(gate_anno[0]), int(gate_anno[1]), gate_anno[2], {})
+    gate_document.save(args['gate_input_folder_path'] + f'/{file_name_without_extension}.bdocjs')
 
 
 def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):

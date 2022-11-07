@@ -26,9 +26,19 @@ def parse_token_data(token_data_raw) -> TokenData:
             sample_start_offset=token_data_raw['tweet_text'][0]['startOffset'],
             token_string=token_data_raw['Token'][0]['string'],
             token_len=token_data_raw['Token'][0]['length'],
-            token_start=token_data_raw['Token'][0]['startOffset'],
-            token_end=token_data_raw['Token'][0]['endOffset'],
+            token_start_offset=token_data_raw['Token'][0]['startOffset'],
+            token_end_offset=token_data_raw['Token'][0]['endOffset'],
             label='Disease' if 'Span' in token_data_raw else None
+        )
+    elif curr_dataset == Dataset.genia:
+        return TokenData(
+            str(token_data_raw['Sample'][0]['id']),
+            token_data_raw['Sample'][0]['startOffset'],
+            token_data_raw['Token'][0]['string'],
+            token_data_raw['Token'][0]['length'],
+            token_data_raw['Token'][0]['startOffset'],
+            token_data_raw['Token'][0]['endOffset'],
+            token_data_raw['Span'][0]['type'] if ('Span' in token_data_raw) and len(token_data_raw['Span']) else None
         )
     else:
         raise NotImplementedError(f"implement token data parsing for dataset {args['dataset_name']}")

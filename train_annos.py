@@ -22,6 +22,16 @@ def get_train_annos_dict() -> Dict[str, List[Anno]]:
             annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
             sample_to_annos[str(row['sample_id'])] = annos_list
         return sample_to_annos
+    elif curr_dataset == Dataset.genia:
+        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
+        sample_to_annos = {}
+        for i, row in df.iterrows():
+            annos_list = sample_to_annos.get(str(row['sample_id']), [])
+            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
+            sample_to_annos[str(row['sample_id'])] = annos_list
+        return sample_to_annos
+    else:
+        raise Exception(f"{args['dataset_name']} is not supported")
 
 
 def get_valid_annos_dict() -> Dict[str, List[Anno]]:
