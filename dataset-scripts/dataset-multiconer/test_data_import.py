@@ -1,5 +1,4 @@
 import util
-from train_annos import *
 
 sample_to_token_data = util.get_train_data()
 annos_dict = util.get_train_annos_dict()

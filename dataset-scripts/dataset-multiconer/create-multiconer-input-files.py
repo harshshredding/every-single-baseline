@@ -1,12 +1,11 @@
-from os.path import dirname, realpath
 from pathlib import Path
 import json
 import csv
 from structs import Anno
 import util
 
-def read_raw_data():
-    with open(f'./multiconer-data-raw/train_dev/en-dev.conll', 'r') as dev_file:
+def read_raw_data(train=True):
+    with open(f"./multiconer-data-raw/train_dev/en-{'train' if train else 'dev'}.conll", 'r') as dev_file:
         samples_dict = {}
         curr_sample_id = None
         for line in list(dev_file.readlines()):
@@ -24,15 +23,15 @@ def read_raw_data():
                     tokens_list = samples_dict.get(curr_sample_id, [])
                     tokens_list.append((token_data_split[0], token_data_split[1]))
                     samples_dict[curr_sample_id] = tokens_list
-        assert len(samples_dict) == 871
+        assert len(samples_dict) == (16767 if train else 871), len(samples_dict)
         return samples_dict
 
 def create_types_file():
-    validation_samples = read_raw_data()
-    print(validation_samples['5239d808-f300-46ea-aa3b-5093040213a3'])
+    samples = read_raw_data()
+    #print(samples['5239d808-f300-46ea-aa3b-5093040213a3'])
     all_labels = set()
-    for sample_id in validation_samples:
-        tokens_data = validation_samples[sample_id]
+    for sample_id in samples:
+        tokens_data = samples[sample_id]
         labels = [label for token_string, label in tokens_data]
         all_labels.update(labels)
     print("num all labels", len(all_labels))
@@ -64,7 +63,7 @@ def create_input_file():
             token_offset += (len(token_string) + 1) # add one for one space between tokens
     
     Path("./datasets/multiconer/input-files").mkdir(parents=True, exist_ok=True)
-    with open('./datasets/multiconer/input-files/dev.json', 'w') as output_file:
+    with open('./datasets/multiconer/input-files/train.json', 'w') as output_file:
         json.dump(all_tokens_json, output_file, indent=4)
 
 def create_annos_file():
@@ -93,7 +92,7 @@ def create_annos_file():
         annos_dict[sample_id] = spans
 
     Path("./datasets/multiconer/gold-annos").mkdir(parents=True, exist_ok=True)
-    with open('./datasets/multiconer/gold-annos/valid-annos.tsv', 'w') as annos_file:
+    with open('./datasets/multiconer/gold-annos/annos.tsv', 'w') as annos_file:
         writer = csv.writer(annos_file, delimiter='\t')
         header = ['sample_id', 'begin', 'end', 'type', 'extraction']
         writer.writerow(header)
@@ -102,16 +101,15 @@ def create_annos_file():
                 row = [sample_id, anno.begin_offset, anno.end_offset, anno.label_type, anno.extraction]
                 writer.writerow(row)
 
-    print(annos_dict['5239d808-f300-46ea-aa3b-5093040213a3'])
-    print(annos_dict['d7d47dfc-7e5d-48e8-9390-019a3e9476c1'])
-    print(annos_dict['8a8e516d-e4ba-42e3-bf62-f2994db69d55'])
+    #print(annos_dict['5239d808-f300-46ea-aa3b-5093040213a3'])
+    #print(annos_dict['d7d47dfc-7e5d-48e8-9390-019a3e9476c1'])
+    #print(annos_dict['8a8e516d-e4ba-42e3-bf62-f2994db69d55'])
 
 def create_gate_input_file():
     sample_to_token_data = util.get_train_data()
     annos_dict = util.get_train_annos_dict()
     Path("./datasets/multiconer/gate-input").mkdir(parents=True, exist_ok=True)
-    util.create_gate_file("multiconer", sample_to_token_data, annos_dict, 100)
-
+    util.create_gate_file("multiconer", sample_to_token_data, annos_dict, 1000)
 
 create_types_file()
 create_input_file()
