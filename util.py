@@ -3,7 +3,7 @@ import csv
 from nn_utils import *
 from models import *
 from gatenlp import Document
-import torch_optimizer
+#import torch_optimizer
 
 if args['model_name'] != 'base':
     if TESTING_MODE:
@@ -55,7 +55,8 @@ def get_label_idx_dicts():
 
 def get_optimizer(model):
     if args['optimizer'] == 'Ranger':
-        return torch_optimizer.Ranger(model.parameters(), args['learning_rate'])
+        #return torch_optimizer.Ranger(model.parameters(), args['learning_rate'])
+        raise Exception("no ranger optimizer")
     elif args['optimizer'] == 'Adam':
         return torch.optim.Adam(model.parameters(), args['learning_rate'])
     elif args['optimizer'] == 'AdamW':

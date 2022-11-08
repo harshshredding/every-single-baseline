@@ -1,12 +1,11 @@
 from os.path import dirname, realpath
-import sys
+from pathlib import Path
 import json
-root_dir = dirname(dirname(dirname(realpath(__file__))))
-sys.path.append(root_dir)
-from structs import TokenData
+import csv
+from structs import Anno
 
 def read_raw_data():
-    with open(f'{root_dir}/multiconer-data-raw/train_dev/en-dev.conll', 'r') as dev_file:
+    with open(f'./multiconer-data-raw/train_dev/en-dev.conll', 'r') as dev_file:
         samples_dict = {}
         curr_sample_id = None
         for line in list(dev_file.readlines()):
@@ -42,6 +41,8 @@ def create_types_file():
     top_level_labels_set = set(top_level_labels)
     assert len(top_level_labels_set) == (len(top_level_labels)//2)
     print("num top level label set", len(top_level_labels_set))
+
+    Path("./datasets/multiconer").mkdir(parents=True, exist_ok=True)
     with open('./datasets/multiconer/types.txt', 'w') as types_file:
         for label in top_level_labels_set:
             print(label, file=types_file)
@@ -60,6 +61,8 @@ def create_input_file():
                           }
             all_tokens_json.append(token_json)
             token_offset += len(token_string) 
+    
+    Path("./datasets/multiconer/input-files").mkdir(parents=True, exist_ok=True)
     with open('./datasets/multiconer/input-files/dev.json', 'w') as output_file:
         json.dump(all_tokens_json, output_file, indent=4)
 
@@ -74,7 +77,7 @@ def create_annos_file():
         for token_string, token_label in token_data_list:
             if token_label == 'O' or token_label.startswith('B-'):
                 if curr_span_start is not None:
-                    spans.append((curr_span_start, token_offset, curr_span_type, curr_span_text))
+                    spans.append(Anno(curr_span_start, token_offset, curr_span_type, curr_span_text))
                     curr_span_start, curr_span_type, curr_span_text = None, None, None
             if token_label.startswith("B-"):
                 curr_span_start = token_offset
@@ -84,14 +87,25 @@ def create_annos_file():
                 curr_span_text = " ".join([curr_span_text, token_string])
             token_offset += len(token_string)
         if curr_span_start is not None:
-            spans.append((curr_span_start, token_offset, curr_span_type, curr_span_text))
+            spans.append(Anno(curr_span_start, token_offset, curr_span_type, curr_span_text))
             curr_span_start, curr_span_type, curr_span_text = None, None, None
         annos_dict[sample_id] = spans
+
+    Path("./datasets/multiconer/gold-annos").mkdir(parents=True, exist_ok=True)
+    with open('./datasets/multiconer/gold-annos/valid-annos.tsv', 'w') as annos_file:
+        writer = csv.writer(annos_file, delimiter='\t')
+        header = ['sample_id', 'begin', 'end', 'type', 'extraction']
+        writer.writerow(header)
+        for sample_id in annos_dict:
+            for anno in annos_dict[sample_id]:
+                row = [sample_id, anno.begin_offset, anno.end_offset, anno.label_type, anno.extraction]
+                writer.writerow(row)
+
     print(annos_dict['5239d808-f300-46ea-aa3b-5093040213a3'])
     print(annos_dict['d7d47dfc-7e5d-48e8-9390-019a3e9476c1'])
     print(annos_dict['8a8e516d-e4ba-42e3-bf62-f2994db69d55'])
 
 
-#create_types_file()
-#create_input_file()
+create_types_file()
+create_input_file()
 create_annos_file()
