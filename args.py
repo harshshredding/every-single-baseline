@@ -81,8 +81,8 @@ elif curr_dataset == Dataset.social_dis_ner:
     }
 elif curr_dataset == Dataset.multiconer:
     args = {
-        "train_annos_file_path": "./datasets/multiconer/mentions_train.tsv",
-        "valid_annos_file_path": "./datasets/multiconer/mentions_valid.tsv",
+        "train_annos_file_path": "./datasets/multiconer/gold-annos/valid-annos.tsv",
+        "valid_annos_file_path": "./datasets/multiconer/gold-annos/valid-annos.tsv",
         "training_data_folder_path": "./datasets/multiconer/input-files",
         "gate_input_folder_path": "./datasets/multiconer/gate-input",
         "types_file_path": "./datasets/multiconer/types.txt",

@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import csv
 from structs import Anno
+import util
 
 def read_raw_data():
     with open(f'./multiconer-data-raw/train_dev/en-dev.conll', 'r') as dev_file:
@@ -60,7 +61,7 @@ def create_input_file():
                           'Span': [{"type": token_label, "id": None}]
                           }
             all_tokens_json.append(token_json)
-            token_offset += len(token_string) 
+            token_offset += (len(token_string) + 1) # add one for one space between tokens
     
     Path("./datasets/multiconer/input-files").mkdir(parents=True, exist_ok=True)
     with open('./datasets/multiconer/input-files/dev.json', 'w') as output_file:
@@ -77,7 +78,7 @@ def create_annos_file():
         for token_string, token_label in token_data_list:
             if token_label == 'O' or token_label.startswith('B-'):
                 if curr_span_start is not None:
-                    spans.append(Anno(curr_span_start, token_offset, curr_span_type, curr_span_text))
+                    spans.append(Anno(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
                     curr_span_start, curr_span_type, curr_span_text = None, None, None
             if token_label.startswith("B-"):
                 curr_span_start = token_offset
@@ -85,9 +86,9 @@ def create_annos_file():
                 curr_span_text = token_string
             elif token_label.startswith("I-"):
                 curr_span_text = " ".join([curr_span_text, token_string])
-            token_offset += len(token_string)
+            token_offset += (len(token_string) + 1) # add one for one space between tokens 
         if curr_span_start is not None:
-            spans.append(Anno(curr_span_start, token_offset, curr_span_type, curr_span_text))
+            spans.append(Anno(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
             curr_span_start, curr_span_type, curr_span_text = None, None, None
         annos_dict[sample_id] = spans
 
@@ -105,7 +106,14 @@ def create_annos_file():
     print(annos_dict['d7d47dfc-7e5d-48e8-9390-019a3e9476c1'])
     print(annos_dict['8a8e516d-e4ba-42e3-bf62-f2994db69d55'])
 
+def create_gate_input_file():
+    sample_to_token_data = util.get_train_data()
+    annos_dict = util.get_train_annos_dict()
+    Path("./datasets/multiconer/gate-input").mkdir(parents=True, exist_ok=True)
+    util.create_gate_file("multiconer", sample_to_token_data, annos_dict, 100)
+
 
 create_types_file()
 create_input_file()
 create_annos_file()
+create_gate_input_file()

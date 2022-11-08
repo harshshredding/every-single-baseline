@@ -3,7 +3,49 @@ import torch.nn as nn
 import torch
 from mi_rim import *
 from args import args
-from nn_utils import PositionalEncoding
+from torch import Tensor
+
+
+class Embedding(nn.Module):
+    def __init__(self, emb_dim, vocab_size, initialize_emb, word_to_ix):
+        super(Embedding, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, emb_dim).requires_grad_(False)
+        if initialize_emb:
+            inv_dic = {v: k for k, v in word_to_ix.items()}
+            for key in initialize_emb.keys():
+                if key in word_to_ix:
+                    ind = word_to_ix[key]
+                    self.embedding.weight.data[ind].copy_(torch.from_numpy(initialize_emb[key]))
+
+    def forward(self, input):
+        return self.embedding(input)
+
+######################################################################
+# ``PositionalEncoding`` module injects some information about the
+# relative or absolute position of the tokens in the sequence. The
+# positional encodings have the same dimension as the embeddings so that
+# the two can be summed. Here, we use ``sine`` and ``cosine`` functions of
+# different frequencies.
+#
+class PositionalEncoding(nn.Module):
+    def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
+        super().__init__()
+        self.dropout = nn.Dropout(p=dropout)
+
+        position = torch.arange(max_len).unsqueeze(1)
+        div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))
+        pe = torch.zeros(max_len, 1, d_model)
+        pe[:, 0, 0::2] = torch.sin(position * div_term)
+        pe[:, 0, 1::2] = torch.cos(position * div_term)
+        self.register_buffer('pe', pe)
+
+    def forward(self, x: Tensor) -> Tensor:
+        x = torch.unsqueeze(x, dim=1)
+        x = x + self.pe[:x.size(0)]
+        x = self.dropout(x)
+        x = torch.squeeze(x, dim=1)
+        return x
+
 
 
 class SeqLabeler(torch.nn.Module):

@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
 import numpy as np
 import math
-from nn_utils import Embedding
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device", device)
