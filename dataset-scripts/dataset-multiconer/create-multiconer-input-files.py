@@ -3,6 +3,30 @@ import json
 import csv
 from structs import Anno
 import util
+from collections import Counter
+
+coarse_to_fine = {
+     'Coarse_Location':['Facility', 'OtherLOC', 'HumanSettlement', 'Station'],
+     'Coarse_Creative_Work': ['VisualWork', 'MusicalWork', 'WrittenWork', 'ArtWork', 'Software', 'OtherCW'],
+     'Coarse_Group': ['MusicalGRP', 'PublicCorp', 'PrivateCorp', 'OtherCorp', 'AerospaceManufacturer', 'SportsGRP', 'CarManufacturer', 'TechCorp', 'ORG'],
+     'Coarse_Person': ['Scientist', 'Artist', 'Athlete', 'Politician', 'Cleric', 'SportsManager', 'OtherPER'],
+     'Coarse_Product': ['Clothing', 'Vehicle', 'Food', 'Drink', 'OtherPROD'],
+     'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease']
+}
+
+def get_all_fine_grained_labels():
+    ret = []
+    for coarse_label in coarse_to_fine:
+        for fine_label in coarse_to_fine[coarse_label]:
+            ret.append(fine_label)
+    return ret
+
+def get_fine_to_coarse_dict():
+    ret = {}
+    for coarse in coarse_to_fine:
+        for fine in coarse_to_fine[coarse]:
+            ret[fine] = coarse
+    return ret
 
 def read_raw_data(train=True):
     with open(f"./multiconer-data-raw/train_dev/en-{'train' if train else 'dev'}.conll", 'r') as dev_file:
@@ -29,23 +53,26 @@ def read_raw_data(train=True):
 def create_types_file():
     samples = read_raw_data()
     #print(samples['5239d808-f300-46ea-aa3b-5093040213a3'])
-    all_labels = set()
+    fine_labels_set = set()
+    fine_label_occurences = []
     for sample_id in samples:
         tokens_data = samples[sample_id]
-        labels = [label for token_string, label in tokens_data]
-        all_labels.update(labels)
-    print("num all labels", len(all_labels))
-    top_level_labels = [label[2:] for label in all_labels if len(label) > 2]
-    print("num all top level lables", len(top_level_labels))
-    assert len(top_level_labels) == (len(all_labels) - 1)
-    top_level_labels_set = set(top_level_labels)
-    assert len(top_level_labels_set) == (len(top_level_labels)//2)
-    print("num top level label set", len(top_level_labels_set))
-
+        fine_labels = [label[2:] for _, label in tokens_data if len(label) > 2]
+        fine_labels_set.update(fine_labels)
+        fine_label_occurences.extend(fine_labels)
+    predefined_fine_grain_labels = set(get_all_fine_grained_labels())
+    assert predefined_fine_grain_labels.difference(fine_labels_set) == {'TechCorp', 'OtherCW', 'OtherCorp'}
+    fine_label_occurence_count = Counter(fine_label_occurences)
+    print("top level occurence count")
+    print(json.dumps(fine_label_occurence_count,indent=4))
+    with open('./datasets/multiconer/info.txt', 'w') as info_file:
+        print("top level occurence count", file=info_file)
+        print(json.dumps(fine_label_occurence_count,indent=4), file=info_file)
+    print("num fine labels", len(fine_labels_set)) 
     Path("./datasets/multiconer").mkdir(parents=True, exist_ok=True)
     with open('./datasets/multiconer/types.txt', 'w') as types_file:
-        for label in top_level_labels_set:
-            print(label, file=types_file)
+        for fine_label in fine_labels_set:
+            print(fine_label, file=types_file)
 
 def create_input_file():
     all_tokens_json = []
@@ -108,8 +135,13 @@ def create_annos_file():
 def create_gate_input_file():
     sample_to_token_data = util.get_train_data()
     annos_dict = util.get_train_annos_dict()
+    fine_to_coarse_dict = get_fine_to_coarse_dict()
+    for sample_id in annos_dict:
+        gold_annos = annos_dict[sample_id]
+        coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
+        gold_annos.extend(coarse_annos)
     Path("./datasets/multiconer/gate-input").mkdir(parents=True, exist_ok=True)
-    util.create_gate_file("multiconer", sample_to_token_data, annos_dict, 1000)
+    util.create_gate_file("multiconer", sample_to_token_data, annos_dict, 10000)
 
 create_types_file()
 create_input_file()

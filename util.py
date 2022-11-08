@@ -153,17 +153,21 @@ def create_gate_file(file_name_without_extension, sample_to_token_data: Dict[str
     document_text = ''
     all_gate_annos = []
     for sample_id in sample_list:
+        sample_start_offset = curr_sample_offset
         gold_annos = annos_dict.get(sample_id, [])
         sample_data = sample_to_token_data[sample_id]
         sample_text = ' '.join(get_token_strings(sample_data)) + '\n'
         all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,
-                           anno.label_type) for anno in gold_annos])
+                           anno.label_type, {}) for anno in gold_annos])
+        all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,'Span', {}) for anno in gold_annos])
         document_text += sample_text
         curr_sample_offset += len(sample_text)
+        sample_end_offset = curr_sample_offset
+        all_gate_annos.append((sample_start_offset, sample_end_offset, 'Sample', {'sample_id': sample_id}))
     gate_document = Document(document_text)
     default_ann_set = gate_document.annset()
     for gate_anno in all_gate_annos:
-        default_ann_set.add(int(gate_anno[0]), int(gate_anno[1]), gate_anno[2], {})
+        default_ann_set.add(int(gate_anno[0]), int(gate_anno[1]), gate_anno[2], gate_anno[3])
     gate_document.save(args['gate_input_folder_path'] + f'/{file_name_without_extension}.bdocjs')
 
 
