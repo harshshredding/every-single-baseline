@@ -40,6 +40,16 @@ def parse_token_data(token_data_raw) -> TokenData:
             token_data_raw['Token'][0]['endOffset'],
             token_data_raw['Span'][0]['type'] if ('Span' in token_data_raw) and len(token_data_raw['Span']) else None
         )
+    elif curr_dataset == Dataset.multiconer:
+        return TokenData(
+            str(token_data_raw['Sample'][0]['id']),
+            token_data_raw['Sample'][0]['startOffset'],
+            token_data_raw['Token'][0]['string'],
+            token_data_raw['Token'][0]['length'],
+            token_data_raw['Token'][0]['startOffset'],
+            token_data_raw['Token'][0]['endOffset'],
+            token_data_raw['Span'][0]['type'] if token_data_raw['Span'][0]['type'] != 'O' else None
+        ) 
     else:
         raise NotImplementedError(f"implement token data parsing for dataset {args['dataset_name']}")
 
