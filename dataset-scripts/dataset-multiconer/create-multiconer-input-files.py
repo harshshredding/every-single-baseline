@@ -28,8 +28,8 @@ def get_fine_to_coarse_dict():
             ret[fine] = coarse
     return ret
 
-def read_raw_data(train=True):
-    with open(f"./multiconer-data-raw/train_dev/en-{'train' if train else 'dev'}.conll", 'r') as dev_file:
+def read_raw_data(dataset_type):
+    with open(f"./multiconer-data-raw/train_dev/en-{dataset_type}.conll", 'r') as dev_file:
         samples_dict = {}
         curr_sample_id = None
         for line in list(dev_file.readlines()):
@@ -47,11 +47,11 @@ def read_raw_data(train=True):
                     tokens_list = samples_dict.get(curr_sample_id, [])
                     tokens_list.append((token_data_split[0], token_data_split[1]))
                     samples_dict[curr_sample_id] = tokens_list
-        assert len(samples_dict) == (16767 if train else 871), len(samples_dict)
+        assert len(samples_dict) == (16767 if dataset_type == 'train' else 871), len(samples_dict)
         return samples_dict
 
 def create_types_file():
-    samples = read_raw_data()
+    samples = read_raw_data('train')
     #print(samples['5239d808-f300-46ea-aa3b-5093040213a3'])
     fine_labels_set = set()
     fine_label_occurences = []
@@ -74,7 +74,7 @@ def create_types_file():
         for fine_label in fine_labels_set:
             print(fine_label, file=types_file)
 
-def create_input_file():
+def create_input_file(dataset_type):
     all_tokens_json = []
     sample_data = read_raw_data()
     for sample_id in sample_data:
@@ -89,12 +89,12 @@ def create_input_file():
             all_tokens_json.append(token_json)
             token_offset += (len(token_string) + 1) # add one for one space between tokens
     
-    Path("./datasets/multiconer/input-files").mkdir(parents=True, exist_ok=True)
-    with open('./datasets/multiconer/input-files/train.json', 'w') as output_file:
+    Path(f"./datasets/multiconer/input-files/{dataset_type}").mkdir(parents=True, exist_ok=True)
+    with open(f'./datasets/multiconer/input-files/{dataset_type}/train.json', 'w') as output_file:
         json.dump(all_tokens_json, output_file, indent=4)
 
-def create_annos_file():
-    sample_data = read_raw_data()
+def create_annos_file(dataset_type):
+    sample_data = read_raw_data(dataset_type)
     annos_dict = {}
     for sample_id in sample_data:
         token_data_list = sample_data[sample_id]
@@ -119,7 +119,7 @@ def create_annos_file():
         annos_dict[sample_id] = spans
 
     Path("./datasets/multiconer/gold-annos").mkdir(parents=True, exist_ok=True)
-    with open('./datasets/multiconer/gold-annos/annos.tsv', 'w') as annos_file:
+    with open(f"./datasets/multiconer/gold-annos/{dataset_type}/annos-{dataset_type}.tsv", 'w') as annos_file:
         writer = csv.writer(annos_file, delimiter='\t')
         header = ['sample_id', 'begin', 'end', 'type', 'extraction']
         writer.writerow(header)
