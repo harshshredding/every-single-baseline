@@ -6,3 +6,4 @@ torch
 transformers
 gdown
 torch-optimizer
+gatenlp
