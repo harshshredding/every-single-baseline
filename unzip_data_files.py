@@ -6,11 +6,11 @@ import zipfile
 with zipfile.ZipFile('./embeddings.zip', 'r') as zip_ref:
     zip_ref.extractall('./')
 
-with zipfile.ZipFile('./data_files.zip', 'r') as zip_ref:
-    zip_ref.extractall('./')
+# with zipfile.ZipFile('./data_files.zip', 'r') as zip_ref:
+#     zip_ref.extractall('./')
 
-with zipfile.ZipFile('./test_data.zip', 'r') as zip_ref:
-    zip_ref.extractall('./')
+# with zipfile.ZipFile('./test_data.zip', 'r') as zip_ref:
+#     zip_ref.extractall('./')
 
 # with zipfile.ZipFile('./gate-output-test.zip', 'r') as zip_ref:
 #     zip_ref.extractall('./datasets/')
@@ -27,8 +27,11 @@ with zipfile.ZipFile('./test_data.zip', 'r') as zip_ref:
 # with zipfile.ZipFile('./few-nerd-dataset.zip', 'r') as zip_ref:
 #     zip_ref.extractall('./datasets/')
 
-with zipfile.ZipFile('./few-nerd-dataset.zip', 'r') as zip_ref:
-    zip_ref.extractall('./datasets/')
+# with zipfile.ZipFile('./few-nerd-dataset.zip', 'r') as zip_ref:
+#     zip_ref.extractall('./datasets/')
 
-with zipfile.ZipFile('./social-dis-ner-dataset.zip', 'r') as zip_ref:
+# with zipfile.ZipFile('./social-dis-ner-dataset.zip', 'r') as zip_ref:
+#     zip_ref.extractall('./datasets/')
+
+with zipfile.ZipFile('./multiconer.zip', 'r') as zip_ref:
     zip_ref.extractall('./datasets/')

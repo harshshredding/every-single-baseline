@@ -1,8 +1,6 @@
 from util import *
 from transformers import AutoTokenizer
-from read_gate_output import *
 from sklearn.metrics import accuracy_score
-from train_annos import get_train_annos_dict, get_valid_annos_dict
 from args import *
 import time
 

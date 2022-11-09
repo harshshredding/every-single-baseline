@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 from models import *
 from gatenlp import Document
 from args import *
@@ -513,6 +514,13 @@ def get_train_annos_dict() -> Dict[str, List[Anno]]:
         raise Exception(f"{args['dataset_name']} is not supported")
 
 
+def open_make_dirs(file_path, mode):
+    Path(file_path).parent.mkdir(parents=True, exist_ok=True)
+    return open(file_path, mode)
+
+def create_directory_structure(folder_path):
+    Path(folder_path).mkdir(parents=True, exist_ok=True)
+
 def get_valid_annos_dict() -> Dict[str, List[Anno]]:
     if curr_dataset == Dataset.social_dis_ner:
         df = pd.read_csv(args['valid_annos_file_path'], sep='\t')
@@ -522,7 +530,7 @@ def get_valid_annos_dict() -> Dict[str, List[Anno]]:
             annos_list.append(Anno(row['begin'], row['end'], 'Disease', row['extraction']))
             sample_to_annos[str(row['tweets_id'])] = annos_list
         return sample_to_annos
-    elif curr_dataset == Dataset.few_nerd:
+    else:
         df = pd.read_csv(args['valid_annos_file_path'], sep='\t')
         sample_to_annos = {}
         for i, row in df.iterrows():
@@ -530,6 +538,7 @@ def get_valid_annos_dict() -> Dict[str, List[Anno]]:
             annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
             sample_to_annos[str(row['sample_id'])] = annos_list
         return sample_to_annos
+
 
 
 

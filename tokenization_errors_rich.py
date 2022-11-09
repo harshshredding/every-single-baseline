@@ -1,8 +1,6 @@
 import sys
 
 from util import *
-from train_annos import *
-from nn_utils import *
 from transformers import AutoTokenizer
 import csv
 

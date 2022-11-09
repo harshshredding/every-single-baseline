@@ -16,7 +16,6 @@ class Dataset(Enum):
     living_ner = 4
     multiconer = 5
 
-
 class Label:
     def __init__(self, label_type, bio_tag):
         self.label_type = label_type
@@ -26,6 +25,14 @@ class Label:
         return self.label_type, self.bio_tag
 
     def __str__(self):
+        if self.bio_tag == BioTag.begin:
+            return self.label_type + '-BEGIN'
+        elif self.bio_tag == BioTag.inside:
+            return self.label_type + '-INSIDE'
+        else:
+            return OUTSIDE_LABEL_STRING
+
+    def __repr__(self) -> str:
         if self.bio_tag == BioTag.begin:
             return self.label_type + '-BEGIN'
         elif self.bio_tag == BioTag.inside:
