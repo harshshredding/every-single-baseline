@@ -472,3 +472,16 @@ class OnlyRoberta3Classes(torch.nn.Module):
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         return self.classifier(bert_embeddings)
+
+class JustBert3Classes(torch.nn.Module):
+    def __init__(self):
+        super(JustBert3Classes, self).__init__()
+        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.input_dim = args['bert_model_output_dim']
+        self.num_class = (args['num_types'] * 2) + 1
+        self.classifier = nn.Linear(self.input_dim, self.num_class)
+
+    def forward(self, bert_encoding):
+        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        return self.classifier(bert_embeddings)

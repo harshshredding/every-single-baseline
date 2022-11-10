@@ -417,6 +417,8 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData]):
         model_input = [batch_encoding]
     elif args['model_name'] == 'OnlyRoberta3Classes':
         model_input = [batch_encoding]
+    elif args['model_name'] == 'JustBert3Classes':
+        model_input = [batch_encoding]
     else:
         raise Exception('Not implemented!')
     return model_input
@@ -463,6 +465,8 @@ def prepare_model():
         return PosEncod3ClassesOnlyRoberta().to(device)
     if args['model_name'] == 'OnlyRoberta3Classes':
         return OnlyRoberta3Classes().to(device)
+    if args['model_name'] == 'JustBert3Classes':
+        return JustBert3Classes().to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 
