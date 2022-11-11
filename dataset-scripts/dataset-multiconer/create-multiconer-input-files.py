@@ -10,14 +10,7 @@ from args import args, curr_dataset
 from structs import Dataset
 assert curr_dataset == Dataset.multiconer
 
-coarse_to_fine = {
-     'Coarse_Location':['Facility', 'OtherLOC', 'HumanSettlement', 'Station'],
-     'Coarse_Creative_Work': ['VisualWork', 'MusicalWork', 'WrittenWork', 'ArtWork', 'Software', 'OtherCW'],
-     'Coarse_Group': ['MusicalGRP', 'PublicCorp', 'PrivateCorp', 'OtherCorp', 'AerospaceManufacturer', 'SportsGRP', 'CarManufacturer', 'TechCorp', 'ORG'],
-     'Coarse_Person': ['Scientist', 'Artist', 'Athlete', 'Politician', 'Cleric', 'SportsManager', 'OtherPER'],
-     'Coarse_Product': ['Clothing', 'Vehicle', 'Food', 'Drink', 'OtherPROD'],
-     'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease']
-}
+coarse_to_fine = args['coarse_to_fine_dict']
 
 def get_all_fine_grained_labels():
     ret = []

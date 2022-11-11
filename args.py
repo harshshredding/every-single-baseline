@@ -100,7 +100,15 @@ elif curr_dataset == Dataset.multiconer:
         "model_name": "JustBert3Classes",
         "optimizer": "Adam",
         "learning_rate": 1e-5,
-        "dataset_name": "multiconer"
+        "dataset_name": "multiconer",
+        "coarse_to_fine_dict": {
+            'Coarse_Location':['Facility', 'OtherLOC', 'HumanSettlement', 'Station'],
+            'Coarse_Creative_Work': ['VisualWork', 'MusicalWork', 'WrittenWork', 'ArtWork', 'Software', 'OtherCW'],
+            'Coarse_Group': ['MusicalGRP', 'PublicCorp', 'PrivateCorp', 'OtherCorp', 'AerospaceManufacturer', 'SportsGRP', 'CarManufacturer', 'TechCorp', 'ORG'],
+            'Coarse_Person': ['Scientist', 'Artist', 'Athlete', 'Politician', 'Cleric', 'SportsManager', 'OtherPER'],
+            'Coarse_Product': ['Clothing', 'Vehicle', 'Food', 'Drink', 'OtherPROD'],
+            'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease']
+        }
     }
 else:
     raise Exception(f'Dataset {curr_dataset} is not supported')

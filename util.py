@@ -8,12 +8,9 @@ from typing import Dict, List
 import json
 import os
 import pandas as pd
-import torch.nn as nn
 import torch
 from read_gate_output import *
 import pandas as pd
-from torch import Tensor
-import math
 
 def read_umls_file(umls_file_path):
     umls_embedding_dict = {}
@@ -159,8 +156,8 @@ def create_gate_file(file_name_without_extension, sample_to_token_data: Dict[str
         sample_data = sample_to_token_data[sample_id]
         sample_text = ' '.join(get_token_strings(sample_data)) + '\n'
         all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,
-                           anno.label_type, {}) for anno in gold_annos])
-        all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,'Span', {}) for anno in gold_annos])
+                           anno.label_type, anno.features) for anno in gold_annos])
+        all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,'Span', anno.features) for anno in gold_annos])
         document_text += sample_text
         curr_sample_offset += len(sample_text)
         sample_end_offset = curr_sample_offset
@@ -480,6 +477,17 @@ def get_tweet_data(folder_path):
         twitter_id = filename[:-4]
         id_to_data[twitter_id] = data
     return id_to_data
+
+
+def get_mistakes_annos(mistakes_file_path):
+    df = pd.read_csv(mistakes_file_path, sep='\t')
+    sample_to_annos = {}
+    for _, row in df.iterrows():
+        annos_list = sample_to_annos.get(str(row['sample_id']), [])
+        annos_list.append(Anno(row['begin'], row['end'], row['mistake_type'], row['extraction'], {"type":row['type']}))
+        sample_to_annos[str(row['sample_id'])] = annos_list
+    return sample_to_annos
+
 
 def get_train_annos_dict() -> Dict[str, List[Anno]]:
     if curr_dataset == Dataset.social_dis_ner:

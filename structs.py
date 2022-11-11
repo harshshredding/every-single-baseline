@@ -1,5 +1,5 @@
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 OUTSIDE_LABEL_STRING = 'o'
 
 
@@ -59,6 +59,7 @@ class Anno:
     end_offset: int
     label_type: str
     extraction: str
+    features: dict = field(default_factory=dict)
 
 
 @dataclass
