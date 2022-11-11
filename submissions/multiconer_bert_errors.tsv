@@ -1,0 +1,1505 @@
+sample_id	begin	end	type	extraction	mistake_type
+5239d808-f300-46ea-aa3b-5093040213a3	54	75	PrivateCorp	eli lilly and company	FP
+5239d808-f300-46ea-aa3b-5093040213a3	54	75	PublicCorp	eli lilly and company	FN
+7051b30d-a8e5-4bc3-a83a-eacc863f94d0	34	43	ArtWork	sir frank	FP
+7051b30d-a8e5-4bc3-a83a-eacc863f94d0	34	49	OtherPER	sir frank kitto	FN
+4a525944-075f-4a72-9316-50450efac65d	136	151	Scientist	paul feyerabend	FP
+4a525944-075f-4a72-9316-50450efac65d	120	126	Scientist	thomas	FP
+4a525944-075f-4a72-9316-50450efac65d	136	151	OtherPER	paul feyerabend	FN
+4a525944-075f-4a72-9316-50450efac65d	120	131	Scientist	thomas kuhn	FN
+f909377b-99fb-409f-ac1a-29c2899a00c5	25	34	Cleric	charles v	FP
+f909377b-99fb-409f-ac1a-29c2899a00c5	25	34	OtherPER	charles v	FN
+1c5211ba-b3c9-45f2-a668-75845f812a7d	18	29	PrivateCorp	deal hudson	FP
+1c5211ba-b3c9-45f2-a668-75845f812a7d	18	29	OtherPER	deal hudson	FN
+8a8e516d-e4ba-42e3-bf62-f2994db69d55	25	42	Artist	daisuke sakaguchi	FP
+8a8e516d-e4ba-42e3-bf62-f2994db69d55	25	42	OtherPER	daisuke sakaguchi	FN
+6e042053-bd75-48e4-a0f8-031eac75b135	24	37	Athlete	thales leites	FP
+6e042053-bd75-48e4-a0f8-031eac75b135	48	60	Athlete	jesse taylor	FP
+6e042053-bd75-48e4-a0f8-031eac75b135	24	37	OtherPER	thales leites	FN
+6e042053-bd75-48e4-a0f8-031eac75b135	48	60	OtherPER	jesse taylor	FN
+106b7248-4e99-4da6-b699-e63ef7b75aca	45	51	OtherPER	xerxes	FP
+106b7248-4e99-4da6-b699-e63ef7b75aca	40	51	OtherPER	king xerxes	FN
+878ab1a2-1a2c-4c03-95d1-a837c685c011	55	60	Artist	juraj	FP
+878ab1a2-1a2c-4c03-95d1-a837c685c011	68	84	Cleric	miklós istvánffy	FP
+878ab1a2-1a2c-4c03-95d1-a837c685c011	55	67	OtherPER	juraj ratkaj	FN
+878ab1a2-1a2c-4c03-95d1-a837c685c011	68	84	Politician	miklós istvánffy	FN
+9e213130-60eb-478f-a855-8da0ee1dc4b2	18	39	PrivateCorp	counter-revolutionary	FP
+9e213130-60eb-478f-a855-8da0ee1dc4b2	18	39	OtherPER	counter-revolutionary	FN
+7a74f51c-9ff5-4525-a1d0-5e8ddb02bd48	82	92	PrivateCorp	rees jones	FP
+7a74f51c-9ff5-4525-a1d0-5e8ddb02bd48	82	92	OtherPER	rees jones	FN
+1dfcbf1a-9967-40fa-92d0-e1da21c1f2a6	33	60	Cleric	jean-henri-nicolas bouillet	FP
+1dfcbf1a-9967-40fa-92d0-e1da21c1f2a6	18	32	Artist	encyclopédiste	FN
+1dfcbf1a-9967-40fa-92d0-e1da21c1f2a6	33	60	OtherPER	jean-henri-nicolas bouillet	FN
+4f9dbf6a-3afd-4ee5-8fdd-5f11e1bf35e1	20	24	WrittenWork	1762	FP
+4f9dbf6a-3afd-4ee5-8fdd-5f11e1bf35e1	4	14	OtherPROD	pipe organ	FN
+96b5b8ee-1593-4b13-b01a-cd687f46604d	56	60	SportsManager	alan	FP
+96b5b8ee-1593-4b13-b01a-cd687f46604d	56	68	OtherPER	alan r. lynn	FN
+48b97cce-5a54-492c-9e15-b541d5565f5d	66	71	PrivateCorp	pugin	FP
+48b97cce-5a54-492c-9e15-b541d5565f5d	66	71	Artist	pugin	FN
+d2db1d10-d364-4738-9188-fbb74f9bf16c	17	20	PublicCorp	vis	FP
+d2db1d10-d364-4738-9188-fbb74f9bf16c	37	43	Athlete	georgi	FP
+d2db1d10-d364-4738-9188-fbb74f9bf16c	17	20	ORG	vis	FN
+d2db1d10-d364-4738-9188-fbb74f9bf16c	37	49	OtherPER	georgi iliev	FN
+c600dcd3-4f5d-4a66-9126-a0146eb4f296	53	58	PrivateCorp	fraud	FP
+3fb7823f-2b83-4544-b820-eae5d090e167	29	40	PrivateCorp	w. h. weeks	FP
+3fb7823f-2b83-4544-b820-eae5d090e167	29	40	OtherPER	w. h. weeks	FN
+bb478bfb-3271-49eb-80b6-6cf4797a89c5	24	37	Athlete	sete gibernau	FP
+bb478bfb-3271-49eb-80b6-6cf4797a89c5	15	21	Athlete	biaggi	FP
+bb478bfb-3271-49eb-80b6-6cf4797a89c5	24	37	OtherPER	sete gibernau	FN
+bb478bfb-3271-49eb-80b6-6cf4797a89c5	15	21	OtherPER	biaggi	FN
+d132a50e-4b66-4914-bac1-3a559e60c2ed	0	14	Cleric	edwin borchard	FP
+d132a50e-4b66-4914-bac1-3a559e60c2ed	0	14	OtherPER	edwin borchard	FN
+df0520ff-8cc0-46b8-8ca4-f9fe211337e8	58	70	Cleric	samuel tudor	FP
+df0520ff-8cc0-46b8-8ca4-f9fe211337e8	58	70	OtherPER	samuel tudor	FN
+bff3fe01-6d2e-4b64-99b8-a1ede99a25ee	26	43	Artist	alfred john keene	FP
+bff3fe01-6d2e-4b64-99b8-a1ede99a25ee	26	43	OtherPER	alfred john keene	FN
+b245d698-d17e-47c3-b915-967490c7b649	53	60	HumanSettlement	ayodhyā	FP
+42a4f9a1-5a00-4494-ab15-f8e17b4e14e5	0	6	OtherPER	phoebe	FP
+42a4f9a1-5a00-4494-ab15-f8e17b4e14e5	48	65	ORG	women 's suffrage	FP
+42a4f9a1-5a00-4494-ab15-f8e17b4e14e5	0	14	OtherPER	phoebe couzins	FN
+57f0aa58-484d-41d4-853d-70962ca5fb3a	10	23	Cleric	rolf jacobsen	FP
+57f0aa58-484d-41d4-853d-70962ca5fb3a	10	23	OtherPER	rolf jacobsen	FN
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	102	115	OtherPER	agnes garrett	FP
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	29	36	SportsManager	frances	FP
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	66	73	PublicCorp	mclaren	FP
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	74	89	OtherPER	lilias ashworth	FP
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	43	48	ORG	cobbe	FP
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	49	65	OtherPER	priscilla bright	FP
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	29	48	Artist	frances power cobbe	FN
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	49	73	OtherPER	priscilla bright mclaren	FN
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	74	97	OtherPER	lilias ashworth hallett	FN
+dc6c6d00-daf8-454b-9d4f-f5e36f223365	102	115	Artist	agnes garrett	FN
+cee0de59-b071-4c08-9136-f2d76fd7edc7	26	49	OtherPER	count francesco baracca	FP
+cee0de59-b071-4c08-9136-f2d76fd7edc7	58	68	OtherPROD	spad s.vii	FN
+cee0de59-b071-4c08-9136-f2d76fd7edc7	32	49	OtherPER	francesco baracca	FN
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	23	28	HumanSettlement	greek	FP
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	102	118	Cleric	helena schilizzi	FP
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	44	55	Politician	eleftherios	FP
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	102	118	OtherPER	helena schilizzi	FN
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	44	65	Politician	eleftherios venizelos	FN
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	23	43	ORG	greek prime minister	FN
+afa3a493-02a6-48b7-b910-1f728a6b66a4	23	35	Athlete	joe mcdonagh	FP
+afa3a493-02a6-48b7-b910-1f728a6b66a4	23	35	OtherPER	joe mcdonagh	FN
+05f3ba24-9af4-47c3-9c01-bb60acd56ff3	26	43	PrivateCorp	m. s. viswanathan	FP
+05f3ba24-9af4-47c3-9c01-bb60acd56ff3	26	43	Artist	m. s. viswanathan	FN
+91fcefb0-eb13-4144-aad9-8a2c0a9b9a7b	21	26	PrivateCorp	pooja	FP
+91fcefb0-eb13-4144-aad9-8a2c0a9b9a7b	21	26	Artist	pooja	FN
+91fcefb0-eb13-4144-aad9-8a2c0a9b9a7b	0	6	Artist	narain	FN
+a8deeb02-1b9b-4f9e-9dc7-c125915e4975	38	45	PrivateCorp	sinatra	FP
+a8deeb02-1b9b-4f9e-9dc7-c125915e4975	38	45	Artist	sinatra	FN
+057340b2-f3e5-4fd1-ba43-f84d968d4555	63	72	PrivateCorp	tech n9ne	FP
+057340b2-f3e5-4fd1-ba43-f84d968d4555	40	52	MusicalWork	studio album	FP
+057340b2-f3e5-4fd1-ba43-f84d968d4555	63	72	Artist	tech n9ne	FN
+10910706-9e59-467c-8239-f1faf3b43506	16	22	OtherPER	mark d	FP
+10910706-9e59-467c-8239-f1faf3b43506	16	22	Artist	mark d	FN
+cfc0eacd-bd59-4d25-8bcb-e9d49628fd64	83	100	OtherPER	jeff swampy marsh	FP
+cfc0eacd-bd59-4d25-8bcb-e9d49628fd64	65	68	OtherPER	dan	FP
+cfc0eacd-bd59-4d25-8bcb-e9d49628fd64	83	100	Artist	jeff swampy marsh	FN
+cfc0eacd-bd59-4d25-8bcb-e9d49628fd64	65	78	Artist	dan povenmire	FN
+4900388d-781a-4d34-815e-96e11175a76a	59	76	Politician	dinesh subasinghe	FP
+4900388d-781a-4d34-815e-96e11175a76a	59	76	Artist	dinesh subasinghe	FN
+f6e82bd1-2763-41a9-90a8-776f2a7c9c2d	13	28	PrivateCorp	missing persons	FP
+f6e82bd1-2763-41a9-90a8-776f2a7c9c2d	13	28	MusicalGRP	missing persons	FN
+2449de42-95a2-467f-b86b-ae279f8b5744	31	45	OtherPER	erving goffman	FP
+2449de42-95a2-467f-b86b-ae279f8b5744	31	45	Artist	erving goffman	FN
+2449de42-95a2-467f-b86b-ae279f8b5744	57	98	WrittenWork	the presentation of self in everyday life	FN
+b49ddb42-8da8-41d4-a5ae-92f533284169	40	58	OtherPER	widukind of corvey	FP
+b49ddb42-8da8-41d4-a5ae-92f533284169	63	79	OtherPER	wipo of burgundy	FP
+b49ddb42-8da8-41d4-a5ae-92f533284169	63	79	Cleric	wipo of burgundy	FN
+b49ddb42-8da8-41d4-a5ae-92f533284169	40	58	Artist	widukind of corvey	FN
+26e402f1-b109-4b23-b31d-550ccbf5f175	43	50	MusicalGRP	beyoncé	FP
+26e402f1-b109-4b23-b31d-550ccbf5f175	43	50	Artist	beyoncé	FN
+f5458a3a-cd23-4df4-8384-4e23fe33a66b	32	42	Artist	billy rose	FP
+f5458a3a-cd23-4df4-8384-4e23fe33a66b	32	51	MusicalWork	billy rose 's jumbo	FN
+03b0282c-8ac3-429e-82f7-bc74edf5dea3	73	86	OtherPER	grigore vieru	FP
+03b0282c-8ac3-429e-82f7-bc74edf5dea3	7	12	ArtWork	opera	FP
+03b0282c-8ac3-429e-82f7-bc74edf5dea3	7	12	MusicalWork	opera	FN
+03b0282c-8ac3-429e-82f7-bc74edf5dea3	73	86	Artist	grigore vieru	FN
+24e385d7-d28e-43d1-ba9f-8ab325cdcf06	0	24	OtherPER	william john fitzpatrick	FP
+24e385d7-d28e-43d1-ba9f-8ab325cdcf06	0	24	Artist	william john fitzpatrick	FN
+e1cac655-016f-41b1-9542-a5927e3179eb	20	44	OtherPER	william chapman hewitson	FP
+e1cac655-016f-41b1-9542-a5927e3179eb	20	44	Artist	william chapman hewitson	FN
+abe88c47-78b4-425f-a13d-4eba74a1c4f1	16	28	PrivateCorp	studio album	FP
+c30fc1fc-db6a-461e-b37d-28aa486fdf0b	98	103	PrivateCorp	skids	FP
+c30fc1fc-db6a-461e-b37d-28aa486fdf0b	98	103	MusicalGRP	skids	FN
+099561b8-729b-4173-94d3-ecd939cf43e1	59	63	VisualWork	days	FP
+099561b8-729b-4173-94d3-ecd939cf43e1	59	74	VisualWork	days of eclipse	FN
+fbf47f0b-919e-4eb6-84db-3d310dbcd7e7	70	94	WrittenWork	who killed these girls ?	FP
+31960196-2eb9-4d0f-a7e8-35a7b66d143f	55	64	PrivateCorp	morrissey	FP
+31960196-2eb9-4d0f-a7e8-35a7b66d143f	55	64	Artist	morrissey	FN
+e29a480f-088d-49b7-838a-c5b994f71db4	0	10	MusicalWork	une petite	FP
+1b1f916e-7b47-4ddf-a395-42efe27e8969	0	6	Artist	gordon	FP
+1b1f916e-7b47-4ddf-a395-42efe27e8969	0	11	Artist	gordon hunt	FN
+e1d61525-23ad-477f-b463-722579bb009b	53	67	OtherPER	dallas willard	FP
+e1d61525-23ad-477f-b463-722579bb009b	53	67	Artist	dallas willard	FN
+329897d1-f7a7-4a4d-96b0-ca4b40414984	0	11	OtherPER	jon stewart	FP
+329897d1-f7a7-4a4d-96b0-ca4b40414984	15	29	WrittenWork	the daily show	FP
+329897d1-f7a7-4a4d-96b0-ca4b40414984	38	50	PrivateCorp	moveon . org	FP
+329897d1-f7a7-4a4d-96b0-ca4b40414984	0	11	Artist	jon stewart	FN
+329897d1-f7a7-4a4d-96b0-ca4b40414984	15	29	VisualWork	the daily show	FN
+1b472f59-5a0a-4b29-9473-d8f30c3a6397	21	37	ArtWork	five easy pieces	FP
+1b472f59-5a0a-4b29-9473-d8f30c3a6397	21	37	VisualWork	five easy pieces	FN
+b9b74c87-e812-4d55-93fb-e20feb9b7625	38	42	ArtWork	bent	FP
+b9b74c87-e812-4d55-93fb-e20feb9b7625	38	42	WrittenWork	bent	FN
+1857586a-fa31-4c07-ae5c-d6021c0a59b0	58	64	Athlete	norman	FP
+1857586a-fa31-4c07-ae5c-d6021c0a59b0	58	69	Artist	norman fell	FN
+ee08e42d-8142-4311-b65b-0b35953a36b6	33	44	PrivateCorp	t. muthuraj	FP
+ee08e42d-8142-4311-b65b-0b35953a36b6	33	44	Artist	t. muthuraj	FN
+a5506188-ef7c-486e-b1ca-e8390f83faa0	0	18	OtherPER	isaac ibn al-ahdab	FP
+a5506188-ef7c-486e-b1ca-e8390f83faa0	0	18	Artist	isaac ibn al-ahdab	FN
+6c260629-7555-4638-aca3-b0a8e5755807	68	82	Artist	ron bumblefoot	FP
+6c260629-7555-4638-aca3-b0a8e5755807	83	87	Artist	thal	FP
+6c260629-7555-4638-aca3-b0a8e5755807	44	57	PrivateCorp	guns n' roses	FP
+6c260629-7555-4638-aca3-b0a8e5755807	68	87	Artist	ron bumblefoot thal	FN
+6c260629-7555-4638-aca3-b0a8e5755807	44	57	MusicalGRP	guns n' roses	FN
+250a6d3b-f385-42ce-a423-0f1ade18572c	0	5	PrivateCorp	rakim	FP
+250a6d3b-f385-42ce-a423-0f1ade18572c	0	11	Artist	rakim allen	FN
+6e8661d5-6ace-49f0-9941-f04c83eb6603	0	19	OtherPER	m. e. clifton james	FP
+6e8661d5-6ace-49f0-9941-f04c83eb6603	0	19	Artist	m. e. clifton james	FN
+b96563cc-3e5b-401d-b295-e83c27b140d7	0	19	OtherPER	adolf bernhard marx	FP
+b96563cc-3e5b-401d-b295-e83c27b140d7	0	19	Artist	adolf bernhard marx	FN
+b68262fe-8076-4493-8242-6f2b149e5b63	46	59	PrivateCorp	fender rhodes	FP
+b68262fe-8076-4493-8242-6f2b149e5b63	46	59	OtherPROD	fender rhodes	FN
+7e12f84c-5a72-4617-921d-25ae239b0b13	48	61	MusicalGRP	airto moreira	FP
+7e12f84c-5a72-4617-921d-25ae239b0b13	77	91	MusicalGRP	string quartet	FP
+7e12f84c-5a72-4617-921d-25ae239b0b13	48	61	Artist	airto moreira	FN
+1436be45-bf01-4c6d-a8ad-6041e3101b7c	24	44	Politician	soundarya rajnikanth	FP
+1436be45-bf01-4c6d-a8ad-6041e3101b7c	24	44	Artist	soundarya rajnikanth	FN
+0f1dad5f-0fd3-465e-b7cc-5662349793b5	54	68	ArtWork	the snow queen	FP
+0f1dad5f-0fd3-465e-b7cc-5662349793b5	54	68	WrittenWork	the snow queen	FN
+83bde8c6-d22f-42d4-a8f2-50700f7a0252	7	10	PrivateCorp	the	FP
+83bde8c6-d22f-42d4-a8f2-50700f7a0252	7	32	VisualWork	the man who fell to earth	FN
+ce6afe1e-2cb9-45dd-9371-b5589b2d7a88	12	24	OtherPER	bryan talbot	FP
+ce6afe1e-2cb9-45dd-9371-b5589b2d7a88	12	24	Artist	bryan talbot	FN
+acd2582a-7996-48a8-aa0f-3817755a0fc7	54	60	Artist	gaétan	FP
+acd2582a-7996-48a8-aa0f-3817755a0fc7	54	68	Artist	gaétan vestris	FN
+fb75adb4-7bd6-40f0-b736-6af8d60429ac	25	34	OtherPER	kat von d	FP
+fb75adb4-7bd6-40f0-b736-6af8d60429ac	25	34	Artist	kat von d	FN
+31b9a8a6-fbf9-419b-b350-7032f70e50c6	0	4	ArtWork	when	FP
+31b9a8a6-fbf9-419b-b350-7032f70e50c6	0	27	MusicalWork	when i paint my masterpiece	FN
+4284f2a9-3531-4871-9df7-f3a2b96fffbb	44	57	VisualWork	fourth series	FP
+4284f2a9-3531-4871-9df7-f3a2b96fffbb	20	34	Athlete	julia mckenzie	FP
+4284f2a9-3531-4871-9df7-f3a2b96fffbb	20	34	Artist	julia mckenzie	FN
+9d53b339-54b4-479a-a006-b442d5f8fae4	0	17	PrivateCorp	banks of the ohio	FP
+9d53b339-54b4-479a-a006-b442d5f8fae4	0	17	MusicalWork	banks of the ohio	FN
+9d53b339-54b4-479a-a006-b442d5f8fae4	32	43	Artist	bruce welch	FN
+96a88073-38cd-46cb-a8f8-ad629ce58aab	33	50	Scientist	tetsuya mizuguchi	FP
+96a88073-38cd-46cb-a8f8-ad629ce58aab	60	74	Software	lumines live !	FP
+96a88073-38cd-46cb-a8f8-ad629ce58aab	33	50	Artist	tetsuya mizuguchi	FN
+047475e4-4e22-40f2-a68a-d05c3825fd22	29	37	ORG	polymath	FP
+047475e4-4e22-40f2-a68a-d05c3825fd22	50	67	Cleric	franz oppenheimer	FP
+047475e4-4e22-40f2-a68a-d05c3825fd22	50	67	Artist	franz oppenheimer	FN
+5b94ed32-46be-4e82-b956-dfafd280c165	51	60	HumanSettlement	st. louis	FP
+5b94ed32-46be-4e82-b956-dfafd280c165	40	47	VisualWork	meet me	FP
+5b94ed32-46be-4e82-b956-dfafd280c165	40	60	VisualWork	meet me in st. louis	FN
+c03dd146-d494-4413-bac2-27c118c9aba1	67	72	PrivateCorp	nagma	FP
+c03dd146-d494-4413-bac2-27c118c9aba1	67	72	Artist	nagma	FN
+ae7d9b7b-7033-4996-af6e-6745ef3acfbd	57	75	OtherPER	queen elizabeth ii	FP
+ae7d9b7b-7033-4996-af6e-6745ef3acfbd	57	75	Artist	queen elizabeth ii	FN
+640554e1-e480-4a47-85f5-ad587c7138bc	88	99	OtherPER	john sladek	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	62	64	Artist	p.	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	55	61	OtherPER	hayden	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	17	39	OtherPER	patrick nielsen hayden	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	40	54	OtherPER	teresa nielsen	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	17	39	Artist	patrick nielsen hayden	FN
+640554e1-e480-4a47-85f5-ad587c7138bc	62	75	Artist	p. c. hodgell	FN
+640554e1-e480-4a47-85f5-ad587c7138bc	88	99	Artist	john sladek	FN
+640554e1-e480-4a47-85f5-ad587c7138bc	40	61	Artist	teresa nielsen hayden	FN
+eaa5e25e-bdfd-48a6-821f-8160a8863f28	27	42	PrivateCorp	cincinnati reds	FP
+eaa5e25e-bdfd-48a6-821f-8160a8863f28	27	42	SportsGRP	cincinnati reds	FN
+dcaa5c6e-25d0-4949-8879-f4458604521b	0	5	PrivateCorp	spain	FP
+dcaa5c6e-25d0-4949-8879-f4458604521b	0	5	SportsGRP	spain	FN
+77c496e3-9324-4f3f-891f-fdfb19d83133	20	47	SportsGRP	sc dhfk leipzig sports club	FP
+77c496e3-9324-4f3f-891f-fdfb19d83133	20	35	SportsGRP	sc dhfk leipzig	FN
+5833c526-b14c-451c-984e-42a1d372f1e0	39	42	PrivateCorp	byu	FP
+5833c526-b14c-451c-984e-42a1d372f1e0	39	50	SportsGRP	byu cougars	FN
+848702ca-b0cf-4c93-be7d-3758b8504f77	31	37	SportsGRP	league	FP
+848702ca-b0cf-4c93-be7d-3758b8504f77	54	66	ORG	parent clubs	FP
+848702ca-b0cf-4c93-be7d-3758b8504f77	0	13	SportsGRP	reserve teams	FN
+9e436720-af11-4b9a-8e95-e3e2159ac204	75	80	PrivateCorp	valur	FP
+9e436720-af11-4b9a-8e95-e3e2159ac204	75	80	SportsGRP	valur	FN
+c2054b73-7f57-40f0-94b2-e1aa8bc35d43	4	11	SportsGRP	seattle	FP
+c2054b73-7f57-40f0-94b2-e1aa8bc35d43	4	20	SportsGRP	seattle seahawks	FN
+e5a2e8ea-deb9-478e-a167-5b8b9809e156	15	30	PrivateCorp	gloucestershire	FP
+e5a2e8ea-deb9-478e-a167-5b8b9809e156	15	30	SportsGRP	gloucestershire	FN
+420eb148-2c53-46da-ba09-e83dcafb4285	35	51	PrivateCorp	cleveland browns	FP
+420eb148-2c53-46da-ba09-e83dcafb4285	35	51	SportsGRP	cleveland browns	FN
+ed07a6e1-8dc2-4629-8076-79c9aa56c45b	37	45	HumanSettlement	slovenia	FP
+ed07a6e1-8dc2-4629-8076-79c9aa56c45b	37	45	SportsGRP	slovenia	FN
+e4dbb594-d012-4bcf-808a-0b0036a339c2	40	57	PrivateCorp	nc state wolfpack	FP
+e4dbb594-d012-4bcf-808a-0b0036a339c2	40	57	SportsGRP	nc state wolfpack	FN
+b9ea17b7-a454-499e-97c4-d65a01db9c5f	26	59	PrivateCorp	stade français sports association	FP
+b9ea17b7-a454-499e-97c4-d65a01db9c5f	26	40	SportsGRP	stade français	FN
+0eed579e-df23-467e-be79-fc7abe576f49	22	40	PrivateCorp	peterborough petes	FP
+0eed579e-df23-467e-be79-fc7abe576f49	22	40	SportsGRP	peterborough petes	FN
+d08df8aa-6be9-4aef-9760-9a454ee42a76	74	82	PrivateCorp	kilkenny	FP
+d08df8aa-6be9-4aef-9760-9a454ee42a76	74	82	SportsGRP	kilkenny	FN
+48f2a5f2-5273-4087-9302-32302cb3e847	60	80	SportsGRP	1928–29 ashes series	FN
+b4fe920f-ee2b-465b-a14c-84325b1d9193	47	60	PrivateCorp	buffalo bills	FP
+b4fe920f-ee2b-465b-a14c-84325b1d9193	47	60	SportsGRP	buffalo bills	FN
+d95962c0-23bc-4fc5-a289-e44aaea466cd	19	32	PrivateCorp	national team	FP
+d95962c0-23bc-4fc5-a289-e44aaea466cd	19	32	SportsGRP	national team	FN
+b1e73c72-10dc-44a6-ba73-394d8a35e287	47	60	PrivateCorp	reserve teams	FP
+b1e73c72-10dc-44a6-ba73-394d8a35e287	47	60	SportsGRP	reserve teams	FN
+8b1c6a26-a1a9-4804-9c59-c2da470897b2	53	66	PrivateCorp	south dragons	FP
+8b1c6a26-a1a9-4804-9c59-c2da470897b2	53	66	SportsGRP	south dragons	FN
+4ad60642-8526-49f3-8bc3-ee568453c6e0	56	71	Athlete	fernando alonso	FP
+4ad60642-8526-49f3-8bc3-ee568453c6e0	45	52	CarManufacturer	ferrari	FP
+4ad60642-8526-49f3-8bc3-ee568453c6e0	45	52	SportsGRP	ferrari	FN
+4ad60642-8526-49f3-8bc3-ee568453c6e0	56	71	OtherPER	fernando alonso	FN
+53921ffb-9300-459f-aa94-c8894759a6f9	26	56	PrivateCorp	pakistan national cricket team	FP
+53921ffb-9300-459f-aa94-c8894759a6f9	26	56	SportsGRP	pakistan national cricket team	FN
+52d0849a-f858-40b4-9f2c-6fb90af818a2	26	47	PrivateCorp	philadelphia phillies	FP
+52d0849a-f858-40b4-9f2c-6fb90af818a2	26	47	SportsGRP	philadelphia phillies	FN
+909bf8d9-b283-484e-be25-2568895fc5ec	56	64	OtherPER	herodias	FP
+909bf8d9-b283-484e-be25-2568895fc5ec	32	38	OtherPER	salome	FP
+909bf8d9-b283-484e-be25-2568895fc5ec	32	38	Artist	salome	FN
+909bf8d9-b283-484e-be25-2568895fc5ec	56	64	Politician	herodias	FN
+299be816-9287-4218-9500-5a8c553d2a11	18	32	Athlete	shingo kunieda	FP
+299be816-9287-4218-9500-5a8c553d2a11	42	57	Athlete	robin ammerlaan	FP
+299be816-9287-4218-9500-5a8c553d2a11	0	15	Athlete	stéphane houdet	FP
+299be816-9287-4218-9500-5a8c553d2a11	60	73	Athlete	stefan olsson	FP
+299be816-9287-4218-9500-5a8c553d2a11	18	32	Artist	shingo kunieda	FN
+299be816-9287-4218-9500-5a8c553d2a11	42	57	OtherPER	robin ammerlaan	FN
+299be816-9287-4218-9500-5a8c553d2a11	0	15	OtherPER	stéphane houdet	FN
+299be816-9287-4218-9500-5a8c553d2a11	60	73	OtherPER	stefan olsson	FN
+daee421d-fe95-4377-a76e-de7b4aaead32	94	106	Athlete	martin adams	FP
+daee421d-fe95-4377-a76e-de7b4aaead32	78	89	Athlete	chris mason	FP
+daee421d-fe95-4377-a76e-de7b4aaead32	94	106	OtherPER	martin adams	FN
+daee421d-fe95-4377-a76e-de7b4aaead32	78	89	OtherPER	chris mason	FN
+79e1428d-b835-4ae2-8395-5b21841d54bf	27	38	Athlete	wayne jones	FP
+79e1428d-b835-4ae2-8395-5b21841d54bf	27	38	OtherPER	wayne jones	FN
+2dabe38a-0044-49d8-b1d9-b4dba3ba3ff3	88	100	Athlete	reanne evans	FP
+2dabe38a-0044-49d8-b1d9-b4dba3ba3ff3	88	100	OtherPER	reanne evans	FN
+ff78d936-c31b-44a7-b9e6-0d6da85e9a18	87	101	Athlete	stephen hendry	FP
+ff78d936-c31b-44a7-b9e6-0d6da85e9a18	87	101	OtherPER	stephen hendry	FN
+ea7ebdc5-d59b-439a-8c81-2a13d0a28879	24	34	Athlete	judd trump	FP
+ea7ebdc5-d59b-439a-8c81-2a13d0a28879	24	34	OtherPER	judd trump	FN
+e87ceedd-684a-40ae-a00e-2aa3f0334161	28	35	ArtWork	michael	FP
+e87ceedd-684a-40ae-a00e-2aa3f0334161	0	5	Athlete	marco	FN
+e87ceedd-684a-40ae-a00e-2aa3f0334161	28	35	OtherPER	michael	FN
+ebb37df6-20a7-434c-a98e-b51e57b1f879	28	34	Athlete	ronald	FP
+ebb37df6-20a7-434c-a98e-b51e57b1f879	28	42	Athlete	ronald de boer	FN
+70a83885-9d03-4dcd-b286-c20f1e1e52e3	42	54	PrivateCorp	appendectomy	FP
+af30caeb-6475-4c08-b360-3e7d0cb166e9	17	26	Athlete	shaquille	FP
+af30caeb-6475-4c08-b360-3e7d0cb166e9	17	34	Athlete	shaquille leonard	FN
+b47b494d-68a8-438c-8930-131663314e56	54	67	Artist	steven seagal	FP
+b47b494d-68a8-438c-8930-131663314e56	30	44	PrivateCorp	half past dead	FP
+b47b494d-68a8-438c-8930-131663314e56	54	67	Athlete	steven seagal	FN
+b47b494d-68a8-438c-8930-131663314e56	30	44	VisualWork	half past dead	FN
+b5797fa9-221a-41ee-a0e4-570f5cebf0c0	47	60	Artist	tobey maguire	FP
+b5797fa9-221a-41ee-a0e4-570f5cebf0c0	9	17	VisualWork	avi arad	FP
+b5797fa9-221a-41ee-a0e4-570f5cebf0c0	47	60	Athlete	tobey maguire	FN
+b5797fa9-221a-41ee-a0e4-570f5cebf0c0	9	17	Artist	avi arad	FN
+f9e01ded-a29e-45da-b280-8a4e73d2129c	0	14	SportsManager	mickey redmond	FP
+f9e01ded-a29e-45da-b280-8a4e73d2129c	0	14	Athlete	mickey redmond	FN
+cb388f0c-2542-4cac-85b4-da67b9d31fab	12	17	Athlete	raffi	FP
+cb388f0c-2542-4cac-85b4-da67b9d31fab	12	24	Athlete	raffi torres	FN
+8ecf89d9-75c3-40e0-940c-e9d74f46cb26	50	59	PrivateCorp	bruce pie	FP
+8ecf89d9-75c3-40e0-940c-e9d74f46cb26	50	59	Athlete	bruce pie	FN
+6c56d0b8-62d3-473b-b523-a3347369b794	79	93	Artist	julio iglesias	FP
+6c56d0b8-62d3-473b-b523-a3347369b794	79	93	Athlete	julio iglesias	FN
+88bffbac-edfa-46bf-b8d7-b6881f04c5a6	44	55	SportsManager	todd cooley	FP
+88bffbac-edfa-46bf-b8d7-b6881f04c5a6	44	55	Athlete	todd cooley	FN
+fd99b30e-9502-4287-b284-e54cc4fafb0c	0	13	SportsManager	sidney rivera	FP
+fd99b30e-9502-4287-b284-e54cc4fafb0c	0	13	Athlete	sidney rivera	FN
+44dc5a40-142f-4f0c-b2b4-8f78d1556262	50	63	PrivateCorp	arnold palmer	FP
+44dc5a40-142f-4f0c-b2b4-8f78d1556262	50	63	Athlete	arnold palmer	FN
+070871dc-ed3d-4bb7-bd52-45a5aa4a742a	59	73	Athlete	karen stupples	FP
+070871dc-ed3d-4bb7-bd52-45a5aa4a742a	59	73	OtherPER	karen stupples	FN
+2a2eab0a-2a03-43a5-825c-df91d30ceb05	51	66	Artist	bruce dickinson	FP
+2a2eab0a-2a03-43a5-825c-df91d30ceb05	51	66	Athlete	bruce dickinson	FN
+5dcef1cc-7a3f-4d93-b0de-69b92a70ac99	42	52	SportsManager	roy makaay	FP
+5dcef1cc-7a3f-4d93-b0de-69b92a70ac99	42	52	Athlete	roy makaay	FN
+cb73ff1e-25eb-42a9-8920-9a1a37959289	52	65	Artist	stephen crane	FP
+cb73ff1e-25eb-42a9-8920-9a1a37959289	70	84	Scientist	hamlin garland	FP
+cb73ff1e-25eb-42a9-8920-9a1a37959289	52	65	Athlete	stephen crane	FN
+cb73ff1e-25eb-42a9-8920-9a1a37959289	70	84	Artist	hamlin garland	FN
+badd8cf5-2443-4e67-be59-18e67e2c092c	0	14	ArtWork	the iron sheik	FP
+badd8cf5-2443-4e67-be59-18e67e2c092c	0	14	Athlete	the iron sheik	FN
+1b3cd535-c6cc-40b1-aee2-f4e89bc547f7	25	35	PrivateCorp	pokerstars	FP
+1b3cd535-c6cc-40b1-aee2-f4e89bc547f7	36	46	OtherPER	tom mcevoy	FP
+1b3cd535-c6cc-40b1-aee2-f4e89bc547f7	36	46	Athlete	tom mcevoy	FN
+1b3cd535-c6cc-40b1-aee2-f4e89bc547f7	25	35	ORG	pokerstars	FN
+0a180438-8787-45c9-8a0d-e74f2760f9a5	44	55	PrivateCorp	peter thiel	FP
+0a180438-8787-45c9-8a0d-e74f2760f9a5	44	55	Athlete	peter thiel	FN
+eb0f99e8-260a-4000-a0d6-e12f9df37455	23	33	Artist	lee janzen	FP
+eb0f99e8-260a-4000-a0d6-e12f9df37455	0	5	Athlete	ernie	FP
+eb0f99e8-260a-4000-a0d6-e12f9df37455	58	63	Athlete	corey	FP
+eb0f99e8-260a-4000-a0d6-e12f9df37455	23	33	Athlete	lee janzen	FN
+eb0f99e8-260a-4000-a0d6-e12f9df37455	0	9	Athlete	ernie els	FN
+eb0f99e8-260a-4000-a0d6-e12f9df37455	58	69	Athlete	corey pavin	FN
+3104bd17-8187-4d37-907a-20716d363ede	49	60	PrivateCorp	noam elkies	FP
+3104bd17-8187-4d37-907a-20716d363ede	30	44	AerospaceManufacturer	a. o. l. atkin	FP
+3104bd17-8187-4d37-907a-20716d363ede	30	44	OtherPER	a. o. l. atkin	FN
+3104bd17-8187-4d37-907a-20716d363ede	49	60	Athlete	noam elkies	FN
+b113a47d-397b-48ca-8b74-74a45b2da782	0	9	Cleric	blackjack	FP
+b113a47d-397b-48ca-8b74-74a45b2da782	0	18	Athlete	blackjack mulligan	FN
+34b1c509-7d57-46e4-837e-7e336d0d3a4f	51	53	Vehicle	c3	FP
+34b1c509-7d57-46e4-837e-7e336d0d3a4f	51	53	OtherPROD	c3	FN
+e35347e0-283b-4610-ae7b-093810f523b2	31	45	SportsManager	julien mertine	FP
+e35347e0-283b-4610-ae7b-093810f523b2	31	45	Athlete	julien mertine	FN
+2103b619-fb90-4287-84d9-a822cf981d88	117	127	ORG	red jersey	FP
+ae74ff54-99eb-4756-83fd-6fb62c0f7c8e	42	51	ORG	new party	FP
+ae74ff54-99eb-4756-83fd-6fb62c0f7c8e	52	58	PrivateCorp	nippon	FP
+ae74ff54-99eb-4756-83fd-6fb62c0f7c8e	42	58	ORG	new party nippon	FN
+3e80624b-c338-44fb-8534-9d0037985d44	21	25	Vehicle	jeep	FP
+3e80624b-c338-44fb-8534-9d0037985d44	21	25	ORG	jeep	FN
+72cfe593-5e10-4c60-a3e1-12d86d0db4ee	90	93	PrivateCorp	fbi	FP
+72cfe593-5e10-4c60-a3e1-12d86d0db4ee	90	93	ORG	fbi	FN
+d75bbb3a-bd76-494b-9bd6-b4eda81a73a7	48	65	PrivateCorp	columbia pictures	FP
+d75bbb3a-bd76-494b-9bd6-b4eda81a73a7	48	65	ORG	columbia pictures	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	22	27	Vehicle	jd(s)	FP
+51a2b74b-2645-4b83-82be-0ba3bcac0181	0	3	HumanSettlement	bjp	FP
+51a2b74b-2645-4b83-82be-0ba3bcac0181	0	3	ORG	bjp	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	22	27	ORG	jd(s)	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	9	17	ORG	congress	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	32	43	ORG	independent	FN
+6880f00c-59ea-4096-83a4-f2b3d1caa263	48	70	PrivateCorp	australian labor party	FP
+6880f00c-59ea-4096-83a4-f2b3d1caa263	48	70	ORG	australian labor party	FN
+c91ce3e6-4c17-4b0a-a4dd-96f64093249a	38	50	PrivateCorp	ku klux klan	FP
+c91ce3e6-4c17-4b0a-a4dd-96f64093249a	38	50	ORG	ku klux klan	FN
+97cf87b7-d5b1-4d08-9183-9786645af3f0	77	82	Facility	tower	FP
+1c6f5eeb-19fc-4e1d-8e22-7379e311920b	12	25	PrivateCorp	global greens	FP
+1c6f5eeb-19fc-4e1d-8e22-7379e311920b	12	25	ORG	global greens	FN
+d98f75ef-5a56-49f5-a048-7d2a764147ee	10	22	Cleric	rebecca otto	FP
+d98f75ef-5a56-49f5-a048-7d2a764147ee	10	22	Politician	rebecca otto	FN
+90a2d648-5554-4c69-aabb-c7b71dbab975	8	51	PrivateCorp	child and adolescent mental health services	FP
+90a2d648-5554-4c69-aabb-c7b71dbab975	8	51	ORG	child and adolescent mental health services	FN
+45dd4223-a7f8-4d40-a0a1-17d7967739ec	88	95	ORG	parties	FP
+e4aed4c4-bb03-436e-a4e5-5fef9b8256c9	71	84	PrivateCorp	marvel comics	FP
+e4aed4c4-bb03-436e-a4e5-5fef9b8256c9	71	84	ORG	marvel comics	FN
+c0d08f1f-cfd2-4608-a164-c562e980d008	26	44	PrivateCorp	victoria 's secret	FP
+c0d08f1f-cfd2-4608-a164-c562e980d008	26	44	ORG	victoria 's secret	FN
+0b4ab174-8a6e-46e5-9108-ffb59a4d2017	42	62	PrivateCorp	jehovah 's witnesses	FP
+0b4ab174-8a6e-46e5-9108-ffb59a4d2017	42	62	ORG	jehovah 's witnesses	FN
+ebc59b58-c742-45c5-aff2-f00177629ede	66	89	PrivateCorp	hokkaido takushoku bank	FP
+ebc59b58-c742-45c5-aff2-f00177629ede	66	89	ORG	hokkaido takushoku bank	FN
+b9318741-0d42-4fd3-952b-0257e5e764b6	0	5	PrivateCorp	kiswe	FP
+b9318741-0d42-4fd3-952b-0257e5e764b6	11	18	ORG	startup	FP
+b9318741-0d42-4fd3-952b-0257e5e764b6	11	26	ORG	startup company	FN
+f94cbf1e-dd85-4da9-b0ed-c6ba510408eb	80	133	PrivateCorp	international centre for hydrogen energy technologies	FP
+f94cbf1e-dd85-4da9-b0ed-c6ba510408eb	80	133	ORG	international centre for hydrogen energy technologies	FN
+ba9d0e77-b832-48de-b0dc-57fe26699178	98	101	PrivateCorp	cbs	FP
+ba9d0e77-b832-48de-b0dc-57fe26699178	107	111	VisualWork	made	FP
+ba9d0e77-b832-48de-b0dc-57fe26699178	115	121	HumanSettlement	jersey	FP
+ba9d0e77-b832-48de-b0dc-57fe26699178	98	101	ORG	cbs	FN
+ba9d0e77-b832-48de-b0dc-57fe26699178	107	121	VisualWork	made in jersey	FN
+118e01f2-a7ea-4fa0-af89-b09c4dd022f8	38	43	PrivateCorp	world	FP
+118e01f2-a7ea-4fa0-af89-b09c4dd022f8	38	78	ORG	world organization of the scout movement	FN
+e16918fc-82c9-4c17-9132-de58c97ecbf5	0	15	OtherPER	arthur scargill	FP
+e16918fc-82c9-4c17-9132-de58c97ecbf5	25	36	ORG	trade union	FN
+e16918fc-82c9-4c17-9132-de58c97ecbf5	0	15	Politician	arthur scargill	FN
+931d9f94-39d8-4c47-aa45-e8394690976f	45	70	PrivateCorp	indian everest expedition	FP
+931d9f94-39d8-4c47-aa45-e8394690976f	45	70	ORG	indian everest expedition	FN
+5b2b5423-4924-4b6e-b77d-ee3afedbe1e8	0	6	PrivateCorp	purina	FP
+5b2b5423-4924-4b6e-b77d-ee3afedbe1e8	0	10	ORG	purina one	FN
+13390b19-d993-40f0-a489-9ffe1605f13e	29	32	PrivateCorp	kew	FP
+13390b19-d993-40f0-a489-9ffe1605f13e	29	32	ORG	kew	FN
+f3eeb876-4705-4551-af80-efc2a3e1b35e	64	85	PrivateCorp	austrian armed forces	FP
+f3eeb876-4705-4551-af80-efc2a3e1b35e	64	85	ORG	austrian armed forces	FN
+e798f794-81d9-44ca-888e-747a21dbbdba	58	74	PrivateCorp	balaji telefilms	FP
+e798f794-81d9-44ca-888e-747a21dbbdba	58	74	ORG	balaji telefilms	FN
+55780c10-e72c-40aa-90c7-aea60c422ecd	37	40	PrivateCorp	cbs	FP
+55780c10-e72c-40aa-90c7-aea60c422ecd	46	55	Athlete	jim nantz	FP
+55780c10-e72c-40aa-90c7-aea60c422ecd	46	55	OtherPER	jim nantz	FN
+55780c10-e72c-40aa-90c7-aea60c422ecd	37	40	ORG	cbs	FN
+cfc0ae1d-270c-432c-823c-3254d20bb54f	147	152	PrivateCorp	ofcom	FP
+cfc0ae1d-270c-432c-823c-3254d20bb54f	147	152	ORG	ofcom	FN
+787e8c44-7910-4f86-ba3d-411a25884626	130	136	Symptom	famine	FP
+787e8c44-7910-4f86-ba3d-411a25884626	10	21	PrivateCorp	peace corps	FP
+787e8c44-7910-4f86-ba3d-411a25884626	10	21	ORG	peace corps	FN
+39e72f81-12cb-47f2-8692-eded70eef4c3	25	41	PrivateCorp	liberal democrat	FP
+39e72f81-12cb-47f2-8692-eded70eef4c3	25	41	ORG	liberal democrat	FN
+eb192c5d-595d-4a72-b33e-48c62e5a4254	38	62	PrivateCorp	romanian communist party	FP
+eb192c5d-595d-4a72-b33e-48c62e5a4254	38	62	ORG	romanian communist party	FN
+08fa124d-994f-4061-8a68-2eaa980d1fe3	25	31	PrivateCorp	toyota	FP
+08fa124d-994f-4061-8a68-2eaa980d1fe3	25	31	ORG	toyota	FN
+ab467a80-526d-4d9e-bb5e-0d37a2121a23	39	43	PublicCorp	bank	FP
+ab467a80-526d-4d9e-bb5e-0d37a2121a23	39	43	ORG	bank	FN
+3916d953-4341-41da-b045-9cd45b2b0029	30	55	PrivateCorp	university college london	FP
+3916d953-4341-41da-b045-9cd45b2b0029	30	55	ORG	university college london	FN
+0192cbe6-c7fb-4af1-ab91-a8732d0f24e6	24	32	PrivateCorp	kumamoto	FP
+0192cbe6-c7fb-4af1-ab91-a8732d0f24e6	24	43	ORG	kumamoto prefecture	FN
+4f121baa-5957-4335-8291-0a864b19e87f	26	52	PrivateCorp	48th highlanders of canada	FP
+4f121baa-5957-4335-8291-0a864b19e87f	26	52	ORG	48th highlanders of canada	FN
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	68	72	ArtWork	antz	FP
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	56	67	PrivateCorp	dreamworks'	FP
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	86	99	ArtWork	a bug 's life	FP
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	68	72	VisualWork	antz	FN
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	56	67	PublicCorp	dreamworks'	FN
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	86	99	VisualWork	a bug 's life	FN
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	77	85	ORG	pixar 's	FN
+ea7e6e36-4ab6-4575-abb2-331d26a62db6	39	49	PrivateCorp	pax forlag	FP
+ea7e6e36-4ab6-4575-abb2-331d26a62db6	39	49	ORG	pax forlag	FN
+799b94ba-910c-4293-833b-db89880ee94d	32	72	PrivateCorp	alliance of independent social democrats	FP
+799b94ba-910c-4293-833b-db89880ee94d	32	72	ORG	alliance of independent social democrats	FN
+0c0d99ae-2956-4f4c-8562-cc6df9e84fed	25	45	PrivateCorp	massachusetts senate	FP
+0c0d99ae-2956-4f4c-8562-cc6df9e84fed	25	45	ORG	massachusetts senate	FN
+760849c7-3bec-4709-86d5-d2cc18e7f019	0	6	ORG	indian	FP
+760849c7-3bec-4709-86d5-d2cc18e7f019	0	24	ORG	indian national congress	FN
+e8999f34-4b7b-4522-a951-8a672d70fc18	30	34	PrivateCorp	nato	FP
+e8999f34-4b7b-4522-a951-8a672d70fc18	30	34	ORG	nato	FN
+1ba5603e-5c0e-4991-93a6-9a1b3c36434c	15	23	Medication/Vaccine	pyruvate	FP
+1ba5603e-5c0e-4991-93a6-9a1b3c36434c	26	38	Medication/Vaccine	pyruvic acid	FN
+cb13726c-aba6-4cd6-a399-5ad17468859a	124	136	Medication/Vaccine	thiafentanil	FP
+c6800897-de27-4065-9af6-bb95404e3cb6	0	7	PrivateCorp	hormone	FP
+c6800897-de27-4065-9af6-bb95404e3cb6	0	7	Medication/Vaccine	hormone	FN
+257f7af8-f3c4-4002-8493-7fd236c36fda	27	41	Symptom	amphotericin b	FP
+257f7af8-f3c4-4002-8493-7fd236c36fda	27	41	Medication/Vaccine	amphotericin b	FN
+b28a6f4b-5005-487e-84c0-136ad9c6f07e	0	9	ArtWork	liniments	FP
+b28a6f4b-5005-487e-84c0-136ad9c6f07e	41	45	Symptom	heat	FP
+b28a6f4b-5005-487e-84c0-136ad9c6f07e	0	9	Medication/Vaccine	liniments	FN
+3bcfea0d-16b6-4af0-a1ab-dd5150ec9914	82	93	Disease	common cold	FN
+f6b138ac-3624-48d5-acc2-dc26479395a8	80	90	Medication/Vaccine	antibiotic	FP
+f6b138ac-3624-48d5-acc2-dc26479395a8	80	100	Medication/Vaccine	antibiotic treatment	FN
+f6ffd39c-891f-47f4-9fad-555ceb0a0b72	56	64	Medication/Vaccine	fentanyl	FP
+e7780fe1-6913-4a70-9523-5f984b9f4517	53	68	Scientist	min chueh chang	FP
+e7780fe1-6913-4a70-9523-5f984b9f4517	53	68	OtherPER	min chueh chang	FN
+e7780fe1-6913-4a70-9523-5f984b9f4517	100	132	Medication/Vaccine	combined oral contraceptive pill	FN
+0a9dc575-057e-42b9-9ae4-d4cb665213b7	104	113	Symptom	glutamine	FP
+0a9dc575-057e-42b9-9ae4-d4cb665213b7	104	113	Medication/Vaccine	glutamine	FN
+6a1303e2-07fb-45e3-83e3-8a86650ec24f	0	14	Symptom	telangiectasia	FP
+6a1303e2-07fb-45e3-83e3-8a86650ec24f	95	109	Symptom	varicose veins	FP
+6a1303e2-07fb-45e3-83e3-8a86650ec24f	63	76	Disease	venous reflux	FP
+6a1303e2-07fb-45e3-83e3-8a86650ec24f	95	109	Disease	varicose veins	FN
+7c83b32f-727b-4a0a-813c-39c3c73173c7	52	70	PrivateCorp	gaucher 's disease	FP
+7c83b32f-727b-4a0a-813c-39c3c73173c7	52	70	Disease	gaucher 's disease	FN
+1f42b296-d225-44d1-b887-fdf34d277bb8	67	93	Symptom	retinopathy of prematurity	FP
+1f42b296-d225-44d1-b887-fdf34d277bb8	31	53	MedicalProcedure	laser photocoagulation	FN
+1f42b296-d225-44d1-b887-fdf34d277bb8	67	93	Disease	retinopathy of prematurity	FN
+faae36a7-d8df-4c1c-9ad7-82d6fa0393a0	77	93	Symptom	chytridiomycosis	FP
+faae36a7-d8df-4c1c-9ad7-82d6fa0393a0	77	93	Disease	chytridiomycosis	FN
+aeb1f00f-a394-4c73-a61a-ae4e4e6ed585	5	11	Medication/Vaccine	niacin	FP
+aeb1f00f-a394-4c73-a61a-ae4e4e6ed585	43	81	Disease	elevated cholesterol and triglycerides	FN
+1146d6cc-140e-4a3c-94bf-9454d1cce81a	15	28	Symptom	schizophrenia	FP
+1146d6cc-140e-4a3c-94bf-9454d1cce81a	108	128	Symptom	parkinson 's disease	FP
+1146d6cc-140e-4a3c-94bf-9454d1cce81a	82	91	Symptom	psychosis	FP
+1146d6cc-140e-4a3c-94bf-9454d1cce81a	108	128	Disease	parkinson 's disease	FN
+0f0a9974-751b-4e9b-8b93-7df59267bc63	10	24	PrivateCorp	rhinosinusitis	FP
+0f0a9974-751b-4e9b-8b93-7df59267bc63	10	24	Disease	rhinosinusitis	FN
+5a33a18b-6d2a-4824-9eb3-4786f1edc83d	54	86	Disease	orthostatic tachycardia syndrome	FP
+5a33a18b-6d2a-4824-9eb3-4786f1edc83d	45	86	Disease	postural orthostatic tachycardia syndrome	FN
+63a3c4fe-8fd9-4e13-86e2-9654ba1e281e	12	21	PrivateCorp	pneumonia	FP
+63a3c4fe-8fd9-4e13-86e2-9654ba1e281e	12	21	Disease	pneumonia	FN
+28c1c5ed-b032-4031-a886-f404c7edd100	25	36	Symptom	self-poison	FP
+28c1c5ed-b032-4031-a886-f404c7edd100	11	21	Medication/Vaccine	pesticides	FP
+28c1c5ed-b032-4031-a886-f404c7edd100	11	36	Disease	pesticides to self-poison	FN
+bdc47410-ca97-48f5-9cd9-3cb7e95ce4ca	16	39	Symptom	spinal disc herniations	FP
+bdc47410-ca97-48f5-9cd9-3cb7e95ce4ca	16	39	Disease	spinal disc herniations	FN
+9afa055f-9059-4b10-aeef-e591284b2ef5	98	108	PrivateCorp	herniation	FP
+9afa055f-9059-4b10-aeef-e591284b2ef5	7	22	Disease	spinal stenosis	FN
+28787c12-cb12-40a8-84cb-01a6e85efcc6	0	11	Symptom	polydactyly	FP
+28787c12-cb12-40a8-84cb-01a6e85efcc6	0	11	Disease	polydactyly	FN
+33d07306-c9d9-4d65-aba9-58e185347b92	0	5	PrivateCorp	polio	FP
+33d07306-c9d9-4d65-aba9-58e185347b92	0	5	Disease	polio	FN
+46441132-7e22-430a-8e5e-a8b956c9941a	27	39	Symptom	stage fright	FP
+46441132-7e22-430a-8e5e-a8b956c9941a	27	39	Disease	stage fright	FN
+1670a317-8083-468f-918e-6ba4aea7a3df	38	42	PrivateCorp	nome	FP
+1670a317-8083-468f-918e-6ba4aea7a3df	38	42	HumanSettlement	nome	FN
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	45	51	Food	lenoir	FP
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	33	40	Food	hickory	FP
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	33	40	HumanSettlement	hickory	FN
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	45	51	HumanSettlement	lenoir	FN
+4cc788a0-630d-4cc2-8d31-c198fd18d1eb	52	63	PrivateCorp	broken hill	FP
+4cc788a0-630d-4cc2-8d31-c198fd18d1eb	52	63	HumanSettlement	broken hill	FN
+6cd732cb-90a0-426d-a2c0-ba84dda700d2	28	34	PrivateCorp	mongol	FP
+6cd732cb-90a0-426d-a2c0-ba84dda700d2	28	34	HumanSettlement	mongol	FN
+19e964b7-9746-4c49-8e59-2d244de2d22b	20	27	PrivateCorp	tavares	FP
+19e964b7-9746-4c49-8e59-2d244de2d22b	20	37	HumanSettlement	tavares , florida	FN
+26b8cebb-2d61-4ce4-818b-3740ecfb030c	54	66	Artist	kristy hinze	FP
+26b8cebb-2d61-4ce4-818b-3740ecfb030c	54	66	OtherPER	kristy hinze	FN
+cedfc0f3-868d-4256-b5fe-5c4418e7ef4d	53	69	PrivateCorp	chemical weapons	FP
+eea2235b-c00f-4b31-8df4-2dd0462f2f90	49	58	Vehicle	waters of	FP
+9322b268-b254-4452-92b1-6e4ea0b54bc4	30	37	PrivateCorp	tobolsk	FP
+9322b268-b254-4452-92b1-6e4ea0b54bc4	30	37	HumanSettlement	tobolsk	FN
+8d8fe747-1c9a-4e49-91c5-34169399bdc6	30	42	PrivateCorp	redwood bowl	FP
+8d8fe747-1c9a-4e49-91c5-34169399bdc6	30	42	Facility	redwood bowl	FN
+3371cd29-d135-4a18-b2c3-9993b16658fe	30	51	HumanSettlement	paterson , new jersey	FP
+3371cd29-d135-4a18-b2c3-9993b16658fe	30	51	Facility	paterson , new jersey	FN
+3371cd29-d135-4a18-b2c3-9993b16658fe	52	65	HumanSettlement	united states	FN
+1a12114f-17c9-42b9-a9a6-dd16e1259773	35	43	ORG	law firm	FN
+6f5b1998-3450-462a-89d8-d4a8904ee371	32	58	Facility	alfred a. mckethan stadium	FP
+6f5b1998-3450-462a-89d8-d4a8904ee371	32	58	OtherLOC	alfred a. mckethan stadium	FN
+15576f41-6863-484f-9332-8034da6c7287	96	104	PrivateCorp	surabaya	FP
+15576f41-6863-484f-9332-8034da6c7287	96	104	HumanSettlement	surabaya	FN
+e0faf018-00d0-400a-87bb-6f6376d6706a	29	46	HumanSettlement	kingdom of mercia	FP
+e0faf018-00d0-400a-87bb-6f6376d6706a	40	46	HumanSettlement	mercia	FN
+0d1dec41-8975-47f5-9120-8da9e34f67bf	69	89	SportsGRP	lawrenceville school	FP
+0d1dec41-8975-47f5-9120-8da9e34f67bf	69	89	Facility	lawrenceville school	FN
+bd576594-d83b-4314-b8c3-a979e46d1972	39	46	ArtWork	taegeuk	FP
+7e78d6dc-83f6-405a-91f7-0518004d5f29	43	52	PrivateCorp	wanamaker	FP
+7e78d6dc-83f6-405a-91f7-0518004d5f29	43	58	OtherPROD	wanamaker organ	FN
+628ea1f6-3596-470c-9ce3-f9d5d217a93f	43	48	HumanSettlement	ivory	FP
+628ea1f6-3596-470c-9ce3-f9d5d217a93f	43	54	HumanSettlement	ivory coast	FN
+0d5829d0-6ceb-43c0-880f-342351161e55	33	41	PrivateCorp	buddhist	FP
+0d5829d0-6ceb-43c0-880f-342351161e55	33	49	Facility	buddhist temples	FN
+609ff6a6-6141-4739-9209-ba10672386fb	49	58	Clothing	saxophone	FP
+b2b62b8a-2fba-46f5-937e-8e4ee1b686ac	52	64	PrivateCorp	magnitogorsk	FP
+b2b62b8a-2fba-46f5-937e-8e4ee1b686ac	52	64	HumanSettlement	magnitogorsk	FN
+c610e76d-dde9-4471-b0f8-670e8cbf81c3	55	61	HumanSettlement	romans	FP
+c610e76d-dde9-4471-b0f8-670e8cbf81c3	18	23	HumanSettlement	dacia	FN
+cb22b533-fbbe-45b6-a23e-51621746d259	33	45	HumanSettlement	ocean shores	FN
+654db6b1-8003-4465-b1c9-fb2ba934e514	6	14	ArtWork	napoleon	FP
+654db6b1-8003-4465-b1c9-fb2ba934e514	23	32	HumanSettlement	consulate	FN
+654db6b1-8003-4465-b1c9-fb2ba934e514	6	14	Politician	napoleon	FN
+cb72f19b-4582-4ebe-9e21-db1be1d6166f	51	63	PrivateCorp	conglomerate	FP
+95c7c245-05f2-487d-80a0-9e093c971b58	17	26	PrivateCorp	australia	FP
+95c7c245-05f2-487d-80a0-9e093c971b58	17	26	HumanSettlement	australia	FN
+471c4b7a-6c31-4169-9f60-847dea2e8311	47	57	MusicalGRP	headliners	FP
+1bcb7a93-a273-435c-b614-db441d60745f	18	23	Facility	mount	FP
+1bcb7a93-a273-435c-b614-db441d60745f	18	41	HumanSettlement	mount vernon , new york	FN
+d9b97754-b9ce-468b-925f-d45f855dc99d	44	48	HumanSettlement	city	FP
+6a64bfea-f4a2-4336-bd38-c4d23ecb5d60	79	89	PrivateCorp	shoreditch	FP
+6a64bfea-f4a2-4336-bd38-c4d23ecb5d60	79	89	HumanSettlement	shoreditch	FN
+0d7d9863-352d-4274-85a1-399d47a16bd7	23	45	Facility	congressional cemetery	FP
+0d7d9863-352d-4274-85a1-399d47a16bd7	23	45	OtherLOC	congressional cemetery	FN
+ca435c4d-4d29-4a1a-a10c-98f3ea636d11	38	57	PrivateCorp	smock alley theatre	FP
+ca435c4d-4d29-4a1a-a10c-98f3ea636d11	38	57	Facility	smock alley theatre	FN
+f44adffb-6cff-47e2-932b-52a216771a16	58	68	ArtWork	ecotourism	FP
+f44adffb-6cff-47e2-932b-52a216771a16	58	68	OtherPROD	ecotourism	FN
+6a8f0d82-3d5a-4d40-ace3-8368ae627e2b	32	53	HumanSettlement	lajkovac municipality	FP
+6a8f0d82-3d5a-4d40-ace3-8368ae627e2b	32	40	HumanSettlement	lajkovac	FN
+fb6592aa-ed3f-4c9a-8215-2ab0cd0b97b3	33	39	PrivateCorp	energy	FP
+d8d708fe-c92b-4736-aadb-d9a2c91740ac	35	44	Disease	emphysema	FP
+561952cf-31ca-416c-a699-53aa11e55a13	76	87	OtherPER	rolf singer	FP
+561952cf-31ca-416c-a699-53aa11e55a13	76	87	Artist	rolf singer	FN
+7b25adb2-ddff-426b-aae5-87cdec8a8c55	15	25	PrivateCorp	madagascar	FP
+7b25adb2-ddff-426b-aae5-87cdec8a8c55	15	25	HumanSettlement	madagascar	FN
+e6e90e9d-b59d-4151-8bb7-d41b1fe0aefe	107	120	PrivateCorp	ebay auctions	FP
+e6e90e9d-b59d-4151-8bb7-d41b1fe0aefe	107	111	PublicCorp	ebay	FN
+efdc115d-3900-4cb9-9cc0-70f625addf5c	58	68	PrivateCorp	woolworths	FP
+efdc115d-3900-4cb9-9cc0-70f625addf5c	58	68	PublicCorp	woolworths	FN
+d0e38654-3705-4a80-beb2-7c09d17da337	70	87	PrivateCorp	the carlyle group	FP
+d0e38654-3705-4a80-beb2-7c09d17da337	70	87	PublicCorp	the carlyle group	FN
+131af73f-0db6-4d46-b06f-b41713772681	78	100	PrivateCorp	lukoil vagit alekperov	FP
+131af73f-0db6-4d46-b06f-b41713772681	78	84	PublicCorp	lukoil	FN
+131af73f-0db6-4d46-b06f-b41713772681	85	100	Scientist	vagit alekperov	FN
+dd042279-8392-48b4-9195-f24f81afbf6a	36	42	PrivateCorp	alstom	FP
+dd042279-8392-48b4-9195-f24f81afbf6a	36	42	PublicCorp	alstom	FN
+d9a9639e-fe65-40d6-b9e3-a0ad41e2734a	75	86	PrivateCorp	novolipetsk	FP
+d9a9639e-fe65-40d6-b9e3-a0ad41e2734a	75	108	PublicCorp	novolipetsk metallurgical combine	FN
+73b60214-3816-4a2c-96b0-6d55354da5ed	26	51	PrivateCorp	bok financial corporation	FP
+73b60214-3816-4a2c-96b0-6d55354da5ed	0	13	Politician	george kaiser	FP
+73b60214-3816-4a2c-96b0-6d55354da5ed	26	51	PublicCorp	bok financial corporation	FN
+73b60214-3816-4a2c-96b0-6d55354da5ed	0	13	OtherPER	george kaiser	FN
+dacaed5c-457f-4a48-af92-0566fee5d2f2	25	36	PrivateCorp	iheartmedia	FP
+dacaed5c-457f-4a48-af92-0566fee5d2f2	25	36	PublicCorp	iheartmedia	FN
+305e6d1a-3292-450a-b39e-888180d5c02d	14	28	PrivateCorp	uralvagonzavod	FP
+305e6d1a-3292-450a-b39e-888180d5c02d	14	28	PublicCorp	uralvagonzavod	FN
+e4729ac2-dae0-4719-95ef-f8b526afb71f	12	33	ORG	norwegian air shuttle	FP
+e4729ac2-dae0-4719-95ef-f8b526afb71f	12	33	PublicCorp	norwegian air shuttle	FN
+2fe003d8-1d04-4ede-a13e-8116ac0f26f7	35	43	PrivateCorp	symantec	FP
+2fe003d8-1d04-4ede-a13e-8116ac0f26f7	47	55	PrivateCorp	verisign	FP
+2fe003d8-1d04-4ede-a13e-8116ac0f26f7	35	43	PublicCorp	symantec	FN
+2fe003d8-1d04-4ede-a13e-8116ac0f26f7	47	55	PublicCorp	verisign	FN
+934b99dc-26b7-430a-ae7a-67b47050e6bd	54	70	PrivateCorp	general electric	FP
+934b99dc-26b7-430a-ae7a-67b47050e6bd	54	70	PublicCorp	general electric	FN
+0daf6250-4c8a-4a65-8e8c-068e81a2bafc	26	42	PrivateCorp	zodiac aerospace	FP
+0daf6250-4c8a-4a65-8e8c-068e81a2bafc	26	42	PublicCorp	zodiac aerospace	FN
+1ee6624f-05a6-497a-932b-60255d1d8dab	15	26	PrivateCorp	bure equity	FP
+1ee6624f-05a6-497a-932b-60255d1d8dab	15	26	PublicCorp	bure equity	FN
+a875e362-e602-492c-a6ee-aa036ea384a3	29	55	PrivateCorp	west japan railway company	FP
+a875e362-e602-492c-a6ee-aa036ea384a3	29	55	PublicCorp	west japan railway company	FN
+d6918e7b-9cf3-4384-990f-8f7ea351b1af	24	37	PrivateCorp	cumulus media	FP
+d6918e7b-9cf3-4384-990f-8f7ea351b1af	24	37	PublicCorp	cumulus media	FN
+da3544c4-0e19-4587-a84d-abb85d143cdf	0	3	PrivateCorp	the	FP
+da3544c4-0e19-4587-a84d-abb85d143cdf	12	18	VisualWork	heroes	FN
+4c4ad0bc-518d-4340-9a2c-4a9203eec514	0	17	Artist	bobcat goldthwait	FP
+4c4ad0bc-518d-4340-9a2c-4a9203eec514	21	39	PrivateCorp	misfits & monsters	FP
+4c4ad0bc-518d-4340-9a2c-4a9203eec514	0	39	VisualWork	bobcat goldthwait 's misfits & monsters	FN
+9d0f3a74-0ad9-486e-b919-8e2dd15d4a15	34	48	PrivateCorp	topper returns	FP
+9d0f3a74-0ad9-486e-b919-8e2dd15d4a15	34	48	VisualWork	topper returns	FN
+16b51243-7e94-40ca-a29c-2c8ca00fe095	4	12	VisualWork	starlost	FP
+16b51243-7e94-40ca-a29c-2c8ca00fe095	15	21	HumanSettlement	canada	FP
+16b51243-7e94-40ca-a29c-2c8ca00fe095	0	12	VisualWork	the starlost	FN
+bab3c8d7-af4a-44dc-837b-52265da5445e	26	29	PrivateCorp	cbs	FP
+bab3c8d7-af4a-44dc-837b-52265da5445e	26	29	VisualWork	cbs	FN
+9b688965-e308-4e8e-b129-70f103abf964	38	42	VisualWork	film	FP
+9b688965-e308-4e8e-b129-70f103abf964	33	37	VisualWork	1974	FP
+9b688965-e308-4e8e-b129-70f103abf964	31	42	VisualWork	a 1974 film	FN
+d76b2966-cff6-4274-8994-d73941eba3d9	7	14	ArtWork	the man	FP
+d76b2966-cff6-4274-8994-d73941eba3d9	39	46	Artist	pinkner	FP
+d76b2966-cff6-4274-8994-d73941eba3d9	20	31	HumanSettlement	tallahassee	FP
+d76b2966-cff6-4274-8994-d73941eba3d9	7	31	VisualWork	the man from tallahassee	FN
+77f036c9-ae74-4267-b609-641c00bd4c0f	20	32	PrivateCorp	last embrace	FP
+77f036c9-ae74-4267-b609-641c00bd4c0f	20	32	VisualWork	last embrace	FN
+6ff16a2d-a8ab-4bc0-ae63-b9e00a22c72a	36	40	WrittenWork	2004	FP
+b047f5b6-aef6-4bcc-bafc-7e19b94185d8	32	42	ArtWork	clone high	FP
+b047f5b6-aef6-4bcc-bafc-7e19b94185d8	12	27	ArtWork	bless the harts	FP
+b047f5b6-aef6-4bcc-bafc-7e19b94185d8	12	27	VisualWork	bless the harts	FN
+b047f5b6-aef6-4bcc-bafc-7e19b94185d8	32	42	VisualWork	clone high	FN
+fc964f9b-3cff-4b48-8c84-d5949e31fa84	101	134	ArtWork	inauguration of the pleasure dome	FP
+fc964f9b-3cff-4b48-8c84-d5949e31fa84	101	134	VisualWork	inauguration of the pleasure dome	FN
+2d3e3c7e-354c-403b-acbb-f3ebaf4c7394	47	56	PrivateCorp	the bitch	FP
+2d3e3c7e-354c-403b-acbb-f3ebaf4c7394	47	56	VisualWork	the bitch	FN
+2f82ce7a-d163-499d-8d0a-e22048955073	28	45	OtherPER	beatrice hastings	FP
+2f82ce7a-d163-499d-8d0a-e22048955073	28	45	Artist	beatrice hastings	FN
+23dd3657-9d42-4652-b859-7449f4fe9895	9	21	ArtWork	the last run	FP
+23dd3657-9d42-4652-b859-7449f4fe9895	9	21	VisualWork	the last run	FN
+ae6d9d38-c9df-418b-81b9-dda81d4fa12b	60	68	PrivateCorp	children	FP
+ae6d9d38-c9df-418b-81b9-dda81d4fa12b	60	76	VisualWork	children in need	FN
+ceb9f4e9-3352-40ad-b39b-e7b7d862e136	6	15	PrivateCorp	cutscenes	FP
+ceb9f4e9-3352-40ad-b39b-e7b7d862e136	6	15	VisualWork	cutscenes	FN
+db4bd196-9002-4b42-a09f-8d8b6f63b5a4	33	41	PrivateCorp	the view	FP
+db4bd196-9002-4b42-a09f-8d8b6f63b5a4	33	41	VisualWork	the view	FN
+38eb6934-2597-453b-95d3-878817005fdc	59	67	PrivateCorp	entirety	FP
+38eb6934-2597-453b-95d3-878817005fdc	43	51	VisualWork	survives	FN
+68ccde75-2386-4d5d-a862-7bcfb3e6b7d3	60	73	PrivateCorp	hanna-barbera	FP
+68ccde75-2386-4d5d-a862-7bcfb3e6b7d3	60	73	ORG	hanna-barbera	FN
+eb2c1b4b-0da2-44fe-8519-a883c94d6fbe	5	19	VisualWork	one true thing	FN
+7f3daead-50aa-4469-b3ac-ac432cec9cdc	0	18	ArtWork	sinfonia antartica	FP
+7f3daead-50aa-4469-b3ac-ac432cec9cdc	0	18	MusicalWork	sinfonia antartica	FN
+9c5ece2e-2a7e-4d24-80ab-260601433152	23	47	VisualWork	on foot , on horse , and	FP
+9c5ece2e-2a7e-4d24-80ab-260601433152	48	57	VisualWork	on wheels	FP
+9c5ece2e-2a7e-4d24-80ab-260601433152	23	57	VisualWork	on foot , on horse , and on wheels	FN
+5d95633c-ae2d-4eea-9dc2-c4015b3de310	0	11	PrivateCorp	madventures	FP
+5d95633c-ae2d-4eea-9dc2-c4015b3de310	0	11	VisualWork	madventures	FN
+f9ccff9b-7153-4f02-a082-b7fbfa6105da	2	14	PrivateCorp	musical film	FP
+f9ccff9b-7153-4f02-a082-b7fbfa6105da	2	9	VisualWork	musical	FN
+dfe1a82e-65a1-4cd4-90f1-503bca1474f5	32	42	PrivateCorp	black jack	FP
+dfe1a82e-65a1-4cd4-90f1-503bca1474f5	43	48	WrittenWork	manga	FN
+dfe1a82e-65a1-4cd4-90f1-503bca1474f5	32	42	VisualWork	black jack	FN
+0e5a78f9-d730-4569-bd00-72ab53500fca	25	26	PrivateCorp	a	FP
+0e5a78f9-d730-4569-bd00-72ab53500fca	25	72	VisualWork	a nightmare on elm street 2 : freddy 's revenge	FN
+dc2b4267-1930-45b6-859b-463d28110a97	28	33	VisualWork	short	FP
+d0f136d8-fdb7-4e36-a383-f652ac196916	47	50	PrivateCorp	abc	FP
+d0f136d8-fdb7-4e36-a383-f652ac196916	47	50	ORG	abc	FN
+87f342fd-a994-43cd-b076-1dce8a8d50e9	9	20	PrivateCorp	target ship	FP
+87f342fd-a994-43cd-b076-1dce8a8d50e9	9	20	Vehicle	target ship	FN
+67b0823c-8c6f-4982-9762-5321a039a267	34	40	HumanSettlement	german	FP
+67b0823c-8c6f-4982-9762-5321a039a267	51	55	PrivateCorp	u-17	FP
+67b0823c-8c6f-4982-9762-5321a039a267	34	50	Vehicle	german submarine	FN
+67b0823c-8c6f-4982-9762-5321a039a267	51	55	Vehicle	u-17	FN
+cac27dbd-707c-413d-93f2-f5e4cca1662a	112	122	OtherPROD	solar cars	FP
+cac27dbd-707c-413d-93f2-f5e4cca1662a	112	122	Vehicle	solar cars	FN
+0de48403-2fdc-44f4-bc12-adc37c0f4af9	20	27	PrivateCorp	gunboat	FP
+0de48403-2fdc-44f4-bc12-adc37c0f4af9	20	27	Vehicle	gunboat	FN
+ef8e3282-848b-48e0-8b3c-537d8db5277a	20	37	PrivateCorp	protected cruiser	FP
+ef8e3282-848b-48e0-8b3c-537d8db5277a	20	37	Vehicle	protected cruiser	FN
+4367846f-f62b-486b-b921-e098ec40b42c	45	55	PrivateCorp	boeing 767	FP
+4367846f-f62b-486b-b921-e098ec40b42c	45	55	Vehicle	boeing 767	FN
+50e01684-b758-459f-a7a3-0355eb5a7a92	36	45	CarManufacturer	lms ivatt	FP
+50e01684-b758-459f-a7a3-0355eb5a7a92	36	60	Vehicle	lms ivatt class 2 2-6-2t	FN
+beb530a4-9814-4cf7-a999-fcff89226c33	65	77	Vehicle	rowing boats	FP
+beb530a4-9814-4cf7-a999-fcff89226c33	37	42	PrivateCorp	ferry	FP
+beb530a4-9814-4cf7-a999-fcff89226c33	37	42	Vehicle	ferry	FN
+acab720c-1409-4eef-847e-6d56150a77c1	105	112	PrivateCorp	riviera	FP
+acab720c-1409-4eef-847e-6d56150a77c1	8	16	Vehicle	class 47	FN
+acab720c-1409-4eef-847e-6d56150a77c1	105	119	ORG	riviera trains	FN
+ef031964-653d-40db-aaa5-5ff66eee7aae	0	4	PrivateCorp	beep	FP
+ef031964-653d-40db-aaa5-5ff66eee7aae	0	4	Vehicle	beep	FN
+2e69fb5f-f209-4a03-8d9f-64d3f786d22c	0	6	PrivateCorp	diesel	FP
+2e69fb5f-f209-4a03-8d9f-64d3f786d22c	0	18	Vehicle	diesel locomotives	FN
+b851533a-94e6-4b7d-a7c3-1eb629044c84	0	14	ArtWork	uss san marcos	FP
+b851533a-94e6-4b7d-a7c3-1eb629044c84	0	23	Vehicle	uss san marcos (lsd-25)	FN
+36ca300c-d081-4197-a0e7-aaa846be3a92	104	121	PrivateCorp	steam locomotives	FP
+36ca300c-d081-4197-a0e7-aaa846be3a92	104	121	Vehicle	steam locomotives	FN
+9370b7cb-6cf9-4780-969a-cbae5e19937b	0	9	Vehicle	lead boat	FP
+9370b7cb-6cf9-4780-969a-cbae5e19937b	13	20	Vehicle	a class	FN
+1c5d0aa2-0e39-4868-aede-ac6383370039	48	54	PrivateCorp	czajka	FP
+1c5d0aa2-0e39-4868-aede-ac6383370039	48	54	Vehicle	czajka	FN
+379d4370-328f-4b7d-8f47-cd10ac7ccbea	40	42	Vehicle	mg	FP
+379d4370-328f-4b7d-8f47-cd10ac7ccbea	40	52	Vehicle	mg xpower sv	FN
+379d4370-328f-4b7d-8f47-cd10ac7ccbea	53	63	Vehicle	sports car	FN
+a443574a-d40f-4459-8591-ee21ae354fd6	0	10	Facility	hôtel-dieu	FP
+a443574a-d40f-4459-8591-ee21ae354fd6	0	18	Facility	hôtel-dieu de lyon	FN
+90d6dee0-9546-481a-99e9-d7856172e5bc	21	34	PrivateCorp	changi prison	FP
+90d6dee0-9546-481a-99e9-d7856172e5bc	21	34	Facility	changi prison	FN
+d020948f-380b-43ca-8878-a33501e918b2	48	56	PrivateCorp	showroom	FP
+d020948f-380b-43ca-8878-a33501e918b2	48	56	Facility	showroom	FN
+ea95c15e-6ad4-47e0-ad3b-696d64519751	37	79	PrivateCorp	santragachi kedarnath institution , howrah	FP
+ea95c15e-6ad4-47e0-ad3b-696d64519751	37	79	Facility	santragachi kedarnath institution , howrah	FN
+ab0c44f1-abb7-4168-a6e8-50f7f0c9733d	13	28	PrivateCorp	debtors' prison	FP
+ab0c44f1-abb7-4168-a6e8-50f7f0c9733d	13	28	Facility	debtors' prison	FN
+25e55708-1f6a-4f18-a5b0-58fe185b7975	54	63	PrivateCorp	penistone	FP
+25e55708-1f6a-4f18-a5b0-58fe185b7975	64	80	PrivateCorp	paramount cinema	FP
+25e55708-1f6a-4f18-a5b0-58fe185b7975	54	80	Facility	penistone paramount cinema	FN
+0679ff32-acdb-4429-b5ef-3967211252c4	9	16	PrivateCorp	mosques	FP
+0679ff32-acdb-4429-b5ef-3967211252c4	0	5	OtherPER	wusab	FP
+0679ff32-acdb-4429-b5ef-3967211252c4	9	16	Facility	mosques	FN
+cef5996d-944b-4cc4-88c0-6060e8622b81	46	55	ArtWork	dormitory	FP
+cef5996d-944b-4cc4-88c0-6060e8622b81	46	55	Facility	dormitory	FN
+99d26899-8a3c-424a-a90e-5efdc01800cf	48	54	ArtWork	garage	FP
+99d26899-8a3c-424a-a90e-5efdc01800cf	14	18	Facility	barn	FP
+99d26899-8a3c-424a-a90e-5efdc01800cf	14	25	Facility	barn church	FN
+fae09cbc-9a34-4e51-a88c-b7aa8bb0d4d2	52	66	PrivateCorp	wilanów palace	FP
+fae09cbc-9a34-4e51-a88c-b7aa8bb0d4d2	52	66	Facility	wilanów palace	FN
+d50bd673-4cbc-4059-b4b3-39278f50ecbf	37	54	PrivateCorp	st. jakob stadium	FP
+d50bd673-4cbc-4059-b4b3-39278f50ecbf	37	54	Facility	st. jakob stadium	FN
+95a4158f-b65f-4014-84f5-a1412214c677	93	107	Food	steak 'n shake	FP
+95a4158f-b65f-4014-84f5-a1412214c677	73	80	ORG	pei wei	FP
+95a4158f-b65f-4014-84f5-a1412214c677	81	86	Food	asian	FP
+95a4158f-b65f-4014-84f5-a1412214c677	31	41	Facility	food court	FP
+95a4158f-b65f-4014-84f5-a1412214c677	112	126	PrivateCorp	einstein bros.	FP
+95a4158f-b65f-4014-84f5-a1412214c677	112	133	PublicCorp	einstein bros. bagels	FN
+95a4158f-b65f-4014-84f5-a1412214c677	93	107	ORG	steak 'n shake	FN
+95a4158f-b65f-4014-84f5-a1412214c677	73	92	Facility	pei wei asian diner	FN
+9e837b31-25bc-46bb-b3b9-7c97d1eafebb	64	73	PrivateCorp	landfills	FP
+9e837b31-25bc-46bb-b3b9-7c97d1eafebb	64	73	Facility	landfills	FN
+fbdebc86-5e2a-40d7-ad13-f2f0c6582ec7	39	46	Station	sulzhof	FP
+fbdebc86-5e2a-40d7-ad13-f2f0c6582ec7	26	29	Facility	inn	FN
+d2b7a726-0f26-4e6f-9321-57c3387acb82	41	66	HumanSettlement	washington , pennsylvania	FP
+d2b7a726-0f26-4e6f-9321-57c3387acb82	41	66	Facility	washington , pennsylvania	FN
+2ba9a795-ed39-4f24-8087-e402c32380b5	27	41	PrivateCorp	new recreation	FP
+2ba9a795-ed39-4f24-8087-e402c32380b5	27	48	Facility	new recreation ground	FN
+56c82ee7-be58-4cee-aad2-c0bb5d9baad7	93	101	PrivateCorp	sorbonne	FP
+56c82ee7-be58-4cee-aad2-c0bb5d9baad7	93	101	Facility	sorbonne	FN
+4af0dee4-7af7-473a-8dae-7db61aeb5942	108	133	PrivateCorp	detroit institute of arts	FP
+4af0dee4-7af7-473a-8dae-7db61aeb5942	108	133	Facility	detroit institute of arts	FN
+fe1ef2e9-121e-4fab-ba40-6d57b4755cd3	12	28	PrivateCorp	heritage railway	FP
+fe1ef2e9-121e-4fab-ba40-6d57b4755cd3	12	28	Facility	heritage railway	FN
+e60f2241-c763-43c7-bd9b-08d66a50383e	63	75	PrivateCorp	oschersleben	FP
+e60f2241-c763-43c7-bd9b-08d66a50383e	63	75	Facility	oschersleben	FN
+48f8024a-529c-412c-9def-d264719004af	22	41	PrivateCorp	mikhailovsky ballet	FP
+48f8024a-529c-412c-9def-d264719004af	22	41	Facility	mikhailovsky ballet	FN
+dfc84a31-f636-4a8c-9088-cc2bf194216a	28	31	PrivateCorp	ibm	FP
+dfc84a31-f636-4a8c-9088-cc2bf194216a	28	31	OtherPROD	ibm	FN
+baaf6021-7b7c-4007-aee7-492ed876c8e0	77	84	Facility	shrines	FP
+baaf6021-7b7c-4007-aee7-492ed876c8e0	20	28	ArtWork	biłgoraj	FP
+baaf6021-7b7c-4007-aee7-492ed876c8e0	69	84	Facility	wayside shrines	FN
+c7c6d91a-ba61-46ff-9be2-dccbe85c103c	0	13	PrivateCorp	castle cornet	FP
+c7c6d91a-ba61-46ff-9be2-dccbe85c103c	0	13	Facility	castle cornet	FN
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	34	43	SportsGRP	vale park	FP
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	94	110	SportsManager	john connaughton	FP
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	64	76	Athlete	alan boswell	FP
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	34	43	Facility	vale park	FN
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	64	76	SportsManager	alan boswell	FN
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	94	110	Athlete	john connaughton	FN
+b14df359-e42b-4be6-8643-93816855267e	7	25	Facility	st. luke 's church	FN
+f99b9c2a-f1ff-4df8-8bb3-0e335092072a	37	58	ArtWork	palazzo giusti verona	FP
+f99b9c2a-f1ff-4df8-8bb3-0e335092072a	37	51	Facility	palazzo giusti	FN
+b44bec72-e154-4e4c-a735-b6a0b55d1b33	84	91	ArtWork	ancient	FP
+b44bec72-e154-4e4c-a735-b6a0b55d1b33	84	97	HumanSettlement	ancient egypt	FN
+b44bec72-e154-4e4c-a735-b6a0b55d1b33	60	65	OtherPROD	vases	FN
+b44bec72-e154-4e4c-a735-b6a0b55d1b33	70	78	OtherPROD	chalices	FN
+d34aac24-9a4e-402a-8f3b-063b81823635	37	42	PrivateCorp	zarih	FP
+d34aac24-9a4e-402a-8f3b-063b81823635	37	42	Facility	zarih	FN
+528b0c33-ec82-4ff9-824e-a7d3c9b93c4b	0	11	PrivateCorp	cubbon park	FP
+528b0c33-ec82-4ff9-824e-a7d3c9b93c4b	0	11	Facility	cubbon park	FN
+2490cbf7-1ed6-4e77-9b8f-1029f01bbf6e	58	78	PrivateCorp	crabtree valley mall	FP
+2490cbf7-1ed6-4e77-9b8f-1029f01bbf6e	58	78	Facility	crabtree valley mall	FN
+bc3477b6-81b7-403c-9f94-8c73143c6b92	74	83	PrivateCorp	studio 54	FP
+bc3477b6-81b7-403c-9f94-8c73143c6b92	43	52	Facility	nightclub	FN
+bc3477b6-81b7-403c-9f94-8c73143c6b92	74	83	Facility	studio 54	FN
+bf73942e-9a3c-4e63-aec9-de3e56bf86f0	62	66	PrivateCorp	tate	FP
+bf73942e-9a3c-4e63-aec9-de3e56bf86f0	62	66	Facility	tate	FN
+5238fade-1dcd-4371-9974-8b9511ca336e	0	15	ArtWork	fort margherita	FP
+5238fade-1dcd-4371-9974-8b9511ca336e	0	15	Facility	fort margherita	FN
+f83c050e-ffb0-4021-be68-6781a822f263	30	54	PrivateCorp	new england conservatory	FP
+f83c050e-ffb0-4021-be68-6781a822f263	30	54	Facility	new england conservatory	FN
+87f7d56a-034d-49d3-a16d-bddce8b1bdf2	29	36	ArtWork	griddle	FP
+87f7d56a-034d-49d3-a16d-bddce8b1bdf2	29	36	OtherPROD	griddle	FN
+d702c5cb-1baf-4aae-a9b5-651266867f09	0	9	ArtWork	elevators	FP
+d702c5cb-1baf-4aae-a9b5-651266867f09	0	9	OtherPROD	elevators	FN
+385f736b-16be-429f-b85e-8b1cc216edf8	54	60	OtherPROD	zither	FN
+385f736b-16be-429f-b85e-8b1cc216edf8	87	97	OtherPROD	snare drum	FN
+1ca88646-bb8b-4ac8-8666-a1b0d990b0e9	27	37	ArtWork	szczerbiec	FP
+1ca88646-bb8b-4ac8-8666-a1b0d990b0e9	27	37	OtherPROD	szczerbiec	FN
+b5cd215a-07bd-4853-a408-84d5b07c1a47	77	83	AerospaceManufacturer	snecma	FP
+b5cd215a-07bd-4853-a408-84d5b07c1a47	77	92	OtherPROD	snecma atar 101	FN
+c2c78b35-a421-4a27-93cc-88519f5d4a4c	8	14	PrivateCorp	hawken	FP
+c2c78b35-a421-4a27-93cc-88519f5d4a4c	8	14	OtherPROD	hawken	FN
+e0d70932-9280-450f-ad63-569aa4ff605e	33	44	Vehicle	honda cb750	FP
+e0d70932-9280-450f-ad63-569aa4ff605e	33	44	OtherPROD	honda cb750	FN
+afa64981-c330-4e6a-888e-bb4e6cf5246c	30	60	ArtWork	on a legend of the round table	FP
+afa64981-c330-4e6a-888e-bb4e6cf5246c	7	14	Artist	viviane	FP
+afa64981-c330-4e6a-888e-bb4e6cf5246c	15	29	MusicalWork	symphonic poem	FN
+afa64981-c330-4e6a-888e-bb4e6cf5246c	49	60	OtherPROD	round table	FN
+afa64981-c330-4e6a-888e-bb4e6cf5246c	7	14	MusicalWork	viviane	FN
+a725a528-092e-4423-a663-30834a85689c	126	130	OtherPROD	game	FP
+a725a528-092e-4423-a663-30834a85689c	67	71	OtherPROD	game	FP
+a725a528-092e-4423-a663-30834a85689c	126	142	OtherPROD	game boy advance	FN
+a725a528-092e-4423-a663-30834a85689c	67	81	OtherPROD	game boy color	FN
+56f6caf3-d615-48ed-8511-e89208184e47	0	19	CarManufacturer	packard super eight	FP
+56f6caf3-d615-48ed-8511-e89208184e47	0	19	OtherPROD	packard super eight	FN
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	67	72	OtherPROD	zilog	FP
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	26	29	AerospaceManufacturer	ibm	FP
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	26	47	OtherPROD	ibm personal computer	FN
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	77	96	OtherPROD	mos technology 6502	FN
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	67	76	OtherPROD	zilog z80	FN
+c5741b4a-95c0-4bd9-ab37-dc0c1158b7b7	37	48	PrivateCorp	fly-by-wire	FP
+c5741b4a-95c0-4bd9-ab37-dc0c1158b7b7	37	48	OtherPROD	fly-by-wire	FN
+272a75c6-7327-45f0-8879-8f264f066476	65	71	PrivateCorp	djembe	FP
+272a75c6-7327-45f0-8879-8f264f066476	65	71	OtherPROD	djembe	FN
+8bd619e3-ee07-4b02-8ae5-9d7c9721272f	28	37	ArtWork	dual mode	FP
+8bd619e3-ee07-4b02-8ae5-9d7c9721272f	86	92	Medication/Vaccine	energy	FP
+8bd619e3-ee07-4b02-8ae5-9d7c9721272f	0	15	OtherPROD	hybrid vehicles	FN
+1dd39395-8d51-411b-99b7-2e142d32b23f	68	78	ArtWork	mechanical	FP
+1dd39395-8d51-411b-99b7-2e142d32b23f	0	10	ArtWork	efficiency	FP
+1dd39395-8d51-411b-99b7-2e142d32b23f	68	85	OtherPROD	mechanical system	FN
+f2341f72-2e46-4b59-af6e-002f1bb4ecab	33	40	PrivateCorp	molotov	FP
+f2341f72-2e46-4b59-af6e-002f1bb4ecab	33	50	OtherPROD	molotov cocktails	FN
+0cbb56c4-ebdc-4f1b-b74c-ec8920a650a7	35	48	PrivateCorp	carmam aiglon	FP
+0cbb56c4-ebdc-4f1b-b74c-ec8920a650a7	35	48	OtherPROD	carmam aiglon	FN
+85c817d5-2cce-41e3-82e3-938d041ff8d5	63	75	ArtWork	steam rocket	FP
+85c817d5-2cce-41e3-82e3-938d041ff8d5	63	75	OtherPROD	steam rocket	FN
+efcce0a2-171c-403b-88a7-867d2a344ce4	8	15	ArtWork	nuclear	FP
+efcce0a2-171c-403b-88a7-867d2a344ce4	0	20	OtherPROD	mark 39 nuclear bomb	FN
+73f15907-b1fc-4679-96a7-f7c66fd5e056	47	59	PrivateCorp	oscilloscope	FP
+73f15907-b1fc-4679-96a7-f7c66fd5e056	47	59	OtherPROD	oscilloscope	FN
+73446991-0925-4750-b8dc-d8e2b517fc5d	2	8	PrivateCorp	siphon	FP
+73446991-0925-4750-b8dc-d8e2b517fc5d	2	8	OtherPROD	siphon	FN
+0d071fd5-5b17-40b1-b905-1d79b34f945d	85	93	VisualWork	prequels	FP
+0d071fd5-5b17-40b1-b905-1d79b34f945d	0	16	OtherPER	r. daneel olivaw	FP
+0d071fd5-5b17-40b1-b905-1d79b34f945d	0	16	OtherPROD	r. daneel olivaw	FN
+7261e634-a4bd-4ed5-a9df-cd70796e62e9	2	11	PrivateCorp	pulse jet	FP
+7261e634-a4bd-4ed5-a9df-cd70796e62e9	14	26	OtherPROD	argus as 014	FN
+fe491d7c-183f-4056-ae55-f1b535939973	9	17	Vehicle	electric	FP
+fe491d7c-183f-4056-ae55-f1b535939973	9	23	OtherPROD	electric motor	FN
+d7a0c45e-2061-453d-82fa-71a34d9738e1	20	30	PrivateCorp	shinkansen	FP
+d7a0c45e-2061-453d-82fa-71a34d9738e1	20	30	OtherPROD	shinkansen	FN
+e11da784-d597-4bcd-b58e-215bc0aba221	0	6	PrivateCorp	censer	FP
+e11da784-d597-4bcd-b58e-215bc0aba221	0	6	OtherPROD	censer	FN
+63591fce-4fd8-422a-ac0d-0f54a685d43a	88	95	PrivateCorp	dinette	FP
+63591fce-4fd8-422a-ac0d-0f54a685d43a	27	33	Vehicle	dining	FP
+63591fce-4fd8-422a-ac0d-0f54a685d43a	27	37	OtherPROD	dining car	FN
+58568656-5f19-49d3-9039-1dc3fc96c80e	0	7	Politician	charles	FP
+58568656-5f19-49d3-9039-1dc3fc96c80e	0	25	Politician	charles francis adams sr.	FN
+60e6edf3-71ab-4a21-830a-0653eb030b7b	52	62	OtherPER	manggūltai	FP
+60e6edf3-71ab-4a21-830a-0653eb030b7b	52	62	Politician	manggūltai	FN
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	53	58	Artist	ahmed	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	66	71	Artist	mitra	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	37	52	Artist	shabnur ferdous	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	9	27	Artist	mithun chakraborty	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	59	65	Artist	prabir	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	45	58	Artist	ferdous ahmed	FN
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	37	44	Artist	shabnur	FN
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	9	27	Politician	mithun chakraborty	FN
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	59	71	Artist	prabir mitra	FN
+c8e42ddf-75a1-4400-bb42-886f4b856142	5	10	SportsManager	frans	FP
+c8e42ddf-75a1-4400-bb42-886f4b856142	5	25	Politician	frans van cauwelaert	FN
+79a92c68-ca7b-46cc-858f-87679fc0bbda	38	56	OtherPER	sir henry cromwell	FP
+79a92c68-ca7b-46cc-858f-87679fc0bbda	38	56	Politician	sir henry cromwell	FN
+4e363f01-26c8-460c-b93e-987f23a8f876	34	38	OtherPER	duke	FP
+4e363f01-26c8-460c-b93e-987f23a8f876	34	43	Politician	duke béla	FN
+8512ef03-c4bc-4e0c-928f-234480cb1e91	82	87	Artist	roger	FP
+8512ef03-c4bc-4e0c-928f-234480cb1e91	82	93	OtherPER	roger hsieh	FN
+218cfffd-ac3b-4667-9f63-04b88e813229	77	83	Politician	kálmán	FP
+218cfffd-ac3b-4667-9f63-04b88e813229	77	89	Politician	kálmán tisza	FN
+93a52ece-a4e6-4085-9b67-7306fc86b209	9	27	Cleric	edoardo sanguineti	FP
+93a52ece-a4e6-4085-9b67-7306fc86b209	9	27	Politician	edoardo sanguineti	FN
+d0902a27-9582-4e5a-8537-90676ae842c1	35	55	OtherPER	henry iii of england	FP
+d0902a27-9582-4e5a-8537-90676ae842c1	35	55	Politician	henry iii of england	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	27	35	Politician	sukumari	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	56	69	Politician	adoor bhavani	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	36	46	Politician	kalabhavan	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	22	26	Politician	suma	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	27	35	Artist	sukumari	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	36	51	Artist	kalabhavan mani	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	56	69	Artist	adoor bhavani	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	22	26	Artist	suma	FN
+96c3e9ce-e443-4177-97ad-fc21db86bd63	4	18	Athlete	walter johnson	FP
+96c3e9ce-e443-4177-97ad-fc21db86bd63	4	18	Politician	walter johnson	FN
+60cbf2a4-9958-4910-ae11-0779e9902df8	52	58	ArtWork	tin oo	FP
+60cbf2a4-9958-4910-ae11-0779e9902df8	52	58	Politician	tin oo	FN
+1970abc9-207e-479d-91e7-8e6374b5e861	61	71	Artist	david duke	FP
+1970abc9-207e-479d-91e7-8e6374b5e861	61	71	Politician	david duke	FN
+d7f6091e-ade9-446a-af72-63b9474b3ba1	17	23	WrittenWork	patria	FP
+d7f6091e-ade9-446a-af72-63b9474b3ba1	27	41	HumanSettlement	constantinople	FP
+d7f6091e-ade9-446a-af72-63b9474b3ba1	61	74	OtherPER	theodosius ii	FP
+d7f6091e-ade9-446a-af72-63b9474b3ba1	106	117	ArtWork	anachronism	FP
+d7f6091e-ade9-446a-af72-63b9474b3ba1	61	74	Politician	theodosius ii	FN
+09ca9cc3-6f6f-4d45-8d5e-feb091381aaa	0	14	ORG	prime minister	FN
+7db63c2c-e6f1-457a-973f-f68cb28aadf8	0	16	OtherPER	lord clanricarde	FP
+7db63c2c-e6f1-457a-973f-f68cb28aadf8	0	16	Politician	lord clanricarde	FN
+d88065b1-8402-4812-8b36-a7464842f38b	48	55	Cleric	fatimah	FP
+d88065b1-8402-4812-8b36-a7464842f38b	48	62	Politician	fatimah hashim	FN
+c08e8af0-5c3a-4115-8390-3f624c3a7806	0	17	OtherPER	judith schwentner	FP
+c08e8af0-5c3a-4115-8390-3f624c3a7806	0	17	Politician	judith schwentner	FN
+5ca92825-d8d1-49e9-9d7a-282657897e0d	0	12	OtherPER	admiral hood	FP
+5ca92825-d8d1-49e9-9d7a-282657897e0d	0	12	Politician	admiral hood	FN
+6ab31d33-4bb0-4667-94bc-c4c4e44a848b	116	128	Politician	jane seymour	FP
+6ab31d33-4bb0-4667-94bc-c4c4e44a848b	78	97	OtherPER	catherine of aragon	FP
+6ab31d33-4bb0-4667-94bc-c4c4e44a848b	78	97	Politician	catherine of aragon	FN
+6ab31d33-4bb0-4667-94bc-c4c4e44a848b	116	128	OtherPER	jane seymour	FN
+56380749-49df-4c65-ac9e-d39c9d14b339	50	55	PrivateCorp	ch'oe	FP
+56380749-49df-4c65-ac9e-d39c9d14b339	50	62	Politician	ch'oe family	FN
+081a7a58-f592-4732-a941-b9ee4b732549	77	86	OtherPER	messalina	FP
+081a7a58-f592-4732-a941-b9ee4b732549	110	123	Cleric	herod agrippa	FP
+081a7a58-f592-4732-a941-b9ee4b732549	77	86	Politician	messalina	FN
+081a7a58-f592-4732-a941-b9ee4b732549	110	123	OtherPER	herod agrippa	FN
+e23aa8ae-1ae7-47cd-bd6d-6471a7c38f95	53	63	PrivateCorp	el sistema	FP
+e23aa8ae-1ae7-47cd-bd6d-6471a7c38f95	0	18	Artist	josé antonio abreu	FP
+e23aa8ae-1ae7-47cd-bd6d-6471a7c38f95	53	63	ORG	el sistema	FN
+e23aa8ae-1ae7-47cd-bd6d-6471a7c38f95	0	18	Politician	josé antonio abreu	FN
+9aab7f53-814f-43c6-98a0-e8f6644575e3	103	111	OtherPER	geoffrey	FP
+9aab7f53-814f-43c6-98a0-e8f6644575e3	103	111	Politician	geoffrey	FN
+68f88d97-7e71-4a99-989b-e7d05cf67dbb	40	63	OtherPER	peder brønnum scavenius	FP
+68f88d97-7e71-4a99-989b-e7d05cf67dbb	40	63	Politician	peder brønnum scavenius	FN
+73a6ea8f-b28a-4017-8e3c-3b25282f8e81	36	41	OtherPER	herod	FP
+73a6ea8f-b28a-4017-8e3c-3b25282f8e81	36	41	Politician	herod	FN
+a04da3b9-2a99-403a-890b-352602b0e918	0	19	Artist	george bernard shaw	FP
+a04da3b9-2a99-403a-890b-352602b0e918	0	19	Politician	george bernard shaw	FN
+35bde3b5-7a0b-494a-a109-f05f9897fedc	61	69	HumanSettlement	mohammad	FP
+35bde3b5-7a0b-494a-a109-f05f9897fedc	61	76	Politician	mohammad khanlu	FN
+e6fc9a8c-aec1-4fb6-a582-9842d74ffcdc	29	39	OtherPER	paolo orsi	FP
+e6fc9a8c-aec1-4fb6-a582-9842d74ffcdc	29	39	Politician	paolo orsi	FN
+8c56e3e3-7058-4f70-a538-409c7fbcd1e3	62	74	Athlete	kate carnell	FP
+8c56e3e3-7058-4f70-a538-409c7fbcd1e3	62	74	Politician	kate carnell	FN
+4873d35c-f194-41b3-8c10-4c337b1313fc	34	70	PrivateCorp	national register of historic places	FP
+4873d35c-f194-41b3-8c10-4c337b1313fc	34	70	WrittenWork	national register of historic places	FN
+75846148-4f6d-4944-a6e3-ecf7a128de9a	30	42	PrivateCorp	snow country	FP
+75846148-4f6d-4944-a6e3-ecf7a128de9a	30	42	WrittenWork	snow country	FN
+48866376-8a0c-413b-851c-1935edb8dacb	82	100	Artist	king james version	FP
+48866376-8a0c-413b-851c-1935edb8dacb	82	100	WrittenWork	king james version	FN
+48866376-8a0c-413b-851c-1935edb8dacb	15	23	MusicalWork	oratorio	FN
+0e6cd948-222b-4839-ae87-83b60ea8544c	28	33	PrivateCorp	maxim	FP
+0e6cd948-222b-4839-ae87-83b60ea8544c	28	33	WrittenWork	maxim	FN
+e891a8ad-2ba9-453d-9b1a-ef7a82b4e95c	21	57	PrivateCorp	national register of historic places	FP
+e891a8ad-2ba9-453d-9b1a-ef7a82b4e95c	21	57	WrittenWork	national register of historic places	FN
+6d4824b2-1c20-4501-9e00-6470eb002428	21	57	PrivateCorp	national register of historic places	FP
+6d4824b2-1c20-4501-9e00-6470eb002428	21	57	WrittenWork	national register of historic places	FN
+740eb682-7489-4226-97a2-1cf4599b3573	8	24	PrivateCorp	kansas city star	FP
+740eb682-7489-4226-97a2-1cf4599b3573	4	24	WrittenWork	the kansas city star	FN
+99ce6071-542f-4576-ba9f-da5747e46ff0	0	12	PrivateCorp	the avengers	FP
+99ce6071-542f-4576-ba9f-da5747e46ff0	0	12	WrittenWork	the avengers	FN
+396331a2-ba51-4c52-9923-f58ffd25ee23	41	46	PrivateCorp	punch	FP
+396331a2-ba51-4c52-9923-f58ffd25ee23	41	46	WrittenWork	punch	FN
+9c8d6a09-eb1b-414b-b454-9e1ea643bb0d	67	81	PrivateCorp	dagens nyheter	FP
+9c8d6a09-eb1b-414b-b454-9e1ea643bb0d	67	81	WrittenWork	dagens nyheter	FN
+f8a3b80b-a5aa-4d20-b194-4f9fc546bd0c	82	89	PrivateCorp	fortune	FP
+f8a3b80b-a5aa-4d20-b194-4f9fc546bd0c	82	89	WrittenWork	fortune	FN
+3ccf0252-898a-46e7-ba13-6d946bd99d15	53	66	PrivateCorp	amader shomoy	FP
+3ccf0252-898a-46e7-ba13-6d946bd99d15	53	66	WrittenWork	amader shomoy	FN
+7fb68344-2b9a-4263-bab0-d4e5c28e7a9a	21	57	PrivateCorp	national register of historic places	FP
+7fb68344-2b9a-4263-bab0-d4e5c28e7a9a	21	57	WrittenWork	national register of historic places	FN
+b0f29164-d7ac-4f64-988c-8d343411892e	111	114	PrivateCorp	pan	FP
+b0f29164-d7ac-4f64-988c-8d343411892e	0	6	OtherPER	joseph	FP
+b0f29164-d7ac-4f64-988c-8d343411892e	0	14	Artist	joseph sattler	FN
+b0f29164-d7ac-4f64-988c-8d343411892e	111	114	WrittenWork	pan	FN
+78e3bcb4-4b83-4fac-b6da-d7d8280bd772	21	57	PrivateCorp	national register of historic places	FP
+78e3bcb4-4b83-4fac-b6da-d7d8280bd772	21	57	WrittenWork	national register of historic places	FN
+b3941333-4b90-45aa-803d-576a2640ecce	20	56	PrivateCorp	national register of historic places	FP
+b3941333-4b90-45aa-803d-576a2640ecce	20	56	WrittenWork	national register of historic places	FN
+5b497c99-ee8c-4b03-ae1d-b13629c05a19	4	19	PrivateCorp	hindustan times	FP
+5b497c99-ee8c-4b03-ae1d-b13629c05a19	4	19	WrittenWork	hindustan times	FN
+0b06903a-89fc-4dba-867c-05fe06ae4351	2	15	PrivateCorp	rolling stone	FP
+0b06903a-89fc-4dba-867c-05fe06ae4351	2	15	WrittenWork	rolling stone	FN
+566ddd79-45ee-4a56-9d69-9819521161d4	0	17	OtherPER	alexander shulgin	FP
+566ddd79-45ee-4a56-9d69-9819521161d4	0	17	Artist	alexander shulgin	FN
+eb86ca46-e24e-4c79-86dc-1f51e9cf4338	21	57	PrivateCorp	national register of historic places	FP
+eb86ca46-e24e-4c79-86dc-1f51e9cf4338	21	57	WrittenWork	national register of historic places	FN
+f7d5418d-c132-48d6-be80-823bf1134bf2	50	54	Drink	echh	FP
+f7d5418d-c132-48d6-be80-823bf1134bf2	44	54	WrittenWork	brand echh	FN
+1ab8f1a6-36ee-4c50-b105-3876069aad66	38	42	WrittenWork	1991	FN
+1e316aec-635a-45aa-b24d-59239f4bd972	12	32	PrivateCorp	anchorage daily news	FP
+1e316aec-635a-45aa-b24d-59239f4bd972	12	32	WrittenWork	anchorage daily news	FN
+b4be1b6e-1c8f-4fe7-bc13-2f4aba191361	5	24	PrivateCorp	kölnische rundschau	FP
+b4be1b6e-1c8f-4fe7-bc13-2f4aba191361	5	24	WrittenWork	kölnische rundschau	FN
+783cc7fe-eeb6-4fdf-b6e5-a79ff704d279	14	29	SportsManager	chester ronning	FP
+783cc7fe-eeb6-4fdf-b6e5-a79ff704d279	14	29	Politician	chester ronning	FN
+041195a2-745e-4c54-bd6a-5d1644069f1c	0	15	WrittenWork	another country	FN
+6606acdd-28c9-406b-a8da-919c56fa14d9	31	67	PrivateCorp	national register of historic places	FP
+6606acdd-28c9-406b-a8da-919c56fa14d9	31	67	WrittenWork	national register of historic places	FN
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	0	11	Artist	w. b. yeats	FP
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	12	22	WrittenWork	irish poet	FP
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	40	54	HumanSettlement	united kingdom	FP
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	0	11	Politician	w. b. yeats	FN
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	12	17	WrittenWork	irish	FN
+2cea25fa-d6cf-47aa-b326-04d76b9006c6	30	66	PrivateCorp	national register of historic places	FP
+2cea25fa-d6cf-47aa-b326-04d76b9006c6	30	66	WrittenWork	national register of historic places	FN
+384a7e51-dbbb-4787-89e7-e5907ab861fe	117	132	ArtWork	the persian boy	FP
+384a7e51-dbbb-4787-89e7-e5907ab861fe	117	132	WrittenWork	the persian boy	FN
+031b900e-2dd0-4f73-8d1e-fb204bb612a1	46	52	PrivateCorp	dragon	FP
+031b900e-2dd0-4f73-8d1e-fb204bb612a1	46	52	WrittenWork	dragon	FN
+9d159dd8-c5a4-43ae-aefa-ed27e2973fea	33	41	PrivateCorp	doggerel	FP
+9d159dd8-c5a4-43ae-aefa-ed27e2973fea	33	41	WrittenWork	doggerel	FN
+1eacbaf8-3341-4917-bb7c-1a2a9544a55d	38	49	PrivateCorp	dime novels	FP
+1eacbaf8-3341-4917-bb7c-1a2a9544a55d	38	49	WrittenWork	dime novels	FN
+f295580a-6319-481e-8975-ad08cac6fde4	77	113	PrivateCorp	national register of historic places	FP
+f295580a-6319-481e-8975-ad08cac6fde4	77	113	WrittenWork	national register of historic places	FN
+54443f53-d031-4eb7-b294-76afe4967d9b	29	41	PrivateCorp	daily mirror	FP
+54443f53-d031-4eb7-b294-76afe4967d9b	29	41	WrittenWork	daily mirror	FN
+f4c30339-a766-47ee-85bd-039085ab7587	0	10	PrivateCorp	publishers	FP
+f4c30339-a766-47ee-85bd-039085ab7587	0	17	WrittenWork	publishers weekly	FN
+cb7500f6-f1c9-4ea1-b9b5-1deb8c4ec3fb	0	6	PrivateCorp	broken	FP
+cb7500f6-f1c9-4ea1-b9b5-1deb8c4ec3fb	0	33	Software	broken sword : the angel of death	FN
+98680b32-ef3c-487b-88ea-68b01fd4d545	57	62	PrivateCorp	gacha	FP
+98680b32-ef3c-487b-88ea-68b01fd4d545	57	62	Software	gacha	FN
+d422a7d4-a57a-4bde-82e2-7e916089826d	43	58	PrivateCorp	forza horizon 3	FP
+d422a7d4-a57a-4bde-82e2-7e916089826d	43	58	Software	forza horizon 3	FN
+3166b79b-c6e4-457c-888f-fdc5da75a1b7	25	30	PrivateCorp	tidal	FP
+3166b79b-c6e4-457c-888f-fdc5da75a1b7	25	30	Software	tidal	FN
+560ce296-6696-468b-bc5c-37fef71dd939	0	14	PrivateCorp	word processor	FP
+560ce296-6696-468b-bc5c-37fef71dd939	0	14	Software	word processor	FN
+f14894e6-0774-40fc-ba27-0be1c2f35f84	28	35	PrivateCorp	elsword	FP
+f14894e6-0774-40fc-ba27-0be1c2f35f84	28	35	Software	elsword	FN
+de698c34-ffd1-499f-945f-55574cc915d8	45	65	PrivateCorp	assassin 's creed ii	FP
+de698c34-ffd1-499f-945f-55574cc915d8	45	65	Software	assassin 's creed ii	FN
+6fbecfc5-cc1c-4611-8f65-f46cd82313e2	25	43	VisualWork	star wars : empire	FP
+6fbecfc5-cc1c-4611-8f65-f46cd82313e2	25	50	Software	star wars : empire at war	FN
+3bb2df7e-6171-43fb-bd4c-d1cec6cbd540	53	59	PrivateCorp	itunes	FP
+3bb2df7e-6171-43fb-bd4c-d1cec6cbd540	53	59	Software	itunes	FN
+d42066af-cbb0-436b-a1be-ef6a7fafae30	98	104	PrivateCorp	ms-dos	FP
+d42066af-cbb0-436b-a1be-ef6a7fafae30	98	104	Software	ms-dos	FN
+74869c0d-52f8-459f-a1b8-b07c128ddc06	9	29	PrivateCorp	planescape : torment	FP
+74869c0d-52f8-459f-a1b8-b07c128ddc06	9	29	Software	planescape : torment	FN
+a5f8c0d5-ec97-4a22-b62d-84e3d423d890	55	63	PrivateCorp	telegram	FP
+a5f8c0d5-ec97-4a22-b62d-84e3d423d890	55	63	Software	telegram	FN
+6a5628eb-3600-42eb-bbe5-e377a9b25b2e	12	18	PrivateCorp	twitch	FP
+6a5628eb-3600-42eb-bbe5-e377a9b25b2e	12	18	Software	twitch	FN
+b62e4ba9-7a62-4c63-8639-d5323843e7f8	106	115	PrivateCorp	caesar ii	FP
+b62e4ba9-7a62-4c63-8639-d5323843e7f8	106	115	Software	caesar ii	FN
+5c9169d9-7fa4-4804-ab0a-327f5360492d	7	17	ArtWork	assemblers	FP
+5c9169d9-7fa4-4804-ab0a-327f5360492d	0	6	Software	os/360	FN
+f63aaf91-22a9-4337-bfe4-a65805bea26a	33	56	Software	small browser extension	FP
+f63aaf91-22a9-4337-bfe4-a65805bea26a	39	56	Software	browser extension	FN
+27929f17-26b8-41d6-b33d-2152ae965187	15	31	PrivateCorp	internet archive	FP
+27929f17-26b8-41d6-b33d-2152ae965187	15	31	Software	internet archive	FN
+eb27f11a-ae86-4cdb-b804-6b884e901df0	28	33	PrivateCorp	latex	FP
+eb27f11a-ae86-4cdb-b804-6b884e901df0	28	33	Software	latex	FN
+1a816672-7566-4fb8-b74c-2bb54cda4604	25	41	PrivateCorp	ubisoft montreal	FP
+1a816672-7566-4fb8-b74c-2bb54cda4604	25	41	ORG	ubisoft montreal	FN
+1a816672-7566-4fb8-b74c-2bb54cda4604	63	81	Software	online multiplayer	FN
+05bdbfa8-5227-42ba-8961-ab4db02c82b9	48	60	PrivateCorp	cardinal syn	FP
+05bdbfa8-5227-42ba-8961-ab4db02c82b9	34	43	PrivateCorp	dark rift	FP
+05bdbfa8-5227-42ba-8961-ab4db02c82b9	48	60	Software	cardinal syn	FN
+05bdbfa8-5227-42ba-8961-ab4db02c82b9	34	43	Software	dark rift	FN
+b29ce1a9-32c7-43b1-8c5e-1e4dd47d0990	53	65	PrivateCorp	wereldmuseum	FP
+b29ce1a9-32c7-43b1-8c5e-1e4dd47d0990	33	44	PrivateCorp	rijksmuseum	FP
+b29ce1a9-32c7-43b1-8c5e-1e4dd47d0990	53	65	OtherLOC	wereldmuseum	FN
+b29ce1a9-32c7-43b1-8c5e-1e4dd47d0990	33	44	Facility	rijksmuseum	FN
+5722be92-d04f-4b2c-8e40-cc8c021a681c	56	69	PrivateCorp	athletic park	FP
+5722be92-d04f-4b2c-8e40-cc8c021a681c	56	69	OtherLOC	athletic park	FN
+bef2e7db-1573-46d9-bdd3-ade07a9f02a5	43	76	PrivateCorp	diamond fund permanent exposition	FP
+bef2e7db-1573-46d9-bdd3-ade07a9f02a5	43	55	OtherLOC	diamond fund	FN
+9af5f198-939c-4f45-8a1a-6b52fa65c332	48	75	PrivateCorp	virginia historical society	FP
+9af5f198-939c-4f45-8a1a-6b52fa65c332	48	75	OtherLOC	virginia historical society	FN
+cbec9128-7d80-48e6-8386-629822b45029	52	67	Station	low earth orbit	FP
+cbec9128-7d80-48e6-8386-629822b45029	103	116	Station	geostationary	FP
+cbec9128-7d80-48e6-8386-629822b45029	52	67	OtherLOC	low earth orbit	FN
+cbec9128-7d80-48e6-8386-629822b45029	103	131	OtherLOC	geostationary transfer orbit	FN
+beff0955-7cc2-4f1d-89b6-a95798b4bc45	67	73	HumanSettlement	vienna	FP
+beff0955-7cc2-4f1d-89b6-a95798b4bc45	42	48	ORG	united	FP
+beff0955-7cc2-4f1d-89b6-a95798b4bc45	42	73	OtherLOC	united nations office at vienna	FN
+14ee9e4c-64b6-4fc1-897b-88137eff3259	67	72	Station	north	FP
+14ee9e4c-64b6-4fc1-897b-88137eff3259	67	100	OtherLOC	north woolwich old station museum	FN
+5f86e0a4-b1e5-4340-807f-38506b02a37b	21	33	PrivateCorp	wereldmuseum	FP
+5f86e0a4-b1e5-4340-807f-38506b02a37b	21	33	OtherLOC	wereldmuseum	FN
+63704710-f5f0-48c6-ab1a-1ecb85f9a76c	23	45	PrivateCorp	hollywood walk of fame	FP
+63704710-f5f0-48c6-ab1a-1ecb85f9a76c	23	45	OtherLOC	hollywood walk of fame	FN
+bfddc214-98b6-4ff2-ae67-2ae117ecb4fd	30	56	PrivateCorp	canadian golf hall of fame	FP
+bfddc214-98b6-4ff2-ae67-2ae117ecb4fd	30	56	OtherLOC	canadian golf hall of fame	FN
+9e4b28c3-24df-43d4-a698-d36e545f0706	81	99	Facility	munich stadtmuseum	FP
+9e4b28c3-24df-43d4-a698-d36e545f0706	81	99	OtherLOC	munich stadtmuseum	FN
+4dca98bf-3581-4909-b8a2-fe9214b1b174	89	94	PrivateCorp	fleet	FP
+4dca98bf-3581-4909-b8a2-fe9214b1b174	113	122	HumanSettlement	yeovilton	FP
+4dca98bf-3581-4909-b8a2-fe9214b1b174	39	48	Vehicle	ark royal	FP
+4dca98bf-3581-4909-b8a2-fe9214b1b174	89	109	OtherLOC	fleet air arm museum	FN
+4dca98bf-3581-4909-b8a2-fe9214b1b174	113	122	Station	yeovilton	FN
+06254790-66ab-49a7-805c-c7551821e9c8	47	68	PrivateCorp	vanderbilt university	FP
+06254790-66ab-49a7-805c-c7551821e9c8	47	68	OtherLOC	vanderbilt university	FN
+0b74d0ef-1360-4082-8622-523860bac6fc	31	41	Food	black gram	FP
+0b74d0ef-1360-4082-8622-523860bac6fc	0	4	Food	vada	FN
+3380c2d9-1813-4cb4-9a58-480b4989c6f8	0	13	PrivateCorp	rice puddings	FP
+3380c2d9-1813-4cb4-9a58-480b4989c6f8	0	13	Food	rice puddings	FN
+7f239d9d-e6be-4c19-8cf3-4a327cb8ac56	47	53	PrivateCorp	fry 's	FP
+7f239d9d-e6be-4c19-8cf3-4a327cb8ac56	54	61	Food	turkish	FP
+7f239d9d-e6be-4c19-8cf3-4a327cb8ac56	47	69	Food	fry 's turkish delight	FN
+413480d0-7759-42ee-b487-d4a5902b4836	45	50	PrivateCorp	rasam	FP
+413480d0-7759-42ee-b487-d4a5902b4836	27	31	Food	curd	FN
+413480d0-7759-42ee-b487-d4a5902b4836	15	19	Food	rice	FN
+413480d0-7759-42ee-b487-d4a5902b4836	45	50	Food	rasam	FN
+413480d0-7759-42ee-b487-d4a5902b4836	20	26	Food	sambar	FN
+9434945a-0dc5-4c57-b532-6ee32c343b9a	0	7	PrivateCorp	beignet	FP
+9434945a-0dc5-4c57-b532-6ee32c343b9a	0	7	Food	beignet	FN
+16100a5e-a98a-484e-bf38-fe9e2292168a	52	65	Symptom	carbohydrates	FP
+16100a5e-a98a-484e-bf38-fe9e2292168a	41	65	Food	structural carbohydrates	FN
+40ff2570-6dfe-4823-96ff-58eae7445c09	68	93	PrivateCorp	genetically modified food	FP
+40ff2570-6dfe-4823-96ff-58eae7445c09	68	93	Food	genetically modified food	FN
+40ff2570-6dfe-4823-96ff-58eae7445c09	12	22	Food	flavr savr	FN
+217dd2db-bd81-47b1-9c78-04b86a1805e7	0	7	PrivateCorp	fitness	FP
+217dd2db-bd81-47b1-9c78-04b86a1805e7	0	7	Food	fitness	FN
+600e5de9-38fa-4c0f-b2a0-edc223aa0090	61	66	Food	cakes	FP
+600e5de9-38fa-4c0f-b2a0-edc223aa0090	71	80	Food	ice cream	FP
+0d8e8b7e-a7e7-4202-abf3-74210f348552	30	37	PrivateCorp	caramel	FP
+0d8e8b7e-a7e7-4202-abf3-74210f348552	30	37	Food	caramel	FN
+adf465b8-e156-4354-ac42-3c72842837fe	36	50	PrivateCorp	chili festival	FP
+adf465b8-e156-4354-ac42-3c72842837fe	36	41	Food	chili	FN
+3ed15997-74f9-4add-a8f4-4ec3175306df	58	70	PrivateCorp	désenchantée	FP
+3ed15997-74f9-4add-a8f4-4ec3175306df	58	70	MusicalWork	désenchantée	FN
+206d297c-ce8a-46a3-80e9-635ecadefc74	65	68	PrivateCorp	god	FP
+206d297c-ce8a-46a3-80e9-635ecadefc74	65	83	MusicalWork	god save the queen	FN
+cc598342-b54f-48af-a34b-5766b6358981	24	31	PrivateCorp	sanctus	FP
+cc598342-b54f-48af-a34b-5766b6358981	24	31	MusicalWork	sanctus	FN
+246a9919-f79a-4356-b8d5-77f2a325bc3a	17	31	Artist	grahame nelson	FP
+43fc330d-1a56-4afc-af2b-d1fee854cef6	0	13	ArtWork	il re pastore	FP
+43fc330d-1a56-4afc-af2b-d1fee854cef6	0	13	MusicalWork	il re pastore	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	42	59	PrivateCorp	who 's that chick	FP
+d8fd45c6-92c3-4260-918b-90601f2878ca	0	15	MusicalWork	little bad girl	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	62	73	MusicalWork	without you	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	22	41	MusicalWork	where them girls at	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	16	21	MusicalWork	sweat	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	42	61	MusicalWork	who 's that chick ?	FN
+5242b22f-1ca7-44dc-bdca-c5d7c9309dd6	64	83	MusicalWork	on the fully loaded	FP
+5242b22f-1ca7-44dc-bdca-c5d7c9309dd6	50	59	VisualWork	the movie	FP
+5242b22f-1ca7-44dc-bdca-c5d7c9309dd6	71	83	MusicalWork	fully loaded	FN
+17270e81-ef93-4bbc-82bc-8296d91c8488	50	62	MusicalWork	studio album	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	0	5	MusicalGRP	adele	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	8	15	ArtWork	someone	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	53	66	Artist	david johnson	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	0	5	Artist	adele	FN
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	8	24	MusicalWork	someone like you	FN
+df500c40-bb55-4ccc-9a6f-38400a9c3166	10	52	PrivateCorp	pisces , aquarius , capricorn & jones ltd.	FP
+df500c40-bb55-4ccc-9a6f-38400a9c3166	10	52	MusicalWork	pisces , aquarius , capricorn & jones ltd.	FN
+9b2bc5a9-bb61-4a20-abca-40489b7e0c33	58	66	PrivateCorp	eldritch	FP
+9b2bc5a9-bb61-4a20-abca-40489b7e0c33	58	66	MusicalGRP	eldritch	FN
+e6236aa6-b8eb-40ea-894c-760b70633ac3	25	37	PrivateCorp	steelfactory	FP
+e6236aa6-b8eb-40ea-894c-760b70633ac3	25	37	MusicalWork	steelfactory	FN
+6484ef1e-e6e9-4382-8d60-cbb301fa07ad	39	44	MusicalGRP	simon	FP
+6484ef1e-e6e9-4382-8d60-cbb301fa07ad	39	56	MusicalGRP	simon & garfunkel	FN
+77f34c84-4c7e-420a-8c48-ec94ef14c675	67	74	PrivateCorp	himnusz	FP
+77f34c84-4c7e-420a-8c48-ec94ef14c675	67	74	MusicalWork	himnusz	FN
+854530c5-6509-49fe-beb5-115a11e4b6bd	82	96	PrivateCorp	cracker barrel	FP
+854530c5-6509-49fe-beb5-115a11e4b6bd	82	96	PublicCorp	cracker barrel	FN
+e235c048-680e-4bbf-bc54-e3ec600bffc3	0	5	PrivateCorp	jordu	FP
+e235c048-680e-4bbf-bc54-e3ec600bffc3	0	5	MusicalWork	jordu	FN
+e235c048-680e-4bbf-bc54-e3ec600bffc3	8	19	Artist	duke jordan	FN
+e1594b65-4de7-4cd6-9a8e-d5bce59b86d6	23	33	ArtWork	copacabana	FP
+e1594b65-4de7-4cd6-9a8e-d5bce59b86d6	23	33	MusicalWork	copacabana	FN
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	63	74	MusicalWork	black steel	FP
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	25	28	MusicalGRP	get	FP
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	78	95	VisualWork	the hour of chaos	FP
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	63	95	MusicalWork	black steel in the hour of chaos	FN
+a454ef46-5178-46de-9d7a-cd0e21870367	28	50	ArtWork	a matter of perception	FP
+a454ef46-5178-46de-9d7a-cd0e21870367	7	25	ArtWork	she rocks , vol. 1	FP
+a454ef46-5178-46de-9d7a-cd0e21870367	7	25	MusicalWork	she rocks , vol. 1	FN
+925b526d-796c-4c15-8ad3-2588a7a4184d	49	56	Artist	heyward	FP
+925b526d-796c-4c15-8ad3-2588a7a4184d	42	48	Artist	dubose	FP
+925b526d-796c-4c15-8ad3-2588a7a4184d	42	56	Artist	dubose heyward	FN
+f4d511fc-6663-4b7a-b169-4c7287fddfd4	0	3	PrivateCorp	tha	FP
+f4d511fc-6663-4b7a-b169-4c7287fddfd4	0	14	MusicalWork	tha carter iii	FN
+f4377fea-ccd1-486c-a43e-a62bc603bbe1	0	5	MusicalGRP	donna	FP
+f4377fea-ccd1-486c-a43e-a62bc603bbe1	6	12	MusicalWork	summer	FP
+f4377fea-ccd1-486c-a43e-a62bc603bbe1	0	12	Artist	donna summer	FN
+21fc33af-887f-416e-ad92-670b51da6b25	116	133	ArtWork	requiem canticles	FP
+21fc33af-887f-416e-ad92-670b51da6b25	48	57	MusicalGRP	orchestra	FP
+21fc33af-887f-416e-ad92-670b51da6b25	116	133	MusicalWork	requiem canticles	FN
+7be4d1fa-ac23-40e2-bf7b-9ed8a9a45019	18	23	Artist	terry	FN
+9818d45c-dce1-4bff-83cb-d8b8935235c8	11	23	Artist	tadd dameron	FN
+8a548fde-a93c-4977-99a7-90614c0be4ec	64	78	PrivateCorp	massive attack	FP
+8a548fde-a93c-4977-99a7-90614c0be4ec	64	78	MusicalWork	massive attack	FN
+1090f236-3ca0-481a-b430-4de72b675d55	30	40	Politician	lon bender	FP
+1090f236-3ca0-481a-b430-4de72b675d55	30	40	Scientist	lon bender	FN
+229a31d4-856c-4949-9097-7efee1b6a383	11	17	ArtWork	sheryl	FP
+229a31d4-856c-4949-9097-7efee1b6a383	11	26	Scientist	sheryl sandberg	FN
+21d3cf3d-5293-48a0-85a8-2a826e9a2b04	35	53	OtherPER	john isaac hawkins	FP
+21d3cf3d-5293-48a0-85a8-2a826e9a2b04	35	53	Scientist	john isaac hawkins	FN
+99589556-26a3-4bc4-8050-8f0922996969	0	13	OtherPER	alice agogino	FP
+99589556-26a3-4bc4-8050-8f0922996969	0	13	Scientist	alice agogino	FN
+8eb6eb00-569d-4bde-9db5-80321a351077	66	69	OtherPER	red	FP
+8eb6eb00-569d-4bde-9db5-80321a351077	66	75	Scientist	red adair	FN
+39a4479e-e3a8-4268-af01-6a80aefee0bb	57	61	PrivateCorp	ping	FP
+39a4479e-e3a8-4268-af01-6a80aefee0bb	0	7	Artist	karsten	FP
+39a4479e-e3a8-4268-af01-6a80aefee0bb	57	61	ORG	ping	FN
+39a4479e-e3a8-4268-af01-6a80aefee0bb	0	15	Scientist	karsten solheim	FN
+20161b65-daa8-4225-8a01-b45d7036468a	10	25	OtherPER	robert kronfeld	FP
+20161b65-daa8-4225-8a01-b45d7036468a	10	25	Scientist	robert kronfeld	FN
+41629e88-6e82-456f-b8ce-7971bb6cc725	2	13	OtherPER	fanny gates	FP
+41629e88-6e82-456f-b8ce-7971bb6cc725	2	13	Scientist	fanny gates	FN
+c994e604-9482-4227-a855-b62a8ab1020f	29	43	OtherPER	eugenius birch	FP
+c994e604-9482-4227-a855-b62a8ab1020f	29	43	Scientist	eugenius birch	FN
+865b3ad9-83eb-4655-a940-56d14b7cc0cc	23	38	OtherPER	arati prabhakar	FP
+865b3ad9-83eb-4655-a940-56d14b7cc0cc	23	38	Scientist	arati prabhakar	FN
+f86fe0e4-c0dc-4985-8878-ec5c401f08a6	21	36	Cleric	william wardell	FP
+f86fe0e4-c0dc-4985-8878-ec5c401f08a6	21	36	Scientist	william wardell	FN
+1a1b56d7-743a-4c4a-ba0c-de83e1f043dd	63	70	PrivateCorp	assault	FP
+1a1b56d7-743a-4c4a-ba0c-de83e1f043dd	0	16	OtherPER	vladimir simonov	FP
+1a1b56d7-743a-4c4a-ba0c-de83e1f043dd	0	16	Scientist	vladimir simonov	FN
+1a1b56d7-743a-4c4a-ba0c-de83e1f043dd	63	76	OtherPROD	assault rifle	FN
+c3124303-273a-49b9-8fa4-ff1bed4294a4	38	52	Athlete	bill belichick	FP
+c3124303-273a-49b9-8fa4-ff1bed4294a4	38	52	SportsManager	bill belichick	FN
+af937890-f4a0-47b4-b565-2e6921550694	27	36	HumanSettlement	svendborg	FP
+af937890-f4a0-47b4-b565-2e6921550694	95	105	SportsGRP	brøndby if	FP
+af937890-f4a0-47b4-b565-2e6921550694	95	105	PublicCorp	brøndby if	FN
+0c8636ad-3885-41aa-bf54-89459283bf66	72	84	Athlete	jürgen klopp	FP
+0c8636ad-3885-41aa-bf54-89459283bf66	72	84	SportsManager	jürgen klopp	FN
+5e1f18a8-6504-4b2f-ab23-e579ca55c7c6	0	14	PrivateCorp	hossein faraki	FP
+5e1f18a8-6504-4b2f-ab23-e579ca55c7c6	0	14	SportsManager	hossein faraki	FN
+af20d88c-d031-4a05-b194-9fe419fae083	45	65	Athlete	alejandro villanueva	FP
+af20d88c-d031-4a05-b194-9fe419fae083	45	65	SportsManager	alejandro villanueva	FN
+6e20b857-52ce-4138-9ee0-8de076988790	36	47	Artist	hope powell	FP
+6e20b857-52ce-4138-9ee0-8de076988790	36	47	SportsManager	hope powell	FN
+75a348b5-e67f-400b-ba5d-1fc09a16af90	24	37	PrivateCorp	geno auriemma	FP
+75a348b5-e67f-400b-ba5d-1fc09a16af90	24	37	SportsManager	geno auriemma	FN
+e56c45e5-20ce-4f2d-9820-a88a8c6da42d	0	5	SportsManager	tommy	FP
+e56c45e5-20ce-4f2d-9820-a88a8c6da42d	0	12	SportsManager	tommy wright	FN
+de56a664-1047-428f-8721-e90ef59c6616	32	42	Athlete	paul brown	FP
+de56a664-1047-428f-8721-e90ef59c6616	32	42	SportsManager	paul brown	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	28	35	MusicalWork	love is	FP
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	13	27	MusicalGRP	virginia plain	FP
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	48	51	MusicalWork	the	FP
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	28	44	MusicalWork	love is the drug	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	45	58	MusicalWork	do the strand	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	13	27	MusicalWork	virginia plain	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	0	10	MusicalGRP	roxy music	FN
+e158de93-3b28-42de-9c68-83ad5eeae3ff	67	75	PrivateCorp	lonerism	FP
+e158de93-3b28-42de-9c68-83ad5eeae3ff	8	12	Athlete	tame	FP
+e158de93-3b28-42de-9c68-83ad5eeae3ff	67	75	MusicalWork	lonerism	FN
+e158de93-3b28-42de-9c68-83ad5eeae3ff	8	19	MusicalGRP	tame impala	FN
+0274a39a-a81d-4d7a-be41-e888d34699bf	79	82	MusicalGRP	mad	FP
+0274a39a-a81d-4d7a-be41-e888d34699bf	79	89	MusicalGRP	mad season	FN
+2349dbcc-9689-40b5-8394-d81357ded962	32	48	PrivateCorp	bbc philharmonic	FP
+2349dbcc-9689-40b5-8394-d81357ded962	32	48	MusicalGRP	bbc philharmonic	FN
+24d175d2-425f-4e77-a6ac-3aad479f2286	38	62	PrivateCorp	trinity college of music	FP
+24d175d2-425f-4e77-a6ac-3aad479f2286	38	62	MusicalGRP	trinity college of music	FN
+4b7a6e37-5096-4126-9052-0d9a32b55f14	35	46	PrivateCorp	spice girls	FP
+4b7a6e37-5096-4126-9052-0d9a32b55f14	58	65	VisualWork	wannabe	FP
+4b7a6e37-5096-4126-9052-0d9a32b55f14	35	46	MusicalGRP	spice girls	FN
+4b7a6e37-5096-4126-9052-0d9a32b55f14	58	65	MusicalWork	wannabe	FN
+d55f86c1-3149-4576-8dc5-ec779041ccf5	64	73	MusicalGRP	the jicks	FP
+d55f86c1-3149-4576-8dc5-ec779041ccf5	44	59	Artist	stephen malkmus	FP
+d55f86c1-3149-4576-8dc5-ec779041ccf5	44	73	MusicalGRP	stephen malkmus and the jicks	FN
+480fca84-a4a6-4a9f-8a8a-7325f61eab6b	0	9	PrivateCorp	x-press 2	FP
+480fca84-a4a6-4a9f-8a8a-7325f61eab6b	0	9	MusicalGRP	x-press 2	FN
+af25d6d2-2b13-4091-a1fd-3bf68cefe8f4	18	37	MusicalGRP	southern rock opera	FP
+af25d6d2-2b13-4091-a1fd-3bf68cefe8f4	18	37	MusicalWork	southern rock opera	FN
+531a17d6-d60d-4698-b389-0866e2e794dc	42	47	PrivateCorp	timex	FP
+531a17d6-d60d-4698-b389-0866e2e794dc	42	59	MusicalGRP	timex social club	FN
+7aab7dbd-dec8-49bf-be9b-d1e3e31353f6	41	51	PrivateCorp	bad brains	FP
+7aab7dbd-dec8-49bf-be9b-d1e3e31353f6	41	51	MusicalGRP	bad brains	FN
+72013d28-2a0b-4eb2-8d59-e7bd09e286c2	15	21	PrivateCorp	tripod	FP
+72013d28-2a0b-4eb2-8d59-e7bd09e286c2	15	21	MusicalGRP	tripod	FN
+48d97c74-6983-4291-97b1-67f4cf794f6f	57	68	PrivateCorp	renaissance	FP
+48d97c74-6983-4291-97b1-67f4cf794f6f	57	68	MusicalGRP	renaissance	FN
+3a399134-8cc7-460a-a3a6-f572ab35ec89	92	101	MusicalGRP	sky saxon	FP
+3a399134-8cc7-460a-a3a6-f572ab35ec89	92	101	Artist	sky saxon	FN
+19d4904e-791c-4918-b872-cd7b4f0a04f6	34	44	Artist	nick jonas	FP
+6fae6749-6057-4555-bf8b-68f070971c56	24	28	MusicalGRP	hall	FP
+6fae6749-6057-4555-bf8b-68f070971c56	24	36	MusicalGRP	hall & oates	FN
+651066f8-091b-44c7-9871-9b089ed81d0f	0	17	MusicalWork	de donde vengo yo	FP
+651066f8-091b-44c7-9871-9b089ed81d0f	21	33	PrivateCorp	chocquibtown	FP
+651066f8-091b-44c7-9871-9b089ed81d0f	21	33	MusicalGRP	chocquibtown	FN
+0054e0de-a793-498d-a0d8-24eb9090d34a	41	62	PrivateCorp	michigan philharmonic	FP
+0054e0de-a793-498d-a0d8-24eb9090d34a	41	62	MusicalGRP	michigan philharmonic	FN
+b6abf272-7f65-49c6-9f2d-2c1a92477447	45	54	PrivateCorp	fischer-z	FP
+b6abf272-7f65-49c6-9f2d-2c1a92477447	45	54	MusicalGRP	fischer-z	FN
+879273f4-9ad1-4491-99df-a28d993f358c	12	18	ArtWork	remain	FP
+879273f4-9ad1-4491-99df-a28d993f358c	31	44	PrivateCorp	talking heads	FP
+879273f4-9ad1-4491-99df-a28d993f358c	12	27	MusicalWork	remain in light	FN
+879273f4-9ad1-4491-99df-a28d993f358c	31	44	MusicalGRP	talking heads	FN
+03e6d451-4e03-4008-b63c-3b949c28c9d4	44	59	PrivateCorp	secret chiefs 3	FP
+03e6d451-4e03-4008-b63c-3b949c28c9d4	44	59	MusicalGRP	secret chiefs 3	FN
+5e4d0bf4-b000-4552-b98a-503451b9ac80	0	11	PrivateCorp	soda stereo	FP
+5e4d0bf4-b000-4552-b98a-503451b9ac80	0	11	MusicalGRP	soda stereo	FN
+fdfde1df-b794-4cc9-b04b-fa924cff53e2	37	47	MusicalWork	i see love	FP
+fdfde1df-b794-4cc9-b04b-fa924cff53e2	65	74	PrivateCorp	third day	FP
+fdfde1df-b794-4cc9-b04b-fa924cff53e2	65	74	MusicalGRP	third day	FN
+f5821dcc-65f0-4512-889d-440d68ba62b4	68	74	Artist	master	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	40	44	MusicalGRP	mane	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	34	39	Artist	gucci	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	68	76	Athlete	master p	FN
+f5821dcc-65f0-4512-889d-440d68ba62b4	34	44	Artist	gucci mane	FN
+a90002ad-94a1-489c-b2f0-803817d055fa	38	42	AnatomicalStructure	wood	FN
+52719305-93f1-46a5-885a-73704074d76e	83	93	PrivateCorp	petiolules	FP
+52719305-93f1-46a5-885a-73704074d76e	83	93	AnatomicalStructure	petiolules	FN
+09b70632-db89-4a41-8038-bb5d63ec8837	82	93	Symptom	endoneurium	FP
+09b70632-db89-4a41-8038-bb5d63ec8837	53	63	PrivateCorp	connective	FP
+09b70632-db89-4a41-8038-bb5d63ec8837	82	93	AnatomicalStructure	endoneurium	FN
+41252d46-108e-4719-8f4b-450be963369b	29	33	Symptom	scar	FP
+fbf7cbd3-9f67-4b32-b344-389f42ce28de	59	65	PrivateCorp	helmet	FP
+fbf7cbd3-9f67-4b32-b344-389f42ce28de	4	11	AnatomicalStructure	flowers	FN
+d407b821-78ee-472a-8831-c48f8986aaed	102	116	AnatomicalStructure	pudendal canal	FP
+d407b821-78ee-472a-8831-c48f8986aaed	0	25	Disease	pudendal nerve entrapment	FN
+dc332537-a052-4c5a-bb35-5d2d5652560d	4	8	PrivateCorp	bark	FP
+dc332537-a052-4c5a-bb35-5d2d5652560d	4	8	AnatomicalStructure	bark	FN
+e522086f-83b5-47fb-9261-7f8d522e9598	22	27	Symptom	edema	FP
+3ba2095b-5c8f-408c-b511-c8c580ba8ba2	4	9	PrivateCorp	flesh	FP
+3ba2095b-5c8f-408c-b511-c8c580ba8ba2	4	9	AnatomicalStructure	flesh	FN
+8d9fa8e8-d103-427e-ad27-9de66edd931b	20	29	Symptom	phyllodes	FP
+8d9fa8e8-d103-427e-ad27-9de66edd931b	20	29	AnatomicalStructure	phyllodes	FN
+f6d0e12c-ec06-431d-9d91-e51578fc5c06	101	106	AnatomicalStructure	hairs	FP
+03bb4e85-9cb6-4495-89e3-38127f3783be	95	105	AnatomicalStructure	hair cells	FP
+03bb4e85-9cb6-4495-89e3-38127f3783be	110	119	AnatomicalStructure	endolymph	FP
+03bb4e85-9cb6-4495-89e3-38127f3783be	128	137	AnatomicalStructure	inner ear	FN
+7dfe50f0-0c79-4266-a0aa-691e4b9ef87f	4	13	PrivateCorp	columella	FP
+7dfe50f0-0c79-4266-a0aa-691e4b9ef87f	4	13	AnatomicalStructure	columella	FN
+118375da-addf-48aa-b2b2-13bbe5db049c	58	62	PrivateCorp	aril	FP
+118375da-addf-48aa-b2b2-13bbe5db049c	58	62	AnatomicalStructure	aril	FN
+b18a41ce-476b-4ce7-8953-b55cf111d186	42	59	AnatomicalStructure	orbicularis oculi	FP
+b18a41ce-476b-4ce7-8953-b55cf111d186	4	22	AnatomicalStructure	palpebral branches	FN
+239dc614-83bf-4e58-ac3a-904ca00e7743	56	69	Symptom	inflorescence	FP
+239dc614-83bf-4e58-ac3a-904ca00e7743	56	69	AnatomicalStructure	inflorescence	FN
+f057cba4-5b4f-43f6-9a5f-a8f5cb55fbf1	55	65	ArtWork	face masks	FP
+f057cba4-5b4f-43f6-9a5f-a8f5cb55fbf1	20	30	ArtWork	respirator	FP
+f057cba4-5b4f-43f6-9a5f-a8f5cb55fbf1	55	65	Clothing	face masks	FN
+814bbdd3-854f-49c2-8cb5-866e37e430cb	17	27	PrivateCorp	petticoats	FP
+814bbdd3-854f-49c2-8cb5-866e37e430cb	17	27	Clothing	petticoats	FN
+2b6bdf3a-c6bb-4367-9195-a011151d3a26	0	6	PublicCorp	staple	FP
+2b6bdf3a-c6bb-4367-9195-a011151d3a26	41	51	ArtWork	streetwear	FP
+2b6bdf3a-c6bb-4367-9195-a011151d3a26	41	51	Clothing	streetwear	FN
+fb38e75e-0602-4745-808e-a83bd546e920	42	52	ArtWork	sunglasses	FP
+fb38e75e-0602-4745-808e-a83bd546e920	42	52	Clothing	sunglasses	FN
+1bf52b64-3d13-494d-b5f9-586b1432e733	23	30	ArtWork	ceiling	FP
+1bf52b64-3d13-494d-b5f9-586b1432e733	0	6	Clothing	coving	FN
+e47d5940-32ab-4836-b334-d8945c42b3cb	42	48	PrivateCorp	frocks	FP
+e47d5940-32ab-4836-b334-d8945c42b3cb	42	48	Clothing	frocks	FN
+b552fb77-d31d-4a46-b351-fbca05cf246e	104	117	Clothing	glengarry cap	FP
+b552fb77-d31d-4a46-b351-fbca05cf246e	104	113	Clothing	glengarry	FN
+c2fc6d80-f630-4dd1-a942-9a0bb399085f	81	88	Symptom	unkempt	FP
+c2fc6d80-f630-4dd1-a942-9a0bb399085f	130	140	PrivateCorp	undershirt	FP
+c2fc6d80-f630-4dd1-a942-9a0bb399085f	130	140	Clothing	undershirt	FN
+8df7c7c8-9786-4779-986a-1d91367928cd	34	40	ArtWork	amulet	FP
+8df7c7c8-9786-4779-986a-1d91367928cd	34	40	Clothing	amulet	FN
+71e29429-09c4-476a-a5a1-6bc1f653c41a	24	37	PrivateCorp	wedding dress	FP
+71e29429-09c4-476a-a5a1-6bc1f653c41a	24	37	Clothing	wedding dress	FN
+c862dd7f-2661-40f7-8273-10c54b035c43	93	118	ArtWork	vindiciae contra tyrannos	FP
+c862dd7f-2661-40f7-8273-10c54b035c43	0	13	OtherPER	theodore beza	FP
+c862dd7f-2661-40f7-8273-10c54b035c43	37	57	ArtWork	right of magistrates	FP
+c862dd7f-2661-40f7-8273-10c54b035c43	37	57	WrittenWork	right of magistrates	FN
+c862dd7f-2661-40f7-8273-10c54b035c43	0	13	Cleric	theodore beza	FN
+c862dd7f-2661-40f7-8273-10c54b035c43	93	118	WrittenWork	vindiciae contra tyrannos	FN
+47329e1a-f934-4a02-8675-5e1a0c8ea9b7	73	78	ArtWork	jakub	FP
+47329e1a-f934-4a02-8675-5e1a0c8ea9b7	73	85	Cleric	jakub świnka	FN
+da3eb82a-5c02-4d12-9d67-b27ffa4595fe	19	28	PrivateCorp	alphonsus	FP
+da3eb82a-5c02-4d12-9d67-b27ffa4595fe	19	38	Cleric	alphonsus j. donlon	FN
+d17ead96-d4e0-4fc8-9ab7-f41220680554	0	10	Cleric	athanasius	FP
+d17ead96-d4e0-4fc8-9ab7-f41220680554	0	18	Cleric	athanasius kircher	FN
+f40c13ea-b425-4ccf-a562-11efb9d0cd0d	0	14	OtherPER	ercole gonzaga	FP
+f40c13ea-b425-4ccf-a562-11efb9d0cd0d	0	14	Cleric	ercole gonzaga	FN
+d80eb80a-87a9-4786-b11e-261498ae24c3	4	25	Cleric	epiphanius of salamis	FP
+d80eb80a-87a9-4786-b11e-261498ae24c3	4	25	Politician	epiphanius of salamis	FN
+93f27025-678d-4bdc-9303-e8cb9b0d30b4	29	31	HumanSettlement	ta	FP
+93f27025-678d-4bdc-9303-e8cb9b0d30b4	0	8	Cleric	muhammad	FN
+04c4277b-867b-4ea0-a83a-aa387336b924	12	21	MusicalGRP	dear bank	FP
+04c4277b-867b-4ea0-a83a-aa387336b924	0	11	MusicalGRP	dear stream	FP
+04c4277b-867b-4ea0-a83a-aa387336b924	46	60	Artist	george herbert	FP
+04c4277b-867b-4ea0-a83a-aa387336b924	46	60	Cleric	george herbert	FN
+d3e9173c-8df1-408b-8f42-d779f1667cf5	32	39	OtherPER	jaussen	FP
+d3e9173c-8df1-408b-8f42-d779f1667cf5	12	18	ArtWork	tablet	FP
+d3e9173c-8df1-408b-8f42-d779f1667cf5	32	39	Cleric	jaussen	FN
+a11a69fa-a365-4cf9-80bb-30b479e653e3	31	41	Facility	water cure	FP
+a11a69fa-a365-4cf9-80bb-30b479e653e3	11	27	Artist	sebastian kneipp	FP
+a11a69fa-a365-4cf9-80bb-30b479e653e3	11	27	Cleric	sebastian kneipp	FN
+2f6821b2-8b33-4f53-8ed6-0f231ab28bf8	102	106	PrivateCorp	scar	FP
+2f6821b2-8b33-4f53-8ed6-0f231ab28bf8	102	106	AnatomicalStructure	scar	FN
+2f6821b2-8b33-4f53-8ed6-0f231ab28bf8	70	77	MedicalProcedure	surgery	FN
+51479f4b-c142-430c-b563-60cc01b3f952	56	69	Symptom	xenodiagnosis	FP
+51479f4b-c142-430c-b563-60cc01b3f952	56	69	MedicalProcedure	xenodiagnosis	FN
+b6743cca-05df-4250-8188-c9630daac713	35	39	PrivateCorp	yoga	FP
+b6743cca-05df-4250-8188-c9630daac713	35	39	MedicalProcedure	yoga	FN
+102e18ed-0f97-485f-bbab-07608aacfbd2	0	13	Symptom	tachyphylaxis	FP
+102e18ed-0f97-485f-bbab-07608aacfbd2	0	13	MedicalProcedure	tachyphylaxis	FN
+954b1bf9-ecbf-438a-8a8e-c77eef50e07c	33	43	ArtWork	meditation	FP
+954b1bf9-ecbf-438a-8a8e-c77eef50e07c	33	43	MedicalProcedure	meditation	FN
+41de1af1-83b0-4dcc-af5f-2ab0157922a6	99	101	Artist	t.	FP
+41de1af1-83b0-4dcc-af5f-2ab0157922a6	43	56	ORG	faith healing	FP
+41de1af1-83b0-4dcc-af5f-2ab0157922a6	99	111	Artist	t. l. osborn	FN
+41de1af1-83b0-4dcc-af5f-2ab0157922a6	43	56	MedicalProcedure	faith healing	FN
+c2bbdf10-8a18-42ed-85b2-5bd58e72ac3d	64	79	Symptom	neural networks	FP
+e10038ac-3fa4-438b-8512-ae761bd82fc5	65	90	PrivateCorp	intermediate life support	FP
+e10038ac-3fa4-438b-8512-ae761bd82fc5	4	25	MedicalProcedure	advanced life support	FN
+5c3ab04e-916e-48fd-bc61-a54dcb623a63	126	128	MedicalProcedure	ct	FP
+5c3ab04e-916e-48fd-bc61-a54dcb623a63	126	139	MedicalProcedure	ct (cat) scan	FN
+6a4a81fc-0502-4e41-abef-ce7b15dec119	41	53	Station	chkalovskaya	FP
+6a4a81fc-0502-4e41-abef-ce7b15dec119	2	17	Station	geologicheskaya	FN
+48b68127-9e5f-431d-8ad1-1f52fa04e5dc	45	51	Station	albany	FP
+48b68127-9e5f-431d-8ad1-1f52fa04e5dc	45	73	Station	albany international airport	FN
+5d83d66e-55a0-4e31-ad2e-f8862bf8726d	29	42	PrivateCorp	cfb moose jaw	FP
+5d83d66e-55a0-4e31-ad2e-f8862bf8726d	29	42	Station	cfb moose jaw	FN
+ae70d72e-0dc3-4ec2-8916-dcb8677f4f46	93	96	Station	raf	FP
+ae70d72e-0dc3-4ec2-8916-dcb8677f4f46	93	105	Station	raf cranwell	FN
+732386c6-a413-430e-8d87-31ff4f86e78b	0	6	HumanSettlement	auraon	FP
+c17280f7-1769-4795-a286-54eca0e99883	47	51	PrivateCorp	fiat	FP
+c17280f7-1769-4795-a286-54eca0e99883	5	12	ORG	ferrari	FP
+c17280f7-1769-4795-a286-54eca0e99883	47	51	CarManufacturer	fiat	FN
+c17280f7-1769-4795-a286-54eca0e99883	5	12	CarManufacturer	ferrari	FN
+1fd63c94-c97a-4a39-9fb9-54df876170e7	10	15	PrivateCorp	scott	FP
+1fd63c94-c97a-4a39-9fb9-54df876170e7	10	26	CarManufacturer	scott motorcycle	FN
+d13910bf-10ff-441b-9a65-06e249159958	48	55	Vehicle	porsche	FP
+d13910bf-10ff-441b-9a65-06e249159958	48	55	CarManufacturer	porsche	FN
+68685bd8-2bbf-41d0-ac20-fe91655da448	25	72	PrivateCorp	leyland and birmingham railway carriage & wagon	FP
+68685bd8-2bbf-41d0-ac20-fe91655da448	37	72	ORG	birmingham railway carriage & wagon	FN
+68685bd8-2bbf-41d0-ac20-fe91655da448	25	32	CarManufacturer	leyland	FN
+149df258-e98b-4087-8731-de8c80cff2d6	76	89	PrivateCorp	volkswagen of	FP
+149df258-e98b-4087-8731-de8c80cff2d6	76	102	CarManufacturer	volkswagen of south africa	FN
+929be0dd-4d4d-4618-aa52-35e0861a43ab	0	14	PrivateCorp	packard motors	FP
+929be0dd-4d4d-4618-aa52-35e0861a43ab	0	14	CarManufacturer	packard motors	FN
+2d7256a7-4763-4d76-abc1-01ce88d08d38	107	124	PrivateCorp	mitsubishi motors	FP
+2d7256a7-4763-4d76-abc1-01ce88d08d38	40	56	PublicCorp	mitsubishi group	FP
+2d7256a7-4763-4d76-abc1-01ce88d08d38	107	124	CarManufacturer	mitsubishi motors	FN
+2d7256a7-4763-4d76-abc1-01ce88d08d38	40	56	PrivateCorp	mitsubishi group	FN
+f8aaf8e2-edbf-4a6b-8db0-43eb4b379232	36	40	PrivateCorp	ford	FP
+f8aaf8e2-edbf-4a6b-8db0-43eb4b379232	36	40	CarManufacturer	ford	FN
+7cb566d5-468f-4d8f-8639-70af669319e2	52	56	PrivateCorp	ford	FP
+7cb566d5-468f-4d8f-8639-70af669319e2	52	56	CarManufacturer	ford	FN
+ca406688-4280-40ff-ae86-79086b80c0f3	52	59	PrivateCorp	panhard	FP
+ca406688-4280-40ff-ae86-79086b80c0f3	52	59	CarManufacturer	panhard	FN
+6f1beda1-dcf6-43a1-8ef9-12ee75b70c17	62	71	PrivateCorp	coca-cola	FP
+6f1beda1-dcf6-43a1-8ef9-12ee75b70c17	62	71	Drink	coca-cola	FN
+5e9c49a7-1495-49c0-8714-7390052951cf	0	5	PrivateCorp	crush	FP
+5e9c49a7-1495-49c0-8714-7390052951cf	0	5	Drink	crush	FN
+a4e4e0d0-53c9-4335-8569-1bdbc06dd0bf	36	45	PrivateCorp	contratto	FP
+a4e4e0d0-53c9-4335-8569-1bdbc06dd0bf	48	54	Drink	liquor	FN
+31ce57c7-18c7-4f76-a807-f53d3bf86214	49	59	Symptom	sicknesses	FP
+df505b46-d776-47d3-a2d1-826be3bb3713	66	70	Drink	wine	FP
+df505b46-d776-47d3-a2d1-826be3bb3713	0	8	Drink	liqueurs	FN
+e4c32a3e-fd6a-498c-8241-bc6b91bd586f	53	62	PrivateCorp	ayahuasca	FP
+e4c32a3e-fd6a-498c-8241-bc6b91bd586f	53	62	Drink	ayahuasca	FN
+e8e20db2-2e06-4ed7-aaa0-6c5580dedad3	23	32	PrivateCorp	rice wine	FP
+e8e20db2-2e06-4ed7-aaa0-6c5580dedad3	23	32	Drink	rice wine	FN
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	0	16	ORG	english electric	FP
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	48	54	PrivateCorp	vulcan	FP
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	88	133	ORG	robert stephenson and hawthorns of darlington	FP
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	0	16	AerospaceManufacturer	english electric	FN
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	123	133	HumanSettlement	darlington	FN
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	48	62	Facility	vulcan foundry	FN
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	88	119	ORG	robert stephenson and hawthorns	FN
+d8675faf-0ab1-4051-a57d-5073437689c3	58	67	PrivateCorp	aviolanda	FP
+d8675faf-0ab1-4051-a57d-5073437689c3	58	67	AerospaceManufacturer	aviolanda	FN
+01414bb7-e52d-42ea-9e1d-e2b0836e13cb	28	53	PrivateCorp	bristol aeroplane company	FP
+01414bb7-e52d-42ea-9e1d-e2b0836e13cb	28	53	AerospaceManufacturer	bristol aeroplane company	FN
+afa630b3-573b-4aab-9851-a74324518a8a	0	4	PrivateCorp	mbda	FP
+afa630b3-573b-4aab-9851-a74324518a8a	15	29	OtherPROD	guided weapons	FP
+afa630b3-573b-4aab-9851-a74324518a8a	0	4	AerospaceManufacturer	mbda	FN
+77fdea52-be1e-47e7-a518-b2c870d24c28	22	29	PrivateCorp	convair	FP
+77fdea52-be1e-47e7-a518-b2c870d24c28	2	12	PrivateCorp	beechcraft	FP
+77fdea52-be1e-47e7-a518-b2c870d24c28	2	15	Vehicle	beechcraft 18	FN
+77fdea52-be1e-47e7-a518-b2c870d24c28	22	29	AerospaceManufacturer	convair	FN
+a5d8976f-dfd6-4989-9861-4f27ed5a84f4	31	56	PrivateCorp	nakajima aircraft company	FP
+a5d8976f-dfd6-4989-9861-4f27ed5a84f4	2	10	Scientist	chikuhei	FP
+a5d8976f-dfd6-4989-9861-4f27ed5a84f4	31	56	AerospaceManufacturer	nakajima aircraft company	FN
+a5d8976f-dfd6-4989-9861-4f27ed5a84f4	2	19	Politician	chikuhei nakajima	FN
+167afa00-e76a-45f2-8d34-a35da8fd2336	26	46	PrivateCorp	lockheed corporation	FP
+167afa00-e76a-45f2-8d34-a35da8fd2336	26	46	AerospaceManufacturer	lockheed corporation	FN
+fd90d207-475c-43cb-a66d-800578489323	19	27	PrivateCorp	lockheed	FP
+fd90d207-475c-43cb-a66d-800578489323	19	27	AerospaceManufacturer	lockheed	FN
+370fc8f3-20d6-4663-ad6f-796c44377008	106	110	PublicCorp	ogma	FP
+370fc8f3-20d6-4663-ad6f-796c44377008	100	105	PublicCorp	enaer	FP
+370fc8f3-20d6-4663-ad6f-796c44377008	106	110	Facility	ogma	FN
+370fc8f3-20d6-4663-ad6f-796c44377008	100	105	ORG	enaer	FN
+d07de04e-ce0a-4366-8742-d0c0fad5b579	57	77	PrivateCorp	lockheed corporation	FP
+d07de04e-ce0a-4366-8742-d0c0fad5b579	57	77	AerospaceManufacturer	lockheed corporation	FN
+9835ef61-35ec-427a-9085-423c0eea935d	34	39	Symptom	fever	FP
+9835ef61-35ec-427a-9085-423c0eea935d	40	50	Symptom	chest pain	FP
+9835ef61-35ec-427a-9085-423c0eea935d	55	74	Symptom	shortness of breath	FN
+028cc483-0cc4-4bf4-850a-e3e457d3d514	8	14	PrivateCorp	gummas	FP
+028cc483-0cc4-4bf4-850a-e3e457d3d514	8	14	Symptom	gummas	FN
+ddd2ad7b-3fab-44d2-a197-fdd5cdff90b1	24	32	Symptom	williams	FP
+ddd2ad7b-3fab-44d2-a197-fdd5cdff90b1	24	41	Symptom	williams syndrome	FN
+f0725c2a-0d53-44c6-9386-8cdf91512320	61	70	PrivateCorp	dysentery	FP
+f0725c2a-0d53-44c6-9386-8cdf91512320	61	70	Symptom	dysentery	FN
+15b084c0-77db-46c7-b5a8-84fe2a6bc567	73	82	Symptom	infection	FP
+15b084c0-77db-46c7-b5a8-84fe2a6bc567	83	90	Disease	abscess	FN
+2d650791-4e40-4a6c-960b-03e43fcc507f	12	28	PrivateCorp	fuchun mountains	FP
+2d650791-4e40-4a6c-960b-03e43fcc507f	12	28	ArtWork	fuchun mountains	FN
+6416f0d6-fd52-4ffc-887f-a2343ad2d1e6	68	77	Artist	juan luna	FP
+6416f0d6-fd52-4ffc-887f-a2343ad2d1e6	68	77	OtherPER	juan luna	FN
+6416f0d6-fd52-4ffc-887f-a2343ad2d1e6	56	64	ArtWork	tampuhan	FN
+00c619ed-adfb-4548-8fcc-f9f494a4618f	32	39	ArtWork	theater	FP
+02ad5699-7c3b-42d0-ae03-f60b757e976f	0	4	ArtWork	four	FP
+02ad5699-7c3b-42d0-ae03-f60b757e976f	5	16	PrivateCorp	handscrolls	FP
+02ad5699-7c3b-42d0-ae03-f60b757e976f	5	16	ArtWork	handscrolls	FN
+025e90b6-f8d9-4aed-875c-6631127898f8	27	72	ArtWork	the feast of the gods and bacchus and ariadne	FP
+025e90b6-f8d9-4aed-875c-6631127898f8	27	48	ArtWork	the feast of the gods	FN
+025e90b6-f8d9-4aed-875c-6631127898f8	53	72	ArtWork	bacchus and ariadne	FN
+aaa1c87f-555c-46fa-95f7-68e549f39541	74	93	PrivateCorp	chōjū-jinbutsu-giga	FP
+aaa1c87f-555c-46fa-95f7-68e549f39541	74	93	ArtWork	chōjū-jinbutsu-giga	FN
+53731822-23be-421d-9210-4db678aecf90	69	83	ArtWork	ukiyo e screen	FP
+e89653e1-652f-457e-8a61-9d0912081674	34	46	CarManufacturer	yamaha kawai	FP
+e89653e1-652f-457e-8a61-9d0912081674	41	46	ORG	kawai	FN
+e89653e1-652f-457e-8a61-9d0912081674	34	40	CarManufacturer	yamaha	FN
+fb83bff0-1377-4960-9f9a-65dddb47bd27	56	82	PublicCorp	exxonmobil koch industries	FP
+fb83bff0-1377-4960-9f9a-65dddb47bd27	56	66	PublicCorp	exxonmobil	FN
+fb83bff0-1377-4960-9f9a-65dddb47bd27	67	82	PrivateCorp	koch industries	FN
