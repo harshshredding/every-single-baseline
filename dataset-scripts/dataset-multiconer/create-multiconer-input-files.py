@@ -12,6 +12,7 @@ assert curr_dataset == Dataset.multiconer
 
 coarse_to_fine = args['coarse_to_fine_dict']
 
+
 def get_all_fine_grained_labels():
     ret = []
     for coarse_label in coarse_to_fine:
@@ -50,31 +51,42 @@ def read_raw_data(dataset_type):
         assert len(samples_dict) == (16767 if dataset_type == 'train' else 871), len(samples_dict)
         return samples_dict
 
-def create_types_file():
+def create_types_file(granularity):
+    fine_to_coarse_dict = get_fine_to_coarse_dict()
     samples = read_raw_data('train')
     #print(samples['5239d808-f300-46ea-aa3b-5093040213a3'])
-    fine_labels_set = set()
-    fine_label_occurences = []
+    train_labels_set = set()
+    train_labels_occurences = []
     for sample_id in samples:
         tokens_data = samples[sample_id]
-        fine_labels = [label[2:] for _, label in tokens_data if len(label) > 2]
-        fine_labels_set.update(fine_labels)
-        fine_label_occurences.extend(fine_labels)
-    predefined_fine_grain_labels = set(get_all_fine_grained_labels())
-    assert predefined_fine_grain_labels.difference(fine_labels_set) == {'TechCorp', 'OtherCW', 'OtherCorp'}
-    fine_label_occurence_count = Counter(fine_label_occurences)
+        sample_labels = [get_label_with_granularity(label, granularity, fine_to_coarse_dict) for _, label in tokens_data if len(label) > 2]
+        train_labels_set.update(sample_labels)
+        train_labels_occurences.extend(sample_labels)
+    predefined_labels = set(get_all_fine_grained_labels()) if granularity == 'fine' else set(list(coarse_to_fine.keys()))
+    if granularity == 'fine':
+        assert predefined_labels.difference(train_labels_set) == {'TechCorp', 'OtherCW', 'OtherCorp', 'O'}
+    else:
+        assert predefined_labels.difference(train_labels_set) == {'O'}
+    label_occurence_count = Counter(train_labels_occurences)
     print("top level occurence count")
-    print(json.dumps(fine_label_occurence_count,indent=4))
-    with util.open_make_dirs('./datasets/multiconer/info.txt', 'w') as info_file:
+    print(json.dumps(label_occurence_count, indent=4))
+    with util.open_make_dirs(f'./datasets/multiconer/{granularity}/info.txt', 'w') as info_file:
         print("top level occurence count", file=info_file)
-        print(json.dumps(fine_label_occurence_count,indent=4), file=info_file)
-    print("num fine labels", len(fine_labels_set)) 
-    with util.open_make_dirs('./datasets/multiconer/types.txt', 'w') as types_file:
-        for fine_label in fine_labels_set:
+        print(json.dumps(label_occurence_count, indent=4), file=info_file)
+    print("num fine labels", len(train_labels_set)) 
+    with util.open_make_dirs(f'./datasets/multiconer/{granularity}/types.txt', 'w') as types_file:
+        for fine_label in train_labels_set:
             print(fine_label, file=types_file)
 
-def create_input_file(dataset_type):
+
+def get_label_with_granularity(raw_label, granularity, fine_to_coarse_dict):
+    return remove_bio(raw_label) if granularity == 'fine' else fine_to_coarse_dict[remove_bio(raw_label)]
+
+
+def create_input_file(dataset_type, granularity: str):
+    assert ('fine' == granularity) or ('coarse' == granularity)
     all_tokens_json = []
+    fine_to_coarse_dict = get_fine_to_coarse_dict()
     sample_data = read_raw_data(dataset_type)
     for sample_id in sample_data:
         token_data_list = sample_data[sample_id]
@@ -83,15 +95,17 @@ def create_input_file(dataset_type):
             token_json = {'Token': [{"string": token_string, "startOffset": token_offset,
                                      "endOffset": token_offset + len(token_string), "length": len(token_string)}],
                           'Sample': [{"id": sample_id, "startOffset": 0}],
-                          'Span': [{"type": remove_bio(token_label), "id": None}]
+                          'Span': [{"type": get_label_with_granularity(token_label, granularity, fine_to_coarse_dict), "id": None}]
                           }
             all_tokens_json.append(token_json)
             token_offset += (len(token_string) + 1) # add one for one space between tokens
     
-    with util.open_make_dirs(f'./datasets/multiconer/input-files/{dataset_type}/{dataset_type}.json', 'w') as output_file:
+    with util.open_make_dirs(f'./datasets/multiconer/input-files/{dataset_type}/{granularity}/{dataset_type}.json', 'w') as output_file:
         json.dump(all_tokens_json, output_file, indent=4)
 
-def create_annos_file(dataset_type):
+def create_annos_file(dataset_type, granularity: str):
+    assert ('fine' == granularity) or ('coarse' == granularity)
+    fine_to_coarse_dict = get_fine_to_coarse_dict()
     sample_data = read_raw_data(dataset_type)
     annos_dict = {}
     for sample_id in sample_data:
@@ -106,7 +120,7 @@ def create_annos_file(dataset_type):
                     curr_span_start, curr_span_type, curr_span_text = None, None, None
             if token_label.startswith("B-"):
                 curr_span_start = token_offset
-                curr_span_type = token_label[2:]
+                curr_span_type = remove_bio(token_label) if granularity == 'fine' else fine_to_coarse_dict[remove_bio(token_label)]
                 curr_span_text = token_string
             elif token_label.startswith("I-"):
                 curr_span_text = " ".join([curr_span_text, token_string])
@@ -116,7 +130,7 @@ def create_annos_file(dataset_type):
             curr_span_start, curr_span_type, curr_span_text = None, None, None
         annos_dict[sample_id] = spans
 
-    with util.open_make_dirs(f"./datasets/multiconer/gold-annos/{dataset_type}/annos-{dataset_type}.tsv", 'w') as annos_file:
+    with util.open_make_dirs(f"./datasets/multiconer/gold-annos/{dataset_type}/{granularity}/annos-{dataset_type}.tsv", 'w') as annos_file:
         writer = csv.writer(annos_file, delimiter='\t')
         header = ['sample_id', 'begin', 'end', 'type', 'extraction']
         writer.writerow(header)
@@ -134,10 +148,11 @@ def create_train_gate_input_file():
     sample_to_token_data = util.get_train_data()
     annos_dict = util.get_train_annos_dict()
     fine_to_coarse_dict = get_fine_to_coarse_dict()
-    for sample_id in annos_dict:
-        gold_annos = annos_dict[sample_id]
-        coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
-        gold_annos.extend(coarse_annos)
+    if args['granularity'] == 'fine':
+        for sample_id in annos_dict:
+            gold_annos = annos_dict[sample_id]
+            coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
+            gold_annos.extend(coarse_annos)
     util.create_gate_file("multiconer_train", sample_to_token_data, annos_dict, 10000)
 
 def create_valid_gate_input_file():
@@ -145,10 +160,11 @@ def create_valid_gate_input_file():
     sample_to_token_data = util.get_valid_data()
     annos_dict = util.get_valid_annos_dict()
     fine_to_coarse_dict = get_fine_to_coarse_dict()
-    for sample_id in annos_dict:
-        gold_annos = annos_dict[sample_id]
-        coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
-        gold_annos.extend(coarse_annos)
+    if args['granularity'] == 'fine':
+        for sample_id in annos_dict:
+            gold_annos = annos_dict[sample_id]
+            coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
+            gold_annos.extend(coarse_annos)
     util.create_gate_file("multiconer_valid", sample_to_token_data, annos_dict, 10000)
 
 def clean_up():
@@ -157,10 +173,18 @@ def clean_up():
         shutil.rmtree('./datasets/multiconer')
 
 clean_up()
-create_types_file()
-create_input_file('train')
-create_annos_file('train')
+
+create_types_file('coarse')
+create_types_file('fine')
+
+create_input_file('train', 'coarse')
+create_input_file('train', 'fine')
+create_annos_file('train', 'coarse')
+create_annos_file('train', 'fine')
 create_train_gate_input_file()
-create_input_file('valid')
-create_annos_file('valid')
+
+create_input_file('valid', 'coarse')
+create_input_file('valid', 'fine')
+create_annos_file('valid', 'coarse')
+create_annos_file('valid', 'fine')
 create_valid_gate_input_file()

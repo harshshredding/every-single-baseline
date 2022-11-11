@@ -1,10 +1,21 @@
 import torch
 from structs import *
+from typing import List
+
+def get_user_input(input_message: str, possible_values: List[str]):
+    user_input = input(f"{input_message}\n choose from {possible_values}")
+    if len(possible_values):
+        while user_input not in possible_values:
+            user_input = input(f"incorrect input '{user_input}', please choose from {possible_values}")
+    return user_input
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
 TESTING_MODE = True
-EXPERIMENT = 'social-dis-ner-test'
+if not TESTING_MODE:
+    EXPERIMENT = get_user_input('specify experiment name:', [])
+else:
+    EXPERIMENT = 'test'
 curr_dataset = Dataset.multiconer
 if curr_dataset == Dataset.few_nerd:
     args = {
@@ -80,16 +91,18 @@ elif curr_dataset == Dataset.social_dis_ner:
         "dataset_name": "social-dis-ner"
     }
 elif curr_dataset == Dataset.multiconer:
+    granularity = get_user_input('specify multiconer label granularity', ['coarse', 'fine'])
     args = {
-        "train_annos_file_path": "./datasets/multiconer/gold-annos/train/annos-train.tsv",
-        "valid_annos_file_path": "./datasets/multiconer/gold-annos/valid/annos-valid.tsv",
-        "training_data_folder_path": "./datasets/multiconer/input-files/train",
-        "validation_data_folder_path": "./datasets/multiconer/input-files/valid",
+        "train_annos_file_path": f"./datasets/multiconer/gold-annos/train/{granularity}/annos-train.tsv",
+        "valid_annos_file_path": f"./datasets/multiconer/gold-annos/valid/{granularity}/annos-valid.tsv",
+        "training_data_folder_path": f"./datasets/multiconer/input-files/train/{granularity}",
+        "validation_data_folder_path": f"./datasets/multiconer/input-files/valid/{granularity}",
         "gate_input_folder_path": "./datasets/multiconer/gate-input",
-        "types_file_path": "./datasets/multiconer/types.txt",
-        "num_types": 33,
+        "types_file_path": f"./datasets/multiconer/{granularity}/types.txt",
+        "num_types": 33 if granularity == 'fine' else 6,
         # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
         "bert_model_name": "bert-base-uncased",
+        "granularity": granularity,
         "bert_model_output_dim": 768,
         "num_epochs": 15,
         "save_models_dir": "./models",
@@ -107,7 +120,8 @@ elif curr_dataset == Dataset.multiconer:
             'Coarse_Group': ['MusicalGRP', 'PublicCorp', 'PrivateCorp', 'OtherCorp', 'AerospaceManufacturer', 'SportsGRP', 'CarManufacturer', 'TechCorp', 'ORG'],
             'Coarse_Person': ['Scientist', 'Artist', 'Athlete', 'Politician', 'Cleric', 'SportsManager', 'OtherPER'],
             'Coarse_Product': ['Clothing', 'Vehicle', 'Food', 'Drink', 'OtherPROD'],
-            'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease']
+            'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease'],
+            'O': ['O']
         }
     }
 else:

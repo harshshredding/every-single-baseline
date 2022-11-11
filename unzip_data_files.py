@@ -1,4 +1,5 @@
 import zipfile
+from util import create_directory_structure
 
 # with zipfile.ZipFile('./gate_output.zip', 'r') as zip_ref:
 #     zip_ref.extractall('./')
@@ -34,4 +35,5 @@ with zipfile.ZipFile('./embeddings.zip', 'r') as zip_ref:
 #     zip_ref.extractall('./datasets/')
 
 with zipfile.ZipFile('./multiconer.zip', 'r') as zip_ref:
-    zip_ref.extractall('./datasets/')
+    create_directory_structure('./datasets/multiconer')
+    zip_ref.extractall('./datasets/multiconer')
