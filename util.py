@@ -64,28 +64,27 @@ def extract_expanded_labels(sample_data, batch_encoding, annos, labels_dict) -> 
 def read_pos_embeddings_file():
     return pd.read_pickle(args['pos_embeddings_path'])
 
-if args['model_name'] != 'base':
-    if TESTING_MODE:
-        umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
-        umls_embedding_dict[default_key] = [0 for _ in range(50)]
-        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
-        umls_key_to_index = get_key_to_index(umls_embedding_dict)
-    else:
-        umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
-        umls_embedding_dict[default_key] = [0 for _ in range(50)]
-        umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
-        umls_key_to_index = get_key_to_index(umls_embedding_dict)
-    pos_dict = read_pos_embeddings_file()
-    pos_dict[default_key] = [0 for _ in range(20)]
-    pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
-    pos_to_index = get_key_to_index(pos_dict)
+# if args['model_name'] != 'base':
+#     if TESTING_MODE:
+#         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
+#         umls_embedding_dict[default_key] = [0 for _ in range(50)]
+#         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
+#         umls_key_to_index = get_key_to_index(umls_embedding_dict)
+#     else:
+#         umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
+#         umls_embedding_dict[default_key] = [0 for _ in range(50)]
+#         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
+#         umls_key_to_index = get_key_to_index(umls_embedding_dict)
+#     pos_dict = read_pos_embeddings_file()
+#     pos_dict[default_key] = [0 for _ in range(20)]
+#     pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
+#     pos_to_index = get_key_to_index(pos_dict)
 
 
 def print_args():
     print("EXPERIMENT:", EXPERIMENT)
     print("TESTING_MODE", TESTING_MODE)
-    for arg in sorted(list(args.keys())):
-        print(arg, args[arg])
+    print(json.dumps(args,indent=4))
 
 
 def get_extraction(tokens, offsets, start, end):
@@ -662,6 +661,25 @@ def get_labels_bio(sample_data: List[TokenData], annos: List[Anno], types_dict) 
                     new_labels.append(Label.get_outside_label())
         else:
             new_labels.append(Label.get_outside_label())
+    return new_labels
+
+def get_labels_bio_simpler(sample_data: List[TokenData], annos: List[Anno]) -> List[Label]:
+    offsets = get_token_offsets(sample_data)
+    new_labels = []
+    for curr_token_span in offsets:
+        token_annotated = [anno for anno in annos if
+                    (curr_token_span[0] >= anno.begin_offset) and (curr_token_span[1] <= anno.end_offset)]
+        token_with_same_start = [anno for anno in annos if anno.begin_offset == curr_token_span[0]]
+        token_starts_after_anno = [anno for anno in annos if
+                    (curr_token_span[0] > anno.begin_offset) and (curr_token_span[1] <= anno.end_offset)]
+        if not len(token_annotated):
+            new_labels.append(Label.get_outside_label())
+        elif len(token_with_same_start):
+            new_labels.append(Label(token_with_same_start[0].label_type, BioTag.begin))
+        elif len(token_starts_after_anno):
+            new_labels.append(Label(token_starts_after_anno[0].label_type, BioTag.inside))
+        else:
+            raise Exception("cannot handle this case") 
     return new_labels
 
 
