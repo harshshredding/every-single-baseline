@@ -1,0 +1,605 @@
+sample_id	begin	end	type	extraction	mistake_type
+d7d47dfc-7e5d-48e8-9390-019a3e9476c1	42	48	Coarse_Product	pulpit	FN
+8bc3740e-ed59-4458-8c9a-91359259880a	7	16	Coarse_Creative_Work	described	FP
+1c5211ba-b3c9-45f2-a668-75845f812a7d	18	29	Coarse_Group	deal hudson	FP
+1c5211ba-b3c9-45f2-a668-75845f812a7d	18	29	Coarse_Person	deal hudson	FN
+9b896fb3-fed0-40ea-8ee6-61b1f090a419	0	23	Coarse_Location	báetán mac muirchertaig	FP
+9b896fb3-fed0-40ea-8ee6-61b1f090a419	28	35	Coarse_Person	eochaid	FP
+9b896fb3-fed0-40ea-8ee6-61b1f090a419	0	23	Coarse_Person	báetán mac muirchertaig	FN
+9b896fb3-fed0-40ea-8ee6-61b1f090a419	28	48	Coarse_Person	eochaid mac domnaill	FN
+9e213130-60eb-478f-a855-8da0ee1dc4b2	18	39	Coarse_Group	counter-revolutionary	FP
+9e213130-60eb-478f-a855-8da0ee1dc4b2	18	39	Coarse_Person	counter-revolutionary	FN
+7a74f51c-9ff5-4525-a1d0-5e8ddb02bd48	82	92	Coarse_Group	rees jones	FP
+7a74f51c-9ff5-4525-a1d0-5e8ddb02bd48	82	92	Coarse_Person	rees jones	FN
+a0cd1b13-d620-430a-ae91-e1f4108ff3e4	0	10	Coarse_Group	four herms	FP
+1dfcbf1a-9967-40fa-92d0-e1da21c1f2a6	18	32	Coarse_Person	encyclopédiste	FN
+4f9dbf6a-3afd-4ee5-8fdd-5f11e1bf35e1	4	14	Coarse_Product	pipe organ	FN
+b245d698-d17e-47c3-b915-967490c7b649	53	60	Coarse_Location	ayodhyā	FP
+0fc87629-d10c-4e40-a2de-bd312f2232e2	44	50	Coarse_Group	balhae	FP
+0fc87629-d10c-4e40-a2de-bd312f2232e2	44	50	Coarse_Location	balhae	FN
+cee0de59-b071-4c08-9136-f2d76fd7edc7	58	68	Coarse_Creative_Work	spad s.vii	FP
+cee0de59-b071-4c08-9136-f2d76fd7edc7	58	68	Coarse_Product	spad s.vii	FN
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	23	28	Coarse_Location	greek	FP
+15ee1e09-7a8c-49f1-9ae1-698b18b8ff6c	23	43	Coarse_Group	greek prime minister	FN
+05f3ba24-9af4-47c3-9c01-bb60acd56ff3	48	54	Coarse_Creative_Work	lyrics	FP
+91fcefb0-eb13-4144-aad9-8a2c0a9b9a7b	21	26	Coarse_Product	pooja	FP
+91fcefb0-eb13-4144-aad9-8a2c0a9b9a7b	0	6	Coarse_Person	narain	FN
+91fcefb0-eb13-4144-aad9-8a2c0a9b9a7b	21	26	Coarse_Person	pooja	FN
+a8deeb02-1b9b-4f9e-9dc7-c125915e4975	38	45	Coarse_Group	sinatra	FP
+a8deeb02-1b9b-4f9e-9dc7-c125915e4975	38	45	Coarse_Person	sinatra	FN
+057340b2-f3e5-4fd1-ba43-f84d968d4555	40	52	Coarse_Creative_Work	studio album	FP
+057340b2-f3e5-4fd1-ba43-f84d968d4555	63	72	Coarse_Group	tech n9ne	FP
+057340b2-f3e5-4fd1-ba43-f84d968d4555	63	72	Coarse_Person	tech n9ne	FN
+2449de42-95a2-467f-b86b-ae279f8b5744	57	98	Coarse_Creative_Work	the presentation of self in everyday life	FN
+b49ddb42-8da8-41d4-a5ae-92f533284169	63	67	Coarse_Person	wipo	FP
+b49ddb42-8da8-41d4-a5ae-92f533284169	63	79	Coarse_Person	wipo of burgundy	FN
+26e402f1-b109-4b23-b31d-550ccbf5f175	43	50	Coarse_Group	beyoncé	FP
+26e402f1-b109-4b23-b31d-550ccbf5f175	43	50	Coarse_Person	beyoncé	FN
+e1cac655-016f-41b1-9542-a5927e3179eb	7	16	Coarse_Creative_Work	described	FP
+abe88c47-78b4-425f-a13d-4eba74a1c4f1	16	28	Coarse_Creative_Work	studio album	FP
+fbf47f0b-919e-4eb6-84db-3d310dbcd7e7	70	94	Coarse_Creative_Work	who killed these girls ?	FP
+31960196-2eb9-4d0f-a7e8-35a7b66d143f	55	64	Coarse_Group	morrissey	FP
+31960196-2eb9-4d0f-a7e8-35a7b66d143f	55	64	Coarse_Person	morrissey	FN
+46a7a43f-634b-43e9-8837-2c2768adda0a	0	6	Coarse_Location	boston	FN
+329897d1-f7a7-4a4d-96b0-ca4b40414984	38	50	Coarse_Group	moveon . org	FP
+ee08e42d-8142-4311-b65b-0b35953a36b6	33	44	Coarse_Group	t. muthuraj	FP
+ee08e42d-8142-4311-b65b-0b35953a36b6	33	44	Coarse_Person	t. muthuraj	FN
+6c260629-7555-4638-aca3-b0a8e5755807	68	82	Coarse_Person	ron bumblefoot	FP
+6c260629-7555-4638-aca3-b0a8e5755807	83	87	Coarse_Person	thal	FP
+6c260629-7555-4638-aca3-b0a8e5755807	68	87	Coarse_Person	ron bumblefoot thal	FN
+6e8661d5-6ace-49f0-9941-f04c83eb6603	0	2	Coarse_Group	m.	FP
+6e8661d5-6ace-49f0-9941-f04c83eb6603	0	19	Coarse_Person	m. e. clifton james	FN
+b68262fe-8076-4493-8242-6f2b149e5b63	46	59	Coarse_Group	fender rhodes	FP
+b68262fe-8076-4493-8242-6f2b149e5b63	46	59	Coarse_Product	fender rhodes	FN
+7e12f84c-5a72-4617-921d-25ae239b0b13	48	53	Coarse_Group	airto	FP
+7e12f84c-5a72-4617-921d-25ae239b0b13	77	91	Coarse_Group	string quartet	FP
+7e12f84c-5a72-4617-921d-25ae239b0b13	48	61	Coarse_Person	airto moreira	FN
+4284f2a9-3531-4871-9df7-f3a2b96fffbb	44	57	Coarse_Creative_Work	fourth series	FP
+9d53b339-54b4-479a-a006-b442d5f8fae4	58	72	Coarse_Person	peter sullivan	FP
+96a88073-38cd-46cb-a8f8-ad629ce58aab	60	74	Coarse_Creative_Work	lumines live !	FP
+c03dd146-d494-4413-bac2-27c118c9aba1	67	72	Coarse_Group	nagma	FP
+c03dd146-d494-4413-bac2-27c118c9aba1	67	72	Coarse_Person	nagma	FN
+640554e1-e480-4a47-85f5-ad587c7138bc	40	54	Coarse_Person	teresa nielsen	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	55	61	Coarse_Person	hayden	FP
+640554e1-e480-4a47-85f5-ad587c7138bc	40	61	Coarse_Person	teresa nielsen hayden	FN
+77c496e3-9324-4f3f-891f-fdfb19d83133	20	27	Coarse_Group	sc dhfk	FP
+77c496e3-9324-4f3f-891f-fdfb19d83133	28	35	Coarse_Group	leipzig	FP
+77c496e3-9324-4f3f-891f-fdfb19d83133	20	35	Coarse_Group	sc dhfk leipzig	FN
+848702ca-b0cf-4c93-be7d-3758b8504f77	8	13	Coarse_Group	teams	FP
+848702ca-b0cf-4c93-be7d-3758b8504f77	0	13	Coarse_Group	reserve teams	FN
+ed07a6e1-8dc2-4629-8076-79c9aa56c45b	37	45	Coarse_Location	slovenia	FP
+ed07a6e1-8dc2-4629-8076-79c9aa56c45b	37	45	Coarse_Group	slovenia	FN
+b9ea17b7-a454-499e-97c4-d65a01db9c5f	26	59	Coarse_Group	stade français sports association	FP
+b9ea17b7-a454-499e-97c4-d65a01db9c5f	26	40	Coarse_Group	stade français	FN
+48f2a5f2-5273-4087-9302-32302cb3e847	60	80	Coarse_Group	1928–29 ashes series	FN
+08c9e37a-aab2-44f9-be02-fbdd10ad1268	0	3	Coarse_Location	its	FP
+08c9e37a-aab2-44f9-be02-fbdd10ad1268	4	13	Coarse_Location	cathedral	FP
+e87ceedd-684a-40ae-a00e-2aa3f0334161	0	5	Coarse_Person	marco	FN
+70a83885-9d03-4dcd-b286-c20f1e1e52e3	42	54	Coarse_Medical	appendectomy	FP
+62b603e8-b445-4f46-a045-4a44c1e28f0c	0	9	Coarse_Group	jana fett	FP
+62b603e8-b445-4f46-a045-4a44c1e28f0c	34	49	Coarse_Group	luksika kumkhum	FP
+62b603e8-b445-4f46-a045-4a44c1e28f0c	34	49	Coarse_Person	luksika kumkhum	FN
+62b603e8-b445-4f46-a045-4a44c1e28f0c	0	9	Coarse_Person	jana fett	FN
+604b00d1-0274-42ac-a7e8-d5c746dece7a	0	13	Coarse_Creative_Work	toivo salonen	FP
+604b00d1-0274-42ac-a7e8-d5c746dece7a	0	13	Coarse_Person	toivo salonen	FN
+badd8cf5-2443-4e67-be59-18e67e2c092c	4	14	Coarse_Creative_Work	iron sheik	FP
+badd8cf5-2443-4e67-be59-18e67e2c092c	0	14	Coarse_Person	the iron sheik	FN
+3104bd17-8187-4d37-907a-20716d363ede	49	60	Coarse_Group	noam elkies	FP
+3104bd17-8187-4d37-907a-20716d363ede	30	32	Coarse_Person	a.	FP
+3104bd17-8187-4d37-907a-20716d363ede	49	60	Coarse_Person	noam elkies	FN
+3104bd17-8187-4d37-907a-20716d363ede	30	44	Coarse_Person	a. o. l. atkin	FN
+0c5240ef-9f2e-4146-af17-37891dd926fa	32	40	Coarse_Medical	freezing	FP
+3e80624b-c338-44fb-8534-9d0037985d44	21	25	Coarse_Product	jeep	FP
+3e80624b-c338-44fb-8534-9d0037985d44	21	25	Coarse_Group	jeep	FN
+72cfe593-5e10-4c60-a3e1-12d86d0db4ee	90	99	Coarse_Group	fbi agent	FP
+72cfe593-5e10-4c60-a3e1-12d86d0db4ee	90	93	Coarse_Group	fbi	FN
+d75bbb3a-bd76-494b-9bd6-b4eda81a73a7	106	112	Coarse_Creative_Work	shorts	FP
+51a2b74b-2645-4b83-82be-0ba3bcac0181	9	17	Coarse_Group	congress	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	32	43	Coarse_Group	independent	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	0	3	Coarse_Group	bjp	FN
+51a2b74b-2645-4b83-82be-0ba3bcac0181	22	27	Coarse_Group	jd(s)	FN
+6880f00c-59ea-4096-83a4-f2b3d1caa263	17	24	Coarse_Location	federal	FP
+97cf87b7-d5b1-4d08-9183-9786645af3f0	22	26	Coarse_Group	gang	FN
+90a2d648-5554-4c69-aabb-c7b71dbab975	8	13	Coarse_Medical	child	FP
+90a2d648-5554-4c69-aabb-c7b71dbab975	8	51	Coarse_Group	child and adolescent mental health services	FN
+ebc59b58-c742-45c5-aff2-f00177629ede	46	51	Coarse_Group	otaru	FP
+ebc59b58-c742-45c5-aff2-f00177629ede	46	51	Coarse_Location	otaru	FN
+b9318741-0d42-4fd3-952b-0257e5e764b6	11	18	Coarse_Location	startup	FP
+b9318741-0d42-4fd3-952b-0257e5e764b6	0	5	Coarse_Group	kiswe	FP
+b9318741-0d42-4fd3-952b-0257e5e764b6	11	26	Coarse_Group	startup company	FN
+e16918fc-82c9-4c17-9132-de58c97ecbf5	25	36	Coarse_Group	trade union	FN
+af6946ec-06b6-406e-be69-3572db9cba0f	36	47	Coarse_Group	state party	FN
+e798f794-81d9-44ca-888e-747a21dbbdba	12	23	Coarse_Group	ekta kapoor	FP
+e798f794-81d9-44ca-888e-747a21dbbdba	12	23	Coarse_Person	ekta kapoor	FN
+39e72f81-12cb-47f2-8692-eded70eef4c3	25	47	Coarse_Group	liberal democrat group	FP
+39e72f81-12cb-47f2-8692-eded70eef4c3	25	41	Coarse_Group	liberal democrat	FN
+8434195e-a9af-4833-9c26-c03bbe8ee053	0	9	Coarse_Group	democrats	FP
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	77	82	Coarse_Group	pixar	FP
+1a4cd6eb-a7d7-41b9-a245-d5cee0fff19a	77	85	Coarse_Group	pixar 's	FN
+6974107f-9341-46bf-96e5-ad97fdcc12a2	0	10	Coarse_Person	whang peng	FP
+1ba5603e-5c0e-4991-93a6-9a1b3c36434c	111	123	Coarse_Medical	fermentation	FP
+1ba5603e-5c0e-4991-93a6-9a1b3c36434c	26	38	Coarse_Medical	pyruvic acid	FN
+cb13726c-aba6-4cd6-a399-5ad17468859a	124	136	Coarse_Medical	thiafentanil	FP
+c6800897-de27-4065-9af6-bb95404e3cb6	0	7	Coarse_Product	hormone	FP
+c6800897-de27-4065-9af6-bb95404e3cb6	0	7	Coarse_Medical	hormone	FN
+b28a6f4b-5005-487e-84c0-136ad9c6f07e	41	45	Coarse_Medical	heat	FP
+3bcfea0d-16b6-4af0-a1ab-dd5150ec9914	82	93	Coarse_Medical	common cold	FN
+f6ffd39c-891f-47f4-9fad-555ceb0a0b72	56	64	Coarse_Medical	fentanyl	FP
+e7780fe1-6913-4a70-9523-5f984b9f4517	100	132	Coarse_Medical	combined oral contraceptive pill	FN
+7c18f448-20da-4ae1-950b-aaa67430acc4	82	91	Coarse_Medical	clozapine	FN
+6a1303e2-07fb-45e3-83e3-8a86650ec24f	0	14	Coarse_Medical	telangiectasia	FP
+6a1303e2-07fb-45e3-83e3-8a86650ec24f	63	76	Coarse_Medical	venous reflux	FP
+1f42b296-d225-44d1-b887-fdf34d277bb8	57	66	Coarse_Medical	threshold	FP
+1f42b296-d225-44d1-b887-fdf34d277bb8	67	78	Coarse_Medical	retinopathy	FP
+1f42b296-d225-44d1-b887-fdf34d277bb8	31	53	Coarse_Medical	laser photocoagulation	FN
+1f42b296-d225-44d1-b887-fdf34d277bb8	67	93	Coarse_Medical	retinopathy of prematurity	FN
+aeb1f00f-a394-4c73-a61a-ae4e4e6ed585	5	11	Coarse_Medical	niacin	FP
+aeb1f00f-a394-4c73-a61a-ae4e4e6ed585	43	81	Coarse_Medical	elevated cholesterol and triglycerides	FN
+1146d6cc-140e-4a3c-94bf-9454d1cce81a	15	28	Coarse_Medical	schizophrenia	FP
+0f0a9974-751b-4e9b-8b93-7df59267bc63	59	82	Coarse_Medical	internal elastic lamina	FP
+28c1c5ed-b032-4031-a886-f404c7edd100	25	36	Coarse_Medical	self-poison	FP
+28c1c5ed-b032-4031-a886-f404c7edd100	11	21	Coarse_Medical	pesticides	FP
+28c1c5ed-b032-4031-a886-f404c7edd100	11	36	Coarse_Medical	pesticides to self-poison	FN
+9afa055f-9059-4b10-aeef-e591284b2ef5	0	22	Coarse_Medical	lumbar spinal stenosis	FP
+9afa055f-9059-4b10-aeef-e591284b2ef5	98	108	Coarse_Medical	herniation	FP
+9afa055f-9059-4b10-aeef-e591284b2ef5	7	22	Coarse_Medical	spinal stenosis	FN
+28787c12-cb12-40a8-84cb-01a6e85efcc6	61	68	Coarse_Medical	fingers	FP
+28787c12-cb12-40a8-84cb-01a6e85efcc6	0	11	Coarse_Medical	polydactyly	FN
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	33	40	Coarse_Group	hickory	FP
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	45	51	Coarse_Group	lenoir	FP
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	33	40	Coarse_Location	hickory	FN
+1476abbe-bc8c-49a1-ab4b-6f1fd9a8f37a	45	51	Coarse_Location	lenoir	FN
+26b8cebb-2d61-4ce4-818b-3740ecfb030c	38	47	Coarse_Group	australia	FP
+26b8cebb-2d61-4ce4-818b-3740ecfb030c	38	47	Coarse_Location	australia	FN
+1a12114f-17c9-42b9-a9a6-dd16e1259773	35	43	Coarse_Group	law firm	FN
+e0faf018-00d0-400a-87bb-6f6376d6706a	29	46	Coarse_Location	kingdom of mercia	FP
+e0faf018-00d0-400a-87bb-6f6376d6706a	40	46	Coarse_Location	mercia	FN
+0d1dec41-8975-47f5-9120-8da9e34f67bf	69	89	Coarse_Group	lawrenceville school	FP
+0d1dec41-8975-47f5-9120-8da9e34f67bf	69	89	Coarse_Location	lawrenceville school	FN
+bd576594-d83b-4314-b8c3-a979e46d1972	39	46	Coarse_Group	taegeuk	FP
+7e78d6dc-83f6-405a-91f7-0518004d5f29	43	58	Coarse_Group	wanamaker organ	FP
+7e78d6dc-83f6-405a-91f7-0518004d5f29	43	58	Coarse_Product	wanamaker organ	FN
+0d5829d0-6ceb-43c0-880f-342351161e55	33	49	Coarse_Group	buddhist temples	FP
+0d5829d0-6ceb-43c0-880f-342351161e55	0	8	Coarse_Location	kōshō ji	FP
+0d5829d0-6ceb-43c0-880f-342351161e55	33	49	Coarse_Location	buddhist temples	FN
+b2b62b8a-2fba-46f5-937e-8e4ee1b686ac	52	64	Coarse_Group	magnitogorsk	FP
+b2b62b8a-2fba-46f5-937e-8e4ee1b686ac	52	64	Coarse_Location	magnitogorsk	FN
+c610e76d-dde9-4471-b0f8-670e8cbf81c3	55	61	Coarse_Group	romans	FP
+58a13ac2-4a7a-43fb-9ea2-4ab914e169f0	4	16	Coarse_Location	ming dynasty	FP
+58a13ac2-4a7a-43fb-9ea2-4ab914e169f0	4	8	Coarse_Location	ming	FN
+cb22b533-fbbe-45b6-a23e-51621746d259	33	45	Coarse_Location	ocean shores	FN
+654db6b1-8003-4465-b1c9-fb2ba934e514	23	32	Coarse_Location	consulate	FN
+cb72f19b-4582-4ebe-9e21-db1be1d6166f	51	63	Coarse_Group	conglomerate	FP
+cb72f19b-4582-4ebe-9e21-db1be1d6166f	2	9	Coarse_Group	chaebol	FP
+ca435c4d-4d29-4a1a-a10c-98f3ea636d11	38	70	Coarse_Group	smock alley theatre organisation	FP
+ca435c4d-4d29-4a1a-a10c-98f3ea636d11	38	57	Coarse_Location	smock alley theatre	FN
+d8d708fe-c92b-4736-aadb-d9a2c91740ac	35	44	Coarse_Medical	emphysema	FP
+e6e90e9d-b59d-4151-8bb7-d41b1fe0aefe	107	120	Coarse_Group	ebay auctions	FP
+e6e90e9d-b59d-4151-8bb7-d41b1fe0aefe	107	111	Coarse_Group	ebay	FN
+131af73f-0db6-4d46-b06f-b41713772681	78	100	Coarse_Group	lukoil vagit alekperov	FP
+131af73f-0db6-4d46-b06f-b41713772681	78	84	Coarse_Group	lukoil	FN
+131af73f-0db6-4d46-b06f-b41713772681	85	100	Coarse_Person	vagit alekperov	FN
+23fd4afc-d9e2-44d0-98e6-2f8d468c077f	59	65	Coarse_Creative_Work	google	FP
+23fd4afc-d9e2-44d0-98e6-2f8d468c077f	59	65	Coarse_Group	google	FN
+d9a9639e-fe65-40d6-b9e3-a0ad41e2734a	75	86	Coarse_Group	novolipetsk	FP
+d9a9639e-fe65-40d6-b9e3-a0ad41e2734a	75	108	Coarse_Group	novolipetsk metallurgical combine	FN
+305e6d1a-3292-450a-b39e-888180d5c02d	14	28	Coarse_Location	uralvagonzavod	FP
+305e6d1a-3292-450a-b39e-888180d5c02d	14	28	Coarse_Group	uralvagonzavod	FN
+2fe003d8-1d04-4ede-a13e-8116ac0f26f7	47	64	Coarse_Group	verisign security	FP
+2fe003d8-1d04-4ede-a13e-8116ac0f26f7	47	55	Coarse_Group	verisign	FN
+da3544c4-0e19-4587-a84d-abb85d143cdf	0	18	Coarse_Creative_Work	the cast of heroes	FP
+da3544c4-0e19-4587-a84d-abb85d143cdf	12	18	Coarse_Creative_Work	heroes	FN
+4c4ad0bc-518d-4340-9a2c-4a9203eec514	21	39	Coarse_Creative_Work	misfits & monsters	FP
+4c4ad0bc-518d-4340-9a2c-4a9203eec514	0	17	Coarse_Person	bobcat goldthwait	FP
+4c4ad0bc-518d-4340-9a2c-4a9203eec514	0	39	Coarse_Creative_Work	bobcat goldthwait 's misfits & monsters	FN
+16b51243-7e94-40ca-a29c-2c8ca00fe095	15	21	Coarse_Location	canada	FP
+bab3c8d7-af4a-44dc-837b-52265da5445e	26	29	Coarse_Group	cbs	FP
+bab3c8d7-af4a-44dc-837b-52265da5445e	26	29	Coarse_Creative_Work	cbs	FN
+9b688965-e308-4e8e-b129-70f103abf964	33	42	Coarse_Creative_Work	1974 film	FP
+9b688965-e308-4e8e-b129-70f103abf964	31	42	Coarse_Creative_Work	a 1974 film	FN
+d76b2966-cff6-4274-8994-d73941eba3d9	20	31	Coarse_Location	tallahassee	FP
+d76b2966-cff6-4274-8994-d73941eba3d9	7	14	Coarse_Creative_Work	the man	FP
+d76b2966-cff6-4274-8994-d73941eba3d9	39	46	Coarse_Person	pinkner	FP
+d76b2966-cff6-4274-8994-d73941eba3d9	7	31	Coarse_Creative_Work	the man from tallahassee	FN
+23dd3657-9d42-4652-b859-7449f4fe9895	73	84	Coarse_Creative_Work	crime chase	FP
+ae6d9d38-c9df-418b-81b9-dda81d4fa12b	39	55	Coarse_Creative_Work	charity specials	FP
+ae6d9d38-c9df-418b-81b9-dda81d4fa12b	60	76	Coarse_Group	children in need	FP
+ae6d9d38-c9df-418b-81b9-dda81d4fa12b	60	76	Coarse_Creative_Work	children in need	FN
+38eb6934-2597-453b-95d3-878817005fdc	43	51	Coarse_Creative_Work	survives	FN
+110ccdd7-c35b-4a32-9d29-0c3b787f6227	28	44	Coarse_Creative_Work	pinky no way out	FP
+110ccdd7-c35b-4a32-9d29-0c3b787f6227	28	33	Coarse_Creative_Work	pinky	FN
+110ccdd7-c35b-4a32-9d29-0c3b787f6227	34	44	Coarse_Creative_Work	no way out	FN
+5d95633c-ae2d-4eea-9dc2-c4015b3de310	0	11	Coarse_Group	madventures	FP
+5d95633c-ae2d-4eea-9dc2-c4015b3de310	0	11	Coarse_Creative_Work	madventures	FN
+f9ccff9b-7153-4f02-a082-b7fbfa6105da	2	14	Coarse_Creative_Work	musical film	FP
+f9ccff9b-7153-4f02-a082-b7fbfa6105da	2	9	Coarse_Creative_Work	musical	FN
+dfe1a82e-65a1-4cd4-90f1-503bca1474f5	43	48	Coarse_Creative_Work	manga	FN
+bff1a0f5-7ad0-42eb-9de6-98fc16534cb0	41	55	Coarse_Person	jyothi lakshmi	FP
+bff1a0f5-7ad0-42eb-9de6-98fc16534cb0	41	55	Coarse_Creative_Work	jyothi lakshmi	FN
+67b0823c-8c6f-4982-9762-5321a039a267	34	40	Coarse_Location	german	FP
+67b0823c-8c6f-4982-9762-5321a039a267	34	50	Coarse_Product	german submarine	FN
+4367846f-f62b-486b-b921-e098ec40b42c	45	51	Coarse_Group	boeing	FP
+4367846f-f62b-486b-b921-e098ec40b42c	45	55	Coarse_Product	boeing 767	FN
+50e01684-b758-459f-a7a3-0355eb5a7a92	36	45	Coarse_Group	lms ivatt	FP
+50e01684-b758-459f-a7a3-0355eb5a7a92	54	60	Coarse_Product	2-6-2t	FP
+50e01684-b758-459f-a7a3-0355eb5a7a92	36	60	Coarse_Product	lms ivatt class 2 2-6-2t	FN
+beb530a4-9814-4cf7-a999-fcff89226c33	37	50	Coarse_Group	ferry service	FP
+beb530a4-9814-4cf7-a999-fcff89226c33	37	42	Coarse_Product	ferry	FN
+acab720c-1409-4eef-847e-6d56150a77c1	105	112	Coarse_Group	riviera	FP
+acab720c-1409-4eef-847e-6d56150a77c1	8	16	Coarse_Product	class 47	FN
+acab720c-1409-4eef-847e-6d56150a77c1	105	119	Coarse_Group	riviera trains	FN
+ef031964-653d-40db-aaa5-5ff66eee7aae	0	4	Coarse_Group	beep	FP
+ef031964-653d-40db-aaa5-5ff66eee7aae	0	4	Coarse_Product	beep	FN
+2e69fb5f-f209-4a03-8d9f-64d3f786d22c	0	18	Coarse_Group	diesel locomotives	FP
+2e69fb5f-f209-4a03-8d9f-64d3f786d22c	0	18	Coarse_Product	diesel locomotives	FN
+b851533a-94e6-4b7d-a7c3-1eb629044c84	0	14	Coarse_Group	uss san marcos	FP
+b851533a-94e6-4b7d-a7c3-1eb629044c84	24	28	Coarse_Group	casa	FP
+b851533a-94e6-4b7d-a7c3-1eb629044c84	0	23	Coarse_Product	uss san marcos (lsd-25)	FN
+9370b7cb-6cf9-4780-969a-cbae5e19937b	13	20	Coarse_Product	a class	FN
+379d4370-328f-4b7d-8f47-cd10ac7ccbea	40	52	Coarse_Group	mg xpower sv	FP
+379d4370-328f-4b7d-8f47-cd10ac7ccbea	53	63	Coarse_Product	sports car	FN
+379d4370-328f-4b7d-8f47-cd10ac7ccbea	40	52	Coarse_Product	mg xpower sv	FN
+d020948f-380b-43ca-8878-a33501e918b2	0	8	Coarse_Group	premises	FP
+d020948f-380b-43ca-8878-a33501e918b2	48	56	Coarse_Location	showroom	FN
+ea95c15e-6ad4-47e0-ad3b-696d64519751	37	79	Coarse_Group	santragachi kedarnath institution , howrah	FP
+ea95c15e-6ad4-47e0-ad3b-696d64519751	37	79	Coarse_Location	santragachi kedarnath institution , howrah	FN
+25e55708-1f6a-4f18-a5b0-58fe185b7975	54	63	Coarse_Location	penistone	FP
+25e55708-1f6a-4f18-a5b0-58fe185b7975	54	80	Coarse_Location	penistone paramount cinema	FN
+d50bd673-4cbc-4059-b4b3-39278f50ecbf	0	5	Coarse_Group	basel	FP
+95a4158f-b65f-4014-84f5-a1412214c677	73	80	Coarse_Person	pei wei	FP
+95a4158f-b65f-4014-84f5-a1412214c677	112	126	Coarse_Group	einstein bros.	FP
+95a4158f-b65f-4014-84f5-a1412214c677	93	107	Coarse_Group	steak 'n shake	FN
+95a4158f-b65f-4014-84f5-a1412214c677	73	92	Coarse_Location	pei wei asian diner	FN
+95a4158f-b65f-4014-84f5-a1412214c677	112	133	Coarse_Group	einstein bros. bagels	FN
+9e837b31-25bc-46bb-b3b9-7c97d1eafebb	90	102	Coarse_Medical	solid wastes	FP
+fbdebc86-5e2a-40d7-ad13-f2f0c6582ec7	39	46	Coarse_Location	sulzhof	FP
+fbdebc86-5e2a-40d7-ad13-f2f0c6582ec7	26	29	Coarse_Location	inn	FN
+4af0dee4-7af7-473a-8dae-7db61aeb5942	108	133	Coarse_Group	detroit institute of arts	FP
+4af0dee4-7af7-473a-8dae-7db61aeb5942	108	133	Coarse_Location	detroit institute of arts	FN
+fe1ef2e9-121e-4fab-ba40-6d57b4755cd3	12	20	Coarse_Location	heritage	FP
+fe1ef2e9-121e-4fab-ba40-6d57b4755cd3	12	28	Coarse_Location	heritage railway	FN
+48f8024a-529c-412c-9def-d264719004af	22	41	Coarse_Group	mikhailovsky ballet	FP
+48f8024a-529c-412c-9def-d264719004af	22	41	Coarse_Location	mikhailovsky ballet	FN
+dfc84a31-f636-4a8c-9088-cc2bf194216a	28	31	Coarse_Group	ibm	FP
+dfc84a31-f636-4a8c-9088-cc2bf194216a	28	31	Coarse_Product	ibm	FN
+baaf6021-7b7c-4007-aee7-492ed876c8e0	20	28	Coarse_Location	biłgoraj	FP
+baaf6021-7b7c-4007-aee7-492ed876c8e0	69	84	Coarse_Location	wayside shrines	FN
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	34	43	Coarse_Group	vale park	FP
+e4ab9029-cbe3-41a0-a1c5-0a601dd9b57d	34	43	Coarse_Location	vale park	FN
+f99b9c2a-f1ff-4df8-8bb3-0e335092072a	52	58	Coarse_Location	verona	FP
+b44bec72-e154-4e4c-a735-b6a0b55d1b33	70	78	Coarse_Product	chalices	FN
+b44bec72-e154-4e4c-a735-b6a0b55d1b33	60	65	Coarse_Product	vases	FN
+d34aac24-9a4e-402a-8f3b-063b81823635	37	42	Coarse_Medical	zarih	FP
+d34aac24-9a4e-402a-8f3b-063b81823635	37	42	Coarse_Location	zarih	FN
+bc3477b6-81b7-403c-9f94-8c73143c6b92	74	83	Coarse_Group	studio 54	FP
+bc3477b6-81b7-403c-9f94-8c73143c6b92	74	83	Coarse_Location	studio 54	FN
+bc3477b6-81b7-403c-9f94-8c73143c6b92	43	52	Coarse_Location	nightclub	FN
+bf73942e-9a3c-4e63-aec9-de3e56bf86f0	62	66	Coarse_Group	tate	FP
+bf73942e-9a3c-4e63-aec9-de3e56bf86f0	62	66	Coarse_Location	tate	FN
+f83c050e-ffb0-4021-be68-6781a822f263	30	54	Coarse_Group	new england conservatory	FP
+f83c050e-ffb0-4021-be68-6781a822f263	30	54	Coarse_Location	new england conservatory	FN
+87f7d56a-034d-49d3-a16d-bddce8b1bdf2	29	36	Coarse_Product	griddle	FN
+d702c5cb-1baf-4aae-a9b5-651266867f09	0	9	Coarse_Group	elevators	FP
+d702c5cb-1baf-4aae-a9b5-651266867f09	0	9	Coarse_Product	elevators	FN
+385f736b-16be-429f-b85e-8b1cc216edf8	42	53	Coarse_Product	bass guitar	FP
+385f736b-16be-429f-b85e-8b1cc216edf8	54	60	Coarse_Product	zither	FN
+385f736b-16be-429f-b85e-8b1cc216edf8	87	97	Coarse_Product	snare drum	FN
+b5cd215a-07bd-4853-a408-84d5b07c1a47	77	83	Coarse_Group	snecma	FP
+b5cd215a-07bd-4853-a408-84d5b07c1a47	77	92	Coarse_Product	snecma atar 101	FN
+afa64981-c330-4e6a-888e-bb4e6cf5246c	33	60	Coarse_Creative_Work	a legend of the round table	FP
+afa64981-c330-4e6a-888e-bb4e6cf5246c	30	32	Coarse_Creative_Work	on	FP
+afa64981-c330-4e6a-888e-bb4e6cf5246c	7	14	Coarse_Creative_Work	viviane	FN
+afa64981-c330-4e6a-888e-bb4e6cf5246c	15	29	Coarse_Creative_Work	symphonic poem	FN
+afa64981-c330-4e6a-888e-bb4e6cf5246c	49	60	Coarse_Product	round table	FN
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	26	29	Coarse_Group	ibm	FP
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	77	80	Coarse_Group	mos	FP
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	26	47	Coarse_Product	ibm personal computer	FN
+5d7b4d54-dfd7-4b51-b708-f9543efe16a0	77	96	Coarse_Product	mos technology 6502	FN
+c5741b4a-95c0-4bd9-ab37-dc0c1158b7b7	37	48	Coarse_Medical	fly-by-wire	FP
+c5741b4a-95c0-4bd9-ab37-dc0c1158b7b7	37	48	Coarse_Product	fly-by-wire	FN
+ae6fc19a-eafa-4b3a-a263-8d02e76a0f25	109	116	Coarse_Product	engines	FP
+ae6fc19a-eafa-4b3a-a263-8d02e76a0f25	98	116	Coarse_Product	stationary engines	FN
+8bd619e3-ee07-4b02-8ae5-9d7c9721272f	28	37	Coarse_Product	dual mode	FP
+8bd619e3-ee07-4b02-8ae5-9d7c9721272f	0	15	Coarse_Product	hybrid vehicles	FN
+1dd39395-8d51-411b-99b7-2e142d32b23f	0	10	Coarse_Group	efficiency	FP
+1dd39395-8d51-411b-99b7-2e142d32b23f	68	85	Coarse_Product	mechanical system	FN
+f2341f72-2e46-4b59-af6e-002f1bb4ecab	33	40	Coarse_Product	molotov	FP
+f2341f72-2e46-4b59-af6e-002f1bb4ecab	33	50	Coarse_Product	molotov cocktails	FN
+0cbb56c4-ebdc-4f1b-b74c-ec8920a650a7	35	48	Coarse_Group	carmam aiglon	FP
+0cbb56c4-ebdc-4f1b-b74c-ec8920a650a7	35	48	Coarse_Product	carmam aiglon	FN
+85c817d5-2cce-41e3-82e3-938d041ff8d5	63	68	Coarse_Product	steam	FP
+85c817d5-2cce-41e3-82e3-938d041ff8d5	63	75	Coarse_Product	steam rocket	FN
+efcce0a2-171c-403b-88a7-867d2a344ce4	8	15	Coarse_Medical	nuclear	FP
+efcce0a2-171c-403b-88a7-867d2a344ce4	0	4	Coarse_Person	mark	FP
+efcce0a2-171c-403b-88a7-867d2a344ce4	0	20	Coarse_Product	mark 39 nuclear bomb	FN
+73f15907-b1fc-4679-96a7-f7c66fd5e056	47	59	Coarse_Medical	oscilloscope	FP
+73f15907-b1fc-4679-96a7-f7c66fd5e056	47	59	Coarse_Product	oscilloscope	FN
+73446991-0925-4750-b8dc-d8e2b517fc5d	141	146	Coarse_Medical	water	FP
+73446991-0925-4750-b8dc-d8e2b517fc5d	2	8	Coarse_Medical	siphon	FP
+73446991-0925-4750-b8dc-d8e2b517fc5d	2	8	Coarse_Product	siphon	FN
+0d071fd5-5b17-40b1-b905-1d79b34f945d	0	16	Coarse_Person	r. daneel olivaw	FP
+0d071fd5-5b17-40b1-b905-1d79b34f945d	0	16	Coarse_Product	r. daneel olivaw	FN
+7261e634-a4bd-4ed5-a9df-cd70796e62e9	2	11	Coarse_Group	pulse jet	FP
+7261e634-a4bd-4ed5-a9df-cd70796e62e9	14	26	Coarse_Product	argus as 014	FN
+d7a0c45e-2061-453d-82fa-71a34d9738e1	20	30	Coarse_Group	shinkansen	FP
+d7a0c45e-2061-453d-82fa-71a34d9738e1	20	30	Coarse_Product	shinkansen	FN
+63591fce-4fd8-422a-ac0d-0f54a685d43a	88	95	Coarse_Product	dinette	FP
+63591fce-4fd8-422a-ac0d-0f54a685d43a	27	37	Coarse_Product	dining car	FN
+60e6edf3-71ab-4a21-830a-0653eb030b7b	52	62	Coarse_Group	manggūltai	FP
+60e6edf3-71ab-4a21-830a-0653eb030b7b	52	62	Coarse_Person	manggūltai	FN
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	45	52	Coarse_Person	ferdous	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	53	71	Coarse_Person	ahmed prabir mitra	FP
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	45	58	Coarse_Person	ferdous ahmed	FN
+51d913e7-4c2f-4791-a8d4-04dafbd16ae6	59	71	Coarse_Person	prabir mitra	FN
+4e363f01-26c8-460c-b93e-987f23a8f876	39	43	Coarse_Person	béla	FP
+4e363f01-26c8-460c-b93e-987f23a8f876	34	43	Coarse_Person	duke béla	FN
+43f84c61-3f90-4bbd-81eb-578e7683a348	46	55	Coarse_Group	australia	FP
+43f84c61-3f90-4bbd-81eb-578e7683a348	28	55	Coarse_Group	prime minister of australia	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	36	46	Coarse_Group	kalabhavan	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	56	69	Coarse_Group	adoor bhavani	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	47	51	Coarse_Group	mani	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	15	21	Coarse_Group	mukesh	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	22	26	Coarse_Group	suma	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	27	35	Coarse_Group	sukumari	FP
+f52a5eb3-ba57-4d0e-8701-e03718391a34	27	35	Coarse_Person	sukumari	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	36	51	Coarse_Person	kalabhavan mani	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	56	69	Coarse_Person	adoor bhavani	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	15	21	Coarse_Person	mukesh	FN
+f52a5eb3-ba57-4d0e-8701-e03718391a34	22	26	Coarse_Person	suma	FN
+60cbf2a4-9958-4910-ae11-0779e9902df8	33	38	Coarse_Location	color	FP
+60cbf2a4-9958-4910-ae11-0779e9902df8	52	58	Coarse_Person	tin oo	FN
+d7f6091e-ade9-446a-af72-63b9474b3ba1	17	41	Coarse_Location	patria of constantinople	FP
+09ca9cc3-6f6f-4d45-8d5e-feb091381aaa	0	14	Coarse_Group	prime minister	FN
+56380749-49df-4c65-ac9e-d39c9d14b339	50	55	Coarse_Group	ch'oe	FP
+56380749-49df-4c65-ac9e-d39c9d14b339	50	62	Coarse_Person	ch'oe family	FN
+35bde3b5-7a0b-494a-a109-f05f9897fedc	61	76	Coarse_Group	mohammad khanlu	FP
+35bde3b5-7a0b-494a-a109-f05f9897fedc	61	76	Coarse_Person	mohammad khanlu	FN
+48866376-8a0c-413b-851c-1935edb8dacb	0	6	Coarse_Person	handel	FP
+48866376-8a0c-413b-851c-1935edb8dacb	82	92	Coarse_Creative_Work	king james	FP
+48866376-8a0c-413b-851c-1935edb8dacb	15	23	Coarse_Creative_Work	oratorio	FN
+48866376-8a0c-413b-851c-1935edb8dacb	82	100	Coarse_Creative_Work	king james version	FN
+0e6cd948-222b-4839-ae87-83b60ea8544c	28	33	Coarse_Group	maxim	FP
+0e6cd948-222b-4839-ae87-83b60ea8544c	28	33	Coarse_Creative_Work	maxim	FN
+ab150842-ef5e-4039-a630-15a782925eac	82	89	Coarse_Creative_Work	welcome	FP
+740eb682-7489-4226-97a2-1cf4599b3573	8	24	Coarse_Creative_Work	kansas city star	FP
+740eb682-7489-4226-97a2-1cf4599b3573	4	24	Coarse_Creative_Work	the kansas city star	FN
+99ce6071-542f-4576-ba9f-da5747e46ff0	0	12	Coarse_Group	the avengers	FP
+99ce6071-542f-4576-ba9f-da5747e46ff0	0	12	Coarse_Creative_Work	the avengers	FN
+f8a3b80b-a5aa-4d20-b194-4f9fc546bd0c	82	89	Coarse_Group	fortune	FP
+f8a3b80b-a5aa-4d20-b194-4f9fc546bd0c	82	89	Coarse_Creative_Work	fortune	FN
+f7d5418d-c132-48d6-be80-823bf1134bf2	44	54	Coarse_Creative_Work	brand echh	FN
+1ab8f1a6-36ee-4c50-b105-3876069aad66	38	42	Coarse_Creative_Work	1991	FN
+041195a2-745e-4c54-bd6a-5d1644069f1c	0	15	Coarse_Creative_Work	another country	FN
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	40	54	Coarse_Location	united kingdom	FP
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	12	22	Coarse_Creative_Work	irish poet	FP
+e051ebbc-51bb-4652-ba77-0933d1caa4c6	12	17	Coarse_Creative_Work	irish	FN
+031b900e-2dd0-4f73-8d1e-fb204bb612a1	46	52	Coarse_Group	dragon	FP
+031b900e-2dd0-4f73-8d1e-fb204bb612a1	46	52	Coarse_Creative_Work	dragon	FN
+9d159dd8-c5a4-43ae-aefa-ed27e2973fea	33	41	Coarse_Group	doggerel	FP
+9d159dd8-c5a4-43ae-aefa-ed27e2973fea	33	41	Coarse_Creative_Work	doggerel	FN
+98680b32-ef3c-487b-88ea-68b01fd4d545	57	62	Coarse_Product	gacha	FP
+98680b32-ef3c-487b-88ea-68b01fd4d545	57	62	Coarse_Creative_Work	gacha	FN
+62943083-a8eb-4c58-9032-2231dd8f452f	0	2	Coarse_Group	it	FP
+62943083-a8eb-4c58-9032-2231dd8f452f	20	35	Coarse_Creative_Work	graphics engine	FN
+560ce296-6696-468b-bc5c-37fef71dd939	0	14	Coarse_Product	word processor	FP
+560ce296-6696-468b-bc5c-37fef71dd939	0	14	Coarse_Creative_Work	word processor	FN
+d42066af-cbb0-436b-a1be-ef6a7fafae30	98	104	Coarse_Product	ms-dos	FP
+d42066af-cbb0-436b-a1be-ef6a7fafae30	98	104	Coarse_Creative_Work	ms-dos	FN
+a5f8c0d5-ec97-4a22-b62d-84e3d423d890	55	63	Coarse_Group	telegram	FP
+a5f8c0d5-ec97-4a22-b62d-84e3d423d890	55	63	Coarse_Creative_Work	telegram	FN
+6a5628eb-3600-42eb-bbe5-e377a9b25b2e	12	18	Coarse_Group	twitch	FP
+6a5628eb-3600-42eb-bbe5-e377a9b25b2e	12	18	Coarse_Creative_Work	twitch	FN
+5c9169d9-7fa4-4804-ab0a-327f5360492d	0	6	Coarse_Group	os/360	FP
+5c9169d9-7fa4-4804-ab0a-327f5360492d	0	6	Coarse_Creative_Work	os/360	FN
+f63aaf91-22a9-4337-bfe4-a65805bea26a	39	46	Coarse_Creative_Work	browser	FP
+f63aaf91-22a9-4337-bfe4-a65805bea26a	39	56	Coarse_Creative_Work	browser extension	FN
+7246d87b-c343-4290-b2ae-7c9b49f17874	0	15	Coarse_Group	gallon smashing	FP
+eb27f11a-ae86-4cdb-b804-6b884e901df0	13	23	Coarse_Creative_Work	style file	FP
+1a816672-7566-4fb8-b74c-2bb54cda4604	63	81	Coarse_Creative_Work	online multiplayer	FN
+b29ce1a9-32c7-43b1-8c5e-1e4dd47d0990	53	65	Coarse_Group	wereldmuseum	FP
+b29ce1a9-32c7-43b1-8c5e-1e4dd47d0990	53	65	Coarse_Location	wereldmuseum	FN
+5722be92-d04f-4b2c-8e40-cc8c021a681c	0	10	Coarse_Group	wellington	FP
+5722be92-d04f-4b2c-8e40-cc8c021a681c	56	69	Coarse_Group	athletic park	FP
+5722be92-d04f-4b2c-8e40-cc8c021a681c	56	69	Coarse_Location	athletic park	FN
+bef2e7db-1573-46d9-bdd3-ade07a9f02a5	43	76	Coarse_Group	diamond fund permanent exposition	FP
+bef2e7db-1573-46d9-bdd3-ade07a9f02a5	43	55	Coarse_Location	diamond fund	FN
+9af5f198-939c-4f45-8a1a-6b52fa65c332	48	75	Coarse_Group	virginia historical society	FP
+9af5f198-939c-4f45-8a1a-6b52fa65c332	48	75	Coarse_Location	virginia historical society	FN
+beff0955-7cc2-4f1d-89b6-a95798b4bc45	67	73	Coarse_Location	vienna	FP
+beff0955-7cc2-4f1d-89b6-a95798b4bc45	42	56	Coarse_Group	united nations	FP
+beff0955-7cc2-4f1d-89b6-a95798b4bc45	42	73	Coarse_Location	united nations office at vienna	FN
+5f86e0a4-b1e5-4340-807f-38506b02a37b	21	33	Coarse_Group	wereldmuseum	FP
+5f86e0a4-b1e5-4340-807f-38506b02a37b	21	33	Coarse_Location	wereldmuseum	FN
+63704710-f5f0-48c6-ab1a-1ecb85f9a76c	23	45	Coarse_Group	hollywood walk of fame	FP
+63704710-f5f0-48c6-ab1a-1ecb85f9a76c	23	45	Coarse_Location	hollywood walk of fame	FN
+bfddc214-98b6-4ff2-ae67-2ae117ecb4fd	30	56	Coarse_Group	canadian golf hall of fame	FP
+bfddc214-98b6-4ff2-ae67-2ae117ecb4fd	30	56	Coarse_Location	canadian golf hall of fame	FN
+06254790-66ab-49a7-805c-c7551821e9c8	47	68	Coarse_Group	vanderbilt university	FP
+06254790-66ab-49a7-805c-c7551821e9c8	47	68	Coarse_Location	vanderbilt university	FN
+fe0639fe-6263-418e-b7f7-4bd6b9da6f64	96	105	Coarse_Product	anchovies	FP
+fe0639fe-6263-418e-b7f7-4bd6b9da6f64	72	84	Coarse_Product	caciocavallo	FN
+7f239d9d-e6be-4c19-8cf3-4a327cb8ac56	54	69	Coarse_Product	turkish delight	FP
+7f239d9d-e6be-4c19-8cf3-4a327cb8ac56	47	53	Coarse_Group	fry 's	FP
+7f239d9d-e6be-4c19-8cf3-4a327cb8ac56	47	69	Coarse_Product	fry 's turkish delight	FN
+413480d0-7759-42ee-b487-d4a5902b4836	20	26	Coarse_Product	sambar	FN
+413480d0-7759-42ee-b487-d4a5902b4836	27	31	Coarse_Product	curd	FN
+413480d0-7759-42ee-b487-d4a5902b4836	32	40	Coarse_Product	kuzhambu	FN
+413480d0-7759-42ee-b487-d4a5902b4836	15	19	Coarse_Product	rice	FN
+16100a5e-a98a-484e-bf38-fe9e2292168a	52	65	Coarse_Medical	carbohydrates	FP
+16100a5e-a98a-484e-bf38-fe9e2292168a	41	65	Coarse_Product	structural carbohydrates	FN
+40ff2570-6dfe-4823-96ff-58eae7445c09	68	93	Coarse_Medical	genetically modified food	FP
+40ff2570-6dfe-4823-96ff-58eae7445c09	68	93	Coarse_Product	genetically modified food	FN
+7de4ba19-dd5f-4545-ac97-559ebd69bc1e	0	12	Coarse_Medical	volvopluteus	FP
+7de4ba19-dd5f-4545-ac97-559ebd69bc1e	30	36	Coarse_Product	edible	FN
+217dd2db-bd81-47b1-9c78-04b86a1805e7	0	7	Coarse_Group	fitness	FP
+217dd2db-bd81-47b1-9c78-04b86a1805e7	0	7	Coarse_Product	fitness	FN
+adf465b8-e156-4354-ac42-3c72842837fe	36	50	Coarse_Group	chili festival	FP
+adf465b8-e156-4354-ac42-3c72842837fe	36	41	Coarse_Product	chili	FN
+3ed15997-74f9-4add-a8f4-4ec3175306df	58	70	Coarse_Group	désenchantée	FP
+3ed15997-74f9-4add-a8f4-4ec3175306df	58	70	Coarse_Creative_Work	désenchantée	FN
+246a9919-f79a-4356-b8d5-77f2a325bc3a	17	31	Coarse_Person	grahame nelson	FP
+43fc330d-1a56-4afc-af2b-d1fee854cef6	16	33	Coarse_Person	pietro metastasio	FP
+d8fd45c6-92c3-4260-918b-90601f2878ca	42	59	Coarse_Creative_Work	who 's that chick	FP
+d8fd45c6-92c3-4260-918b-90601f2878ca	62	73	Coarse_Creative_Work	without you	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	22	41	Coarse_Creative_Work	where them girls at	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	42	61	Coarse_Creative_Work	who 's that chick ?	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	16	21	Coarse_Creative_Work	sweat	FN
+d8fd45c6-92c3-4260-918b-90601f2878ca	0	15	Coarse_Creative_Work	little bad girl	FN
+5242b22f-1ca7-44dc-bdca-c5d7c9309dd6	0	10	Coarse_Group	blacksmoke	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	0	5	Coarse_Group	adele	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	53	66	Coarse_Person	david johnson	FP
+e63a4241-7a3a-44fa-a3e3-c95b04041e2c	0	5	Coarse_Person	adele	FN
+e6236aa6-b8eb-40ea-894c-760b70633ac3	25	37	Coarse_Group	steelfactory	FP
+e6236aa6-b8eb-40ea-894c-760b70633ac3	25	37	Coarse_Creative_Work	steelfactory	FN
+fe3f0deb-685d-4f47-953a-911509a15a87	13	17	Coarse_Person	hani	FP
+e235c048-680e-4bbf-bc54-e3ec600bffc3	8	19	Coarse_Person	duke jordan	FN
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	78	95	Coarse_Creative_Work	the hour of chaos	FP
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	63	74	Coarse_Creative_Work	black steel	FP
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	25	41	Coarse_Creative_Work	get in that cell	FP
+f5b0c6bd-e3ee-4f63-afe9-94443c3f2d0f	63	95	Coarse_Creative_Work	black steel in the hour of chaos	FN
+925b526d-796c-4c15-8ad3-2588a7a4184d	49	56	Coarse_Person	heyward	FP
+925b526d-796c-4c15-8ad3-2588a7a4184d	42	48	Coarse_Person	dubose	FP
+925b526d-796c-4c15-8ad3-2588a7a4184d	42	56	Coarse_Person	dubose heyward	FN
+f4d511fc-6663-4b7a-b169-4c7287fddfd4	0	14	Coarse_Person	tha carter iii	FP
+f4d511fc-6663-4b7a-b169-4c7287fddfd4	0	14	Coarse_Creative_Work	tha carter iii	FN
+21fc33af-887f-416e-ad92-670b51da6b25	124	133	Coarse_Creative_Work	canticles	FP
+21fc33af-887f-416e-ad92-670b51da6b25	116	123	Coarse_Creative_Work	requiem	FP
+21fc33af-887f-416e-ad92-670b51da6b25	116	133	Coarse_Creative_Work	requiem canticles	FN
+7be4d1fa-ac23-40e2-bf7b-9ed8a9a45019	18	28	Coarse_Person	terry dome	FP
+7be4d1fa-ac23-40e2-bf7b-9ed8a9a45019	48	62	Coarse_Person	kamosi bogaert	FP
+7be4d1fa-ac23-40e2-bf7b-9ed8a9a45019	18	23	Coarse_Person	terry	FN
+8a548fde-a93c-4977-99a7-90614c0be4ec	64	78	Coarse_Group	massive attack	FP
+8a548fde-a93c-4977-99a7-90614c0be4ec	64	78	Coarse_Creative_Work	massive attack	FN
+865b3ad9-83eb-4655-a940-56d14b7cc0cc	23	38	Coarse_Location	arati prabhakar	FP
+865b3ad9-83eb-4655-a940-56d14b7cc0cc	23	38	Coarse_Person	arati prabhakar	FN
+1a1b56d7-743a-4c4a-ba0c-de83e1f043dd	63	76	Coarse_Product	assault rifle	FN
+af937890-f4a0-47b4-b565-2e6921550694	27	36	Coarse_Location	svendborg	FP
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	13	27	Coarse_Group	virginia plain	FP
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	28	58	Coarse_Creative_Work	love is the drug do the strand	FP
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	0	10	Coarse_Group	roxy music	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	28	44	Coarse_Creative_Work	love is the drug	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	45	58	Coarse_Creative_Work	do the strand	FN
+81c41ba1-bdbf-4649-8c7c-f67c3f1dc28a	13	27	Coarse_Creative_Work	virginia plain	FN
+e158de93-3b28-42de-9c68-83ad5eeae3ff	8	19	Coarse_Creative_Work	tame impala	FP
+e158de93-3b28-42de-9c68-83ad5eeae3ff	8	19	Coarse_Group	tame impala	FN
+2349dbcc-9689-40b5-8394-d81357ded962	18	22	Coarse_Location	hull	FN
+d55f86c1-3149-4576-8dc5-ec779041ccf5	44	59	Coarse_Person	stephen malkmus	FP
+d55f86c1-3149-4576-8dc5-ec779041ccf5	64	73	Coarse_Group	the jicks	FP
+d55f86c1-3149-4576-8dc5-ec779041ccf5	44	73	Coarse_Group	stephen malkmus and the jicks	FN
+af25d6d2-2b13-4091-a1fd-3bf68cefe8f4	0	17	Coarse_Creative_Work	drive-by truckers	FP
+af25d6d2-2b13-4091-a1fd-3bf68cefe8f4	18	37	Coarse_Group	southern rock opera	FP
+af25d6d2-2b13-4091-a1fd-3bf68cefe8f4	0	17	Coarse_Group	drive-by truckers	FN
+af25d6d2-2b13-4091-a1fd-3bf68cefe8f4	18	37	Coarse_Creative_Work	southern rock opera	FN
+531a17d6-d60d-4698-b389-0866e2e794dc	42	47	Coarse_Group	timex	FP
+531a17d6-d60d-4698-b389-0866e2e794dc	42	59	Coarse_Group	timex social club	FN
+72013d28-2a0b-4eb2-8d59-e7bd09e286c2	15	21	Coarse_Creative_Work	tripod	FP
+72013d28-2a0b-4eb2-8d59-e7bd09e286c2	15	21	Coarse_Group	tripod	FN
+19d4904e-791c-4918-b872-cd7b4f0a04f6	34	44	Coarse_Person	nick jonas	FP
+fdfde1df-b794-4cc9-b04b-fa924cff53e2	37	47	Coarse_Creative_Work	i see love	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	40	44	Coarse_Group	mane	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	34	39	Coarse_Person	gucci	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	26	33	Coarse_Creative_Work	outkast	FP
+f5821dcc-65f0-4512-889d-440d68ba62b4	34	44	Coarse_Person	gucci mane	FN
+f5821dcc-65f0-4512-889d-440d68ba62b4	26	33	Coarse_Group	outkast	FN
+a90002ad-94a1-489c-b2f0-803817d055fa	6	13	Coarse_Product	ladders	FP
+a90002ad-94a1-489c-b2f0-803817d055fa	38	42	Coarse_Medical	wood	FN
+09b70632-db89-4a41-8038-bb5d63ec8837	53	70	Coarse_Medical	connective tissue	FP
+41252d46-108e-4719-8f4b-450be963369b	29	33	Coarse_Medical	scar	FP
+41252d46-108e-4719-8f4b-450be963369b	103	110	Coarse_Medical	uterine	FP
+41252d46-108e-4719-8f4b-450be963369b	2	11	Coarse_Medical	caesarean	FP
+fbf7cbd3-9f67-4b32-b344-389f42ce28de	59	65	Coarse_Product	helmet	FP
+fbf7cbd3-9f67-4b32-b344-389f42ce28de	4	11	Coarse_Medical	flowers	FN
+d407b821-78ee-472a-8831-c48f8986aaed	0	14	Coarse_Medical	pudendal nerve	FP
+d407b821-78ee-472a-8831-c48f8986aaed	102	116	Coarse_Medical	pudendal canal	FP
+d407b821-78ee-472a-8831-c48f8986aaed	0	25	Coarse_Medical	pudendal nerve entrapment	FN
+d407b821-78ee-472a-8831-c48f8986aaed	45	59	Coarse_Medical	pudendal nerve	FN
+e522086f-83b5-47fb-9261-7f8d522e9598	22	27	Coarse_Medical	edema	FP
+e522086f-83b5-47fb-9261-7f8d522e9598	122	138	Coarse_Medical	refractive error	FP
+e522086f-83b5-47fb-9261-7f8d522e9598	106	112	Coarse_Medical	myopia	FP
+3ba2095b-5c8f-408c-b511-c8c580ba8ba2	4	9	Coarse_Product	flesh	FP
+3ba2095b-5c8f-408c-b511-c8c580ba8ba2	4	9	Coarse_Medical	flesh	FN
+8d9fa8e8-d103-427e-ad27-9de66edd931b	122	128	Coarse_Medical	midrib	FP
+f6d0e12c-ec06-431d-9d91-e51578fc5c06	101	106	Coarse_Medical	hairs	FP
+03bb4e85-9cb6-4495-89e3-38127f3783be	95	105	Coarse_Medical	hair cells	FP
+03bb4e85-9cb6-4495-89e3-38127f3783be	110	119	Coarse_Medical	endolymph	FP
+03bb4e85-9cb6-4495-89e3-38127f3783be	128	137	Coarse_Medical	inner ear	FN
+b18a41ce-476b-4ce7-8953-b55cf111d186	4	13	Coarse_Medical	palpebral	FP
+b18a41ce-476b-4ce7-8953-b55cf111d186	96	100	Coarse_Medical	skin	FP
+b18a41ce-476b-4ce7-8953-b55cf111d186	42	59	Coarse_Medical	orbicularis oculi	FP
+b18a41ce-476b-4ce7-8953-b55cf111d186	4	22	Coarse_Medical	palpebral branches	FN
+2b6bdf3a-c6bb-4367-9195-a011151d3a26	0	6	Coarse_Group	staple	FP
+2b6bdf3a-c6bb-4367-9195-a011151d3a26	41	51	Coarse_Product	streetwear	FN
+fb38e75e-0602-4745-808e-a83bd546e920	114	124	Coarse_Medical	medication	FP
+1bf52b64-3d13-494d-b5f9-586b1432e733	0	6	Coarse_Medical	coving	FP
+1bf52b64-3d13-494d-b5f9-586b1432e733	0	6	Coarse_Product	coving	FN
+e47d5940-32ab-4836-b334-d8945c42b3cb	0	4	Coarse_Group	they	FP
+b552fb77-d31d-4a46-b351-fbca05cf246e	19	34	Coarse_Group	pipes and drums	FP
+71e29429-09c4-476a-a5a1-6bc1f653c41a	24	37	Coarse_Creative_Work	wedding dress	FP
+71e29429-09c4-476a-a5a1-6bc1f653c41a	24	37	Coarse_Product	wedding dress	FN
+d80eb80a-87a9-4786-b11e-261498ae24c3	4	25	Coarse_Creative_Work	epiphanius of salamis	FP
+d80eb80a-87a9-4786-b11e-261498ae24c3	4	25	Coarse_Person	epiphanius of salamis	FN
+93f27025-678d-4bdc-9303-e8cb9b0d30b4	29	31	Coarse_Location	ta	FP
+93f27025-678d-4bdc-9303-e8cb9b0d30b4	0	8	Coarse_Person	muhammad	FN
+04c4277b-867b-4ea0-a83a-aa387336b924	0	21	Coarse_Creative_Work	dear stream dear bank	FP
+a11a69fa-a365-4cf9-80bb-30b479e653e3	31	52	Coarse_Location	water cure sanatorium	FP
+2f6821b2-8b33-4f53-8ed6-0f231ab28bf8	0	9	Coarse_Medical	adhesions	FP
+2f6821b2-8b33-4f53-8ed6-0f231ab28bf8	70	77	Coarse_Medical	surgery	FN
+41de1af1-83b0-4dcc-af5f-2ab0157922a6	43	48	Coarse_Medical	faith	FP
+41de1af1-83b0-4dcc-af5f-2ab0157922a6	43	56	Coarse_Medical	faith healing	FN
+c2bbdf10-8a18-42ed-85b2-5bd58e72ac3d	64	79	Coarse_Medical	neural networks	FP
+e989e43e-d2aa-4c53-939b-eef0a0a85463	6	16	Coarse_Medical	3d imaging	FP
+e10038ac-3fa4-438b-8512-ae761bd82fc5	13	25	Coarse_Medical	life support	FP
+e10038ac-3fa4-438b-8512-ae761bd82fc5	65	90	Coarse_Medical	intermediate life support	FP
+e10038ac-3fa4-438b-8512-ae761bd82fc5	4	25	Coarse_Medical	advanced life support	FN
+5c3ab04e-916e-48fd-bc61-a54dcb623a63	126	128	Coarse_Medical	ct	FP
+5c3ab04e-916e-48fd-bc61-a54dcb623a63	126	139	Coarse_Medical	ct (cat) scan	FN
+6a4a81fc-0502-4e41-abef-ce7b15dec119	41	53	Coarse_Location	chkalovskaya	FP
+6a4a81fc-0502-4e41-abef-ce7b15dec119	2	17	Coarse_Location	geologicheskaya	FN
+5d83d66e-55a0-4e31-ad2e-f8862bf8726d	29	42	Coarse_Group	cfb moose jaw	FP
+5d83d66e-55a0-4e31-ad2e-f8862bf8726d	29	42	Coarse_Location	cfb moose jaw	FN
+732386c6-a413-430e-8d87-31ff4f86e78b	51	66	Coarse_Location	railway station	FN
+1fd63c94-c97a-4a39-9fb9-54df876170e7	10	15	Coarse_Group	scott	FP
+1fd63c94-c97a-4a39-9fb9-54df876170e7	10	26	Coarse_Group	scott motorcycle	FN
+5e9c49a7-1495-49c0-8714-7390052951cf	0	5	Coarse_Group	crush	FP
+5e9c49a7-1495-49c0-8714-7390052951cf	0	5	Coarse_Product	crush	FN
+a4e4e0d0-53c9-4335-8569-1bdbc06dd0bf	36	45	Coarse_Product	contratto	FP
+a4e4e0d0-53c9-4335-8569-1bdbc06dd0bf	48	54	Coarse_Product	liquor	FN
+31ce57c7-18c7-4f76-a807-f53d3bf86214	105	119	Coarse_Medical	infant formula	FP
+31ce57c7-18c7-4f76-a807-f53d3bf86214	105	119	Coarse_Product	infant formula	FN
+df505b46-d776-47d3-a2d1-826be3bb3713	66	70	Coarse_Product	wine	FP
+df505b46-d776-47d3-a2d1-826be3bb3713	0	8	Coarse_Product	liqueurs	FN
+dd012422-807b-48a5-812d-bdd6ccc51a1e	0	7	Coarse_Group	thermos	FP
+dd012422-807b-48a5-812d-bdd6ccc51a1e	82	88	Coarse_Product	coffee	FN
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	48	62	Coarse_Group	vulcan foundry	FP
+15a8aed7-6b8b-4e0f-9fd1-9b0f1224a644	48	62	Coarse_Location	vulcan foundry	FN
+d8675faf-0ab1-4051-a57d-5073437689c3	29	36	Coarse_Product	f . k .	FP
+afa630b3-573b-4aab-9851-a74324518a8a	15	29	Coarse_Product	guided weapons	FP
+77fdea52-be1e-47e7-a518-b2c870d24c28	2	12	Coarse_Group	beechcraft	FP
+77fdea52-be1e-47e7-a518-b2c870d24c28	2	15	Coarse_Product	beechcraft 18	FN
+370fc8f3-20d6-4663-ad6f-796c44377008	100	110	Coarse_Group	enaer ogma	FP
+370fc8f3-20d6-4663-ad6f-796c44377008	100	105	Coarse_Group	enaer	FN
+370fc8f3-20d6-4663-ad6f-796c44377008	106	110	Coarse_Location	ogma	FN
+9835ef61-35ec-427a-9085-423c0eea935d	34	39	Coarse_Medical	fever	FP
+9835ef61-35ec-427a-9085-423c0eea935d	40	50	Coarse_Medical	chest pain	FP
+9835ef61-35ec-427a-9085-423c0eea935d	55	74	Coarse_Medical	shortness of breath	FN
+428c82ef-0cd1-4cad-a246-2ed7d6e6aed1	30	36	Coarse_Medical	repair	FP
+15b084c0-77db-46c7-b5a8-84fe2a6bc567	83	90	Coarse_Medical	abscess	FN
+2d650791-4e40-4a6c-960b-03e43fcc507f	34	39	Coarse_Person	huang	FP
+2d650791-4e40-4a6c-960b-03e43fcc507f	12	28	Coarse_Location	fuchun mountains	FP
+2d650791-4e40-4a6c-960b-03e43fcc507f	12	28	Coarse_Creative_Work	fuchun mountains	FN
+2d650791-4e40-4a6c-960b-03e43fcc507f	34	48	Coarse_Person	huang gongwang	FN
+6416f0d6-fd52-4ffc-887f-a2343ad2d1e6	37	45	Coarse_Location	filipino	FP
+6416f0d6-fd52-4ffc-887f-a2343ad2d1e6	56	64	Coarse_Creative_Work	tampuhan	FN
+00c619ed-adfb-4548-8fcc-f9f494a4618f	46	59	Coarse_Creative_Work	installations	FN
+02ad5699-7c3b-42d0-ae03-f60b757e976f	0	16	Coarse_Group	four handscrolls	FP
+02ad5699-7c3b-42d0-ae03-f60b757e976f	5	16	Coarse_Creative_Work	handscrolls	FN
+025e90b6-f8d9-4aed-875c-6631127898f8	53	60	Coarse_Creative_Work	bacchus	FP
+025e90b6-f8d9-4aed-875c-6631127898f8	65	72	Coarse_Creative_Work	ariadne	FP
+025e90b6-f8d9-4aed-875c-6631127898f8	31	48	Coarse_Creative_Work	feast of the gods	FP
+025e90b6-f8d9-4aed-875c-6631127898f8	27	48	Coarse_Creative_Work	the feast of the gods	FN
+025e90b6-f8d9-4aed-875c-6631127898f8	53	72	Coarse_Creative_Work	bacchus and ariadne	FN
+b0559826-eb4c-40be-93c3-d563015ee8a8	69	102	Coarse_Creative_Work	statue liberty leading the people	FP
+b0559826-eb4c-40be-93c3-d563015ee8a8	76	102	Coarse_Creative_Work	liberty leading the people	FN
+0235c03e-363d-4eb7-a301-7d65f1989747	25	39	Coarse_Person	lady jane grey	FP
+0235c03e-363d-4eb7-a301-7d65f1989747	8	39	Coarse_Creative_Work	the execution of lady jane grey	FN
+53731822-23be-421d-9210-4db678aecf90	69	83	Coarse_Creative_Work	ukiyo e screen	FP
