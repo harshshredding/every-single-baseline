@@ -14,7 +14,15 @@ model = prepare_model()
 loss_function = nn.CrossEntropyLoss()
 optimizer = get_optimizer(model)
 label_to_idx_dict, idx_to_label_dict = get_label_idx_dicts()
+all_types = set([label.label_type for label in label_to_idx_dict])
+print("all types", all_types)
 assert len(label_to_idx_dict) == args['num_types'] * 2 + 1
+for _, annos in sample_to_annos_train.items():
+    for anno in annos:
+        assert anno.label_type in all_types, f"{anno.label_type}"
+for _, annos in sample_to_annos_valid.items():
+    for anno in annos:
+        assert anno.label_type in all_types, f"{anno.label_type}"
 
 for epoch in range(args['num_epochs']):
     epoch_loss = []
@@ -32,7 +40,7 @@ for epoch in range(args['num_epochs']):
         tokens = get_token_strings(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
-        expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos, label_to_idx_dict)
+        expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos)
         expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
         model_input = prepare_model_input(batch_encoding, sample_data)
         output = model(*model_input)
@@ -69,7 +77,7 @@ for epoch in range(args['num_epochs']):
                 offsets_list = get_token_offsets(sample_data)
                 batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                                 add_special_tokens=False, truncation=True, max_length=512).to(device)
-                expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos, label_to_idx_dict)
+                expanded_labels = extract_expanded_labels(sample_data, batch_encoding, annos)
                 expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
                 model_input = prepare_model_input(batch_encoding, sample_data)
                 output = model(*model_input)

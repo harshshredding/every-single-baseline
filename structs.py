@@ -1,13 +1,14 @@
 from enum import Enum
 from dataclasses import dataclass, field
-OUTSIDE_LABEL_STRING = 'o'
+from abc import ABC, abstractmethod
+from typing import List
 
+OUTSIDE_LABEL_STRING = 'o'
 
 class BioTag(Enum):
     out = 0
     begin = 1
     inside = 2
-
 
 class Dataset(Enum):
     social_dis_ner = 1
@@ -15,6 +16,12 @@ class Dataset(Enum):
     genia = 3
     living_ner = 4
     multiconer = 5
+    legaleval = 6
+
+class DatasetSplit(Enum):
+    train = 0
+    valid = 1
+    test = 2
 
 class Label:
     def __init__(self, label_type, bio_tag):
@@ -65,9 +72,18 @@ class Anno:
 @dataclass
 class TokenData:
     sample_id: str
-    sample_start_offset: int
     token_string: str
     token_len: int
     token_start_offset: int
     token_end_offset: int
-    label: str
+
+@dataclass
+class Sample:
+    text: str
+    id: str
+    annos: List[Anno]
+
+class Preprocessor(ABC):
+    @abstractmethod
+    def get_samples(self, raw_file_path) -> List[Sample]:
+        pass

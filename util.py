@@ -46,13 +46,13 @@ def read_umls_file_small(umls_file_path):
     return umls_embedding_dict
 
 
-def extract_expanded_labels(sample_data, batch_encoding, annos, labels_dict) -> List[Label]:
+def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
     if '3Classes' in args['model_name']:
-        labels = get_labels_bio(sample_data, annos, labels_dict)
+        labels = get_labels_bio(sample_data, annos)
         expanded_labels = expand_labels_rich(batch_encoding, labels)
         return expanded_labels
     elif '2Classes' in args['model_name']:
-        labels = get_label_strings(sample_data, labels_dict)
+        labels = get_label_strings(sample_data, annos)
         expanded_labels = expand_labels(batch_encoding, labels)
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + args['model_name'])
@@ -92,7 +92,7 @@ def get_extraction(tokens, offsets, start, end):
     return ' '.join(extraction)
 
 
-def get_label_idx_dicts():
+def get_label_idx_dicts() -> tuple[Dict[Label, int], Dict[int, Label]]:
     label_to_idx_dict = {}
     with open(args['types_file_path'], 'r') as types_file:
         for line in types_file.readlines():
@@ -167,6 +167,8 @@ def create_gate_file(file_name_without_extension, sample_to_token_data: Dict[str
         default_ann_set.add(int(gate_anno[0]), int(gate_anno[1]), gate_anno[2], gate_anno[3])
     gate_document.save(args['gate_input_folder_path'] + f'/{file_name_without_extension}.bdocjs')
 
+def p_string(obj) -> str:
+    return json.dumps(obj=obj, indent=4)
 
 def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
     span_list = []
@@ -521,6 +523,14 @@ def get_train_annos_dict() -> Dict[str, List[Anno]]:
             annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
             sample_to_annos[str(row['sample_id'])] = annos_list
         return sample_to_annos
+    elif curr_dataset == Dataset.legaleval:
+        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
+        sample_to_annos = {}
+        for i, row in df.iterrows():
+            annos_list = sample_to_annos.get(str(row['sample_id']), [])
+            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
+            sample_to_annos[str(row['sample_id'])] = annos_list
+        return sample_to_annos
     else:
         raise Exception(f"{args['dataset_name']} is not supported")
 
@@ -561,43 +571,43 @@ def parse_token_data(token_data_raw) -> TokenData:
     if curr_dataset == Dataset.few_nerd:
         return TokenData(
             str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Sample'][0]['startOffset'],
             token_data_raw['Token'][0]['string'],
             token_data_raw['Token'][0]['length'],
             token_data_raw['Token'][0]['startOffset'],
-            token_data_raw['Token'][0]['endOffset'],
-            token_data_raw['Span'][0]['type'] if 'Span' in token_data_raw else None
+            token_data_raw['Token'][0]['endOffset']
         )
     elif curr_dataset == Dataset.social_dis_ner:
         return TokenData(
             sample_id=str(token_data_raw['tweet_text'][0]['twitter_id']),
-            sample_start_offset=token_data_raw['tweet_text'][0]['startOffset'],
             token_string=token_data_raw['Token'][0]['string'],
             token_len=token_data_raw['Token'][0]['length'],
             token_start_offset=token_data_raw['Token'][0]['startOffset'],
             token_end_offset=token_data_raw['Token'][0]['endOffset'],
-            label='Disease' if 'Span' in token_data_raw else None
         )
     elif curr_dataset == Dataset.genia:
         return TokenData(
             str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Sample'][0]['startOffset'],
             token_data_raw['Token'][0]['string'],
             token_data_raw['Token'][0]['length'],
             token_data_raw['Token'][0]['startOffset'],
             token_data_raw['Token'][0]['endOffset'],
-            token_data_raw['Span'][0]['type'] if ('Span' in token_data_raw) and len(token_data_raw['Span']) else None
         )
     elif curr_dataset == Dataset.multiconer:
         return TokenData(
             str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Sample'][0]['startOffset'],
             token_data_raw['Token'][0]['string'],
             token_data_raw['Token'][0]['length'],
             token_data_raw['Token'][0]['startOffset'],
             token_data_raw['Token'][0]['endOffset'],
-            token_data_raw['Span'][0]['type'] if token_data_raw['Span'][0]['type'] != 'O' else None
-        ) 
+        )
+    elif curr_dataset == Dataset.legaleval:
+        return TokenData(
+            str(token_data_raw['Sample'][0]['id']),
+            token_data_raw['Token'][0]['string'],
+            token_data_raw['Token'][0]['length'],
+            token_data_raw['Token'][0]['startOffset'],
+            token_data_raw['Token'][0]['endOffset'],
+        )  
     else:
         raise NotImplementedError(f"implement token data parsing for dataset {args['dataset_name']}")
 
@@ -636,69 +646,69 @@ def get_token_strings(sample_data: List[TokenData]):
         only_token_strings.append(token_data.token_string)
     return only_token_strings
 
+def get_annos_surrounding_token(annos: List[Anno], token: TokenData) -> List[Anno]:
+    return [anno for anno in annos \
+        if (anno.begin_offset <= token.token_start_offset) and (token.token_end_offset <= anno.end_offset)]
 
-def get_label_strings(sample_data: List[TokenData], label_dict):
-    tags = []
-    all_possible_labels = [label.label_type for label in label_dict.keys()]
+def get_label_strings(sample_data: List[TokenData], annos: List[Anno]):
+    ret_labels = []
     for token_data in sample_data:
-        if token_data.label is not None:
-            assert token_data.label in all_possible_labels, f"label {token_data.label} is not in types file: {label_dict}"
-            tags.append(token_data.label)
+        surrounding_annos = get_annos_surrounding_token(annos, token_data)
+        if not len(surrounding_annos):
+            ret_labels.append(OUTSIDE_LABEL_STRING)
         else:
-            tags.append(OUTSIDE_LABEL_STRING)
-    return tags
+            ret_labels.append(surrounding_annos[0].label_type)
+    return ret_labels
 
 
-def get_labels_bio(sample_data: List[TokenData], annos: List[Anno], types_dict) -> List[Label]:
-    labels = get_label_strings(sample_data, types_dict)
-    offsets = get_token_offsets(sample_data)
+# def get_labels_bio(sample_data: List[TokenData], annos: List[Anno], types_dict) -> List[Label]:
+#     labels = get_label_strings(sample_data, types_dict)
+#     offsets = get_token_offsets(sample_data)
+#     new_labels = []
+#     for (label_string, curr_offset) in zip(labels, offsets):
+#         if label_string != OUTSIDE_LABEL_STRING:
+#             anno_same_start = [anno for anno in annos if anno.begin_offset == curr_offset[0]]
+#             in_anno = [anno for anno in annos if
+#                        (curr_offset[0] >= anno.begin_offset) and (curr_offset[1] <= anno.end_offset)]
+#             if len(anno_same_start) > 0:
+#                 new_labels.append(Label(label_string, BioTag.begin))
+#             else:
+#                 # avoid DiseaseMid without a DiseaseStart
+#                 if (len(new_labels) > 0) and (new_labels[-1].bio_tag != BioTag.out) \
+#                         and (label_string == new_labels[-1].label_type) and len(in_anno):
+#                     new_labels.append(Label(label_string, BioTag.inside))
+#                 else:
+#                     new_labels.append(Label.get_outside_label())
+#         else:
+#             new_labels.append(Label.get_outside_label())
+#     return new_labels
+
+def get_labels_bio(sample_token_data: List[TokenData], annos: List[Anno]) -> List[Label]:
+    """
+    Takes all tokens and gold annotations for a sample
+    and outputs a labels(one for each token) representing 
+    whether a token is at the beginning(B), inside(I), or outside(O) of an entity.
+    """
     new_labels = []
-    for (label_string, curr_offset) in zip(labels, offsets):
-        if label_string != OUTSIDE_LABEL_STRING:
-            anno_same_start = [anno for anno in annos if anno.begin_offset == curr_offset[0]]
-            in_anno = [anno for anno in annos if
-                       (curr_offset[0] >= anno.begin_offset) and (curr_offset[1] <= anno.end_offset)]
-            if len(anno_same_start) > 0:
-                new_labels.append(Label(label_string, BioTag.begin))
+    for token in sample_token_data:
+        annos_that_surround = get_annos_surrounding_token(annos, token)
+        if not len(annos_that_surround):
+            new_labels.append(Label.get_outside_label())
+        else:
+            assert len(annos_that_surround) == 1
+            annos_with_same_start = [anno for anno in annos_that_surround if anno.begin_offset == token.token_start_offset]
+            if len(annos_with_same_start):
+                new_labels.append(Label(annos_with_same_start[0].label_type, BioTag.begin))
             else:
-                # avoid DiseaseMid without a DiseaseStart
-                if (len(new_labels) > 0) and (new_labels[-1].bio_tag != BioTag.out) \
-                        and (label_string == new_labels[-1].label_type) and len(in_anno):
-                    new_labels.append(Label(label_string, BioTag.inside))
-                else:
-                    new_labels.append(Label.get_outside_label())
-        else:
-            new_labels.append(Label.get_outside_label())
+                new_labels.append(Label(annos_that_surround[0].label_type, BioTag.inside))
     return new_labels
 
-def get_labels_bio_simpler(sample_data: List[TokenData], annos: List[Anno]) -> List[Label]:
-    offsets = get_token_offsets(sample_data)
-    new_labels = []
-    for curr_token_span in offsets:
-        token_annotated = [anno for anno in annos if
-                    (curr_token_span[0] >= anno.begin_offset) and (curr_token_span[1] <= anno.end_offset)]
-        token_with_same_start = [anno for anno in annos if anno.begin_offset == curr_token_span[0]]
-        token_starts_after_anno = [anno for anno in annos if
-                    (curr_token_span[0] > anno.begin_offset) and (curr_token_span[1] <= anno.end_offset)]
-        if not len(token_annotated):
-            new_labels.append(Label.get_outside_label())
-        elif len(token_with_same_start):
-            new_labels.append(Label(token_with_same_start[0].label_type, BioTag.begin))
-        elif len(token_starts_after_anno):
-            new_labels.append(Label(token_starts_after_anno[0].label_type, BioTag.inside))
-        else:
-            raise Exception("cannot handle this case") 
-    return new_labels
-
-
-def get_token_offsets(sample_data: List[TokenData]):
+def get_token_offsets(sample_data: List[TokenData]) -> List[tuple]:
     offsets_list = []
     for token_data in sample_data:
-        sample_start = token_data.sample_start_offset
-        offsets_list.append((token_data.token_start_offset - sample_start,
-                             token_data.token_end_offset - sample_start))
+        offsets_list.append((token_data.token_start_offset,
+                             token_data.token_end_offset))
     return offsets_list
-
 
 def get_umls_data(sample_data):
     raise NotImplementedError()
@@ -853,6 +863,7 @@ def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
         word_idx = batch_encoding.token_to_word(token_idx)
         label = labels[word_idx]
         if (label.bio_tag == BioTag.begin) and (prev_word_idx == word_idx):
+            assert prev_label is not None
             new_labels.append(Label(label_type=prev_label.label_type, bio_tag=BioTag.inside))
         else:
             new_labels.append(labels[word_idx])

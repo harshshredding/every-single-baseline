@@ -16,7 +16,7 @@ if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
 else:
     EXPERIMENT = 'test'
-curr_dataset = Dataset.multiconer
+curr_dataset = Dataset.legaleval
 if curr_dataset == Dataset.few_nerd:
     args = {
         "train_annos_file_path": "./datasets/few-nerd-dataset/gold-annos/few_nerd_train_annos.tsv",
@@ -123,6 +123,29 @@ elif curr_dataset == Dataset.multiconer:
             'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease'],
             'O': ['O']
         }
+    }
+elif curr_dataset == Dataset.legaleval:
+    args = {
+        "train_annos_file_path": f"./datasets/legaleval/gold-annos/train/PREAMBLE/annos-PREAMBLE-train.tsv",
+        "valid_annos_file_path": f"./datasets/legaleval/gold-annos/valid/PREAMBLE/annos-PREAMBLE-valid.tsv",
+        "gate_input_folder_path": "./datasets/legaleval/gate-input",
+        "training_data_folder_path": "./datasets/legaleval/input-files/train/PREAMBLE",
+        "validation_data_folder_path": "./datasets/legaleval/input-files/valid/PREAMBLE",
+        "types_file_path": "./datasets/legaleval/types.txt",
+        "num_types": 14,
+        # MODEL DETAILS
+        "bert_model_name": "bert-base-uncased",
+        "bert_model_output_dim": 768,
+        "num_epochs": 15,
+        "save_models_dir": "./models",
+        "umls_embeddings_path": "./embeddings.csv",
+        "pos_embeddings_path": './spanish_pos_emb.p',
+        "disease_gazetteer_path": './dictionary_distemist.tsv',
+        "errors_dir": './errors',
+        "model_name": "JustBert3Classes",
+        "optimizer": "Adam",
+        "learning_rate": 1e-5,
+        "dataset_name": curr_dataset.name,
     }
 else:
     raise Exception(f'Dataset {curr_dataset} is not supported')
