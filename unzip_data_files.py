@@ -35,5 +35,11 @@ with zipfile.ZipFile('./embeddings.zip', 'r') as zip_ref:
 #     zip_ref.extractall('./datasets/')
 
 with zipfile.ZipFile('./multiconer.zip', 'r') as zip_ref:
-    create_directory_structure('./datasets/multiconer')
-    zip_ref.extractall('./datasets/multiconer')
+    folder_path = "./datasets/multiconer"
+    create_directory_structure(folder_path)
+    zip_ref.extractall(folder_path)
+
+with zipfile.ZipFile('./legaleval.zip', 'r') as zip_ref:
+    folder_path = "./datasets/legaleval"
+    create_directory_structure(folder_path)
+    zip_ref.extractall(folder_path)
