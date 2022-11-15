@@ -16,7 +16,7 @@ if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
 else:
     EXPERIMENT = 'test'
-curr_dataset = Dataset.legaleval
+curr_dataset = Dataset.multiconer
 if curr_dataset == Dataset.few_nerd:
     args = {
         "train_annos_file_path": "./datasets/few-nerd-dataset/gold-annos/few_nerd_train_annos.tsv",
@@ -125,12 +125,13 @@ elif curr_dataset == Dataset.multiconer:
         }
     }
 elif curr_dataset == Dataset.legaleval:
+    section = get_user_input('specify section', ['JUDGEMENT', 'PREAMBLE'])
     args = {
-        "train_annos_file_path": f"./datasets/legaleval/gold-annos/train/PREAMBLE/annos-PREAMBLE-train.tsv",
-        "valid_annos_file_path": f"./datasets/legaleval/gold-annos/valid/PREAMBLE/annos-PREAMBLE-valid.tsv",
+        "train_annos_file_path": f"./datasets/legaleval/gold-annos/train/{section}/annos-PREAMBLE-train.tsv",
+        "valid_annos_file_path": f"./datasets/legaleval/gold-annos/valid/{section}/annos-PREAMBLE-valid.tsv",
         "gate_input_folder_path": "./datasets/legaleval/gate-input",
-        "training_data_folder_path": "./datasets/legaleval/input-files/train/PREAMBLE",
-        "validation_data_folder_path": "./datasets/legaleval/input-files/valid/PREAMBLE",
+        "training_data_folder_path": f"./datasets/legaleval/input-files/train/{section}",
+        "validation_data_folder_path": f"./datasets/legaleval/input-files/valid/{section}",
         "types_file_path": "./datasets/legaleval/types.txt",
         "num_types": 14,
         # MODEL DETAILS
