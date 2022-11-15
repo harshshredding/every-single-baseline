@@ -1,0 +1,524 @@
+sample_id	begin	end	type	extraction	mistake_type
+1ea9dd0b69b64720851a2234a689082f	802	828	JUDGE	Najmi Waziri 
+
+ Najmi Waziri	FP
+1ea9dd0b69b64720851a2234a689082f	705	742	LAWYER	Amit Kumar 
+                      Gupta	FP
+1ea9dd0b69b64720851a2234a689082f	458	466	RESPONDENT	Qualcomm	FP
+1ea9dd0b69b64720851a2234a689082f	802	814	JUDGE	Najmi Waziri	FN
+1ea9dd0b69b64720851a2234a689082f	816	828	JUDGE	Najmi Waziri	FN
+1ea9dd0b69b64720851a2234a689082f	705	715	LAWYER	Amit Kumar	FN
+1ea9dd0b69b64720851a2234a689082f	458	480	RESPONDENT	Qualcomm India Pvt Ltd	FN
+dc971f32971b4a52a0698650111e8fc3	1011	1068	PETITIONER	Narendra Kumar Ambalal Ravat                             …	FP
+dc971f32971b4a52a0698650111e8fc3	1011	1039	PETITIONER	Narendra Kumar Ambalal Ravat	FN
+a3ff6117512d4897846f7e0bd4e46ee7	159	161	PETITIONER	Pt	FP
+a3ff6117512d4897846f7e0bd4e46ee7	389	408	PETITIONER	Krishan Kanta Misra	FP
+a3ff6117512d4897846f7e0bd4e46ee7	235	253	PETITIONER	Vijay Kumar Sharma	FP
+a3ff6117512d4897846f7e0bd4e46ee7	269	285	PETITIONER	Mohan Lal Sharma	FP
+8664b65997ef4742b697bd03159b5ed1	982	1026	RESPONDENT	Tahsildar , 
+                       Poonamallee	FP
+8664b65997ef4742b697bd03159b5ed1	1054	1114	RESPONDENT	Block Development Officer , 
+                       Poonamallee	FP
+8664b65997ef4742b697bd03159b5ed1	888	950	RESPONDENT	District Collector , 
+                       Thiruvallur District	FP
+8664b65997ef4742b697bd03159b5ed1	888	951	RESPONDENT	District Collector , 
+                       Thiruvallur District .	FN
+8664b65997ef4742b697bd03159b5ed1	1054	1115	RESPONDENT	Block Development Officer , 
+                       Poonamallee .	FN
+8664b65997ef4742b697bd03159b5ed1	982	1027	RESPONDENT	Tahsildar , 
+                       Poonamallee .	FN
+5ec5af018a984a499c750002bba3101a	256	279	COURT	Madurai Bench Of Madras	FP
+5ec5af018a984a499c750002bba3101a	256	290	COURT	Madurai Bench Of Madras High Court	FN
+31e23e3c9b9e4d65b49371714f774ecb	1625	1629	RESPONDENT	Ginu	FP
+31e23e3c9b9e4d65b49371714f774ecb	1077	1081	PETITIONER	K.B.	FP
+31e23e3c9b9e4d65b49371714f774ecb	354	448	PETITIONER	Additional District Court & Rent Control Appellate 
+                 Authority ,    North Paravur ,	FP
+31e23e3c9b9e4d65b49371714f774ecb	666	683	PETITIONER	Friends Arts Club	FP
+31e23e3c9b9e4d65b49371714f774ecb	1246	1256	LAWYER	Deepak Joy	FP
+31e23e3c9b9e4d65b49371714f774ecb	807	875	PETITIONER	Friends Arts Club , 
+            Regd No E R 30/73 , Chirakkakam Village	FN
+31e23e3c9b9e4d65b49371714f774ecb	951	1023	PETITIONER	Friends Arts Club , 
+            Regd No E.R 30/73 , Chirakkakam , Varappuzha	FN
+31e23e3c9b9e4d65b49371714f774ecb	666	734	PETITIONER	Friends Arts Club , 
+            Regd No E.R.30/73 , Chirakkakam Village	FN
+31e23e3c9b9e4d65b49371714f774ecb	1246	1259	LAWYER	Deepak Joy . K.	FN
+31e23e3c9b9e4d65b49371714f774ecb	1625	1637	RESPONDENT	Ginu Andrews	FN
+23ee21cb71f140929aaef89aa718ec5a	811	817	RESPONDENT	Manish	FP
+e157355322fe4a709a96b77d3187b698	1567	1587	JUDGE	Rajeev Ranjan Prasad	FN
+87884af5adeb42e080f5d427a226843a	221	269	COURT	S U P R E M E C O U R T O F             I N D I A	FN
+e5c51d4683184fa98735e60fdcde8e20	819	832	LAWYER	Aashaa Tiwari	FP
+e5c51d4683184fa98735e60fdcde8e20	819	833	LAWYER	Aashaa Tiwari ,	FN
+b3594015c16d4fb28230374931cd15e7	1045	1067	LAWYER	C.S.C.,Ram Bilas Yadav	FP
+b3594015c16d4fb28230374931cd15e7	1000	1016	LAWYER	Vrindavan Mishra	FP
+b3594015c16d4fb28230374931cd15e7	1045	1055	LAWYER	C.S.C.,Ram	FP
+b3594015c16d4fb28230374931cd15e7	1052	1067	LAWYER	Bilas Yadav	FN
+b3594015c16d4fb28230374931cd15e7	999	1016	LAWYER	, Vrindavan Mishra	FN
+6312de1e3d844e6eac25623e5713e3d4	1561	1610	RESPONDENT	Executive Officer , Patna Municipal Corporation at	FP
+6312de1e3d844e6eac25623e5713e3d4	2397	2444	RESPONDENT	Executive Engineer , Patna Municipal Corporation	FN
+6312de1e3d844e6eac25623e5713e3d4	1995	2008	PETITIONER	Prakash Kumar	FN
+6312de1e3d844e6eac25623e5713e3d4	2452	2525	RESPONDENT	Junior Engineer , Patna Municipal Corporation . Patna Municipal Corporation	FN
+6312de1e3d844e6eac25623e5713e3d4	2229	2280	RESPONDENT	Municipal Commissioner , Patna Municipal Corporation	FN
+6312de1e3d844e6eac25623e5713e3d4	2814	2835	PETITIONER	Gajendra Mohan Mishra	FN
+6312de1e3d844e6eac25623e5713e3d4	3897	3919	LAWYER	Jitendra Kishore Verma	FN
+6312de1e3d844e6eac25623e5713e3d4	3192	3213	PETITIONER	Nirendra Mohan Mishra	FN
+6312de1e3d844e6eac25623e5713e3d4	4244	4260	JUDGE	Mohit Kumar Shah	FN
+6312de1e3d844e6eac25623e5713e3d4	2343	2389	RESPONDENT	Vigilance Officer , Patna Municipal Corporation	FN
+6312de1e3d844e6eac25623e5713e3d4	2159	2186	RESPONDENT	Patna Municipal Corporation	FN
+6312de1e3d844e6eac25623e5713e3d4	4078	4100	LAWYER	Jitendra Kishore Verma	FN
+6312de1e3d844e6eac25623e5713e3d4	1561	1635	RESPONDENT	Executive Officer , Patna Municipal Corporation at Mauryalok Complex , Patna	FN
+6312de1e3d844e6eac25623e5713e3d4	2288	2335	RESPONDENT	Assistant Engineer , Patna Municipal Corporation	FN
+6312de1e3d844e6eac25623e5713e3d4	4133	4149	LAWYER	Yashraj Bhardhan	FN
+6312de1e3d844e6eac25623e5713e3d4	4004	4017	LAWYER	Prasoon Sinha	FN
+6312de1e3d844e6eac25623e5713e3d4	1642	1673	RESPONDENT	Maa Shambhavi Engicon Pvt . Ltd.	FN
+6312de1e3d844e6eac25623e5713e3d4	3500	3591	RESPONDENT	Patna Municipal Corporation , Patna Municipal Corporation , Maurya Lok Building , Patna 800001	FN
+6312de1e3d844e6eac25623e5713e3d4	2958	2978	PETITIONER	Gunendra Mohan Misra	FN
+6312de1e3d844e6eac25623e5713e3d4	3378	3412	RESPONDENT	Patna Municipal Corporation , Patna	FN
+6312de1e3d844e6eac25623e5713e3d4	3594	3620	RESPONDENT	. Prakash Kumar @ Munna ji	FN
+790e1d8a293e4ba2adf6d76392287707	7	94	COURT	High Court For The State Of Telangana 
+                                     At : Hyderabad	FP
+790e1d8a293e4ba2adf6d76392287707	798	805	LAWYER	Kondadi	FP
+790e1d8a293e4ba2adf6d76392287707	806	816	LAWYER	Ajay Kumar	FP
+790e1d8a293e4ba2adf6d76392287707	7	45	COURT	High Court For The State Of Telangana	FN
+790e1d8a293e4ba2adf6d76392287707	798	816	LAWYER	Kondadi Ajay Kumar	FN
+266bf0857b89407cba06d7fe6ec46f4a	603	662	RESPONDENT	District Magistrate , Sitamarhi , District - Sitamarhi ( Bihar	FP
+266bf0857b89407cba06d7fe6ec46f4a	603	663	RESPONDENT	District Magistrate , Sitamarhi , District - Sitamarhi ( Bihar )	FN
+ba18118a2bae4a3a88872f081a113c66	304	329	PETITIONER	Ispat And Power Pvt . Ltd.	FP
+ba18118a2bae4a3a88872f081a113c66	297	329	PETITIONER	Action Ispat And Power Pvt . Ltd.	FN
+d812fae263a64a9db10b1f017ef18356	552	576	RESPONDENT	Vikram Dev Singh Rathore	FP
+d812fae263a64a9db10b1f017ef18356	486	497	JUDGE	J.S. Sengar	FP
+d812fae263a64a9db10b1f017ef18356	527	539	RESPONDENT	Mukhtar Alam	FP
+d812fae263a64a9db10b1f017ef18356	459	469	JUDGE	D.V. Singh	FP
+d812fae263a64a9db10b1f017ef18356	540	551	RESPONDENT	Rohan Gupta	FP
+d812fae263a64a9db10b1f017ef18356	288	301	LAWYER	A.G.A.,Laxman	FP
+d812fae263a64a9db10b1f017ef18356	442	458	JUDGE	C.H.Singh Gautam	FP
+d812fae263a64a9db10b1f017ef18356	470	485	JUDGE	Gyanendra Kumar	FP
+d812fae263a64a9db10b1f017ef18356	698	712	LAWYER	Raghubir Singh	FP
+d812fae263a64a9db10b1f017ef18356	235	249	LAWYER	Raghuvir Singh	FP
+d812fae263a64a9db10b1f017ef18356	498	511	JUDGE	Kapil Rathore	FP
+d812fae263a64a9db10b1f017ef18356	429	436	JUDGE	Brijesh	FP
+d812fae263a64a9db10b1f017ef18356	512	515	JUDGE	Lav	FP
+d812fae263a64a9db10b1f017ef18356	442	458	LAWYER	C.H.Singh Gautam	FN
+d812fae263a64a9db10b1f017ef18356	470	485	LAWYER	Gyanendra Kumar	FN
+d812fae263a64a9db10b1f017ef18356	498	511	LAWYER	Kapil Rathore	FN
+d812fae263a64a9db10b1f017ef18356	698	712	RESPONDENT	Raghubir Singh	FN
+d812fae263a64a9db10b1f017ef18356	486	497	LAWYER	J.S. Sengar	FN
+d812fae263a64a9db10b1f017ef18356	235	249	RESPONDENT	Raghuvir Singh	FN
+d812fae263a64a9db10b1f017ef18356	527	539	LAWYER	Mukhtar Alam	FN
+d812fae263a64a9db10b1f017ef18356	540	551	LAWYER	Rohan Gupta	FN
+d812fae263a64a9db10b1f017ef18356	552	576	LAWYER	Vikram Dev Singh Rathore	FN
+d812fae263a64a9db10b1f017ef18356	459	469	LAWYER	D.V. Singh	FN
+d812fae263a64a9db10b1f017ef18356	512	526	LAWYER	Lav Srivastava	FN
+d812fae263a64a9db10b1f017ef18356	429	441	LAWYER	Brijesh Saha	FN
+884a90766f1044b28165312f09899ecc	160	241	COURT	High Court Of Madhya Pradesh 
+           Gwalior Bench 
+
+                    Division	FP
+884a90766f1044b28165312f09899ecc	0	1	PETITIONER	1	FP
+884a90766f1044b28165312f09899ecc	160	212	COURT	High Court Of Madhya Pradesh 
+           Gwalior Bench	FN
+eef32d60671a4d06b2ff95d7caf8a965	418	425	LAWYER	G.P.For	FP
+eef32d60671a4d06b2ff95d7caf8a965	467	477	LAWYER	P.Sri Ram .	FP
+eef32d60671a4d06b2ff95d7caf8a965	467	476	LAWYER	P.Sri Ram	FN
+eef32d60671a4d06b2ff95d7caf8a965	227	250	RESPONDENT	State of Andhra Pradesh	FN
+250fc24006a7477695f009f5b7cfa212	308	395	PETITIONER	National Campaign Committee For Central Legislation 
+      On Construction Labour ( Ncc Cl	FP
+250fc24006a7477695f009f5b7cfa212	130	174	COURT	S U P R E M E C O U R T O F         I N D I A	FN
+250fc24006a7477695f009f5b7cfa212	308	396	PETITIONER	National Campaign Committee For Central Legislation 
+      On Construction Labour ( Ncc Cl )	FN
+7de3d4e2378b40ca8bd0b5447c48b04d	521	541	JUDGE	Dinesh Kumar Singh - I	FP
+7de3d4e2378b40ca8bd0b5447c48b04d	521	539	JUDGE	Dinesh Kumar Singh	FN
+4e22e817542647c5a99fb0964676d4ff	697	882	RESPONDENT	Secretary For The 
+        Chief Information Commissioner , 
+        Central Information Commission , 
+        Cic Bhawan , 
+        Baba Ganganath Marg , 
+        Munirka , 
+        New Delhi - 110 067	FP
+4e22e817542647c5a99fb0964676d4ff	1117	1167	RESPONDENT	Special Public Prosecutor For 
+      Karnataka State	FP
+4e22e817542647c5a99fb0964676d4ff	499	687	RESPONDENT	Cabinet Secretary For The 
+        Hon , Ble President Of India , 
+        Appointments Committee Of The Cabinet , 
+        Cabinet Secretariat , 
+        Rashtrapati Bhavan , 
+        New Delhi - 110 004	FP
+4e22e817542647c5a99fb0964676d4ff	499	558	RESPONDENT	Cabinet Secretary For The 
+        Hon , Ble President Of India	FN
+4e22e817542647c5a99fb0964676d4ff	697	752	RESPONDENT	Secretary For The 
+        Chief Information Commissioner	FN
+4e22e817542647c5a99fb0964676d4ff	1117	1192	RESPONDENT	Special Public Prosecutor For 
+      Karnataka State By Station House Officer	FN
+6c3ff98a78204313a77b06285d999186	717	731	RESPONDENT	Union of India	FP
+e50c70ec7b7d4f09a2b869ef56339346	681	686	LAWYER	Nathu	FP
+e50c70ec7b7d4f09a2b869ef56339346	318	325	JUDGE	Gwalior	FP
+e50c70ec7b7d4f09a2b869ef56339346	224	282	RESPONDENT	State of M.P. 
+
+                High Court Of Madhya Pradesh	FP
+e50c70ec7b7d4f09a2b869ef56339346	681	692	LAWYER	Nathu Singh	FN
+e50c70ec7b7d4f09a2b869ef56339346	254	325	COURT	High Court Of Madhya Pradesh 
+
+                             Bench Gwalior	FN
+e50c70ec7b7d4f09a2b869ef56339346	224	237	RESPONDENT	State of M.P.	FN
+12b2e165cd8b4e71915e92904d951671	388	445	COURT	High Court Of Judicature At 
+      Allahabad , Lucknow Bench	FP
+12b2e165cd8b4e71915e92904d951671	1739	1752	JUDGE	Pamidighantam	FP
+12b2e165cd8b4e71915e92904d951671	1757	1766	LAWYER	Narasimha	FP
+12b2e165cd8b4e71915e92904d951671	1739	1766	JUDGE	Pamidighantam Sri Narasimha	FN
+12b2e165cd8b4e71915e92904d951671	109	150	COURT	S U P R E M E C O U R T O F      I N D I A	FN
+12b2e165cd8b4e71915e92904d951671	2174	2192	LAWYER	Tanuj Bagga Sharma	FN
+12b2e165cd8b4e71915e92904d951671	1835	1846	LAWYER	Indu Marwah	FN
+12b2e165cd8b4e71915e92904d951671	2237	2252	LAWYER	Ravindra Mishra	FN
+12b2e165cd8b4e71915e92904d951671	2106	2127	LAWYER	Prahlad Narayan Singh	FN
+645dfb85e25f4b2281f6bfb827ac9913	130	176	COURT	S U P R E M E C O U R T O F           I N D I A	FN
+5c4f64fec4ab41faab797177ecfac426	0	46	COURT	High Court Of Judicature At Allahabad 
+ 
+ 
+
+ Afr	FP
+5c4f64fec4ab41faab797177ecfac426	0	37	COURT	High Court Of Judicature At Allahabad	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	1263	1353	RESPONDENT	1.Tourism Finance Corporation of India Limited 
+                       4th Floor , Tower No.1	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2133	2248	RESPONDENT	5.State Bank of India 
+                       Stressed Assets Management Branch 
+                       No.32 , Montieth	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2922	2949	RESPONDENT	9.Radhakrishnan Dharmarajan	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	1741	1927	RESPONDENT	3.Idbi Trusteeship Services Limited 
+                       Asian Building , Ground Floor , 
+                       No.17 , R Kamani Marg , 
+                       Ballard Estate , Mumbai – 400 001	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2325	2378	RESPONDENT	6.Edelweiss Arc 
+                       Edelweiss House	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	1950	2106	RESPONDENT	4.Idbi Bank Limited 
+                       Npa Management Group ( Nmg ) 
+                       No.115 , Anna Salai , Saidapet , 
+                       Chennai – 600	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	767	893	PETITIONER	Five Member Committee of Employees 
+                       of Appu Hotels Limited at Coimbatore 
+                     Having place	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2325	2336	RESPONDENT	6.Edelweiss	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	342	459	PETITIONER	Five Member Committee of Employees 
+                       of Appu Hotels Limited at Chennai 
+                     Having	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2694	2837	RESPONDENT	8.Bank of India 
+                       Tarapore Towers , Iv Floor , 
+                       826 , Anna Salai , 
+                       Chennai – 600 002	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2694	2700	RESPONDENT	8.Bank	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2485	2493	RESPONDENT	7.Allium	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2485	2602	RESPONDENT	7.Allium Finance Pvt . Ltd. , 
+                       Tower 3 , Wing B , Kohinoor City Mall , 
+                       Kohinoor	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	1546	1718	RESPONDENT	2.Indian Bank 
+                       Stressed Assets Management Branch 
+                       2nd Floor , No.55 , Ethiraj Salai , 
+                       Egmore , Chennai – 600 008	FP
+d7f5455b1bc3466cb3e82b1009f8dfbf	2924	2949	RESPONDENT	Dharmarajan	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	1743	1776	RESPONDENT	Trusteeship Services Limited	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	2327	2340	RESPONDENT	Arc	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	342	432	PETITIONER	Five Member Committee of Employees 
+                       of Appu Hotels Limited at Chennai	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	2487	2511	RESPONDENT	Finance Pvt . Ltd.	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	3336	3359	RESPONDENT	to Government	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	3180	3199	RESPONDENT	Hotels Limited	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	1952	1969	RESPONDENT	Bank Limited	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	767	860	PETITIONER	Five Member Committee of Employees 
+                       of Appu Hotels Limited at Coimbatore	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	1548	1559	RESPONDENT	Bank	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	2135	2154	RESPONDENT	Bank of India	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	1265	1309	RESPONDENT	Finance Corporation of India Limited	FN
+d7f5455b1bc3466cb3e82b1009f8dfbf	2696	2709	RESPONDENT	of India	FN
+69cfd8f988964ebd83d9c48d677c9cef	161	182	LAWYER	S.S. Viswanethra Ravi	FP
+69cfd8f988964ebd83d9c48d677c9cef	118	135	LAWYER	J. Sudhakar Reddy	FP
+69cfd8f988964ebd83d9c48d677c9cef	608	660	RESPONDENT	Shakespeare Sarani 
+    6th Floor 
+    Kolkata - 700 001	FP
+69cfd8f988964ebd83d9c48d677c9cef	468	590	RESPONDENT	Orissa Metaliks Pvt . Ltd ..................................................................................................	FP
+69cfd8f988964ebd83d9c48d677c9cef	468	492	RESPONDENT	Orissa Metaliks Pvt . Ltd	FN
+69cfd8f988964ebd83d9c48d677c9cef	121	135	JUDGE	Sudhakar Reddy	FN
+69cfd8f988964ebd83d9c48d677c9cef	161	182	JUDGE	S.S. Viswanethra Ravi	FN
+c3cb1e773671455db72a67fd87a76ca4	693	770	RESPONDENT	Secretary , Department of Personnel Government of 
+ Rajasthan , Jaipur , Rajasthan	FP
+c3cb1e773671455db72a67fd87a76ca4	693	751	RESPONDENT	Secretary , Department of Personnel Government of 
+ Rajasthan	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	1637	1650	LAWYER	Raghunath M.D	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	877	888	RESPONDENT	Zia Khaleli	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	960	972	RESPONDENT	Anwar Hassan	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	1687	1691	RESPONDENT	Renu	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	1097	1108	RESPONDENT	Taj Sultana	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	1383	1395	RESPONDENT	Syedi Hassan	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	1675	1686	RESPONDENT	S.Siraj And	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	1177	1189	RESPONDENT	Syedi Hassan	FP
+0dea3fb8390e490fbbda5445cb2cd1f7	877	888	PETITIONER	Zia Khaleli	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	1677	1691	RESPONDENT	And Renu	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	1177	1189	PETITIONER	Syedi Hassan	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	2232	2244	LAWYER	K.S.Ponnappa	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	960	972	PETITIONER	Anwar Hassan	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	1097	1108	PETITIONER	Taj Sultana	FN
+0dea3fb8390e490fbbda5445cb2cd1f7	1637	1646	LAWYER	Raghunath	FN
+339fdcd7098641fea1a1fd016ced0104	418	429	RESPONDENT	Cello Plast	FP
+339fdcd7098641fea1a1fd016ced0104	418	436	RESPONDENT	Cello Plast & Ors .	FN
+ff5e01ccaaf44b2a90908eaf7eb68744	327	356	PETITIONER	Common Cause ( A Regd . Society	FP
+ff5e01ccaaf44b2a90908eaf7eb68744	327	357	PETITIONER	Common Cause ( A Regd . Society )	FN
+dbfd42ff567044fb8bcf19e77e1f1330	127	178	COURT	S U P R E M E C O U R T O F                I N D I A	FN
+901df662efd44969b5454c321948ba47	172	181	RESPONDENT	1.Thamada	FP
+901df662efd44969b5454c321948ba47	172	194	RESPONDENT	1.Thamada Bhaskara Rao	FP
+901df662efd44969b5454c321948ba47	174	194	RESPONDENT	Bhaskara Rao	FN
+7ba830484b684187910d93a65f147157	818	823	LAWYER	Sunil	FP
+aa5c758b590f46a485357795ab55f204	360	488	RESPONDENT	Commissioner of Income Tax 
+ 405 - 406 - 407 , Mint Chambers , 45/47                  Central Circle - 5(1 ) 
+ Mint Road , Fort , Mumbai - 400	FP
+aa5c758b590f46a485357795ab55f204	306	307	PETITIONER	M	FP
+aa5c758b590f46a485357795ab55f204	356	386	RESPONDENT	Dy . Commissioner of Income Tax	FN
+83514ac1412b4f8488fe34dff5af0015	753	803	RESPONDENT	Superintendent , Alpawas Grih , Nirala Nagar , Behind	FP
+83514ac1412b4f8488fe34dff5af0015	661	684	RESPONDENT	Child Welfare Committee	FP
+83514ac1412b4f8488fe34dff5af0015	753	837	RESPONDENT	Superintendent , Alpawas Grih , Nirala Nagar , Behind G.D. College , Ratanpur , Begusarai	FN
+83514ac1412b4f8488fe34dff5af0015	661	742	RESPONDENT	Child Welfare Committee , through Chairperson , Chanakyanagar , Mahmadpur , Begusarai	FN
+20310dfe28934f5fb50c53540c1ad3e6	628	634	LAWYER	M.Bapi	FP
+20310dfe28934f5fb50c53540c1ad3e6	460	461	RESPONDENT	1	FP
+20310dfe28934f5fb50c53540c1ad3e6	466	477	RESPONDENT	Vijaya Bank	FN
+c2f16d9f6aa24991a729d8bb0e1d93a6	2250	2377	RESPONDENT	10.Kaligadevi 
+                         Constable at Neyveli Township Police Station , 
+                         Villupuram District	FP
+c2f16d9f6aa24991a729d8bb0e1d93a6	2105	2225	RESPONDENT	Inspector of Police 
+                         Neyveli Township Police Station 
+                         District , Villupuram	FP
+c2f16d9f6aa24991a729d8bb0e1d93a6	2253	2263	RESPONDENT		FN
+31391d3286c04e78a3181beecb387ccf	2544	2589	JUDGE	Sangita Dhingra Sehgal 
+ Sangita Dhingra Sehgal	FP
+31391d3286c04e78a3181beecb387ccf	2567	2589	JUDGE	Sangita Dhingra Sehgal	FN
+31391d3286c04e78a3181beecb387ccf	2544	2566	JUDGE	Sangita Dhingra Sehgal	FN
+4aa594afd544409894039dee99051e75	402	426	RESPONDENT	S.K. Kumarasamy(Deceased	FP
+4aa594afd544409894039dee99051e75	769	793	RESPONDENT	S.K. Kumarasamy(Deceased	FP
+4aa594afd544409894039dee99051e75	402	417	RESPONDENT	S.K.	FN
+4aa594afd544409894039dee99051e75	769	784	RESPONDENT	S.K.	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1522	1543	RESPONDENT	Eeroji Rao @ Veerappa	FP
+f5a2a63aaa91467ea6b0dce1c72e6f2c	2415	2424	PETITIONER	B.V.Kumar	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	2616	2626	LAWYER	C.V.Nagesh	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	2651	2664	LAWYER	K.Raghavendra	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	3383	3395	JUDGE	Budihal R.B.	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	2823	2841	LAWYER	B.G.Namitha Mahesh	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	2687	2705	RESPONDENT	State of Karnataka	FN
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1522	1543	PETITIONER	Eeroji Rao @ Veerappa	FN
+28844875f7754525a11d309eb727d65d	381	478	COURT	Xxi Addl . City Civil and Sessions Judge and 
+           Prl . Special Judge for Cbi Cases , Bengaluru	FP
+28844875f7754525a11d309eb727d65d	98	206	COURT	Xxi Addl . City Civil And 
+      Sessions Judge And Prl . Special Judge For Cbi 
+               Cases At Bengaluru	FP
+28844875f7754525a11d309eb727d65d	85	97	COURT	Court Of The	FP
+28844875f7754525a11d309eb727d65d	85	214	COURT	Court Of The Xxi Addl . City Civil And 
+      Sessions Judge And Prl . Special Judge For Cbi 
+               Cases At Bengaluru ( Cch-4 )	FN
+8a5ed6a6d02c4bec8365fde688ca9ec9	447	498	RESPONDENT	West Bengal State Electricity Distribution Co. Ltd.	FP
+8a5ed6a6d02c4bec8365fde688ca9ec9	329	361	PETITIONER	Bharat Heavy Electricals Limited	FP
+8a5ed6a6d02c4bec8365fde688ca9ec9	329	384	PETITIONER	Bharat Heavy Electricals Limited - Electronics Division	FN
+8a5ed6a6d02c4bec8365fde688ca9ec9	443	498	RESPONDENT	The West Bengal State Electricity Distribution Co. Ltd.	FN
+853362615b7e489d8b133b3c93a697bc	741	765	JUDGE	Jayant Nath 
+
+ Jayant Nath	FP
+853362615b7e489d8b133b3c93a697bc	741	752	JUDGE	Jayant Nath	FN
+853362615b7e489d8b133b3c93a697bc	754	765	JUDGE	Jayant Nath	FN
+fe14ba1259cc4b2494f2a69caeb279fb	841	870	PETITIONER	Chaudhary Kishan Chand & Sons	FP
+fe14ba1259cc4b2494f2a69caeb279fb	3585	3601	JUDGE	S. Ravindra Bhat	FN
+fe14ba1259cc4b2494f2a69caeb279fb	2704	2716	LAWYER	Simran Mehta	FN
+fe14ba1259cc4b2494f2a69caeb279fb	3378	3393	LAWYER	Abhineet Gulati	FN
+fe14ba1259cc4b2494f2a69caeb279fb	2559	2572	LAWYER	Kriti Awasthi	FN
+fe14ba1259cc4b2494f2a69caeb279fb	3519	3535	JUDGE	S. Ravindra Bhat	FN
+fe14ba1259cc4b2494f2a69caeb279fb	3561	3572	JUDGE	A.K. Chawla	FN
+fe14ba1259cc4b2494f2a69caeb279fb	2982	2997	LAWYER	Jaswinder Singh	FN
+fe14ba1259cc4b2494f2a69caeb279fb	2725	2740	LAWYER	Surhid Bhandari	FN
+fe14ba1259cc4b2494f2a69caeb279fb	3255	3268	LAWYER	S.D. Windlesh	FN
+fe14ba1259cc4b2494f2a69caeb279fb	2856	2866	LAWYER	Anuj Sarma	FN
+fe14ba1259cc4b2494f2a69caeb279fb	3126	3138	LAWYER	Pradeep K.B.	FN
+fe14ba1259cc4b2494f2a69caeb279fb	3402	3416	LAWYER	Anjana Thukral	FN
+fe14ba1259cc4b2494f2a69caeb279fb	841	863	PETITIONER	Chaudhary Kishan Chand	FN
+9039fc2fc14a4ca493ba1b8bc81c9497	104	114	LAWYER	Kul Bharat	FP
+9039fc2fc14a4ca493ba1b8bc81c9497	183	192	LAWYER	O.P. Kant	FP
+9039fc2fc14a4ca493ba1b8bc81c9497	104	114	JUDGE	Kul Bharat	FN
+d8f3ca304ad049f8ab86957717250583	1553	1573	LAWYER	Zalak B Pipalia(6161	FP
+d8f3ca304ad049f8ab86957717250583	1422	1441	LAWYER	Vishal C 
+ Mehta(6152	FP
+d8f3ca304ad049f8ab86957717250583	1422	1436	LAWYER	Vishal C 
+	FN
+d8f3ca304ad049f8ab86957717250583	1553	1568	LAWYER	Zalak B	FN
+d8f3ca304ad049f8ab86957717250583	1696	1709	JUDGE	J.B.Pardiwala	FN
+d8f3ca304ad049f8ab86957717250583	1757	1777	JUDGE	Vaibhavi D. Nanavati	FN
+3270d6f7f6e54571b05ae1ff91dea7e3	249	299	PETITIONER	Ram Lal                                           …	FP
+3270d6f7f6e54571b05ae1ff91dea7e3	249	256	PETITIONER	Ram Lal	FN
+194e724300c645d9b408a668d6e0ea39	294	334	PETITIONER	Municipal Committee / Council , Jalalabad(W	FP
+194e724300c645d9b408a668d6e0ea39	294	335	PETITIONER	Municipal Committee / Council , Jalalabad(W )	FN
+55e1f4d287324575b57640ffd52337a7	391	442	COURT	High Court Of Judicature At 
+      Allahabad , Lucknow	FP
+55e1f4d287324575b57640ffd52337a7	107	149	COURT	S U P R E M E C O U R T O F       I N D I A	FN
+55e1f4d287324575b57640ffd52337a7	391	448	COURT	High Court Of Judicature At 
+      Allahabad , Lucknow Bench	FN
+0b59e04130f0433286b20e0ec418838d	339	360	RESPONDENT	Yendru Sathiraju(Dead	FP
+0b59e04130f0433286b20e0ec418838d	339	355	RESPONDENT	Yendru	FN
+009a49ab1cdf44be9fbfdb26377c9a68	569	580	RESPONDENT	C.S.C.,P.K.	FP
+009a49ab1cdf44be9fbfdb26377c9a68	1619	1630	RESPONDENT	C.S.C.,P.K.	FP
+009a49ab1cdf44be9fbfdb26377c9a68	816	827	RESPONDENT	C.S.C.,P.K.	FP
+009a49ab1cdf44be9fbfdb26377c9a68	1348	1359	LAWYER	C.S.C.,P.K.	FP
+009a49ab1cdf44be9fbfdb26377c9a68	1084	1095	RESPONDENT	C.S.C.,P.K.	FP
+009a49ab1cdf44be9fbfdb26377c9a68	816	836	LAWYER	C.S.C.,P.K. Upadhyay	FP
+009a49ab1cdf44be9fbfdb26377c9a68	914	919	LAWYER	Durga	FP
+009a49ab1cdf44be9fbfdb26377c9a68	316	327	RESPONDENT	C.S.C.,P.K.	FP
+009a49ab1cdf44be9fbfdb26377c9a68	130	155	PETITIONER	Yantraleshwar Gupta Alias	FP
+009a49ab1cdf44be9fbfdb26377c9a68	0	37	COURT	High Court Of Judicature At Allahabad	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1765	1777	RESPONDENT	State Of U P	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1933	1950	JUDGE	B. Amit Sthalekar	FN
+009a49ab1cdf44be9fbfdb26377c9a68	130	168	PETITIONER	Yantraleshwar Gupta Alias Dhreej Kumar	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1905	1919	LAWYER	Vineet Sankalp	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1717	1736	PETITIONER	Ishwar Chandra Giri	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1837	1855	LAWYER	Ashish Kumar Singh	FN
+009a49ab1cdf44be9fbfdb26377c9a68	823	836	LAWYER	Upadhyay	FN
+009a49ab1cdf44be9fbfdb26377c9a68	914	935	PETITIONER	Durga Prasad Baranwal	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1820	1836	LAWYER	Ajay Kumar Singh	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1964	1978	JUDGE	Piyush Agrawal	FN
+009a49ab1cdf44be9fbfdb26377c9a68	1884	1904	LAWYER	C.S.C.,P.K. Upadhyay	FN
+8fd7414ca80a4eda842743b67edca812	1465	1469	RESPONDENT	Ajay	FP
+8fd7414ca80a4eda842743b67edca812	1404	1458	RESPONDENT	Commissioner , Devasthan Department , Rajasthan , Udaipur	FP
+8fd7414ca80a4eda842743b67edca812	812	817	RESPONDENT	Manju	FP
+8fd7414ca80a4eda842743b67edca812	1404	1459	RESPONDENT	Commissioner , Devasthan Department , Rajasthan , Udaipur .	FN
+8fd7414ca80a4eda842743b67edca812	0	71	COURT	High Court Of Judicature For Rajasthan 
+                  Bench At Jaipur	FN
+8fd7414ca80a4eda842743b67edca812	812	824	RESPONDENT	Manju Surana	FN
+8fd7414ca80a4eda842743b67edca812	1465	1474	RESPONDENT	Ajay Jain	FN
+c04d217c27f24e329cc79ba939b2b097	150	203	COURT	S U P R E M E C O U R T O F                  I N D I A	FN
+c05e2919383741fba9c449b960d7c26f	911	922	RESPONDENT	2.G.Thulasi	FP
+c05e2919383741fba9c449b960d7c26f	1083	1099	RESPONDENT	4.Rengappa Reddi	FP
+c05e2919383741fba9c449b960d7c26f	0	1	RESPONDENT	1	FP
+c05e2919383741fba9c449b960d7c26f	1156	1185	RESPONDENT	6.National Insurance Co. Ltd.	FP
+c05e2919383741fba9c449b960d7c26f	880	888	RESPONDENT	1.G.Bama	FP
+c05e2919383741fba9c449b960d7c26f	945	960	RESPONDENT	3.Minor G.Lenin	FP
+c05e2919383741fba9c449b960d7c26f	1122	1133	RESPONDENT	5.Rukkumani	FP
+c05e2919383741fba9c449b960d7c26f	1085	1099	RESPONDENT	Reddi	FN
+c05e2919383741fba9c449b960d7c26f	1158	1185	RESPONDENT	Insurance Co. Ltd.	FN
+c05e2919383741fba9c449b960d7c26f	953	960	RESPONDENT	G.Lenin	FN
+c05e2919383741fba9c449b960d7c26f	1124	1133	RESPONDENT		FN
+c05e2919383741fba9c449b960d7c26f	882	888	RESPONDENT		FN
+c05e2919383741fba9c449b960d7c26f	913	922	RESPONDENT		FN
+b61945b7defa4cc9bc2591aa4956fa52	729	766	RESPONDENT	Sub Registrar 
+               Thrithala	FP
+b61945b7defa4cc9bc2591aa4956fa52	1046	1056	RESPONDENT	A.C.Vidhya	FP
+b61945b7defa4cc9bc2591aa4956fa52	1046	1056	LAWYER	A.C.Vidhya	FN
+b61945b7defa4cc9bc2591aa4956fa52	729	860	RESPONDENT	Sub Registrar 
+               Thrithala , 
+               Office Of The Sub Registrar , Thrithala 679534 , 
+               Palakkad District	FN
+0f3a74c7612d4972997f50f4e450ab00	963	1039	RESPONDENT	Commissioner ( Revenue ) Ujjain Division , . 
+        Commissioner Office , Ujjain .	FP
+0f3a74c7612d4972997f50f4e450ab00	1447	1452	RESPONDENT	Decd .	FP
+0f3a74c7612d4972997f50f4e450ab00	1906	1982	RESPONDENT	Commissioner ( Revenue ) Ujjain Division , . 
+        Commissioner Office , Ujjain .	FP
+0f3a74c7612d4972997f50f4e450ab00	2221	2227	LAWYER	Aditya	FP
+0f3a74c7612d4972997f50f4e450ab00	2221	2232	LAWYER	Aditya Garg	FN
+0f3a74c7612d4972997f50f4e450ab00	2295	2312	LAWYER	Rajeev Kumar Jain	FN
+0f3a74c7612d4972997f50f4e450ab00	1499	1508	RESPONDENT	Mumtaj Bi	FN
+0f3a74c7612d4972997f50f4e450ab00	1906	1944	RESPONDENT	Commissioner ( Revenue ) Ujjain Division	FN
+0f3a74c7612d4972997f50f4e450ab00	963	1001	RESPONDENT	Commissioner ( Revenue ) Ujjain Division	FN
+0f3a74c7612d4972997f50f4e450ab00	2341	2352	LAWYER	K.L. Hardia	FN
+15c6250c5c7646189b0b8627a61dfad4	3254	3274	RESPONDENT	State of Maharashtra	FN
+15c6250c5c7646189b0b8627a61dfad4	2632	2643	PETITIONER	Mayura Maru	FN
+15c6250c5c7646189b0b8627a61dfad4	2695	2715	RESPONDENT	State of Maharashtra	FN
+15c6250c5c7646189b0b8627a61dfad4	3453	3465	LAWYER	A.V.Anturkar	FN
+15c6250c5c7646189b0b8627a61dfad4	3523	3536	LAWYER	Ranjit Shinde	FN
+15c6250c5c7646189b0b8627a61dfad4	4220	4229	JUDGE	A.K.Menon	FN
+15c6250c5c7646189b0b8627a61dfad4	2494	2507	LAWYER	Rohan Mirpury	FN
+15c6250c5c7646189b0b8627a61dfad4	4117	4130	LAWYER	Geeta Shastri	FN
+15c6250c5c7646189b0b8627a61dfad4	3490	3515	LAWYER	Prathamesh 
+   B. Bhargude	FN
+15c6250c5c7646189b0b8627a61dfad4	2916	2929	LAWYER	Rohan Mirpury	FN
+15c6250c5c7646189b0b8627a61dfad4	2458	2469	LAWYER	Shruti Vyas	FN
+15c6250c5c7646189b0b8627a61dfad4	4044	4057	LAWYER	Jalan Sandeep	FN
+15c6250c5c7646189b0b8627a61dfad4	3622	3633	LAWYER	A.B.Vagyani	FN
+15c6250c5c7646189b0b8627a61dfad4	3586	3597	LAWYER	A.Y.Sakhare	FN
+15c6250c5c7646189b0b8627a61dfad4	3713	3726	LAWYER	Rohan Mirpury	FN
+15c6250c5c7646189b0b8627a61dfad4	2432	2445	LAWYER	Manish Pabale	FN
+15c6250c5c7646189b0b8627a61dfad4	3178	3192	PETITIONER	Vivek Velankar	FN
+15c6250c5c7646189b0b8627a61dfad4	3979	3999	RESPONDENT	State of Maharashtra	FN
+15c6250c5c7646189b0b8627a61dfad4	3544	3560	LAWYER	Ajinkya 
+   Udane	FN
+15c6250c5c7646189b0b8627a61dfad4	2881	2892	LAWYER	Shruti Vyas	FN
+15c6250c5c7646189b0b8627a61dfad4	4151	4163	LAWYER	Amit Shastri	FN
+15c6250c5c7646189b0b8627a61dfad4	2811	2825	LAWYER	A.B. 
+   Vagyani	FN
+15c6250c5c7646189b0b8627a61dfad4	2844	2859	LAWYER	Manish    Pabale	FN
+15c6250c5c7646189b0b8627a61dfad4	3042	3055	LAWYER	Sandeep Marne	FN
+15c6250c5c7646189b0b8627a61dfad4	2962	2971	LAWYER	G.S.Hegde	FN
+15c6250c5c7646189b0b8627a61dfad4	3902	3914	PETITIONER	Janhit Manch	FN
+15c6250c5c7646189b0b8627a61dfad4	3649	3662	LAWYER	Manish Pabale	FN
+15c6250c5c7646189b0b8627a61dfad4	2767	2778	LAWYER	A.Y.Sakhare	FN
+15c6250c5c7646189b0b8627a61dfad4	3675	3686	LAWYER	Shruti Vyas	FN
+15c6250c5c7646189b0b8627a61dfad4	4207	4214	JUDGE	A.S.Oka	FN
+15c6250c5c7646189b0b8627a61dfad4	4082	4093	LAWYER	A.Y.Sakhare	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1023	1038	RESPONDENT	1 . Enercon GmbH	FP
+d5ad198089c24ae5bdf026cfd57d78c0	610	634	PETITIONER	Wind World India Limited	FP
+d5ad198089c24ae5bdf026cfd57d78c0	1659	1660	RESPONDENT	2	FP
+d5ad198089c24ae5bdf026cfd57d78c0	1150	1151	RESPONDENT	3	FP
+d5ad198089c24ae5bdf026cfd57d78c0	1569	1584	RESPONDENT	1 . Enercon GmbH	FP
+d5ad198089c24ae5bdf026cfd57d78c0	1113	1114	RESPONDENT	2	FP
+d5ad198089c24ae5bdf026cfd57d78c0	1703	1709	RESPONDENT	Yogesh	FP
+d5ad198089c24ae5bdf026cfd57d78c0	480	495	RESPONDENT	1 . Enercon GmbH	FP
+d5ad198089c24ae5bdf026cfd57d78c0	2481	2490	LAWYER	Kartikeya	FP
+d5ad198089c24ae5bdf026cfd57d78c0	13	32	JUDGE	2016.odt 
+
+
+ rrpillai	FP
+d5ad198089c24ae5bdf026cfd57d78c0	1662	1679	RESPONDENT	Wobben Properties	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3123	3134	LAWYER	Vivek 
+ Vashi	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2882	2893	LAWYER	Vivek Vashi	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1192	1204	RESPONDENT	Yogesh Mehra	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2715	2724	LAWYER	Cyrus Jal	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2858	2876	LAWYER	Jehangir 
+ Jejeebhoy	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1116	1138	RESPONDENT	Wobben Properties Gmbh	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3190	3206	LAWYER	Swati Khinvasara	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3141	3161	LAWYER	Kanika Sharma Goenka	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2974	2983	LAWYER	Cyrus Jal	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2949	2965	LAWYER	Swati Khinvasara	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1153	1177	RESPONDENT	Wind World India Limited	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3339	3349	JUDGE	A.K. Menon	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1703	1715	RESPONDENT	Yogesh Mehra	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2926	2944	LAWYER	Shaheda 
+ Madraswala	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2798	2810	LAWYER	S. U. Kamdar	FN
+d5ad198089c24ae5bdf026cfd57d78c0	649	659	RESPONDENT	Ajay Mehra	FN
+d5ad198089c24ae5bdf026cfd57d78c0	483	495	RESPONDENT	Enercon GmbH	FN
+d5ad198089c24ae5bdf026cfd57d78c0	573	595	RESPONDENT	Wobben Properties Gmbh	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3099	3117	LAWYER	Jehangir Jejeebhoy	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2900	2920	LAWYER	Kanika Sharma Goenka	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3057	3072	LAWYER	Janak Dwarkadas	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3167	3185	LAWYER	Shaheda Madraswala	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2837	2852	LAWYER	Sarosh Bharucha	FN
+d5ad198089c24ae5bdf026cfd57d78c0	3215	3224	LAWYER	Cyrus Jal	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1026	1038	RESPONDENT	Enercon GmbH	FN
+d5ad198089c24ae5bdf026cfd57d78c0	1572	1584	RESPONDENT	Enercon GmbH	FN
+d5ad198089c24ae5bdf026cfd57d78c0	2236	2256	LAWYER	Manilal Kher Ambalal	FN
+d5ad198089c24ae5bdf026cfd57d78c0	610	634	RESPONDENT	Wind World India Limited	FN
+2c507d06e7824b669bc095915d4e79fc	1325	1331	LAWYER	Kranti	FP
+2c507d06e7824b669bc095915d4e79fc	973	993	LAWYER	R.N. Cooper Hospital	FP
+2c507d06e7824b669bc095915d4e79fc	1452	1458	RESPONDENT	Udayan	FP
+2c507d06e7824b669bc095915d4e79fc	1452	1463	LAWYER	Udayan Shah	FN
+2c507d06e7824b669bc095915d4e79fc	2162	2179	LAWYER	Deepali 
+  Patankar	FN
+2c507d06e7824b669bc095915d4e79fc	2315	2326	JUDGE	M. S. Sonak	FN
+2c507d06e7824b669bc095915d4e79fc	2120	2134	LAWYER	P.H. Kantharia	FN
+2c507d06e7824b669bc095915d4e79fc	2072	2088	LAWYER	Poornima Awasthi	FN
+2c507d06e7824b669bc095915d4e79fc	1325	1336	LAWYER	Kranti L.C.	FN
+2c507d06e7824b669bc095915d4e79fc	1629	1632	PETITIONER	Xyz	FN
+2c507d06e7824b669bc095915d4e79fc	1098	1101	PETITIONER	Xyz	FN
+2c507d06e7824b669bc095915d4e79fc	2301	2310	JUDGE	A. S. Oka	FN
+9b9c02d46b5442aeab6a8bfc6d03bebb	670	681	PETITIONER	A.J.Abraham	FP
+9b9c02d46b5442aeab6a8bfc6d03bebb	1171	1174	RESPONDENT	P.O	FP
+9b9c02d46b5442aeab6a8bfc6d03bebb	474	492	PETITIONER	Pandyamyalil House	FP
+9b9c02d46b5442aeab6a8bfc6d03bebb	670	681	RESPONDENT	A.J.Abraham	FN
+9b9c02d46b5442aeab6a8bfc6d03bebb	1633	1725	RESPONDENT	District Educational Officer , Office Of The District Educational Officer , Ernaku- Lam-682011 .	FN
+9b9c02d46b5442aeab6a8bfc6d03bebb	1745	1756	LAWYER	S.Sreekumar	FN
+9b9c02d46b5442aeab6a8bfc6d03bebb	2037	2053	JUDGE	Anil K.Narendran	FN
+9b9c02d46b5442aeab6a8bfc6d03bebb	1767	1774	LAWYER	Soumiya	FN
+627aad947d0f4413926b9c7c330fa1c1	297	308	LAWYER	B S Rathaur	FP
+627aad947d0f4413926b9c7c330fa1c1	541	559	LAWYER	Arun Sinha,(Amicus	FP
+627aad947d0f4413926b9c7c330fa1c1	560	579	LAWYER	Curie),Balram Singh	FP
+627aad947d0f4413926b9c7c330fa1c1	567	579	LAWYER	Singh	FN
+627aad947d0f4413926b9c7c330fa1c1	541	551	LAWYER	Arun	FN
+627aad947d0f4413926b9c7c330fa1c1	295	308	LAWYER	R B S Rathaur	FN
