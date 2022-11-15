@@ -1,0 +1,1465 @@
+sample_id	begin	end	type	extraction
+1ea9dd0b69b64720851a2234a689082f	802	828	JUDGE	Najmi Waziri 
+
+ Najmi Waziri
+1ea9dd0b69b64720851a2234a689082f	323	352	LAWYER	Nar 
+                     Singh
+1ea9dd0b69b64720851a2234a689082f	199	225	PETITIONER	Oriental Insurance Co Ltd.
+1ea9dd0b69b64720851a2234a689082f	578	594	LAWYER	Arvind Chaudhary
+1ea9dd0b69b64720851a2234a689082f	361	381	LAWYER	Pushkar Singh Kanwal
+1ea9dd0b69b64720851a2234a689082f	436	446	RESPONDENT	Zaixhu Xie
+1ea9dd0b69b64720851a2234a689082f	301	317	LAWYER	Himanshu Gambhir
+1ea9dd0b69b64720851a2234a689082f	17	49	COURT	High Court Of Delhi At New Delhi
+1ea9dd0b69b64720851a2234a689082f	458	466	RESPONDENT	Qualcomm
+1ea9dd0b69b64720851a2234a689082f	705	742	LAWYER	Amit Kumar 
+                      Gupta
+1ea9dd0b69b64720851a2234a689082f	286	295	LAWYER	S.P. Jain
+1ea9dd0b69b64720851a2234a689082f	677	686	LAWYER	Ram Kawar
+dc971f32971b4a52a0698650111e8fc3	824	851	RESPONDENT	Virendrasinh Mafaji Vaghela
+dc971f32971b4a52a0698650111e8fc3	1130	1146	RESPONDENT	State Of Gujarat
+dc971f32971b4a52a0698650111e8fc3	451	467	RESPONDENT	State Of Gujarat
+dc971f32971b4a52a0698650111e8fc3	117	139	COURT	Supreme Court Of India
+dc971f32971b4a52a0698650111e8fc3	1011	1068	PETITIONER	Narendra Kumar Ambalal Ravat                             …
+dc971f32971b4a52a0698650111e8fc3	701	726	PETITIONER	State Election Commission
+dc971f32971b4a52a0698650111e8fc3	328	354	PETITIONER	Parmar Samantsinh Umedsinh
+20026855d8e04d91bde343dd203fec4b	938	968	PETITIONER	Harishankar Gayaprasad Jaiswal
+20026855d8e04d91bde343dd203fec4b	1190	1202	LAWYER	Moxa Thakkar
+20026855d8e04d91bde343dd203fec4b	1149	1158	LAWYER	H N Sevak
+20026855d8e04d91bde343dd203fec4b	91	125	COURT	High Court Of Gujarat At Ahmedabad
+20026855d8e04d91bde343dd203fec4b	1038	1054	RESPONDENT	State Of Gujarat
+20026855d8e04d91bde343dd203fec4b	1329	1342	JUDGE	J.B.Pardiwala
+20026855d8e04d91bde343dd203fec4b	236	249	JUDGE	J.B.Pardiwala
+a3ff6117512d4897846f7e0bd4e46ee7	752	794	RESPONDENT	Commissioner , Devasthan , Rajasthan , Jaipur
+a3ff6117512d4897846f7e0bd4e46ee7	812	846	RESPONDENT	Collector , Jaipur District , Jaipur
+a3ff6117512d4897846f7e0bd4e46ee7	159	161	PETITIONER	Pt
+a3ff6117512d4897846f7e0bd4e46ee7	163	187	PETITIONER	Bansidhar Sharma Devagya
+a3ff6117512d4897846f7e0bd4e46ee7	0	85	COURT	High Court Of Judicature For Rajasthan Bench At 
+                                Jaipur
+a3ff6117512d4897846f7e0bd4e46ee7	389	408	PETITIONER	Krishan Kanta Misra
+a3ff6117512d4897846f7e0bd4e46ee7	269	285	PETITIONER	Mohan Lal Sharma
+a3ff6117512d4897846f7e0bd4e46ee7	716	734	RESPONDENT	State of Rajasthan
+a3ff6117512d4897846f7e0bd4e46ee7	235	253	PETITIONER	Vijay Kumar Sharma
+8664b65997ef4742b697bd03159b5ed1	1146	1293	RESPONDENT	Executive Engineer , 
+                       Chennai Metrological Water Supply and Sewage Board , 
+                       Chintadripet , Chennai - 600 002
+8664b65997ef4742b697bd03159b5ed1	728	736	PETITIONER	V.Sheela
+8664b65997ef4742b697bd03159b5ed1	275	286	JUDGE	S.Manikumar
+8664b65997ef4742b697bd03159b5ed1	2092	2101	LAWYER	Rameshwar
+8664b65997ef4742b697bd03159b5ed1	1324	1331	RESPONDENT	Devaraj
+8664b65997ef4742b697bd03159b5ed1	2135	2149	LAWYER	L.Chandrakumar
+8664b65997ef4742b697bd03159b5ed1	47	81	COURT	High Court Of Judicature At Madras
+8664b65997ef4742b697bd03159b5ed1	1905	1920	LAWYER	UM.Ravichandran
+8664b65997ef4742b697bd03159b5ed1	2004	2017	LAWYER	G.Janakiraman
+8664b65997ef4742b697bd03159b5ed1	2048	2060	LAWYER	C.Prabakaran
+8664b65997ef4742b697bd03159b5ed1	1951	1966	LAWYER	K.Soundararajan
+8664b65997ef4742b697bd03159b5ed1	982	1026	RESPONDENT	Tahsildar , 
+                       Poonamallee
+8664b65997ef4742b697bd03159b5ed1	402	420	JUDGE	Subramonium Prasad
+8664b65997ef4742b697bd03159b5ed1	1054	1114	RESPONDENT	Block Development Officer , 
+                       Poonamallee
+8664b65997ef4742b697bd03159b5ed1	888	950	RESPONDENT	District Collector , 
+                       Thiruvallur District
+5ec5af018a984a499c750002bba3101a	823	840	PETITIONER	G.Balasubramanian
+5ec5af018a984a499c750002bba3101a	975	999	RESPONDENT	Government of Tamil Nadu
+5ec5af018a984a499c750002bba3101a	1388	1458	RESPONDENT	Director of Medical Education , 
+                        Kilpauk , Chennai
+5ec5af018a984a499c750002bba3101a	1211	1358	RESPONDENT	Secretary / Additional Director , 
+                        Department of Finance , 
+                        Fort St. George , 
+                        Chennai
+5ec5af018a984a499c750002bba3101a	470	485	JUDGE	S.M.Subramaniam
+5ec5af018a984a499c750002bba3101a	1488	1600	RESPONDENT	Dean , 
+                        Thoothukudi Government Medical College , 
+                        Thoothukudi District
+5ec5af018a984a499c750002bba3101a	256	279	COURT	Madurai Bench Of Madras
+31e23e3c9b9e4d65b49371714f774ecb	7	40	COURT	High Court Of Kerala At Ernakulam
+31e23e3c9b9e4d65b49371714f774ecb	1077	1081	PETITIONER	K.B.
+31e23e3c9b9e4d65b49371714f774ecb	1625	1629	RESPONDENT	Ginu
+31e23e3c9b9e4d65b49371714f774ecb	1900	1916	LAWYER	Alexander Joseph
+31e23e3c9b9e4d65b49371714f774ecb	120	136	JUDGE	Anil K.Narendran
+31e23e3c9b9e4d65b49371714f774ecb	354	448	PETITIONER	Additional District Court & Rent Control Appellate 
+                 Authority ,    North Paravur ,
+31e23e3c9b9e4d65b49371714f774ecb	666	683	PETITIONER	Friends Arts Club
+31e23e3c9b9e4d65b49371714f774ecb	1309	1335	RESPONDENT	Mangamma @ Brejith Andrews
+31e23e3c9b9e4d65b49371714f774ecb	216	226	JUDGE	M.R.Anitha
+31e23e3c9b9e4d65b49371714f774ecb	515	525	PETITIONER	Simon K.J.
+31e23e3c9b9e4d65b49371714f774ecb	1246	1256	LAWYER	Deepak Joy
+23ee21cb71f140929aaef89aa718ec5a	20	31	JUDGE	Bharti Garg
+23ee21cb71f140929aaef89aa718ec5a	562	576	RESPONDENT	Manish @ Tolly
+23ee21cb71f140929aaef89aa718ec5a	38	127	COURT	Metropolitan Magistrate­09 , South­West District , 
+                 Dwarka Courts , New Delhi
+23ee21cb71f140929aaef89aa718ec5a	1448	1462	RESPONDENT	Manish @ Tolly
+23ee21cb71f140929aaef89aa718ec5a	449	454	PETITIONER	State
+23ee21cb71f140929aaef89aa718ec5a	1438	1443	PETITIONER	State
+23ee21cb71f140929aaef89aa718ec5a	811	817	RESPONDENT	Manish
+9eed5c6b44c846848b6d85c250a8b090	106	120	PETITIONER	Bhaskara Wines
+9eed5c6b44c846848b6d85c250a8b090	143	156	RESPONDENT	State of A.P.
+9eed5c6b44c846848b6d85c250a8b090	296	314	LAWYER	K. Venugopal Reddy
+9eed5c6b44c846848b6d85c250a8b090	619	637	JUDGE	M.Seetharama Murti
+9eed5c6b44c846848b6d85c250a8b090	25	44	JUDGE	M. Seetharama Murti
+9eed5c6b44c846848b6d85c250a8b090	429	442	LAWYER	N. Siva Reddy
+697189436fbe4ac195b4090be189f720	332	351	PETITIONER	Tata Motors Limited
+697189436fbe4ac195b4090be189f720	495	513	RESPONDENT	State Of Jharkhand
+697189436fbe4ac195b4090be189f720	151	173	COURT	Supreme Court Of India
+e157355322fe4a709a96b77d3187b698	7	40	COURT	High Court Of Judicature At Patna
+e157355322fe4a709a96b77d3187b698	1370	1382	LAWYER	Gyan Shankar
+e157355322fe4a709a96b77d3187b698	749	763	RESPONDENT	State of Bihar
+e157355322fe4a709a96b77d3187b698	975	1056	RESPONDENT	Chairman Bihar School Examination Board , Main Building , Sinha Library Road , Patna
+e157355322fe4a709a96b77d3187b698	1067	1149	RESPONDENT	Secretary Bihar School Examination Board , Main Building , Sinha Library Road , Patna
+e157355322fe4a709a96b77d3187b698	1271	1283	LAWYER	Sanjay Singh
+e157355322fe4a709a96b77d3187b698	1466	1475	LAWYER	Raju Giri
+e157355322fe4a709a96b77d3187b698	1412	1428	LAWYER	Iqbal Asif Niazi
+e157355322fe4a709a96b77d3187b698	231	272	PETITIONER	Cobra Industrial Security Forces ( I ) Ltd.
+e157355322fe4a709a96b77d3187b698	1340	1353	LAWYER	Lalit Kishore
+e157355322fe4a709a96b77d3187b698	871	942	RESPONDENT	Bihar School Examination Board Main Building , Sinha Library Road , Patna
+e157355322fe4a709a96b77d3187b698	1296	1312	LAWYER	Nirbhay Prashant
+4e5febadef5d4e2099eea00c30f7678f	74	96	COURT	Supreme Court Of India
+4e5febadef5d4e2099eea00c30f7678f	182	200	PETITIONER	Assam Public Works
+4e5febadef5d4e2099eea00c30f7678f	265	279	RESPONDENT	Union Of India
+87884af5adeb42e080f5d427a226843a	1386	1400	LAWYER	Shalini Mishra
+87884af5adeb42e080f5d427a226843a	408	416	PETITIONER	Rammaiah
+87884af5adeb42e080f5d427a226843a	1456	1475	LAWYER	T. Hari Hara Sudhan
+87884af5adeb42e080f5d427a226843a	575	580	RESPONDENT	State
+87884af5adeb42e080f5d427a226843a	1247	1260	LAWYER	A.S. Vairawan
+87884af5adeb42e080f5d427a226843a	1316	1329	LAWYER	R. Sudhakaran
+87884af5adeb42e080f5d427a226843a	1049	1061	JUDGE	Abhay S. Oka
+87884af5adeb42e080f5d427a226843a	1178	1192	LAWYER	M.P. Parthiban
+87884af5adeb42e080f5d427a226843a	1531	1542	LAWYER	Vikash G.R.
+82699e80f0584795abb54d6a98168d68	102	175	COURT	High Court Of Madhya Pradesh 
+                                Bench Gwalior
+82699e80f0584795abb54d6a98168d68	260	274	JUDGE	G.S. Ahluwalia
+82699e80f0584795abb54d6a98168d68	375	388	PETITIONER	Hemant Katare
+82699e80f0584795abb54d6a98168d68	647	667	LAWYER	Kushagra Raghuvanshi
+82699e80f0584795abb54d6a98168d68	598	612	LAWYER	Sankalp Sharma
+82699e80f0584795abb54d6a98168d68	486	502	RESPONDENT	O.P.S. Bhadoriya
+e5c51d4683184fa98735e60fdcde8e20	1205	1217	LAWYER	Bharat Gupta
+e5c51d4683184fa98735e60fdcde8e20	913	926	LAWYER	Ashok Mahipal
+e5c51d4683184fa98735e60fdcde8e20	1020	1061	PETITIONER	Jsb Cargo And Freight Forwarder Pvt . Ltd.
+e5c51d4683184fa98735e60fdcde8e20	518	592	LAWYER	Gunjan 
+                                                               Arora
+e5c51d4683184fa98735e60fdcde8e20	679	684	RESPONDENT	State
+e5c51d4683184fa98735e60fdcde8e20	1225	1299	LAWYER	Gunjan 
+                                                               Arora
+e5c51d4683184fa98735e60fdcde8e20	1724	1736	JUDGE	Anu Malhotra
+e5c51d4683184fa98735e60fdcde8e20	14	46	COURT	High Court Of Delhi At New Delhi
+e5c51d4683184fa98735e60fdcde8e20	498	510	LAWYER	Bharat Gupta
+e5c51d4683184fa98735e60fdcde8e20	1527	1539	LAWYER	Mukesh Kumar
+e5c51d4683184fa98735e60fdcde8e20	819	832	LAWYER	Aashaa Tiwari
+e5c51d4683184fa98735e60fdcde8e20	1386	1391	RESPONDENT	State
+e5c51d4683184fa98735e60fdcde8e20	1621	1634	LAWYER	Ashok Mahipal
+e5c51d4683184fa98735e60fdcde8e20	311	352	PETITIONER	Jsb Cargo And Freight Forwarder Pvt . Ltd.
+b3594015c16d4fb28230374931cd15e7	543	558	LAWYER	Ram Bilas Yadav
+b3594015c16d4fb28230374931cd15e7	664	673	LAWYER	S.Shekhar
+b3594015c16d4fb28230374931cd15e7	1095	1114	JUDGE	Arvind Kumar Mishra
+b3594015c16d4fb28230374931cd15e7	989	999	LAWYER	S. Shekhar
+b3594015c16d4fb28230374931cd15e7	497	505	LAWYER	Prashant
+b3594015c16d4fb28230374931cd15e7	1130	1147	JUDGE	Naveen Srivastava
+b3594015c16d4fb28230374931cd15e7	615	630	LAWYER	Kartikeya Saran
+b3594015c16d4fb28230374931cd15e7	559	571	LAWYER	Anoop Tivedi
+b3594015c16d4fb28230374931cd15e7	674	690	LAWYER	Vrindavan Mishra
+b3594015c16d4fb28230374931cd15e7	1000	1016	LAWYER	Vrindavan Mishra
+b3594015c16d4fb28230374931cd15e7	1068	1081	LAWYER	Tarun Agrawal
+b3594015c16d4fb28230374931cd15e7	971	988	LAWYER	Abhijeet Mukherji
+b3594015c16d4fb28230374931cd15e7	645	663	LAWYER	Rakesh Kumar Singh
+b3594015c16d4fb28230374931cd15e7	572	585	LAWYER	Anoop Trivedi
+b3594015c16d4fb28230374931cd15e7	470	478	LAWYER	Prashant
+b3594015c16d4fb28230374931cd15e7	872	903	RESPONDENT	Ghaziabad Development Authority
+b3594015c16d4fb28230374931cd15e7	0	37	COURT	High Court Of Judicature At Allahabad
+b3594015c16d4fb28230374931cd15e7	1158	1177	JUDGE	Arvind Kumar Mishra
+b3594015c16d4fb28230374931cd15e7	479	496	LAWYER	Abhijeet Mukherji
+b3594015c16d4fb28230374931cd15e7	1045	1067	LAWYER	C.S.C.,Ram Bilas Yadav
+b3594015c16d4fb28230374931cd15e7	793	832	PETITIONER	Sun Tower Residents Welfare Association
+b3594015c16d4fb28230374931cd15e7	315	354	PETITIONER	Sun Tower Residents Welfare Association
+b3594015c16d4fb28230374931cd15e7	506	514	LAWYER	S.K. Pal
+b3594015c16d4fb28230374931cd15e7	371	402	RESPONDENT	Ghaziabad Development Authority
+b3594015c16d4fb28230374931cd15e7	631	644	LAWYER	Rahul Agarwal
+b3594015c16d4fb28230374931cd15e7	594	614	LAWYER	Adv.),Himanshu Tyagi
+b3594015c16d4fb28230374931cd15e7	1045	1055	LAWYER	C.S.C.,Ram
+6312de1e3d844e6eac25623e5713e3d4	7	40	COURT	High Court Of Judicature At Patna
+6312de1e3d844e6eac25623e5713e3d4	656	730	RESPONDENT	Executive Officer , Patna Municipal Corporation at Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	1117	1170	RESPONDENT	Patna Municipal Corporation , Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	1204	1278	RESPONDENT	Town Commissioner , Patna Municipal Corporation at Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	393	446	RESPONDENT	Patna Municipal Corporation , Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	922	952	PETITIONER	Arti Banerjee @ Arati Banarjee
+6312de1e3d844e6eac25623e5713e3d4	1388	1473	RESPONDENT	Additional Town Commissioner , Patna Municipal Corporation at Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	575	649	RESPONDENT	Vigilance Officer , Patna Municipal Corporation at Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	1480	1554	RESPONDENT	Vigilance Officer , Patna Municipal Corporation at Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	489	568	RESPONDENT	Municipal Commissioner , Patna Municipal Corporation at Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	174	186	PETITIONER	Sanjay Singh
+6312de1e3d844e6eac25623e5713e3d4	1285	1381	RESPONDENT	Assistant Engineer , Nutan Rajdhani Anchal , Patna Municipal Corporation , Mauryalok Complex , Patna
+6312de1e3d844e6eac25623e5713e3d4	1561	1610	RESPONDENT	Executive Officer , Patna Municipal Corporation at
+790e1d8a293e4ba2adf6d76392287707	190	201	JUDGE	K. Lakshman
+790e1d8a293e4ba2adf6d76392287707	643	657	LAWYER	M.A.K. Mukheed
+790e1d8a293e4ba2adf6d76392287707	704	726	LAWYER	Praveen Kumar Veerjala
+790e1d8a293e4ba2adf6d76392287707	869	881	LAWYER	Boggula Raju
+790e1d8a293e4ba2adf6d76392287707	7	94	COURT	High Court For The State Of Telangana 
+                                     At : Hyderabad
+790e1d8a293e4ba2adf6d76392287707	837	845	LAWYER	N. Arthi
+790e1d8a293e4ba2adf6d76392287707	472	490	RESPONDENT	State of Telangana
+790e1d8a293e4ba2adf6d76392287707	798	805	LAWYER	Kondadi
+790e1d8a293e4ba2adf6d76392287707	688	699	LAWYER	K. Surender
+790e1d8a293e4ba2adf6d76392287707	1437	1448	JUDGE	K. Lakshman
+790e1d8a293e4ba2adf6d76392287707	732	742	LAWYER	P. Radhika
+790e1d8a293e4ba2adf6d76392287707	821	832	LAWYER	S.M. Subhan
+790e1d8a293e4ba2adf6d76392287707	886	902	LAWYER	S. Chandrasekhar
+790e1d8a293e4ba2adf6d76392287707	907	929	LAWYER	V. Yadukrishna Sainath
+790e1d8a293e4ba2adf6d76392287707	806	816	LAWYER	Ajay Kumar
+790e1d8a293e4ba2adf6d76392287707	850	864	LAWYER	Y. Bala Murali
+790e1d8a293e4ba2adf6d76392287707	330	348	PETITIONER	Mohd . Jameel Ahmed
+790e1d8a293e4ba2adf6d76392287707	747	771	LAWYER	Srinivas Reddy Balakisti
+790e1d8a293e4ba2adf6d76392287707	776	793	LAWYER	C. Sunitha Kumari
+790e1d8a293e4ba2adf6d76392287707	662	683	LAWYER	Gajanand Chakravarthy
+266bf0857b89407cba06d7fe6ec46f4a	7	40	COURT	High Court Of Judicature At Patna
+266bf0857b89407cba06d7fe6ec46f4a	496	592	RESPONDENT	Principal Secretary , Registration , Excise and Prohibition Department , Government of Bihar , Patna
+266bf0857b89407cba06d7fe6ec46f4a	1039	1051	LAWYER	Vikash Kumar
+266bf0857b89407cba06d7fe6ec46f4a	1178	1186	JUDGE	S. Kumar
+266bf0857b89407cba06d7fe6ec46f4a	823	871	RESPONDENT	Station House Officer , Excise , Sitamarhi ( Bihar )
+266bf0857b89407cba06d7fe6ec46f4a	362	376	RESPONDENT	State of Bihar
+266bf0857b89407cba06d7fe6ec46f4a	992	1002	LAWYER	Uday Kumar
+266bf0857b89407cba06d7fe6ec46f4a	603	662	RESPONDENT	District Magistrate , Sitamarhi , District - Sitamarhi ( Bihar
+266bf0857b89407cba06d7fe6ec46f4a	671	736	RESPONDENT	Superintendent of Excise , Sitamarhi , District - Sitamarhi ( Bihar )
+266bf0857b89407cba06d7fe6ec46f4a	747	812	RESPONDENT	Superintendent of Police , Sitamarhi , District - Sitamarhi ( Bihar )
+266bf0857b89407cba06d7fe6ec46f4a	168	179	PETITIONER	Vimal Anand
+583d838ba8b7498e89be4684b1d5a2e4	53	86	COURT	High Court Of Kerala At Ernakulam
+583d838ba8b7498e89be4684b1d5a2e4	167	178	JUDGE	S.Manikumar
+583d838ba8b7498e89be4684b1d5a2e4	209	229	JUDGE	Murali Purushothaman
+4aaf36ff75334d9a990e39bcc6c1e6cd	248	262	LAWYER	G. Ramesh Babu
+4aaf36ff75334d9a990e39bcc6c1e6cd	354	372	LAWYER	Keerthi Kiran Kota
+4aaf36ff75334d9a990e39bcc6c1e6cd	1099	1118	JUDGE	D.V.S.S. Somayajulu
+4aaf36ff75334d9a990e39bcc6c1e6cd	297	314	LAWYER	B. Sudhakar Reddy
+4aaf36ff75334d9a990e39bcc6c1e6cd	19	38	JUDGE	D.V.S.S. Somayajulu
+4aaf36ff75334d9a990e39bcc6c1e6cd	145	160	RESPONDENT	Kota Venkataiah
+4aaf36ff75334d9a990e39bcc6c1e6cd	82	109	PETITIONER	Gollapinni Reddy Balaprasad
+ba18118a2bae4a3a88872f081a113c66	304	329	PETITIONER	Ispat And Power Pvt . Ltd.
+ba18118a2bae4a3a88872f081a113c66	54	76	COURT	Supreme Court Of India
+ba18118a2bae4a3a88872f081a113c66	435	465	RESPONDENT	Shyam Metalics And Energy Ltd.
+c3b12eb1ddf44572bae727a89ad32b9e	184	212	PETITIONER	New India Assurance Co. Ltd.
+c3b12eb1ddf44572bae727a89ad32b9e	441	454	RESPONDENT	Avadesh Kumar
+c3b12eb1ddf44572bae727a89ad32b9e	409	436	PETITIONER	Oriental Insurance Co. Ltd.
+c3b12eb1ddf44572bae727a89ad32b9e	816	826	LAWYER	R.P. Gupta
+c3b12eb1ddf44572bae727a89ad32b9e	46	74	COURT	High Court Of Madhya Pradesh
+c3b12eb1ddf44572bae727a89ad32b9e	702	721	LAWYER	S.N. Gajendragadkar
+c3b12eb1ddf44572bae727a89ad32b9e	217	230	RESPONDENT	Avadesh Kumar
+c3b12eb1ddf44572bae727a89ad32b9e	566	578	LAWYER	B.K. Agrawal
+d812fae263a64a9db10b1f017ef18356	527	539	RESPONDENT	Mukhtar Alam
+d812fae263a64a9db10b1f017ef18356	901	919	JUDGE	Dinesh Kumar Singh
+d812fae263a64a9db10b1f017ef18356	377	388	LAWYER	Ajay Sengar
+d812fae263a64a9db10b1f017ef18356	205	218	PETITIONER	State Of U.P.
+d812fae263a64a9db10b1f017ef18356	470	485	JUDGE	Gyanendra Kumar
+d812fae263a64a9db10b1f017ef18356	366	376	LAWYER	A.K. Singh
+d812fae263a64a9db10b1f017ef18356	512	515	JUDGE	Lav
+d812fae263a64a9db10b1f017ef18356	664	677	PETITIONER	Rajeev Shukla
+d812fae263a64a9db10b1f017ef18356	552	576	RESPONDENT	Vikram Dev Singh Rathore
+d812fae263a64a9db10b1f017ef18356	459	469	JUDGE	D.V. Singh
+d812fae263a64a9db10b1f017ef18356	779	798	LAWYER	Rajiv Lochan Shukla
+d812fae263a64a9db10b1f017ef18356	498	511	JUDGE	Kapil Rathore
+d812fae263a64a9db10b1f017ef18356	0	37	COURT	High Court Of Judicature At Allahabad
+d812fae263a64a9db10b1f017ef18356	753	767	LAWYER	Rajeev Trivedi
+d812fae263a64a9db10b1f017ef18356	846	858	LAWYER	Laxman Singh
+d812fae263a64a9db10b1f017ef18356	540	551	RESPONDENT	Rohan Gupta
+d812fae263a64a9db10b1f017ef18356	698	712	LAWYER	Raghubir Singh
+d812fae263a64a9db10b1f017ef18356	235	249	LAWYER	Raghuvir Singh
+d812fae263a64a9db10b1f017ef18356	429	436	JUDGE	Brijesh
+d812fae263a64a9db10b1f017ef18356	352	365	LAWYER	S.P.S. Raghav
+d812fae263a64a9db10b1f017ef18356	486	497	JUDGE	J.S. Sengar
+d812fae263a64a9db10b1f017ef18356	389	414	LAWYER	Arvind Kumar Srivastavaac
+d812fae263a64a9db10b1f017ef18356	288	301	LAWYER	A.G.A.,Laxman
+d812fae263a64a9db10b1f017ef18356	415	428	LAWYER	Brajesh Sahai
+d812fae263a64a9db10b1f017ef18356	442	458	JUDGE	C.H.Singh Gautam
+d812fae263a64a9db10b1f017ef18356	875	887	JUDGE	Ramesh Sinha
+d812fae263a64a9db10b1f017ef18356	288	307	LAWYER	A.G.A.,Laxman Singh
+d812fae263a64a9db10b1f017ef18356	768	778	LAWYER	P.N. Misra
+d812fae263a64a9db10b1f017ef18356	308	323	LAWYER	Murlidhar Misra
+884a90766f1044b28165312f09899ecc	27	39	PETITIONER	Bharat Singh
+884a90766f1044b28165312f09899ecc	1004	1016	PETITIONER	Bharat Singh
+884a90766f1044b28165312f09899ecc	44	57	RESPONDENT	State of M.P.
+884a90766f1044b28165312f09899ecc	1021	1034	RESPONDENT	State of M.P.
+884a90766f1044b28165312f09899ecc	98	116	PETITIONER	Bali Singh @ Ballu
+884a90766f1044b28165312f09899ecc	268	282	JUDGE	G.S. Ahluwalia
+884a90766f1044b28165312f09899ecc	0	1	PETITIONER	1
+884a90766f1044b28165312f09899ecc	1235	1249	JUDGE	G.S. Ahluwalia
+884a90766f1044b28165312f09899ecc	160	241	COURT	High Court Of Madhya Pradesh 
+           Gwalior Bench 
+
+                    Division
+884a90766f1044b28165312f09899ecc	1079	1097	PETITIONER	Bali Singh @ Ballu
+884a90766f1044b28165312f09899ecc	581	599	PETITIONER	Bali Singh @ Ballu
+884a90766f1044b28165312f09899ecc	1102	1115	RESPONDENT	State of M.P.
+884a90766f1044b28165312f09899ecc	121	134	RESPONDENT	State of M.P.
+884a90766f1044b28165312f09899ecc	655	668	RESPONDENT	State of M.P.
+884a90766f1044b28165312f09899ecc	425	437	PETITIONER	Bharat Singh
+884a90766f1044b28165312f09899ecc	504	517	RESPONDENT	State of M.P.
+884a90766f1044b28165312f09899ecc	777	790	LAWYER	A.K.Nirankari
+884a90766f1044b28165312f09899ecc	714	724	LAWYER	Ashok Jain
+884a90766f1044b28165312f09899ecc	327	351	JUDGE	Rajeev Kumar Shrivastava
+eef32d60671a4d06b2ff95d7caf8a965	23	33	JUDGE	N.Balayogi
+eef32d60671a4d06b2ff95d7caf8a965	791	802	JUDGE	N. Balayogi
+eef32d60671a4d06b2ff95d7caf8a965	418	425	LAWYER	G.P.For
+eef32d60671a4d06b2ff95d7caf8a965	375	390	LAWYER	Mavidi Rama Rao
+eef32d60671a4d06b2ff95d7caf8a965	100	121	PETITIONER	Nagarjun Valluripalli
+eef32d60671a4d06b2ff95d7caf8a965	467	477	LAWYER	P.Sri Ram .
+1ff1b8cbab0f416a878643461c206f1a	229	237	PETITIONER	S.Ganesh
+1ff1b8cbab0f416a878643461c206f1a	53	75	COURT	Supreme Court Of India
+1ff1b8cbab0f416a878643461c206f1a	386	404	RESPONDENT	State Of Karnataka
+250fc24006a7477695f009f5b7cfa212	486	500	RESPONDENT	Union Of India
+250fc24006a7477695f009f5b7cfa212	308	395	PETITIONER	National Campaign Committee For Central Legislation 
+      On Construction Labour ( Ncc Cl
+a6021a52e4824a0c9d50613b20b246ca	7	39	COURT	High Court Of Delhi At New Delhi
+a6021a52e4824a0c9d50613b20b246ca	891	903	LAWYER	Amish Tandon
+a6021a52e4824a0c9d50613b20b246ca	1081	1153	LAWYER	Ayush 
+                                                             Beotra
+a6021a52e4824a0c9d50613b20b246ca	1253	1268	JUDGE	V. Kameswar Rao
+a6021a52e4824a0c9d50613b20b246ca	910	982	LAWYER	Ayush 
+                                                             Beotra
+a6021a52e4824a0c9d50613b20b246ca	1062	1074	LAWYER	Amish Tandon
+a6021a52e4824a0c9d50613b20b246ca	508	521	LAWYER	Yashmeet Kaur
+a6021a52e4824a0c9d50613b20b246ca	419	428	LAWYER	H.L. Tiku
+a6021a52e4824a0c9d50613b20b246ca	800	811	LAWYER	Dhruv Mehta
+a6021a52e4824a0c9d50613b20b246ca	612	624	RESPONDENT	Ifci Limited
+a6021a52e4824a0c9d50613b20b246ca	225	252	PETITIONER	Ifci Retirees Welfare Forum
+7de3d4e2378b40ca8bd0b5447c48b04d	455	470	LAWYER	Mohammad Waseem
+7de3d4e2378b40ca8bd0b5447c48b04d	401	414	RESPONDENT	State Of U.P.
+7de3d4e2378b40ca8bd0b5447c48b04d	521	541	JUDGE	Dinesh Kumar Singh - I
+7de3d4e2378b40ca8bd0b5447c48b04d	362	380	PETITIONER	R.E. Kil Roy Rocky
+7de3d4e2378b40ca8bd0b5447c48b04d	0	37	COURT	High Court Of Judicature At Allahabad
+88b76a3f241d4e86bbe511321f2ecc4c	269	287	RESPONDENT	Arun Kumar Agarwal
+88b76a3f241d4e86bbe511321f2ecc4c	188	197	PETITIONER	B.R.Meena
+88b76a3f241d4e86bbe511321f2ecc4c	79	101	JUDGE	Kongara Vijaya Lakshmi
+88b76a3f241d4e86bbe511321f2ecc4c	389	407	LAWYER	Eranki Phani Kumar
+88b76a3f241d4e86bbe511321f2ecc4c	595	613	JUDGE	Ramesh Ranganathan
+88b76a3f241d4e86bbe511321f2ecc4c	659	681	JUDGE	Kongara Vijaya Lakshmi
+88b76a3f241d4e86bbe511321f2ecc4c	32	50	JUDGE	Ramesh Ranganathan
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	7	63	COURT	High Court Of Karnataka 
+                    Dharwad Bench
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	1287	1307	RESPONDENT	Suresh Laxman Vadoni
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	996	1016	LAWYER	Rajashekhar S. Arani
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	1077	1085	RESPONDENT	Puttappa
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	737	787	PETITIONER	Divisional Manager 
+ United India Insurance Co. Ltd.
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	175	187	JUDGE	K. Natarajan
+6f1a17d7b8e34fa6a14aa2f4d6c6c7d2	1186	1194	RESPONDENT	Yallavva
+4e22e817542647c5a99fb0964676d4ff	1282	1293	RESPONDENT	A. Thomeena
+4e22e817542647c5a99fb0964676d4ff	174	185	JUDGE	K.Natarajan
+4e22e817542647c5a99fb0964676d4ff	1596	1609	LAWYER	Mahesh Shetty
+4e22e817542647c5a99fb0964676d4ff	443	455	LAWYER	K. Dhananjay
+4e22e817542647c5a99fb0964676d4ff	1117	1167	RESPONDENT	Special Public Prosecutor For 
+      Karnataka State
+4e22e817542647c5a99fb0964676d4ff	1529	1542	LAWYER	Anupama Hegde
+4e22e817542647c5a99fb0964676d4ff	499	687	RESPONDENT	Cabinet Secretary For The 
+        Hon , Ble President Of India , 
+        Appointments Committee Of The Cabinet , 
+        Cabinet Secretariat , 
+        Rashtrapati Bhavan , 
+        New Delhi - 110 004
+4e22e817542647c5a99fb0964676d4ff	247	259	PETITIONER	K. Dhananjay
+4e22e817542647c5a99fb0964676d4ff	697	882	RESPONDENT	Secretary For The 
+        Chief Information Commissioner , 
+        Central Information Commission , 
+        Cic Bhawan , 
+        Baba Ganganath Marg , 
+        Munirka , 
+        New Delhi - 110 067
+4e22e817542647c5a99fb0964676d4ff	896	915	RESPONDENT	Divya Prakash Sinha
+4e22e817542647c5a99fb0964676d4ff	16	52	COURT	High Court Of Karnataka At Bengaluru
+6c3ff98a78204313a77b06285d999186	378	390	LAWYER	Udyan Nandan
+6c3ff98a78204313a77b06285d999186	485	495	LAWYER	A.K. Goyal
+6c3ff98a78204313a77b06285d999186	158	172	RESPONDENT	Union of India
+6c3ff98a78204313a77b06285d999186	659	673	LAWYER	Vinay K. Singh
+6c3ff98a78204313a77b06285d999186	761	772	LAWYER	Alok Mishra
+6c3ff98a78204313a77b06285d999186	838	850	JUDGE	Suneet Kumar
+6c3ff98a78204313a77b06285d999186	87	117	PETITIONER	U.P. Public Service Commission
+6c3ff98a78204313a77b06285d999186	717	731	RESPONDENT	Union of India
+6c3ff98a78204313a77b06285d999186	797	812	JUDGE	Dilip B Bhosale
+6c3ff98a78204313a77b06285d999186	862	877	JUDGE	Dilip B Bhosale
+6c3ff98a78204313a77b06285d999186	429	441	LAWYER	Manish Goyal
+6c3ff98a78204313a77b06285d999186	591	603	LAWYER	Gyan Prakash
+6c3ff98a78204313a77b06285d999186	350	371	LAWYER	Kashif 			       Zaidi
+6c3ff98a78204313a77b06285d999186	0	37	COURT	High Court Of Judicature At Allahabad
+6c3ff98a78204313a77b06285d999186	309	322	LAWYER	Shashi Nandan
+ca1ec164a07e4c6c8f0eadf15600c9dd	222	234	PETITIONER	Kulbir Singh
+ca1ec164a07e4c6c8f0eadf15600c9dd	508	528	JUDGE	Mahabir Singh Sindhu
+ca1ec164a07e4c6c8f0eadf15600c9dd	369	385	RESPONDENT	State of Haryana
+ca1ec164a07e4c6c8f0eadf15600c9dd	7	71	COURT	High Court Of Punjab And Haryana 
+                   At Chandigarh
+5237ef46d6d4440cb79b24137f83272f	316	327	PETITIONER	Noel Harper
+5237ef46d6d4440cb79b24137f83272f	143	165	COURT	Supreme Court Of India
+5237ef46d6d4440cb79b24137f83272f	473	487	RESPONDENT	Union Of India
+e50c70ec7b7d4f09a2b869ef56339346	643	655	LAWYER	Ayush Saxena
+e50c70ec7b7d4f09a2b869ef56339346	575	586	LAWYER	V.K. Saxena
+e50c70ec7b7d4f09a2b869ef56339346	697	709	LAWYER	Ramvir 
+ Singh
+e50c70ec7b7d4f09a2b869ef56339346	537	549	PETITIONER	Ramvir Singh
+e50c70ec7b7d4f09a2b869ef56339346	79	90	PETITIONER	Nathu Singh
+e50c70ec7b7d4f09a2b869ef56339346	344	358	JUDGE	G.S. Ahluwalia
+e50c70ec7b7d4f09a2b869ef56339346	361	379	JUDGE	Rajeev Shrivastava
+e50c70ec7b7d4f09a2b869ef56339346	141	156	PETITIONER	Ghanshyam Singh
+e50c70ec7b7d4f09a2b869ef56339346	826	840	LAWYER	B.P.S. Chouhan
+e50c70ec7b7d4f09a2b869ef56339346	875	886	LAWYER	R.K. Sharma
+e50c70ec7b7d4f09a2b869ef56339346	784	799	LAWYER	Ghanshyam Singh
+e50c70ec7b7d4f09a2b869ef56339346	18	46	COURT	High Court Of Madhya Pradesh
+e50c70ec7b7d4f09a2b869ef56339346	224	282	RESPONDENT	State of M.P. 
+
+                High Court Of Madhya Pradesh
+e50c70ec7b7d4f09a2b869ef56339346	161	174	RESPONDENT	State of M.P.
+e50c70ec7b7d4f09a2b869ef56339346	207	219	PETITIONER	Ramvir Singh
+e50c70ec7b7d4f09a2b869ef56339346	417	428	PETITIONER	Nathu Singh
+e50c70ec7b7d4f09a2b869ef56339346	95	108	RESPONDENT	State of M.P.
+e50c70ec7b7d4f09a2b869ef56339346	495	508	RESPONDENT	State of M.P.
+e50c70ec7b7d4f09a2b869ef56339346	943	957	LAWYER	M.K. Choudhary
+e50c70ec7b7d4f09a2b869ef56339346	750	760	LAWYER	Atul Gupta
+e50c70ec7b7d4f09a2b869ef56339346	681	686	LAWYER	Nathu
+e50c70ec7b7d4f09a2b869ef56339346	433	446	RESPONDENT	State of M.P.
+e50c70ec7b7d4f09a2b869ef56339346	475	490	PETITIONER	Ghanshyam Singh
+e50c70ec7b7d4f09a2b869ef56339346	318	325	JUDGE	Gwalior
+e50c70ec7b7d4f09a2b869ef56339346	554	567	RESPONDENT	State of M.P.
+12b2e165cd8b4e71915e92904d951671	593	625	RESPONDENT	Chhotai Yadav @ Chhote Lal Yadav
+12b2e165cd8b4e71915e92904d951671	1981	1996	LAWYER	Shrikant Prasad
+12b2e165cd8b4e71915e92904d951671	1677	1693	JUDGE	S. Ravindra Bhat
+12b2e165cd8b4e71915e92904d951671	1615	1631	JUDGE	Uday Umesh Lalit
+12b2e165cd8b4e71915e92904d951671	453	468	PETITIONER	Rabindra Mishra
+12b2e165cd8b4e71915e92904d951671	2042	2060	LAWYER	Pabitra Kr . Biswal
+12b2e165cd8b4e71915e92904d951671	388	445	COURT	High Court Of Judicature At 
+      Allahabad , Lucknow Bench
+12b2e165cd8b4e71915e92904d951671	1739	1752	JUDGE	Pamidighantam
+12b2e165cd8b4e71915e92904d951671	1757	1766	LAWYER	Narasimha
+12b2e165cd8b4e71915e92904d951671	1903	1922	LAWYER	Jitendar Kr . Sharma
+645dfb85e25f4b2281f6bfb827ac9913	1544	1558	LAWYER	Ashutosh Dubey
+645dfb85e25f4b2281f6bfb827ac9913	886	897	JUDGE	N.V. Ramana
+645dfb85e25f4b2281f6bfb827ac9913	1821	1837	LAWYER	Abhishek Chauhan
+645dfb85e25f4b2281f6bfb827ac9913	946	961	JUDGE	S. Abdul Nazeer
+645dfb85e25f4b2281f6bfb827ac9913	1104	1116	LAWYER	Piyush Singh
+645dfb85e25f4b2281f6bfb827ac9913	1895	1908	LAWYER	Sushil Pandey
+645dfb85e25f4b2281f6bfb827ac9913	1615	1624	LAWYER	J. Kurian
+645dfb85e25f4b2281f6bfb827ac9913	1034	1048	LAWYER	Ashutosh Dubey
+645dfb85e25f4b2281f6bfb827ac9913	1241	1253	LAWYER	Aditya Singh
+645dfb85e25f4b2281f6bfb827ac9913	334	345	PETITIONER	Biswas Nair
+645dfb85e25f4b2281f6bfb827ac9913	1682	1695	LAWYER	Rajshri Dubey
+645dfb85e25f4b2281f6bfb827ac9913	1400	1412	LAWYER	Aditya Singh
+645dfb85e25f4b2281f6bfb827ac9913	1753	1763	LAWYER	V.S. Rawat
+645dfb85e25f4b2281f6bfb827ac9913	1172	1185	LAWYER	Vaibhav Tyagi
+645dfb85e25f4b2281f6bfb827ac9913	1470	1486	LAWYER	Anirban Tripathi
+645dfb85e25f4b2281f6bfb827ac9913	500	518	RESPONDENT	Shinie Biswas Nair
+645dfb85e25f4b2281f6bfb827ac9913	1331	1345	LAWYER	Ajit Pudussery
+5c4f64fec4ab41faab797177ecfac426	193	206	RESPONDENT	State Of U.P.
+5c4f64fec4ab41faab797177ecfac426	331	344	LAWYER	Sudeep Pathak
+5c4f64fec4ab41faab797177ecfac426	321	330	LAWYER	D.P.Singh
+5c4f64fec4ab41faab797177ecfac426	262	287	LAWYER	Abhishek Kumar Srivastava
+5c4f64fec4ab41faab797177ecfac426	300	320	LAWYER	Bhupendra Nath Singh
+5c4f64fec4ab41faab797177ecfac426	288	299	LAWYER	Ashok Mehta
+5c4f64fec4ab41faab797177ecfac426	413	424	JUDGE	Shashi Kant
+5c4f64fec4ab41faab797177ecfac426	438	449	JUDGE	Ajay Bhanot
+5c4f64fec4ab41faab797177ecfac426	345	356	LAWYER	V.C. Mishra
+5c4f64fec4ab41faab797177ecfac426	0	46	COURT	High Court Of Judicature At Allahabad 
+ 
+ 
+
+ Afr
+5c4f64fec4ab41faab797177ecfac426	234	248	LAWYER	Mayank Bhushan
+5c4f64fec4ab41faab797177ecfac426	250	260	LAWYER	A.K.Mishra
+5c4f64fec4ab41faab797177ecfac426	153	176	PETITIONER	Girish Chandra Bajpayee
+87505474e7d54ef3a1bc85a4a4c82b7b	444	465	RESPONDENT	Rajaram Shripad Joshi
+87505474e7d54ef3a1bc85a4a4c82b7b	56	78	COURT	Supreme Court Of India
+87505474e7d54ef3a1bc85a4a4c82b7b	244	267	PETITIONER	Dharmaji Shankar Shinde
+7dbdc18172ee4330a8ab1734cb1a4da8	216	235	PETITIONER	Neetu Kumar Nagaich
+7dbdc18172ee4330a8ab1734cb1a4da8	52	74	COURT	Supreme Court Of India
+7dbdc18172ee4330a8ab1734cb1a4da8	356	374	RESPONDENT	State Of Rajasthan
+c67a803199e34f48839f96335ed72ff7	268	284	PETITIONER	Lalit Kumar Jain
+c67a803199e34f48839f96335ed72ff7	402	416	RESPONDENT	Union Of India
+c67a803199e34f48839f96335ed72ff7	120	142	COURT	Supreme Court Of India
+bc5046ac370e4dc580ad8ab60b4cd667	259	282	PETITIONER	Parvinder Singh @ Pinda
+bc5046ac370e4dc580ad8ab60b4cd667	88	129	COURT	Punjab & Haryana High Court At Chandigarh
+bc5046ac370e4dc580ad8ab60b4cd667	640	657	JUDGE	Amol Rattan Singh
+bc5046ac370e4dc580ad8ab60b4cd667	417	428	RESPONDENT	Didar Singh
+bc5046ac370e4dc580ad8ab60b4cd667	538	555	JUDGE	Amol Rattan Singh
+bc5046ac370e4dc580ad8ab60b4cd667	575	593	LAWYER	Surjit Singh Salar
+d7f5455b1bc3466cb3e82b1009f8dfbf	7	41	COURT	High Court Of Judicature At Madras
+d7f5455b1bc3466cb3e82b1009f8dfbf	2133	2248	RESPONDENT	5.State Bank of India 
+                       Stressed Assets Management Branch 
+                       No.32 , Montieth
+d7f5455b1bc3466cb3e82b1009f8dfbf	2922	2949	RESPONDENT	9.Radhakrishnan Dharmarajan
+d7f5455b1bc3466cb3e82b1009f8dfbf	1741	1927	RESPONDENT	3.Idbi Trusteeship Services Limited 
+                       Asian Building , Ground Floor , 
+                       No.17 , R Kamani Marg , 
+                       Ballard Estate , Mumbai – 400 001
+d7f5455b1bc3466cb3e82b1009f8dfbf	2325	2378	RESPONDENT	6.Edelweiss Arc 
+                       Edelweiss House
+d7f5455b1bc3466cb3e82b1009f8dfbf	2485	2493	RESPONDENT	7.Allium
+d7f5455b1bc3466cb3e82b1009f8dfbf	1950	2106	RESPONDENT	4.Idbi Bank Limited 
+                       Npa Management Group ( Nmg ) 
+                       No.115 , Anna Salai , Saidapet , 
+                       Chennai – 600
+d7f5455b1bc3466cb3e82b1009f8dfbf	767	893	PETITIONER	Five Member Committee of Employees 
+                       of Appu Hotels Limited at Coimbatore 
+                     Having place
+d7f5455b1bc3466cb3e82b1009f8dfbf	2325	2336	RESPONDENT	6.Edelweiss
+d7f5455b1bc3466cb3e82b1009f8dfbf	342	459	PETITIONER	Five Member Committee of Employees 
+                       of Appu Hotels Limited at Chennai 
+                     Having
+d7f5455b1bc3466cb3e82b1009f8dfbf	2694	2837	RESPONDENT	8.Bank of India 
+                       Tarapore Towers , Iv Floor , 
+                       826 , Anna Salai , 
+                       Chennai – 600 002
+d7f5455b1bc3466cb3e82b1009f8dfbf	232	244	JUDGE	M.Govindaraj
+d7f5455b1bc3466cb3e82b1009f8dfbf	2694	2700	RESPONDENT	8.Bank
+d7f5455b1bc3466cb3e82b1009f8dfbf	1263	1353	RESPONDENT	1.Tourism Finance Corporation of India Limited 
+                       4th Floor , Tower No.1
+d7f5455b1bc3466cb3e82b1009f8dfbf	2485	2602	RESPONDENT	7.Allium Finance Pvt . Ltd. , 
+                       Tower 3 , Wing B , Kohinoor City Mall , 
+                       Kohinoor
+d7f5455b1bc3466cb3e82b1009f8dfbf	1546	1718	RESPONDENT	2.Indian Bank 
+                       Stressed Assets Management Branch 
+                       2nd Floor , No.55 , Ethiraj Salai , 
+                       Egmore , Chennai – 600 008
+69cfd8f988964ebd83d9c48d677c9cef	353	416	PETITIONER	Deputy Commissioner of Income Tax , Central Circle-2(2 ) , Kolkata
+69cfd8f988964ebd83d9c48d677c9cef	712	725	LAWYER	A.K. Tulsiyan
+69cfd8f988964ebd83d9c48d677c9cef	776	787	LAWYER	Radhe Shyam
+69cfd8f988964ebd83d9c48d677c9cef	118	135	LAWYER	J. Sudhakar Reddy
+69cfd8f988964ebd83d9c48d677c9cef	161	182	LAWYER	S.S. Viswanethra Ravi
+69cfd8f988964ebd83d9c48d677c9cef	608	660	RESPONDENT	Shakespeare Sarani 
+    6th Floor 
+    Kolkata - 700 001
+69cfd8f988964ebd83d9c48d677c9cef	468	590	RESPONDENT	Orissa Metaliks Pvt . Ltd ..................................................................................................
+69cfd8f988964ebd83d9c48d677c9cef	7	104	COURT	Income Tax Appellate Tribunal 
+                                          Kolkata ' A ' Bench , Kolkata
+3d1da30b23694e6483f6023db30ba324	140	158	PETITIONER	Suresh Chukkapalli
+3d1da30b23694e6483f6023db30ba324	923	935	JUDGE	Sanjay Kumar
+3d1da30b23694e6483f6023db30ba324	196	215	RESPONDENT	S.Ali Abbas Hussain
+3d1da30b23694e6483f6023db30ba324	313	329	LAWYER	B.Vijaysen Reddy
+3d1da30b23694e6483f6023db30ba324	412	424	LAWYER	Sunil B.Ganu
+3d1da30b23694e6483f6023db30ba324	508	521	LAWYER	V.Manohar Rao
+3d1da30b23694e6483f6023db30ba324	63	78	JUDGE	T.Amarnath Goud
+3d1da30b23694e6483f6023db30ba324	459	473	LAWYER	Manjiri S.Ganu
+3d1da30b23694e6483f6023db30ba324	23	35	JUDGE	Sanjay Kumar
+3d1da30b23694e6483f6023db30ba324	975	990	JUDGE	T.Amarnath Goud
+3d1da30b23694e6483f6023db30ba324	270	280	LAWYER	Vivek Jain
+c3cb1e773671455db72a67fd87a76ca4	543	677	RESPONDENT	Chief      Engineer          ( Administration ) ,          Public     Health 
+        Engineering Department , 2 Civil Lines , Jal Bhawan , Jaipur
+c3cb1e773671455db72a67fd87a76ca4	128	144	PETITIONER	Dalip Kumar Targ
+c3cb1e773671455db72a67fd87a76ca4	396	414	RESPONDENT	State Of Rajasthan
+c3cb1e773671455db72a67fd87a76ca4	0	73	COURT	High Court Of Judicature For Rajasthan 
+                    Bench At Jaipur
+c3cb1e773671455db72a67fd87a76ca4	693	770	RESPONDENT	Secretary , Department of Personnel Government of 
+ Rajasthan , Jaipur , Rajasthan
+0dea3fb8390e490fbbda5445cb2cd1f7	569	582	PETITIONER	Zeeba Moosavi
+0dea3fb8390e490fbbda5445cb2cd1f7	138	159	JUDGE	Ashok G. Nijagannavar
+0dea3fb8390e490fbbda5445cb2cd1f7	1177	1189	RESPONDENT	Syedi Hassan
+0dea3fb8390e490fbbda5445cb2cd1f7	700	711	PETITIONER	Shahla Raza
+0dea3fb8390e490fbbda5445cb2cd1f7	877	888	RESPONDENT	Zia Khaleli
+0dea3fb8390e490fbbda5445cb2cd1f7	960	972	RESPONDENT	Anwar Hassan
+0dea3fb8390e490fbbda5445cb2cd1f7	1637	1650	LAWYER	Raghunath M.D
+0dea3fb8390e490fbbda5445cb2cd1f7	773	780	PETITIONER	Soraiya
+0dea3fb8390e490fbbda5445cb2cd1f7	1097	1108	RESPONDENT	Taj Sultana
+0dea3fb8390e490fbbda5445cb2cd1f7	1687	1691	RESPONDENT	Renu
+0dea3fb8390e490fbbda5445cb2cd1f7	1383	1395	RESPONDENT	Syedi Hassan
+0dea3fb8390e490fbbda5445cb2cd1f7	1941	1953	RESPONDENT	K.S.Ponnappa
+0dea3fb8390e490fbbda5445cb2cd1f7	431	444	PETITIONER	Atha Khaleeli
+0dea3fb8390e490fbbda5445cb2cd1f7	1675	1686	RESPONDENT	S.Siraj And
+0dea3fb8390e490fbbda5445cb2cd1f7	7	43	COURT	High Court Of Karnataka At Bengaluru
+0dea3fb8390e490fbbda5445cb2cd1f7	291	307	PETITIONER	Nazneen Khaleeli
+339fdcd7098641fea1a1fd016ced0104	1015	1026	LAWYER	Sourav Jana
+339fdcd7098641fea1a1fd016ced0104	7	29	COURT	High Court At Calcutta
+339fdcd7098641fea1a1fd016ced0104	485	502	LAWYER	Pratap Chatterjee
+339fdcd7098641fea1a1fd016ced0104	629	645	LAWYER	Prithwiraj Sinha
+339fdcd7098641fea1a1fd016ced0104	989	1003	LAWYER	Gautam Kr . Roy
+339fdcd7098641fea1a1fd016ced0104	171	181	JUDGE	Soumen Sen
+339fdcd7098641fea1a1fd016ced0104	418	429	RESPONDENT	Cello Plast
+339fdcd7098641fea1a1fd016ced0104	700	710	LAWYER	Tanmoy Roy
+339fdcd7098641fea1a1fd016ced0104	561	574	LAWYER	Sayantan Basu
+339fdcd7098641fea1a1fd016ced0104	831	844	LAWYER	Abhiroop Dhar
+339fdcd7098641fea1a1fd016ced0104	1038	1047	LAWYER	Gopal Das
+339fdcd7098641fea1a1fd016ced0104	322	340	PETITIONER	La Opala R.G. Ltd.
+339fdcd7098641fea1a1fd016ced0104	959	977	LAWYER	Sayan Roychowdhury
+339fdcd7098641fea1a1fd016ced0104	934	947	LAWYER	Debnath Ghosh
+339fdcd7098641fea1a1fd016ced0104	765	776	LAWYER	Manoj Gupta
+339fdcd7098641fea1a1fd016ced0104	899	916	LAWYER	Jayanta Kr . Mitra
+f3b637df97f94e61bd29c9522564e747	873	878	RESPONDENT	State
+f3b637df97f94e61bd29c9522564e747	408	420	JUDGE	B.Pugalendhi
+f3b637df97f94e61bd29c9522564e747	703	712	PETITIONER	Nagarajan
+f3b637df97f94e61bd29c9522564e747	171	205	COURT	Madurai Bench Of Madras High Court
+aec71d9e890b4f41acab5724a8d7da0a	135	157	COURT	Supreme Court Of India
+aec71d9e890b4f41acab5724a8d7da0a	430	455	RESPONDENT	Mohd . Parvez Abdul Kayuum
+aec71d9e890b4f41acab5724a8d7da0a	309	340	PETITIONER	Central Bureau Of Investigation
+30e68811ee304c299ca6f84482900157	171	182	PETITIONER	Suraj Kumar
+30e68811ee304c299ca6f84482900157	7	40	COURT	High Court Of Judicature At Patna
+30e68811ee304c299ca6f84482900157	815	823	JUDGE	S. Kumar
+30e68811ee304c299ca6f84482900157	391	416	RESPONDENT	District Magistrate Patna
+30e68811ee304c299ca6f84482900157	634	652	LAWYER	Manoj Kumar Pandey
+30e68811ee304c299ca6f84482900157	679	691	LAWYER	Vivek Prasad
+30e68811ee304c299ca6f84482900157	322	336	RESPONDENT	State of Bihar
+30e68811ee304c299ca6f84482900157	468	517	RESPONDENT	S.H.O. Athmalgola Police Station , District- Patna
+30e68811ee304c299ca6f84482900157	424	460	RESPONDENT	Assistant Excise Commissioner , Patna
+c65f4317023347b687270e8b078590c2	406	431	PETITIONER	State Of Himachal Pradesh
+c65f4317023347b687270e8b078590c2	153	175	COURT	Supreme Court Of India
+c65f4317023347b687270e8b078590c2	570	581	RESPONDENT	Manga Singh
+ff5e01ccaaf44b2a90908eaf7eb68744	471	485	RESPONDENT	Union of India
+ff5e01ccaaf44b2a90908eaf7eb68744	327	356	PETITIONER	Common Cause ( A Regd . Society
+ff5e01ccaaf44b2a90908eaf7eb68744	133	155	COURT	Supreme Court Of India
+dbfd42ff567044fb8bcf19e77e1f1330	1280	1295	LAWYER	Shivendra Singh
+dbfd42ff567044fb8bcf19e77e1f1330	489	520	RESPONDENT	Union Public Service Commission
+dbfd42ff567044fb8bcf19e77e1f1330	324	337	PETITIONER	Mohd . Mustafa
+dbfd42ff567044fb8bcf19e77e1f1330	1216	1226	LAWYER	Pooja Dhar
+dbfd42ff567044fb8bcf19e77e1f1330	1005	1018	LAWYER	Natasa Dalmia
+dbfd42ff567044fb8bcf19e77e1f1330	935	948	LAWYER	P.S. Patwalia
+dbfd42ff567044fb8bcf19e77e1f1330	1070	1086	LAWYER	Ashok K. Mahajan
+dbfd42ff567044fb8bcf19e77e1f1330	1349	1358	LAWYER	Deepanshi
+dbfd42ff567044fb8bcf19e77e1f1330	1140	1158	LAWYER	Krishnan Venugopal
+dbfd42ff567044fb8bcf19e77e1f1330	875	888	JUDGE	Sanjiv Khanna
+901df662efd44969b5454c321948ba47	363	378	LAWYER	T.V.Jaggi Reddy
+901df662efd44969b5454c321948ba47	259	272	LAWYER	S.Subba Reddy
+901df662efd44969b5454c321948ba47	103	125	PETITIONER	Ramayanam Satish Kumar
+901df662efd44969b5454c321948ba47	309	326	LAWYER	A.K.Kishore Reddy
+901df662efd44969b5454c321948ba47	172	181	RESPONDENT	1.Thamada
+901df662efd44969b5454c321948ba47	172	194	RESPONDENT	1.Thamada Bhaskara Rao
+901df662efd44969b5454c321948ba47	693	712	JUDGE	B. Siva Sankara Rao
+901df662efd44969b5454c321948ba47	23	41	JUDGE	B.Siva Sankara Rao
+7ba830484b684187910d93a65f147157	1157	1170	LAWYER	V.T.Raghunath
+7ba830484b684187910d93a65f147157	1376	1391	RESPONDENT	State Of Kerala
+7ba830484b684187910d93a65f147157	27	60	COURT	High Court Of Kerala At Ernakulam
+7ba830484b684187910d93a65f147157	1512	1524	LAWYER	C.S.Hrithwik
+7ba830484b684187910d93a65f147157	1252	1257	RESPONDENT	Gopan
+7ba830484b684187910d93a65f147157	818	823	LAWYER	Sunil
+7ba830484b684187910d93a65f147157	609	618	PETITIONER	Sunil Raj
+7ba830484b684187910d93a65f147157	1188	1203	LAWYER	C.V.Rajalakshmi
+7ba830484b684187910d93a65f147157	147	158	JUDGE	Ashok Menon
+ded95612fd5749ba9738b7bf47ce5482	169	185	PETITIONER	Batchu Ranga Rao
+ded95612fd5749ba9738b7bf47ce5482	318	335	LAWYER	T. Niranjan Reddy
+ded95612fd5749ba9738b7bf47ce5482	216	239	RESPONDENT	State of Andhra Pradesh
+ded95612fd5749ba9738b7bf47ce5482	365	380	LAWYER	K. Suresh Reddy
+ded95612fd5749ba9738b7bf47ce5482	80	96	JUDGE	T. Amarnath Goud
+ded95612fd5749ba9738b7bf47ce5482	622	638	JUDGE	T. Amarnath Goud
+ded95612fd5749ba9738b7bf47ce5482	27	47	JUDGE	C.V. Nagarjuna Reddy
+ded95612fd5749ba9738b7bf47ce5482	574	594	JUDGE	C.V. Nagarjuna Reddy
+aa5c758b590f46a485357795ab55f204	360	488	RESPONDENT	Commissioner of Income Tax 
+ 405 - 406 - 407 , Mint Chambers , 45/47                  Central Circle - 5(1 ) 
+ Mint Road , Fort , Mumbai - 400
+aa5c758b590f46a485357795ab55f204	306	307	PETITIONER	M
+aa5c758b590f46a485357795ab55f204	310	347	PETITIONER	Coast Line Shipping ( India ) Pvt . Ltd.
+aa5c758b590f46a485357795ab55f204	739	750	LAWYER	Ravi Sawana
+aa5c758b590f46a485357795ab55f204	99	110	JUDGE	C.N. Prasad
+aa5c758b590f46a485357795ab55f204	799	819	LAWYER	Kumar Padmapani Bora
+aa5c758b590f46a485357795ab55f204	7	82	COURT	Income Tax Appellate Tribunal 
+                      Mumbai Bench " C " , Mumbai
+aa5c758b590f46a485357795ab55f204	150	163	JUDGE	G. Manjunatha
+e38ea213b3e84458a651223d1970157c	436	464	RESPONDENT	Sulthan Bathery Municipality
+e38ea213b3e84458a651223d1970157c	51	73	COURT	Supreme Court Of India
+e38ea213b3e84458a651223d1970157c	289	296	PETITIONER	Kalyani
+83514ac1412b4f8488fe34dff5af0015	753	803	RESPONDENT	Superintendent , Alpawas Grih , Nirala Nagar , Behind
+83514ac1412b4f8488fe34dff5af0015	7	40	COURT	High Court Of Judicature At Patna
+83514ac1412b4f8488fe34dff5af0015	1039	1050	LAWYER	Shyam Kumar
+83514ac1412b4f8488fe34dff5af0015	1297	1317	JUDGE	Rajeev Ranjan Prasad
+83514ac1412b4f8488fe34dff5af0015	378	392	RESPONDENT	State of Bihar
+83514ac1412b4f8488fe34dff5af0015	1012	1024	LAWYER	Navnit Kumar
+83514ac1412b4f8488fe34dff5af0015	616	628	RESPONDENT	Bihar Police
+83514ac1412b4f8488fe34dff5af0015	661	684	RESPONDENT	Child Welfare Committee
+83514ac1412b4f8488fe34dff5af0015	474	487	RESPONDENT	Meena Khatoon
+83514ac1412b4f8488fe34dff5af0015	257	272	PETITIONER	Hanif Ur Rahman
+83514ac1412b4f8488fe34dff5af0015	984	997	LAWYER	Sambhav Gupta
+83514ac1412b4f8488fe34dff5af0015	1131	1144	LAWYER	Archana Sinha
+83514ac1412b4f8488fe34dff5af0015	1086	1097	LAWYER	Nadim Seraj
+83514ac1412b4f8488fe34dff5af0015	1181	1201	LAWYER	Prabhu Narain Sharma
+83514ac1412b4f8488fe34dff5af0015	956	969	LAWYER	Kriti Awasthi
+23e61760b5ad4fb6b9ffb48cca6e9c51	729	744	LAWYER	Jagmohan Bansal
+23e61760b5ad4fb6b9ffb48cca6e9c51	893	905	LAWYER	Sourabh Goel
+23e61760b5ad4fb6b9ffb48cca6e9c51	933	950	LAWYER	Tajender K. Joshi
+23e61760b5ad4fb6b9ffb48cca6e9c51	479	535	RESPONDENT	Deputy Director , Directorate General of Gst Intelligence
+23e61760b5ad4fb6b9ffb48cca6e9c51	793	807	LAWYER	Satya Pal Jain
+23e61760b5ad4fb6b9ffb48cca6e9c51	658	671	JUDGE	Jaswant Singh
+23e61760b5ad4fb6b9ffb48cca6e9c51	700	711	JUDGE	Lalit Batra
+23e61760b5ad4fb6b9ffb48cca6e9c51	317	336	PETITIONER	Akhil Krishan Maggu
+23e61760b5ad4fb6b9ffb48cca6e9c51	89	155	COURT	High Court Of Punjab & Haryana At 
+                       Chandigarh
+23e61760b5ad4fb6b9ffb48cca6e9c51	1021	1034	JUDGE	Jaswant Singh
+2144d9a98a0149908a4b8db3465d4785	189	194	PETITIONER	Meera
+2144d9a98a0149908a4b8db3465d4785	46	74	COURT	High Court Of Madhya Pradesh
+2144d9a98a0149908a4b8db3465d4785	210	220	RESPONDENT	Har Prasad
+2144d9a98a0149908a4b8db3465d4785	335	377	PETITIONER	Reliance General Insurance Company Limited
+2144d9a98a0149908a4b8db3465d4785	561	571	LAWYER	B.D. Verma
+2144d9a98a0149908a4b8db3465d4785	701	711	LAWYER	N.S. Tomar
+2144d9a98a0149908a4b8db3465d4785	387	392	RESPONDENT	Meera
+ec765e5d8955447283bb08e484521687	825	933	RESPONDENT	Chief Engineer 
+                     Water Resource Organization 
+                     Madurai Division , Madurai
+ec765e5d8955447283bb08e484521687	959	1125	RESPONDENT	Superintending Engineer 
+                     Water Resource Organization 
+                     Tamirabarani Basin Circle 
+                     Palayamkottai , Tirunelveli-2
+ec765e5d8955447283bb08e484521687	698	799	RESPONDENT	Chief Engineer 
+                     Water Resource Organization 
+                     Chepauk , Chennai-5
+ec765e5d8955447283bb08e484521687	363	375	PETITIONER	R.Ayyapillai
+ec765e5d8955447283bb08e484521687	1936	1951	LAWYER	D.Muruganandham
+ec765e5d8955447283bb08e484521687	40	74	COURT	Madurai Bench Of Madras High Court
+ec765e5d8955447283bb08e484521687	1874	1888	LAWYER	J.Anandhavalli
+ec765e5d8955447283bb08e484521687	522	541	RESPONDENT	State of Tamil Nadu
+ec765e5d8955447283bb08e484521687	258	273	JUDGE	S.M.Subramaniam
+ec765e5d8955447283bb08e484521687	1151	1280	RESPONDENT	Executive Engineer 
+                     P.W.D.Water Resources Organization 
+                     Kothaiyar Basin Division , Nagercoil
+67c941298e4d4932a0f28ab372cb1b4a	7	72	COURT	High Court Of Punjab And Haryana 
+                    At Chandigarh
+67c941298e4d4932a0f28ab372cb1b4a	2332	2344	LAWYER	Nonish Kumar
+67c941298e4d4932a0f28ab372cb1b4a	1768	1784	RESPONDENT	State of Haryana
+67c941298e4d4932a0f28ab372cb1b4a	2128	2148	JUDGE	Mahabir Singh Sindhu
+67c941298e4d4932a0f28ab372cb1b4a	572	584	PETITIONER	Ramesh Kumar
+67c941298e4d4932a0f28ab372cb1b4a	2304	2323	LAWYER	Pawan Kumar Mutneja
+67c941298e4d4932a0f28ab372cb1b4a	1064	1080	RESPONDENT	State of Haryana
+67c941298e4d4932a0f28ab372cb1b4a	2168	2180	LAWYER	Rohit Kapoor
+67c941298e4d4932a0f28ab372cb1b4a	713	729	RESPONDENT	State of Haryana
+67c941298e4d4932a0f28ab372cb1b4a	890	946	PETITIONER	Dada Shyam Ji Co - operative Transport Society Ltd. Rohtak
+67c941298e4d4932a0f28ab372cb1b4a	1234	1272	PETITIONER	Naya Bans Coop . Transport Society Ltd.
+67c941298e4d4932a0f28ab372cb1b4a	1586	1627	PETITIONER	Gonder Cooperative Transport Society Ltd.
+67c941298e4d4932a0f28ab372cb1b4a	2580	2600	JUDGE	Mahabir Singh Sindhu
+67c941298e4d4932a0f28ab372cb1b4a	1412	1428	RESPONDENT	State of Haryana
+67c941298e4d4932a0f28ab372cb1b4a	2233	2245	LAWYER	Ankur Mittal
+67c941298e4d4932a0f28ab372cb1b4a	401	417	RESPONDENT	State of Haryana
+67c941298e4d4932a0f28ab372cb1b4a	219	256	PETITIONER	Dabra Coop . Transport Society Limited
+8f4e939a17264b3c898befa662d0ded5	621	640	RESPONDENT	Arzoo S. Govitrikar
+8f4e939a17264b3c898befa662d0ded5	960	971	LAWYER	Karan Kadam
+8f4e939a17264b3c898befa662d0ded5	515	535	RESPONDENT	State of Maharashtra
+8f4e939a17264b3c898befa662d0ded5	935	950	LAWYER	Girish Kulkarni
+8f4e939a17264b3c898befa662d0ded5	1117	1135	LAWYER	Ashish Suryawanshi
+8f4e939a17264b3c898befa662d0ded5	1038	1052	LAWYER	Rutuja Ambekar
+8f4e939a17264b3c898befa662d0ded5	981	1006	LAWYER	Kripashankar 
+       Pandey
+8f4e939a17264b3c898befa662d0ded5	200	219	PETITIONER	Siddharth Sabharwal
+8f4e939a17264b3c898befa662d0ded5	1212	1224	JUDGE	S. S. Shinde
+8f4e939a17264b3c898befa662d0ded5	44	78	COURT	High Court Of Judicature At Bombay
+8f4e939a17264b3c898befa662d0ded5	1096	1107	LAWYER	Aabad Ponda
+20310dfe28934f5fb50c53540c1ad3e6	460	461	RESPONDENT	1
+20310dfe28934f5fb50c53540c1ad3e6	628	634	LAWYER	M.Bapi
+20310dfe28934f5fb50c53540c1ad3e6	1938	1956	JUDGE	John Michael Cunha
+20310dfe28934f5fb50c53540c1ad3e6	957	971	LAWYER	Vignesh Shetty
+20310dfe28934f5fb50c53540c1ad3e6	240	264	PETITIONER	Marina Annette Rodrigues
+20310dfe28934f5fb50c53540c1ad3e6	432	441	LAWYER	Manohar N
+20310dfe28934f5fb50c53540c1ad3e6	159	177	JUDGE	John Michael Cunha
+20310dfe28934f5fb50c53540c1ad3e6	7	43	COURT	High Court Of Karnataka At Bengaluru
+20310dfe28934f5fb50c53540c1ad3e6	647	667	RESPONDENT	G.Sirish Kumar Reddy
+40d552cef5354fbb99b894a383ed4716	996	1007	LAWYER	Adil Rashid
+40d552cef5354fbb99b894a383ed4716	7	29	COURT	High Court At Calcutta
+40d552cef5354fbb99b894a383ed4716	865	876	LAWYER	S.P. Sarkar
+40d552cef5354fbb99b894a383ed4716	171	192	JUDGE	Moushumi Bhattacharya
+40d552cef5354fbb99b894a383ed4716	932	944	LAWYER	A.K. Awasthi
+40d552cef5354fbb99b894a383ed4716	1060	1078	LAWYER	Shuvasish Sengupta
+40d552cef5354fbb99b894a383ed4716	781	809	RESPONDENT	Pratishruti Projects Limited
+40d552cef5354fbb99b894a383ed4716	1130	1146	LAWYER	Sarosij Dasgupta
+40d552cef5354fbb99b894a383ed4716	1199	1209	LAWYER	Subhra Das
+40d552cef5354fbb99b894a383ed4716	695	710	PETITIONER	Dilip Choudhury
+40d552cef5354fbb99b894a383ed4716	1503	1524	JUDGE	Moushumi Bhattacharya
+e196718e8e204c91b0b956e4907acdef	161	173	JUDGE	P.K. Jaiswal
+e196718e8e204c91b0b956e4907acdef	38	44	PETITIONER	Anjana
+e196718e8e204c91b0b956e4907acdef	490	501	LAWYER	V.K. Tankha
+e196718e8e204c91b0b956e4907acdef	49	62	RESPONDENT	Bank of India
+e196718e8e204c91b0b956e4907acdef	212	224	JUDGE	S.K. Awasthi
+e196718e8e204c91b0b956e4907acdef	384	397	RESPONDENT	Bank of India
+e196718e8e204c91b0b956e4907acdef	309	315	PETITIONER	Anjana
+e196718e8e204c91b0b956e4907acdef	542	554	LAWYER	Varun Tankha
+e196718e8e204c91b0b956e4907acdef	73	118	COURT	High Court of Madhya Pradesh : Bench at Indore
+e196718e8e204c91b0b956e4907acdef	608	619	LAWYER	D.S. Panwar
+e196718e8e204c91b0b956e4907acdef	694	706	LAWYER	Rohit Mangal
+38e703292c4246a099ab5cede4a23d5e	285	296	JUDGE	S.Manikumar
+38e703292c4246a099ab5cede4a23d5e	421	439	JUDGE	Subramonium Prasad
+38e703292c4246a099ab5cede4a23d5e	2235	2245	LAWYER	P.Gurusamy
+38e703292c4246a099ab5cede4a23d5e	1111	1124	RESPONDENT	Covai Bottles
+38e703292c4246a099ab5cede4a23d5e	2142	2155	LAWYER	S.R.Rajagopal
+38e703292c4246a099ab5cede4a23d5e	48	82	COURT	High Court Of Judicature At Madras
+38e703292c4246a099ab5cede4a23d5e	680	688	PETITIONER	D.Ramani
+38e703292c4246a099ab5cede4a23d5e	879	1081	RESPONDENT	Authorised Officer 
+                         Bank of India 
+                         Credit Monitoring and Recovery Department 
+                         Star House 
+                         Coimbatore - 641 001
+478ec46b051c4c2eba773481faef3cde	54	76	COURT	Supreme Court Of India
+478ec46b051c4c2eba773481faef3cde	313	324	PETITIONER	Vijay Karia
+478ec46b051c4c2eba773481faef3cde	452	479	RESPONDENT	Prysmian Cavi E Sistemi Srl
+c2f16d9f6aa24991a729d8bb0e1d93a6	1937	2042	RESPONDENT	Deputy Superintendent of Police , Cbcid 
+                         District Police Office Compound , Cuddalore
+c2f16d9f6aa24991a729d8bb0e1d93a6	2105	2225	RESPONDENT	Inspector of Police 
+                         Neyveli Township Police Station 
+                         District , Villupuram
+c2f16d9f6aa24991a729d8bb0e1d93a6	63	97	COURT	High Court Of Judicature At Madras
+c2f16d9f6aa24991a729d8bb0e1d93a6	3195	3200	LAWYER	P.Uma
+c2f16d9f6aa24991a729d8bb0e1d93a6	2250	2377	RESPONDENT	10.Kaligadevi 
+                         Constable at Neyveli Township Police Station , 
+                         Villupuram District
+c2f16d9f6aa24991a729d8bb0e1d93a6	1081	1154	RESPONDENT	Director General of Police , 
+                         Mylapore , Chennai - 4
+c2f16d9f6aa24991a729d8bb0e1d93a6	2409	2538	RESPONDENT	Inspector of Police 
+                          Nellikuppam Police Station , 
+                          Nellikuppam , Cuddalore District
+c2f16d9f6aa24991a729d8bb0e1d93a6	1185	1327	RESPONDENT	Additional Director General of Police , 
+                         ( Social Justice and Human Rights ) 
+                         Mylapore , Chennai - 4
+c2f16d9f6aa24991a729d8bb0e1d93a6	426	444	JUDGE	Subramonium Prasad
+c2f16d9f6aa24991a729d8bb0e1d93a6	772	791	RESPONDENT	State of Tamil Nadu
+c2f16d9f6aa24991a729d8bb0e1d93a6	927	946	RESPONDENT	State of Tamil Nadu
+c2f16d9f6aa24991a729d8bb0e1d93a6	1358	1477	RESPONDENT	District Collector , 
+                         The Collector Office , 
+                         Cuddalore District , Cuddalore
+c2f16d9f6aa24991a729d8bb0e1d93a6	1664	1797	RESPONDENT	Deputy Inspector General of Police , 
+                         Villupuram Range , 
+                         Villupuram District , Villupuram
+c2f16d9f6aa24991a729d8bb0e1d93a6	1827	1906	RESPONDENT	Superintendent of Police , 
+                         Cuddalore District , Cuddalore
+c2f16d9f6aa24991a729d8bb0e1d93a6	613	628	PETITIONER	S.Vijayashankar
+c2f16d9f6aa24991a729d8bb0e1d93a6	2072	2076	RESPONDENT	Raja
+c2f16d9f6aa24991a729d8bb0e1d93a6	295	306	JUDGE	S.Manikumar
+c2f16d9f6aa24991a729d8bb0e1d93a6	2570	2680	RESPONDENT	Dean , 
+                          Jipmer , Dhanvantri Nagar , 
+                          Gorimedu , Pondicheery-605006
+c2f16d9f6aa24991a729d8bb0e1d93a6	3428	3439	LAWYER	E.Manoharan
+fded3f7fdaad454aa28375fc5f69380f	4	78	COURT	High Court Of Judicature For Rajasthan 
+                     Bench At Jaipur
+fded3f7fdaad454aa28375fc5f69380f	702	715	PETITIONER	Bhanwar Singh
+fded3f7fdaad454aa28375fc5f69380f	871	879	RESPONDENT	Moti Lal
+fded3f7fdaad454aa28375fc5f69380f	835	853	RESPONDENT	State of Rajasthan
+fded3f7fdaad454aa28375fc5f69380f	141	149	PETITIONER	Mahaveer
+fded3f7fdaad454aa28375fc5f69380f	963	969	RESPONDENT	Pravat
+fded3f7fdaad454aa28375fc5f69380f	529	547	RESPONDENT	State of Rajasthan
+fded3f7fdaad454aa28375fc5f69380f	1050	1062	RESPONDENT	Satyanarayan
+fded3f7fdaad454aa28375fc5f69380f	274	286	PETITIONER	Prem Shanker
+00ce7b4f0b284fbc9ed870abe8e62238	54	76	COURT	Supreme Court Of India
+00ce7b4f0b284fbc9ed870abe8e62238	221	276	PETITIONER	Asset Reconstruction Company 
+            ( India ) Limited
+00ce7b4f0b284fbc9ed870abe8e62238	397	411	RESPONDENT	Bishal Jaiswal
+3c683119291e4739b9350ab650cc3b2c	585	621	PETITIONER	Hsbc Pi Holdings ( Mauritius ) Limited
+3c683119291e4739b9350ab650cc3b2c	236	263	PETITIONER	Avitel Post Studioz Limited
+3c683119291e4739b9350ab650cc3b2c	724	751	RESPONDENT	Avitel Post Studioz Limited
+3c683119291e4739b9350ab650cc3b2c	57	79	COURT	Supreme Court Of India
+3c683119291e4739b9350ab650cc3b2c	376	412	RESPONDENT	Hsbc Pi Holdings ( Mauritius ) Limited
+31391d3286c04e78a3181beecb387ccf	1012	1028	LAWYER	Siddhant Kaushik
+31391d3286c04e78a3181beecb387ccf	1421	1433	PETITIONER	Mahima Dewan
+31391d3286c04e78a3181beecb387ccf	271	285	PETITIONER	Runeet Gulathi
+31391d3286c04e78a3181beecb387ccf	365	379	LAWYER	Maninder Singh
+31391d3286c04e78a3181beecb387ccf	2211	2227	LAWYER	Pallavi Pipaniya
+31391d3286c04e78a3181beecb387ccf	495	500	RESPONDENT	State
+31391d3286c04e78a3181beecb387ccf	2359	2372	LAWYER	Aashaa Tiwari
+31391d3286c04e78a3181beecb387ccf	2515	2523	JUDGE	Manmohan
+31391d3286c04e78a3181beecb387ccf	590	603	LAWYER	Aashaa Tiwari
+31391d3286c04e78a3181beecb387ccf	27	59	COURT	High Court Of Delhi At New Delhi
+31391d3286c04e78a3181beecb387ccf	2065	2070	PETITIONER	Jatin
+31391d3286c04e78a3181beecb387ccf	823	846	PETITIONER	Abhay Dewan alias Gappy
+31391d3286c04e78a3181beecb387ccf	1680	1708	RESPONDENT	State ( Govt Of Nct Of Delhi )
+31391d3286c04e78a3181beecb387ccf	1560	1618	LAWYER	Smriti 
+                                              Asmita
+31391d3286c04e78a3181beecb387ccf	1768	1781	LAWYER	Aashaa Tiwari
+31391d3286c04e78a3181beecb387ccf	2266	2271	RESPONDENT	State
+31391d3286c04e78a3181beecb387ccf	1198	1211	LAWYER	Aashaa Tiwari
+31391d3286c04e78a3181beecb387ccf	385	430	LAWYER	Smriti 
+                                 Asmita
+31391d3286c04e78a3181beecb387ccf	1541	1555	LAWYER	Maninder Singh
+31391d3286c04e78a3181beecb387ccf	934	954	LAWYER	Hrishikesh     Baruah
+31391d3286c04e78a3181beecb387ccf	438	450	LAWYER	Sarthak Garg
+31391d3286c04e78a3181beecb387ccf	2157	2174	LAWYER	Ajay Kr . Pipaniya
+31391d3286c04e78a3181beecb387ccf	2544	2589	JUDGE	Sangita Dhingra Sehgal 
+ Sangita Dhingra Sehgal
+31391d3286c04e78a3181beecb387ccf	1079	1084	RESPONDENT	State
+31391d3286c04e78a3181beecb387ccf	1626	1638	LAWYER	Sarthak Garg
+9f03c73bfbef4439af3a244512314ba4	113	128	RESPONDENT	Killu @ Kailash
+9f03c73bfbef4439af3a244512314ba4	395	417	COURT	Supreme Court Of India
+9f03c73bfbef4439af3a244512314ba4	864	879	RESPONDENT	Killu @ Kailash
+9f03c73bfbef4439af3a244512314ba4	85	108	PETITIONER	State of Madhya Pradesh
+9f03c73bfbef4439af3a244512314ba4	701	724	PETITIONER	State Of Madhya Pradesh
+4aa594afd544409894039dee99051e75	402	426	RESPONDENT	S.K. Kumarasamy(Deceased
+4aa594afd544409894039dee99051e75	120	142	COURT	Supreme Court Of India
+4aa594afd544409894039dee99051e75	769	793	RESPONDENT	S.K. Kumarasamy(Deceased
+4aa594afd544409894039dee99051e75	269	283	PETITIONER	R. Janakiammal
+4aa594afd544409894039dee99051e75	635	652	PETITIONER	S.R. Somasundaram
+f5a2a63aaa91467ea6b0dce1c72e6f2c	10	46	COURT	High Court Of Karnataka At Bengaluru
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1446	1456	PETITIONER	Shanthamma
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1811	1824	LAWYER	K.Raghavendra
+f5a2a63aaa91467ea6b0dce1c72e6f2c	255	265	JUDGE	B.A. Patil
+f5a2a63aaa91467ea6b0dce1c72e6f2c	2016	2034	LAWYER	B.G.Namitha Mahesh
+f5a2a63aaa91467ea6b0dce1c72e6f2c	589	607	LAWYER	B.G.Namitha Mahesh
+f5a2a63aaa91467ea6b0dce1c72e6f2c	629	638	RESPONDENT	B.V.Kumar
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1522	1543	RESPONDENT	Eeroji Rao @ Veerappa
+f5a2a63aaa91467ea6b0dce1c72e6f2c	981	991	LAWYER	C.V.Nagesh
+f5a2a63aaa91467ea6b0dce1c72e6f2c	491	496	PETITIONER	State
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1016	1029	LAWYER	K.Raghavendra
+f5a2a63aaa91467ea6b0dce1c72e6f2c	763	785	RESPONDENT	Eerojirao @ B.Veerappa
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1776	1786	LAWYER	C.V.Nagesh
+f5a2a63aaa91467ea6b0dce1c72e6f2c	701	723	RESPONDENT	Shanthamma @ Shantabai
+f5a2a63aaa91467ea6b0dce1c72e6f2c	1847	1865	RESPONDENT	State of Karnataka
+f5a2a63aaa91467ea6b0dce1c72e6f2c	169	181	JUDGE	Budihal R.B.
+28844875f7754525a11d309eb727d65d	816	826	LAWYER	Praveen C.
+28844875f7754525a11d309eb727d65d	886	891	RESPONDENT	State
+28844875f7754525a11d309eb727d65d	98	206	COURT	Xxi Addl . City Civil And 
+      Sessions Judge And Prl . Special Judge For Cbi 
+               Cases At Bengaluru
+28844875f7754525a11d309eb727d65d	85	97	COURT	Court Of The
+28844875f7754525a11d309eb727d65d	381	478	COURT	Xxi Addl . City Civil and Sessions Judge and 
+           Prl . Special Judge for Cbi Cases , Bengaluru
+28844875f7754525a11d309eb727d65d	546	555	PETITIONER	Chikkanna
+28844875f7754525a11d309eb727d65d	290	313	JUDGE	Sadashiva S. Sultanpuri
+8a5ed6a6d02c4bec8365fde688ca9ec9	447	498	RESPONDENT	West Bengal State Electricity Distribution Co. Ltd.
+8a5ed6a6d02c4bec8365fde688ca9ec9	7	29	COURT	High Court At Calcutta
+8a5ed6a6d02c4bec8365fde688ca9ec9	770	797	LAWYER	Partha Sarathi Bhattacharya
+8a5ed6a6d02c4bec8365fde688ca9ec9	548	559	LAWYER	Jishnu Saha
+8a5ed6a6d02c4bec8365fde688ca9ec9	889	907	JUDGE	Ravi Krishan Kapur
+8a5ed6a6d02c4bec8365fde688ca9ec9	805	816	LAWYER	S. S. Koley
+8a5ed6a6d02c4bec8365fde688ca9ec9	249	267	JUDGE	Ravi Krishan Kapur
+8a5ed6a6d02c4bec8365fde688ca9ec9	715	730	LAWYER	Parul Mukherjee
+8a5ed6a6d02c4bec8365fde688ca9ec9	329	361	PETITIONER	Bharat Heavy Electricals Limited
+8a5ed6a6d02c4bec8365fde688ca9ec9	609	621	LAWYER	Touseef Khan
+8a5ed6a6d02c4bec8365fde688ca9ec9	662	674	LAWYER	Arindam Paul
+c0a8f5eb2fdf400580f38c934eac5f02	30	51	JUDGE	Satish Chandra Sharma
+c0a8f5eb2fdf400580f38c934eac5f02	128	150	JUDGE	Abhinand Kumar Shavili
+089ca233c854440d8c0a08340dcbb253	53	75	COURT	Supreme Court Of India
+089ca233c854440d8c0a08340dcbb253	352	406	RESPONDENT	Bharat Petroleum 
+                Corporation Ltd.(Bpcl )
+089ca233c854440d8c0a08340dcbb253	224	239	PETITIONER	Subhash Chander
+5edda96c05bc43c7912754b394474f7f	7	29	COURT	Supreme Court Of India
+5edda96c05bc43c7912754b394474f7f	420	442	RESPONDENT	State Of Uttar Pradesh
+5edda96c05bc43c7912754b394474f7f	262	278	PETITIONER	Anil Kumar Yadav
+2a5c0135348c4353a23c222efdb7b590	685	700	RESPONDENT	Vasantha Kokila
+2a5c0135348c4353a23c222efdb7b590	309	322	PETITIONER	G.L. Jagadish
+2a5c0135348c4353a23c222efdb7b590	236	248	JUDGE	H.P. Sandesh
+2a5c0135348c4353a23c222efdb7b590	75	111	COURT	High Court Of Karnataka At Bengaluru
+2a5c0135348c4353a23c222efdb7b590	900	924	LAWYER	K.R. Lakshminarayana Rao
+2a5c0135348c4353a23c222efdb7b590	547	561	LAWYER	H. Ramachandra
+2a5c0135348c4353a23c222efdb7b590	587	614	LAWYER	H.R. Anantha Krishna Murthy
+06ea25d5f9f04e67b4162544c99154ff	299	312	PETITIONER	Anandagopan . K
+06ea25d5f9f04e67b4162544c99154ff	1002	1020	LAWYER	Thomas P.Kuruvilla
+06ea25d5f9f04e67b4162544c99154ff	1147	1162	LAWYER	Harikrishnan S.
+06ea25d5f9f04e67b4162544c99154ff	116	132	JUDGE	P.B.Suresh Kumar
+06ea25d5f9f04e67b4162544c99154ff	519	534	LAWYER	V.Philip Mathew
+06ea25d5f9f04e67b4162544c99154ff	1335	1355	LAWYER	Murali Purushothaman
+06ea25d5f9f04e67b4162544c99154ff	1594	1610	JUDGE	P.B.Suresh Kumar
+06ea25d5f9f04e67b4162544c99154ff	959	968	LAWYER	P.Prijith
+06ea25d5f9f04e67b4162544c99154ff	1054	1063	LAWYER	R.Githesh
+06ea25d5f9f04e67b4162544c99154ff	587	598	LAWYER	Jeph Joseph
+06ea25d5f9f04e67b4162544c99154ff	1196	1214	LAWYER	Sachin Jacob Ambat
+06ea25d5f9f04e67b4162544c99154ff	7	40	COURT	High Court Of Kerala At Ernakulam
+06ea25d5f9f04e67b4162544c99154ff	627	638	RESPONDENT	Anto Antony
+06ea25d5f9f04e67b4162544c99154ff	1097	1112	LAWYER	Manjunath Menon
+06ea25d5f9f04e67b4162544c99154ff	1248	1259	LAWYER	Hani P.Nair
+06ea25d5f9f04e67b4162544c99154ff	553	568	LAWYER	E.Radhakrishnan
+06ea25d5f9f04e67b4162544c99154ff	1293	1306	LAWYER	Ajay Ben Jose
+06ea25d5f9f04e67b4162544c99154ff	912	925	LAWYER	P.Martin Jose
+06ea25d5f9f04e67b4162544c99154ff	861	872	LAWYER	S.Sreekumar
+e91371b5d6574c579e289dacffc86047	397	407	PETITIONER	M.P.Chothy
+e91371b5d6574c579e289dacffc86047	7	40	COURT	High Court Of Kerala At Ernakulam
+e91371b5d6574c579e289dacffc86047	605	615	LAWYER	M.P.Chothy
+e91371b5d6574c579e289dacffc86047	1309	1323	LAWYER	Prakashan K.V.
+e91371b5d6574c579e289dacffc86047	661	676	RESPONDENT	State Of Kerala
+e91371b5d6574c579e289dacffc86047	234	247	JUDGE	Shaji P.Chaly
+e91371b5d6574c579e289dacffc86047	822	994	RESPONDENT	Registrar , 
+                  State Sc / St Commission , Ayyankali Bhavan , 
+                  Kanaka Nagar , Vellayambalam , Kaudiar P.O , 
+                  Thiruvananthapuram-695 003
+e91371b5d6574c579e289dacffc86047	1434	1448	LAWYER	Sindhumol . T.P.
+e91371b5d6574c579e289dacffc86047	1014	1081	RESPONDENT	Registrar General , 
+                  High Court Of Kerala , Ernakulam
+e91371b5d6574c579e289dacffc86047	1381	1401	LAWYER	B.Unnikrishna Kaimal
+e91371b5d6574c579e289dacffc86047	1100	1114	RESPONDENT	Union Of India
+e91371b5d6574c579e289dacffc86047	136	147	JUDGE	S.Manikumar
+853362615b7e489d8b133b3c93a697bc	198	211	PETITIONER	Rajeev Tandon
+853362615b7e489d8b133b3c93a697bc	361	370	LAWYER	Aishwarya
+853362615b7e489d8b133b3c93a697bc	585	630	LAWYER	Vaibhav 
+                                Mishra
+853362615b7e489d8b133b3c93a697bc	741	765	JUDGE	Jayant Nath 
+
+ Jayant Nath
+853362615b7e489d8b133b3c93a697bc	568	580	LAWYER	Gaurav Mitra
+853362615b7e489d8b133b3c93a697bc	638	691	LAWYER	Rashmita Roy 
+                                Choudhury
+853362615b7e489d8b133b3c93a697bc	288	303	LAWYER	Prabhjit Jauhar
+853362615b7e489d8b133b3c93a697bc	480	493	RESPONDENT	Rashmi Tandon
+853362615b7e489d8b133b3c93a697bc	308	352	LAWYER	Rosemary 
+                                Raju
+853362615b7e489d8b133b3c93a697bc	17	49	COURT	High Court Of Delhi At New Delhi
+853362615b7e489d8b133b3c93a697bc	419	431	LAWYER	Upasana Goel
+fe14ba1259cc4b2494f2a69caeb279fb	2231	2244	LAWYER	Anuj Aggarwal
+fe14ba1259cc4b2494f2a69caeb279fb	333	336	RESPONDENT	Uoi
+fe14ba1259cc4b2494f2a69caeb279fb	2476	2490	LAWYER	Akshay Makhija
+fe14ba1259cc4b2494f2a69caeb279fb	1059	1090	PETITIONER	Raghubir Saran Charitable Trust
+fe14ba1259cc4b2494f2a69caeb279fb	1958	1971	LAWYER	Siddhnat Nath
+fe14ba1259cc4b2494f2a69caeb279fb	1767	1815	LAWYER	Ananya 
+                                 Mukherjee
+fe14ba1259cc4b2494f2a69caeb279fb	427	441	PETITIONER	Mahender Yadav
+fe14ba1259cc4b2494f2a69caeb279fb	536	539	RESPONDENT	Uoi
+fe14ba1259cc4b2494f2a69caeb279fb	744	758	RESPONDENT	Union Of India
+fe14ba1259cc4b2494f2a69caeb279fb	1528	1543	LAWYER	Rhea . G. Munjal
+fe14ba1259cc4b2494f2a69caeb279fb	1608	1623	LAWYER	Dikshant Khanna
+fe14ba1259cc4b2494f2a69caeb279fb	1581	1599	LAWYER	Bindita Chaturvedi
+fe14ba1259cc4b2494f2a69caeb279fb	1508	1522	LAWYER	Shalini Kapoor
+fe14ba1259cc4b2494f2a69caeb279fb	641	660	PETITIONER	Harsh Kumar Agarwal
+fe14ba1259cc4b2494f2a69caeb279fb	1741	1757	LAWYER	Ashwani Bhardwaj
+fe14ba1259cc4b2494f2a69caeb279fb	841	870	PETITIONER	Chaudhary Kishan Chand & Sons
+fe14ba1259cc4b2494f2a69caeb279fb	234	249	PETITIONER	Shobha Aggarwal
+fe14ba1259cc4b2494f2a69caeb279fb	1171	1182	RESPONDENT	Raymond Ltd
+fe14ba1259cc4b2494f2a69caeb279fb	1939	1949	LAWYER	Ankit Jain
+fe14ba1259cc4b2494f2a69caeb279fb	933	947	RESPONDENT	Union Of India
+fe14ba1259cc4b2494f2a69caeb279fb	15	47	COURT	High Court Of Delhi At New Delhi
+fe14ba1259cc4b2494f2a69caeb279fb	1368	1379	LAWYER	Pranav Jain
+fe14ba1259cc4b2494f2a69caeb279fb	2506	2518	LAWYER	Aditya Goyal
+fe14ba1259cc4b2494f2a69caeb279fb	2354	2365	LAWYER	Vivek Goyal
+9039fc2fc14a4ca493ba1b8bc81c9497	352	356	PETITIONER	Dcit
+9039fc2fc14a4ca493ba1b8bc81c9497	183	192	LAWYER	O.P. Kant
+9039fc2fc14a4ca493ba1b8bc81c9497	816	833	LAWYER	Pramita M. Biswas
+9039fc2fc14a4ca493ba1b8bc81c9497	399	415	RESPONDENT	Shiv Dayal Singh
+9039fc2fc14a4ca493ba1b8bc81c9497	883	899	LAWYER	Abhinav Malhotra
+9039fc2fc14a4ca493ba1b8bc81c9497	7	80	COURT	Income Tax Appellate Tribunal , 
+                 Delhi Bench : ' E ' New Delhi
+9039fc2fc14a4ca493ba1b8bc81c9497	104	114	LAWYER	Kul Bharat
+4d80379940ed42e0927baf8d2c56ba5b	104	121	PETITIONER	D. Chandra Sekhar
+4d80379940ed42e0927baf8d2c56ba5b	19	33	JUDGE	P. Keshava Rao
+4d80379940ed42e0927baf8d2c56ba5b	141	159	RESPONDENT	State of Telangana
+4d80379940ed42e0927baf8d2c56ba5b	445	459	JUDGE	P. Keshava Rao
+4d80379940ed42e0927baf8d2c56ba5b	293	308	LAWYER	G. Sravan Kumar
+b9a74ec063ce4b3280e3d88a576b08e2	696	710	LAWYER	Rajeev Virmani
+b9a74ec063ce4b3280e3d88a576b08e2	1166	1174	JUDGE	Manmohan
+b9a74ec063ce4b3280e3d88a576b08e2	851	862	LAWYER	Sucheta Roy
+b9a74ec063ce4b3280e3d88a576b08e2	915	958	LAWYER	Saugaat 
+                             Khurana
+b9a74ec063ce4b3280e3d88a576b08e2	615	629	RESPONDENT	Kunwer Sachdev
+b9a74ec063ce4b3280e3d88a576b08e2	760	801	LAWYER	Ajay 
+                             Bhargava
+b9a74ec063ce4b3280e3d88a576b08e2	457	503	LAWYER	Apoorva 
+                                 Murali
+b9a74ec063ce4b3280e3d88a576b08e2	966	974	LAWYER	Niharika
+b9a74ec063ce4b3280e3d88a576b08e2	16	48	COURT	High Court Of Delhi At New Delhi
+b9a74ec063ce4b3280e3d88a576b08e2	272	282	LAWYER	Anuj Berry
+b9a74ec063ce4b3280e3d88a576b08e2	440	451	LAWYER	Malak Bhatt
+b9a74ec063ce4b3280e3d88a576b08e2	806	818	LAWYER	Ankur Sangal
+b9a74ec063ce4b3280e3d88a576b08e2	867	909	LAWYER	Richa 
+                             Bhargava
+b9a74ec063ce4b3280e3d88a576b08e2	203	213	LAWYER	Amit Sibal
+b9a74ec063ce4b3280e3d88a576b08e2	336	383	LAWYER	Saksham 
+                                 Dhingra
+b9a74ec063ce4b3280e3d88a576b08e2	389	403	LAWYER	Vinay Tripathi
+b9a74ec063ce4b3280e3d88a576b08e2	320	330	LAWYER	Abhey J.V.
+b9a74ec063ce4b3280e3d88a576b08e2	113	138	PETITIONER	Su - Kam Power Systems Ltd.
+b9a74ec063ce4b3280e3d88a576b08e2	512	560	LAWYER	Surabhi 
+                                 Bhandari
+d4f37bebbb9b4cc9accecc63b0ced722	293	340	PETITIONER	Icici Lombard General Insurance Company Limited
+d4f37bebbb9b4cc9accecc63b0ced722	617	633	LAWYER	Diwan S. Adlakha
+d4f37bebbb9b4cc9accecc63b0ced722	497	517	JUDGE	Harinder Singh Sidhu
+d4f37bebbb9b4cc9accecc63b0ced722	393	400	RESPONDENT	Mehrana
+d4f37bebbb9b4cc9accecc63b0ced722	536	549	LAWYER	Sanjeev Goyal
+d4f37bebbb9b4cc9accecc63b0ced722	69	139	COURT	High Court Of Punjab And Haryana 
+                         At Chandigarh
+d4f37bebbb9b4cc9accecc63b0ced722	703	723	JUDGE	Harinder Singh Sidhu
+c67314f04e754f4093875c0a02be45b0	61	83	COURT	Supreme Court Of India
+c67314f04e754f4093875c0a02be45b0	477	497	RESPONDENT	N.G. Subbaraya Setty
+c67314f04e754f4093875c0a02be45b0	332	343	PETITIONER	Canara Bank
+a3aa18895a2a4f728b0d1c1c7651a8fe	190	203	RESPONDENT	State Of U.P.
+a3aa18895a2a4f728b0d1c1c7651a8fe	244	265	LAWYER	Saiful Islam Siddiqui
+a3aa18895a2a4f728b0d1c1c7651a8fe	266	278	LAWYER	Tahira Kazmi
+a3aa18895a2a4f728b0d1c1c7651a8fe	334	352	JUDGE	Manju Rani Chauhan
+a3aa18895a2a4f728b0d1c1c7651a8fe	138	156	PETITIONER	Mohammad Azam Khan
+a3aa18895a2a4f728b0d1c1c7651a8fe	0	37	COURT	High Court Of Judicature At Allahabad
+d8f3ca304ad049f8ab86957717250583	1379	1396	LAWYER	Mehul Suresh Shah
+d8f3ca304ad049f8ab86957717250583	466	479	JUDGE	J.B.Pardiwala
+d8f3ca304ad049f8ab86957717250583	1275	1303	RESPONDENT	Gautambhai Bhikhabhai Thakor
+d8f3ca304ad049f8ab86957717250583	95	129	COURT	High Court Of Gujarat At Ahmedabad
+d8f3ca304ad049f8ab86957717250583	1180	1210	PETITIONER	Navrangpura Gam Dharmada Trust
+d8f3ca304ad049f8ab86957717250583	545	565	JUDGE	Vaibhavi D. Nanavati
+d8f3ca304ad049f8ab86957717250583	1422	1441	LAWYER	Vishal C 
+ Mehta(6152
+d8f3ca304ad049f8ab86957717250583	1553	1573	LAWYER	Zalak B Pipalia(6161
+d8f3ca304ad049f8ab86957717250583	1515	1526	LAWYER	Ansin Desai
+3270d6f7f6e54571b05ae1ff91dea7e3	249	299	PETITIONER	Ram Lal                                           …
+3270d6f7f6e54571b05ae1ff91dea7e3	58	80	COURT	Supreme Court Of India
+3270d6f7f6e54571b05ae1ff91dea7e3	395	420	RESPONDENT	State Of Himachal Pradesh
+d38704879a9945618223e5f51b70c7c3	139	161	COURT	Supreme   Court   Of   India
+d38704879a9945618223e5f51b70c7c3	329	341	PETITIONER	Farida   Begum
+d38704879a9945618223e5f51b70c7c3	488	508	RESPONDENT	State   of   Uttarakhand
+194e724300c645d9b408a668d6e0ea39	878	893	JUDGE	Raj Mohan Singh
+194e724300c645d9b408a668d6e0ea39	610	624	LAWYER	Nikhita Kansal
+194e724300c645d9b408a668d6e0ea39	294	334	PETITIONER	Municipal Committee / Council , Jalalabad(W
+194e724300c645d9b408a668d6e0ea39	565	578	LAWYER	Puneet Kansal
+194e724300c645d9b408a668d6e0ea39	531	546	JUDGE	Raj Mohan Singh
+194e724300c645d9b408a668d6e0ea39	736	747	LAWYER	C.M. Munjal
+194e724300c645d9b408a668d6e0ea39	102	171	COURT	High Court Of Punjab And Haryana At 
+                        Chandigarh
+194e724300c645d9b408a668d6e0ea39	373	383	RESPONDENT	Vimla Devi
+194e724300c645d9b408a668d6e0ea39	779	794	LAWYER	Priyanka Kansal
+194e724300c645d9b408a668d6e0ea39	686	696	LAWYER	Vikas Bahl
+724adf40911c41c3a61e608630ab6dbd	659	668	LAWYER	A.S. Garg
+724adf40911c41c3a61e608630ab6dbd	98	181	COURT	High Court Of Madhya Pradesh : Bench At 
+                                      Indore
+724adf40911c41c3a61e608630ab6dbd	755	767	LAWYER	Gulab Sharma
+724adf40911c41c3a61e608630ab6dbd	229	240	JUDGE	Vivek Rusia
+724adf40911c41c3a61e608630ab6dbd	298	309	PETITIONER	Sabbir Khan
+724adf40911c41c3a61e608630ab6dbd	693	705	LAWYER	Sapnesh Jain
+724adf40911c41c3a61e608630ab6dbd	506	518	RESPONDENT	Sher Mohmmad
+55e1f4d287324575b57640ffd52337a7	602	624	RESPONDENT	State Of Uttar Pradesh
+55e1f4d287324575b57640ffd52337a7	1031	1047	JUDGE	Uday Umesh Lalit
+55e1f4d287324575b57640ffd52337a7	1278	1295	LAWYER	Rohit Kumar Singh
+55e1f4d287324575b57640ffd52337a7	1151	1163	LAWYER	Pradeep Kant
+55e1f4d287324575b57640ffd52337a7	456	468	PETITIONER	Rakesh Kumar
+55e1f4d287324575b57640ffd52337a7	1342	1357	LAWYER	Shradha Narayan
+55e1f4d287324575b57640ffd52337a7	1215	1230	LAWYER	Divyanshu Sahay
+55e1f4d287324575b57640ffd52337a7	391	442	COURT	High Court Of Judicature At 
+      Allahabad , Lucknow
+55e1f4d287324575b57640ffd52337a7	1093	1107	JUDGE	Aniruddha Bose
+55e1f4d287324575b57640ffd52337a7	1405	1416	LAWYER	Sanjay Goel
+0b59e04130f0433286b20e0ec418838d	218	236	PETITIONER	Goli Vijayalakshmi
+0b59e04130f0433286b20e0ec418838d	55	77	COURT	Supreme Court Of India
+0b59e04130f0433286b20e0ec418838d	339	360	RESPONDENT	Yendru Sathiraju(Dead
+009a49ab1cdf44be9fbfdb26377c9a68	522	540	LAWYER	Ashish Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	450	462	RESPONDENT	State Of U P
+009a49ab1cdf44be9fbfdb26377c9a68	569	580	RESPONDENT	C.S.C.,P.K.
+009a49ab1cdf44be9fbfdb26377c9a68	1185	1199	PETITIONER	Ashish Agarwal
+009a49ab1cdf44be9fbfdb26377c9a68	1619	1630	RESPONDENT	C.S.C.,P.K.
+009a49ab1cdf44be9fbfdb26377c9a68	1348	1368	LAWYER	C.S.C.,P.K. Upadhyay
+009a49ab1cdf44be9fbfdb26377c9a68	696	709	RESPONDENT	State Of U.P.
+009a49ab1cdf44be9fbfdb26377c9a68	1348	1359	LAWYER	C.S.C.,P.K.
+009a49ab1cdf44be9fbfdb26377c9a68	505	521	LAWYER	Ajay Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	1301	1319	LAWYER	Ashish Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	1499	1512	RESPONDENT	State Of U.P.
+009a49ab1cdf44be9fbfdb26377c9a68	914	919	LAWYER	Durga
+009a49ab1cdf44be9fbfdb26377c9a68	316	327	RESPONDENT	C.S.C.,P.K.
+009a49ab1cdf44be9fbfdb26377c9a68	1619	1639	LAWYER	C.S.C.,P.K. Upadhyay
+009a49ab1cdf44be9fbfdb26377c9a68	1284	1300	LAWYER	Ajay Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	1555	1571	LAWYER	Ajay Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	1446	1469	PETITIONER	Santosh Kumar Chaurasia
+009a49ab1cdf44be9fbfdb26377c9a68	837	851	LAWYER	Vineet Sankalp
+009a49ab1cdf44be9fbfdb26377c9a68	414	433	PETITIONER	Rajendra Maheshwari
+009a49ab1cdf44be9fbfdb26377c9a68	569	589	LAWYER	C.S.C.,P.K. Upadhyay
+009a49ab1cdf44be9fbfdb26377c9a68	1084	1095	RESPONDENT	C.S.C.,P.K.
+009a49ab1cdf44be9fbfdb26377c9a68	1572	1590	LAWYER	Ashish Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	964	977	RESPONDENT	State Of U.P.
+009a49ab1cdf44be9fbfdb26377c9a68	667	679	PETITIONER	Sohrab Ahmad
+009a49ab1cdf44be9fbfdb26377c9a68	316	336	LAWYER	C.S.C.,P.K. Upadhyay
+009a49ab1cdf44be9fbfdb26377c9a68	1640	1654	LAWYER	Vineet Sankalp
+009a49ab1cdf44be9fbfdb26377c9a68	816	827	RESPONDENT	C.S.C.,P.K.
+009a49ab1cdf44be9fbfdb26377c9a68	752	768	LAWYER	Ajay Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	1369	1383	LAWYER	Vineet Sankalp
+009a49ab1cdf44be9fbfdb26377c9a68	252	268	LAWYER	Ajay Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	130	155	PETITIONER	Yantraleshwar Gupta Alias
+009a49ab1cdf44be9fbfdb26377c9a68	1084	1104	LAWYER	C.S.C.,P.K. Upadhyay
+009a49ab1cdf44be9fbfdb26377c9a68	197	209	RESPONDENT	State Of U P
+009a49ab1cdf44be9fbfdb26377c9a68	1037	1055	LAWYER	Ashish Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	590	604	LAWYER	Vineet Sankalp
+009a49ab1cdf44be9fbfdb26377c9a68	816	836	LAWYER	C.S.C.,P.K. Upadhyay
+009a49ab1cdf44be9fbfdb26377c9a68	1105	1119	LAWYER	Vineet Sankalp
+009a49ab1cdf44be9fbfdb26377c9a68	269	287	LAWYER	Ashish Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	337	351	LAWYER	Vineet Sankalp
+009a49ab1cdf44be9fbfdb26377c9a68	1020	1036	LAWYER	Ajay Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	769	787	LAWYER	Ashish Kumar Singh
+009a49ab1cdf44be9fbfdb26377c9a68	1228	1241	RESPONDENT	State Of U.P.
+f659d7c8d1234c6bbcf7aaeee103ab0d	282	305	RESPONDENT	Uni Products India Ltd.
+f659d7c8d1234c6bbcf7aaeee103ab0d	147	188	PETITIONER	Commissioner Of Central Excise , 
+ Delhi - Iii
+f659d7c8d1234c6bbcf7aaeee103ab0d	32	54	COURT	Supreme Court Of India
+8fd7414ca80a4eda842743b67edca812	1644	1658	LAWYER	Ajeet Bhandari
+8fd7414ca80a4eda842743b67edca812	679	691	RESPONDENT	Balraj Munot
+8fd7414ca80a4eda842743b67edca812	527	597	RESPONDENT	Assistant Commissioner - I , Devasthan Department , 
+      Rajasthan , Jaipur
+8fd7414ca80a4eda842743b67edca812	128	150	PETITIONER	Sudhir Heeralal Dhadda
+8fd7414ca80a4eda842743b67edca812	1106	1127	PETITIONER	Sunil Heeralal Dhadda
+8fd7414ca80a4eda842743b67edca812	210	231	PETITIONER	Sunil Heeralal Dhadda
+8fd7414ca80a4eda842743b67edca812	1031	1053	PETITIONER	Sudhir Heeralal Dhadda
+8fd7414ca80a4eda842743b67edca812	1328	1393	RESPONDENT	Assistant Commissioner - I , Devasthan Department , Rajasthan , Jaipur
+8fd7414ca80a4eda842743b67edca812	1404	1458	RESPONDENT	Commissioner , Devasthan Department , Rajasthan , Udaipur
+8fd7414ca80a4eda842743b67edca812	608	667	RESPONDENT	Commissioner , Devasthan Department , Rajasthan , 
+      Udaipur
+8fd7414ca80a4eda842743b67edca812	1465	1469	RESPONDENT	Ajay
+8fd7414ca80a4eda842743b67edca812	1674	1689	LAWYER	Jitendra Mishra
+8fd7414ca80a4eda842743b67edca812	812	817	RESPONDENT	Manju
+d4fe840690fc4e41a869cea8e9139d06	799	810	LAWYER	JanyaSirohi
+d4fe840690fc4e41a869cea8e9139d06	467	484	PETITIONER	Sunil Dutt Bansal
+d4fe840690fc4e41a869cea8e9139d06	368	383	RESPONDENT	Jai Bhagwan&Ors
+d4fe840690fc4e41a869cea8e9139d06	673	683	JUDGE	Alka Sarin
+d4fe840690fc4e41a869cea8e9139d06	856	866	LAWYER	Vikas Bahl
+d4fe840690fc4e41a869cea8e9139d06	903	919	LAWYER	Nikhil Sabharwal
+d4fe840690fc4e41a869cea8e9139d06	755	770	LAWYER	Samar Ahluwalia
+d4fe840690fc4e41a869cea8e9139d06	571	586	RESPONDENT	Jai Bhagwan&Ors
+d4fe840690fc4e41a869cea8e9139d06	953	963	JUDGE	Alka Sarin
+d4fe840690fc4e41a869cea8e9139d06	263	280	PETITIONER	Sunil Dutt Bansal
+d4fe840690fc4e41a869cea8e9139d06	700	718	LAWYER	Vijay Kumar Jindal
+d4fe840690fc4e41a869cea8e9139d06	86	154	COURT	High Court Of Punjab And Haryana At 
+                       Chandigarh
+08be8bb206574735ae7ca78d85132e05	751	759	RESPONDENT	C.S.Mani
+08be8bb206574735ae7ca78d85132e05	285	296	JUDGE	S.Manikumar
+08be8bb206574735ae7ca78d85132e05	418	429	JUDGE	M.Venugopal
+08be8bb206574735ae7ca78d85132e05	598	607	PETITIONER	V.Sridevi
+08be8bb206574735ae7ca78d85132e05	1448	1460	LAWYER	N.G.R.Prasad
+08be8bb206574735ae7ca78d85132e05	48	82	COURT	High Court Of Judicature At Madras
+08be8bb206574735ae7ca78d85132e05	1366	1380	LAWYER	L.Chandrakumar
+08be8bb206574735ae7ca78d85132e05	1202	1216	LAWYER	A.Thiyagarajan
+d8c513e95f074c29b165d5f648af0173	427	436	LAWYER	Md. Saleem
+d8c513e95f074c29b165d5f648af0173	1075	1098	RESPONDENT	State of Andhra Pradesh
+d8c513e95f074c29b165d5f648af0173	487	498	LAWYER	M. Ravindra
+d8c513e95f074c29b165d5f648af0173	140	163	RESPONDENT	State of Andhra Pradesh
+d8c513e95f074c29b165d5f648af0173	19	38	JUDGE	B. Siva Sankara Rao
+d8c513e95f074c29b165d5f648af0173	291	309	LAWYER	P. Gangarami Reddy
+d8c513e95f074c29b165d5f648af0173	886	923	COURT	High Court Of Judicature At Hyderabad
+d8c513e95f074c29b165d5f648af0173	100	109	PETITIONER	A. Murali
+d8c513e95f074c29b165d5f648af0173	1029	1038	PETITIONER	A. Murali
+c04d217c27f24e329cc79ba939b2b097	1102	1118	JUDGE	D.Y. Chandrachud
+c04d217c27f24e329cc79ba939b2b097	1453	1470	LAWYER	B. Krishna Prasad
+c04d217c27f24e329cc79ba939b2b097	554	597	PETITIONER	Commissioner Of Central Excise And St Daman
+c04d217c27f24e329cc79ba939b2b097	1172	1181	JUDGE	M.R. Shah
+c04d217c27f24e329cc79ba939b2b097	1381	1393	LAWYER	Rupesh Kumar
+c04d217c27f24e329cc79ba939b2b097	1307	1317	LAWYER	A.K. Panda
+c04d217c27f24e329cc79ba939b2b097	726	766	RESPONDENT	Firmenich Aromatic India Private Limited
+c04d217c27f24e329cc79ba939b2b097	1236	1248	LAWYER	Balbir Singh
+ce4ed5a9e258412b9c87d9ee4cdf18a6	659	671	LAWYER	V.R. Sarathy
+ce4ed5a9e258412b9c87d9ee4cdf18a6	15	51	COURT	High Court Of Karnataka At Bengaluru
+ce4ed5a9e258412b9c87d9ee4cdf18a6	162	174	JUDGE	K.Somashekar
+ce4ed5a9e258412b9c87d9ee4cdf18a6	232	247	PETITIONER	T. Karthik Raja
+ce4ed5a9e258412b9c87d9ee4cdf18a6	424	434	LAWYER	Abhinav .R
+ce4ed5a9e258412b9c87d9ee4cdf18a6	455	469	RESPONDENT	V.M. Prabhakar
+c05e2919383741fba9c449b960d7c26f	42	76	COURT	Madurai Bench Of Madras High Court
+c05e2919383741fba9c449b960d7c26f	1881	1892	LAWYER	D.Sivaraman
+c05e2919383741fba9c449b960d7c26f	911	922	RESPONDENT	2.G.Thulasi
+c05e2919383741fba9c449b960d7c26f	1083	1099	RESPONDENT	4.Rengappa Reddi
+c05e2919383741fba9c449b960d7c26f	2033	2043	LAWYER	J.S.Murali
+c05e2919383741fba9c449b960d7c26f	0	1	RESPONDENT	1
+c05e2919383741fba9c449b960d7c26f	880	888	RESPONDENT	1.G.Bama
+c05e2919383741fba9c449b960d7c26f	1156	1185	RESPONDENT	6.National Insurance Co. Ltd.
+c05e2919383741fba9c449b960d7c26f	1957	1968	LAWYER	K.Murugesan
+c05e2919383741fba9c449b960d7c26f	543	573	PETITIONER	Brinks Arya India Private Ltd.
+c05e2919383741fba9c449b960d7c26f	945	960	RESPONDENT	3.Minor G.Lenin
+c05e2919383741fba9c449b960d7c26f	268	280	JUDGE	V.M.Velumani
+c05e2919383741fba9c449b960d7c26f	1122	1133	RESPONDENT	5.Rukkumani
+534f0c466cb346fd9b0df12ee9120ad3	1243	1262	LAWYER	Sanchith Shivakumar
+534f0c466cb346fd9b0df12ee9120ad3	1307	1335	RESPONDENT	Alembic Pharmaceuticals Ltd.
+534f0c466cb346fd9b0df12ee9120ad3	742	752	LAWYER	Rajeshwari
+534f0c466cb346fd9b0df12ee9120ad3	1204	1218	LAWYER	Nishchal Anand
+534f0c466cb346fd9b0df12ee9120ad3	672	685	LAWYER	Shashwat Jain
+534f0c466cb346fd9b0df12ee9120ad3	400	412	LAWYER	Sanjay Kumar
+534f0c466cb346fd9b0df12ee9120ad3	441	471	LAWYER	Arun 
+                Kumar Jana
+534f0c466cb346fd9b0df12ee9120ad3	855	870	LAWYER	Devanshu Khanna
+534f0c466cb346fd9b0df12ee9120ad3	1661	1677	JUDGE	S. Ravindra Bhat
+534f0c466cb346fd9b0df12ee9120ad3	818	830	LAWYER	Vivek Ranjan
+534f0c466cb346fd9b0df12ee9120ad3	351	365	LAWYER	Sudhir Chandra
+534f0c466cb346fd9b0df12ee9120ad3	418	432	LAWYER	Arpita Sawhney
+534f0c466cb346fd9b0df12ee9120ad3	1445	1460	LAWYER	Devanshu Khanna
+534f0c466cb346fd9b0df12ee9120ad3	1408	1436	LAWYER	Vivek 
+                 Ranjan
+534f0c466cb346fd9b0df12ee9120ad3	270	287	PETITIONER	Bayer Corporation
+534f0c466cb346fd9b0df12ee9120ad3	1186	1198	LAWYER	Pravin Anand
+534f0c466cb346fd9b0df12ee9120ad3	1588	1604	JUDGE	S. Ravindra Bhat
+534f0c466cb346fd9b0df12ee9120ad3	14	46	COURT	High Court Of Delhi At New Delhi
+534f0c466cb346fd9b0df12ee9120ad3	602	621	LAWYER	Ripu Daman Bhardwaj
+534f0c466cb346fd9b0df12ee9120ad3	1128	1146	LAWYER	Guru Krishna Kumar
+534f0c466cb346fd9b0df12ee9120ad3	792	812	LAWYER	Saya Choudhary Kapur
+534f0c466cb346fd9b0df12ee9120ad3	1382	1402	LAWYER	Saya Choudhary Kapur
+534f0c466cb346fd9b0df12ee9120ad3	995	1027	PETITIONER	Bayer Intellectual Property Gmbh
+534f0c466cb346fd9b0df12ee9120ad3	1632	1648	JUDGE	Sanjeev Sachdeva
+534f0c466cb346fd9b0df12ee9120ad3	653	663	LAWYER	T.P. Singh
+534f0c466cb346fd9b0df12ee9120ad3	516	530	RESPONDENT	Union Of India
+b61945b7defa4cc9bc2591aa4956fa52	7	40	COURT	High Court Of Kerala At Ernakulam
+b61945b7defa4cc9bc2591aa4956fa52	297	312	PETITIONER	C.P.Ashok Kumar
+b61945b7defa4cc9bc2591aa4956fa52	136	152	JUDGE	Alexander Thomas
+b61945b7defa4cc9bc2591aa4956fa52	879	1010	RESPONDENT	Inspector General Of Registration 
+                 Department Of Registration , Vanchiyoor , 
+                 Thiruvananthpauram-695035
+b61945b7defa4cc9bc2591aa4956fa52	653	664	LAWYER	M.D. Joseph
+b61945b7defa4cc9bc2591aa4956fa52	685	698	LAWYER	Nelson Joseph
+b61945b7defa4cc9bc2591aa4956fa52	1356	1372	JUDGE	Alexander Thomas
+b61945b7defa4cc9bc2591aa4956fa52	729	766	RESPONDENT	Sub Registrar 
+               Thrithala
+b61945b7defa4cc9bc2591aa4956fa52	580	596	LAWYER	P. Radhakrishnan
+b61945b7defa4cc9bc2591aa4956fa52	1046	1056	RESPONDENT	A.C.Vidhya
+b61945b7defa4cc9bc2591aa4956fa52	617	636	LAWYER	Madhu Radhakrishnan
+0f3a74c7612d4972997f50f4e450ab00	615	623	RESPONDENT	Umar Ali
+0f3a74c7612d4972997f50f4e450ab00	2143	2161	LAWYER	Aviral Vikas Khare
+0f3a74c7612d4972997f50f4e450ab00	287	298	JUDGE	Vivek Rusia
+0f3a74c7612d4972997f50f4e450ab00	328	350	JUDGE	Amar Nath ( Kesharwani )
+0f3a74c7612d4972997f50f4e450ab00	1798	1811	RESPONDENT	State of M.P.
+0f3a74c7612d4972997f50f4e450ab00	1169	1237	PETITIONER	Chief Executive Officer , Dewas Development Authority , 
+ District Dewas
+0f3a74c7612d4972997f50f4e450ab00	1562	1568	RESPONDENT	Ramjan
+0f3a74c7612d4972997f50f4e450ab00	680	689	RESPONDENT	Afsar Ali
+0f3a74c7612d4972997f50f4e450ab00	2221	2227	LAWYER	Aditya
+0f3a74c7612d4972997f50f4e450ab00	963	1039	RESPONDENT	Commissioner ( Revenue ) Ujjain Division , . 
+        Commissioner Office , Ujjain .
+0f3a74c7612d4972997f50f4e450ab00	1380	1390	RESPONDENT	Rehmat Ali
+0f3a74c7612d4972997f50f4e450ab00	1687	1697	RESPONDENT	Jaajid Ali
+0f3a74c7612d4972997f50f4e450ab00	1453	1457	RESPONDENT	Kalu
+0f3a74c7612d4972997f50f4e450ab00	1447	1452	RESPONDENT	Decd .
+0f3a74c7612d4972997f50f4e450ab00	746	758	RESPONDENT	Bismillah Bi
+0f3a74c7612d4972997f50f4e450ab00	404	472	PETITIONER	Chief Executive Officer , Dewas Development Authority , 
+ District Dewas
+0f3a74c7612d4972997f50f4e450ab00	855	868	RESPONDENT	State of M.P.
+0f3a74c7612d4972997f50f4e450ab00	1906	1982	RESPONDENT	Commissioner ( Revenue ) Ujjain Division , . 
+        Commissioner Office , Ujjain .
+0f3a74c7612d4972997f50f4e450ab00	1625	1635	RESPONDENT	Kubran Ali
+0f3a74c7612d4972997f50f4e450ab00	198	244	COURT	High Court Of Madhya Pradesh : Bench At Indore
+3b03988e12214edb9792c263362ebfd3	150	161	PETITIONER	Babli Dixit
+3b03988e12214edb9792c263362ebfd3	324	338	RESPONDENT	Satendra Kumar
+3b03988e12214edb9792c263362ebfd3	504	515	LAWYER	Suman Bagga
+3b03988e12214edb9792c263362ebfd3	12	44	COURT	High Court Of Delhi At New Delhi
+3b03988e12214edb9792c263362ebfd3	443	455	LAWYER	Pankaj Gupta
+3b03988e12214edb9792c263362ebfd3	260	273	LAWYER	S.N. Parashar
+dde8ddc6e88743e5837d008c284db1cf	7	29	COURT	High Court At Calcutta
+dde8ddc6e88743e5837d008c284db1cf	417	437	LAWYER	Sarvapriyo Mukherjee
+dde8ddc6e88743e5837d008c284db1cf	268	282	PETITIONER	Kalpana Poddar
+dde8ddc6e88743e5837d008c284db1cf	1025	1043	JUDGE	Samapti Chatterjee
+dde8ddc6e88743e5837d008c284db1cf	546	563	LAWYER	Avratosh Majumder
+dde8ddc6e88743e5837d008c284db1cf	609	624	LAWYER	Prithu Dudheria
+dde8ddc6e88743e5837d008c284db1cf	163	181	JUDGE	Samapti Chatterjee
+dde8ddc6e88743e5837d008c284db1cf	350	370	RESPONDENT	State of West Bengal
+dde8ddc6e88743e5837d008c284db1cf	483	498	LAWYER	Sananda Ganguly
+dfaf8bdc3d884e2f88d074e044dd4a2d	54	76	COURT	Supreme Court Of India
+dfaf8bdc3d884e2f88d074e044dd4a2d	320	369	PETITIONER	Patiala Central Cooperative Bank Ltd 
+      Patiala
+dfaf8bdc3d884e2f88d074e044dd4a2d	532	547	RESPONDENT	Jaswinder Singh
+15c6250c5c7646189b0b8627a61dfad4	896	905	LAWYER	G.S.Hegde
+15c6250c5c7646189b0b8627a61dfad4	2260	2274	LAWYER	Shyamali Gadre
+15c6250c5c7646189b0b8627a61dfad4	2406	2417	LAWYER	A.B.Vagyani
+15c6250c5c7646189b0b8627a61dfad4	1040	1053	LAWYER	Sandeep Marne
+15c6250c5c7646189b0b8627a61dfad4	655	720	RESPONDENT	City and Industrial Development 
+   Corporation of Maharashtra Ltd.
+15c6250c5c7646189b0b8627a61dfad4	1201	1214	LAWYER	Rohan Mirpury
+15c6250c5c7646189b0b8627a61dfad4	1305	1321	LAWYER	Rahul 
+   Kamerkar
+15c6250c5c7646189b0b8627a61dfad4	1960	1979	PETITIONER	Krishna Jotiba Naik
+15c6250c5c7646189b0b8627a61dfad4	1087	1098	LAWYER	A.Y.Sakhare
+15c6250c5c7646189b0b8627a61dfad4	1134	1151	LAWYER	A.    B. 
+   Vagyani
+15c6250c5c7646189b0b8627a61dfad4	810	823	LAWYER	Aspi    Chinoy
+15c6250c5c7646189b0b8627a61dfad4	977	991	LAWYER	Shyamali Gadre
+15c6250c5c7646189b0b8627a61dfad4	1630	1678	RESPONDENT	Maharashtra Industrial Development 
+   Corporation
+15c6250c5c7646189b0b8627a61dfad4	582	600	PETITIONER	Rajiv Mohan Mishra
+15c6250c5c7646189b0b8627a61dfad4	2178	2193	LAWYER	Sanjay Singhavi
+15c6250c5c7646189b0b8627a61dfad4	2370	2381	LAWYER	A.Y.Sakhare
+15c6250c5c7646189b0b8627a61dfad4	1255	1272	LAWYER	Sanjay    Singhavi
+15c6250c5c7646189b0b8627a61dfad4	2218	2235	LAWYER	Rahul 
+   Kamerkar
+15c6250c5c7646189b0b8627a61dfad4	1164	1175	LAWYER	Shruti Vyas
+15c6250c5c7646189b0b8627a61dfad4	914	923	LAWYER	G.S.Hegde
+15c6250c5c7646189b0b8627a61dfad4	2324	2340	LAWYER	Sandeep V. Marne
+15c6250c5c7646189b0b8627a61dfad4	1556	1579	PETITIONER	Bhausaheb Baban Khedkar
+15c6250c5c7646189b0b8627a61dfad4	1384	1409	LAWYER	Abhijeet    J.    Kandarkar
+15c6250c5c7646189b0b8627a61dfad4	856	868	LAWYER	Datta    Mane
+15c6250c5c7646189b0b8627a61dfad4	94	128	COURT	High Court Of Judicature At Bombay
+15c6250c5c7646189b0b8627a61dfad4	2034	2082	RESPONDENT	Maharashtra Industrial Development 
+   Corporation
+e699788ec9404542bb7267d1bc695ce9	919	931	JUDGE	Rajiv Sharma
+e699788ec9404542bb7267d1bc695ce9	370	386	RESPONDENT	State of Haryana
+e699788ec9404542bb7267d1bc695ce9	537	557	PETITIONER	Pardeep Soni @ Mintu
+e699788ec9404542bb7267d1bc695ce9	964	976	JUDGE	Kuldip Singh
+e699788ec9404542bb7267d1bc695ce9	1644	1656	JUDGE	Rajiv Sharma
+e699788ec9404542bb7267d1bc695ce9	1046	1061	LAWYER	Vishal R. Lamba
+e699788ec9404542bb7267d1bc695ce9	995	1006	LAWYER	A.P.S. Deol
+e699788ec9404542bb7267d1bc695ce9	1224	1242	LAWYER	Harsimranjeet Kaur
+e699788ec9404542bb7267d1bc695ce9	79	146	COURT	High Court Of Punjab And Haryana At 
+                      Chandigarh
+e699788ec9404542bb7267d1bc695ce9	1251	1264	LAWYER	Shivansh Mahi
+e699788ec9404542bb7267d1bc695ce9	692	708	RESPONDENT	State of Haryana
+e699788ec9404542bb7267d1bc695ce9	224	235	PETITIONER	Shyam Singh
+e699788ec9404542bb7267d1bc695ce9	1175	1184	LAWYER	J.S. Bedi
+e699788ec9404542bb7267d1bc695ce9	1070	1087	LAWYER	Himmat Singh Deol
+e699788ec9404542bb7267d1bc695ce9	1404	1414	LAWYER	J.S. Hooda
+e699788ec9404542bb7267d1bc695ce9	1351	1364	LAWYER	Shubhra Singh
+d5ad198089c24ae5bdf026cfd57d78c0	2640	2660	LAWYER	Kanika Sharma Goenka
+d5ad198089c24ae5bdf026cfd57d78c0	1023	1038	RESPONDENT	1 . Enercon GmbH
+d5ad198089c24ae5bdf026cfd57d78c0	1659	1660	RESPONDENT	2
+d5ad198089c24ae5bdf026cfd57d78c0	1703	1709	RESPONDENT	Yogesh
+d5ad198089c24ae5bdf026cfd57d78c0	2451	2470	LAWYER	Asadali 
+ Mazgaonwala
+d5ad198089c24ae5bdf026cfd57d78c0	2217	2230	LAWYER	Rohit 
+ Lalwani
+d5ad198089c24ae5bdf026cfd57d78c0	2542	2553	LAWYER	Aspi Chinoy
+d5ad198089c24ae5bdf026cfd57d78c0	1462	1488	PETITIONER	Wind World ( India ) Limited
+d5ad198089c24ae5bdf026cfd57d78c0	2149	2163	LAWYER	Birendra Saraf
+d5ad198089c24ae5bdf026cfd57d78c0	2384	2400	LAWYER	Zal Andhyarujina
+d5ad198089c24ae5bdf026cfd57d78c0	916	926	PETITIONER	Ajay Mehra
+d5ad198089c24ae5bdf026cfd57d78c0	2050	2061	LAWYER	Shyam Mehta
+d5ad198089c24ae5bdf026cfd57d78c0	2431	2442	LAWYER	Karan Bhide
+d5ad198089c24ae5bdf026cfd57d78c0	2580	2592	LAWYER	Karl Tamboly
+d5ad198089c24ae5bdf026cfd57d78c0	2622	2633	LAWYER	Vivek Vashi
+d5ad198089c24ae5bdf026cfd57d78c0	610	634	PETITIONER	Wind World India Limited
+d5ad198089c24ae5bdf026cfd57d78c0	1150	1151	RESPONDENT	3
+d5ad198089c24ae5bdf026cfd57d78c0	1113	1114	RESPONDENT	2
+d5ad198089c24ae5bdf026cfd57d78c0	2481	2490	LAWYER	Kartikeya
+d5ad198089c24ae5bdf026cfd57d78c0	2666	2685	LAWYER	Shaheda Madrasawala
+d5ad198089c24ae5bdf026cfd57d78c0	1569	1584	RESPONDENT	1 . Enercon GmbH
+d5ad198089c24ae5bdf026cfd57d78c0	480	495	RESPONDENT	1 . Enercon GmbH
+d5ad198089c24ae5bdf026cfd57d78c0	2690	2706	LAWYER	Swati 
+ Khinvasara
+d5ad198089c24ae5bdf026cfd57d78c0	2410	2425	LAWYER	Kartikeya Desai
+d5ad198089c24ae5bdf026cfd57d78c0	66	100	COURT	High Court Of Judicature At Bombay
+d5ad198089c24ae5bdf026cfd57d78c0	13	32	JUDGE	2016.odt 
+
+
+ rrpillai
+d5ad198089c24ae5bdf026cfd57d78c0	373	385	PETITIONER	Yogesh Mehra
+d5ad198089c24ae5bdf026cfd57d78c0	2194	2211	LAWYER	Sanaya Dadachanji
+d5ad198089c24ae5bdf026cfd57d78c0	1734	1744	RESPONDENT	Ajay Mehra
+d5ad198089c24ae5bdf026cfd57d78c0	2088	2104	LAWYER	Bimal Rajshekhar
+d5ad198089c24ae5bdf026cfd57d78c0	2173	2188	LAWYER	Ranjit Carvalho
+d5ad198089c24ae5bdf026cfd57d78c0	2598	2616	LAWYER	Jehangir Jejeebhoy
+2c507d06e7824b669bc095915d4e79fc	839	851	LAWYER	Rajiv Chavan
+2c507d06e7824b669bc095915d4e79fc	420	435	LAWYER	Naira Jejeebhoy
+2c507d06e7824b669bc095915d4e79fc	709	720	LAWYER	AB . Vagyani
+2c507d06e7824b669bc095915d4e79fc	917	930	LAWYER	D.S. Shingade
+2c507d06e7824b669bc095915d4e79fc	1429	1438	LAWYER	P.P. More
+2c507d06e7824b669bc095915d4e79fc	1173	1187	RESPONDENT	Union of India
+2c507d06e7824b669bc095915d4e79fc	1284	1296	LAWYER	Aditi Saxena
+2c507d06e7824b669bc095915d4e79fc	874	889	LAWYER	Priyanka Chavan
+2c507d06e7824b669bc095915d4e79fc	78	112	COURT	High Court Of Judicature At Bombay
+2c507d06e7824b669bc095915d4e79fc	1401	1414	LAWYER	Y.S. Khochare
+2c507d06e7824b669bc095915d4e79fc	1361	1372	LAWYER	AB . Vagyani
+2c507d06e7824b669bc095915d4e79fc	580	593	LAWYER	Anil C. Singh
+2c507d06e7824b669bc095915d4e79fc	520	534	LAWYER	Meenaz Kakalia
+2c507d06e7824b669bc095915d4e79fc	366	380	LAWYER	D.J. Khambatta
+2c507d06e7824b669bc095915d4e79fc	207	210	PETITIONER	Xyz
+2c507d06e7824b669bc095915d4e79fc	1452	1458	RESPONDENT	Udayan
+2c507d06e7824b669bc095915d4e79fc	635	653	LAWYER	Anusha Pravin Amin
+2c507d06e7824b669bc095915d4e79fc	466	479	LAWYER	Gayatri Singh
+2c507d06e7824b669bc095915d4e79fc	777	786	LAWYER	P.P. More
+2c507d06e7824b669bc095915d4e79fc	936	949	LAWYER	Vinod Mahadik
+2c507d06e7824b669bc095915d4e79fc	955	968	LAWYER	Madhavi Patil
+2c507d06e7824b669bc095915d4e79fc	1712	1726	RESPONDENT	Union of India
+2c507d06e7824b669bc095915d4e79fc	800	811	LAWYER	Udayan Shah
+2c507d06e7824b669bc095915d4e79fc	612	626	LAWYER	Purnima Awasti
+2c507d06e7824b669bc095915d4e79fc	1302	1316	LAWYER	Meenaz Kakalia
+2c507d06e7824b669bc095915d4e79fc	1787	1803	LAWYER	Kuldeep U. Nikam
+2c507d06e7824b669bc095915d4e79fc	290	304	RESPONDENT	Union of India
+2c507d06e7824b669bc095915d4e79fc	661	675	LAWYER	Geetika Gandhi
+2c507d06e7824b669bc095915d4e79fc	973	993	LAWYER	R.N. Cooper Hospital
+2c507d06e7824b669bc095915d4e79fc	444	460	LAWYER	Pheroze F. Mehta
+2c507d06e7824b669bc095915d4e79fc	543	554	LAWYER	Kranti L.C.
+2c507d06e7824b669bc095915d4e79fc	1248	1261	LAWYER	Gayatri Singh
+2c507d06e7824b669bc095915d4e79fc	1325	1331	LAWYER	Kranti
+2c507d06e7824b669bc095915d4e79fc	502	514	LAWYER	Aditi Saxena
+2c507d06e7824b669bc095915d4e79fc	749	762	LAWYER	Y.S. Khochare
+2c507d06e7824b669bc095915d4e79fc	895	908	LAWYER	Anupama Pawar
+9b9c02d46b5442aeab6a8bfc6d03bebb	7	40	COURT	High Court Of Kerala At Ernakulam
+9b9c02d46b5442aeab6a8bfc6d03bebb	929	943	RESPONDENT	Peter N Chacko
+9b9c02d46b5442aeab6a8bfc6d03bebb	1261	1270	RESPONDENT	M.T.Issac
+9b9c02d46b5442aeab6a8bfc6d03bebb	116	132	JUDGE	Anil K.Narendran
+9b9c02d46b5442aeab6a8bfc6d03bebb	611	622	LAWYER	Sreekumar S
+9b9c02d46b5442aeab6a8bfc6d03bebb	1128	1137	RESPONDENT	M.K.Geore
+9b9c02d46b5442aeab6a8bfc6d03bebb	1484	1497	RESPONDENT	V.G.Kuriakose
+9b9c02d46b5442aeab6a8bfc6d03bebb	474	492	PETITIONER	Pandyamyalil House
+9b9c02d46b5442aeab6a8bfc6d03bebb	1366	1380	RESPONDENT	Saju P.Poulose
+9b9c02d46b5442aeab6a8bfc6d03bebb	577	588	LAWYER	P.Ravindran
+9b9c02d46b5442aeab6a8bfc6d03bebb	430	447	PETITIONER	George Varghese . P
+9b9c02d46b5442aeab6a8bfc6d03bebb	638	648	LAWYER	N.Raghuraj
+9b9c02d46b5442aeab6a8bfc6d03bebb	670	681	PETITIONER	A.J.Abraham
+9b9c02d46b5442aeab6a8bfc6d03bebb	1171	1174	RESPONDENT	P.O
+9b9c02d46b5442aeab6a8bfc6d03bebb	799	813	RESPONDENT	K.I.Thankachan
+627aad947d0f4413926b9c7c330fa1c1	175	184	PETITIONER	Rama Pasi
+627aad947d0f4413926b9c7c330fa1c1	297	308	LAWYER	B S Rathaur
+627aad947d0f4413926b9c7c330fa1c1	458	479	PETITIONER	Matauley @ Khushi Ram
+627aad947d0f4413926b9c7c330fa1c1	560	579	LAWYER	Curie),Balram Singh
+627aad947d0f4413926b9c7c330fa1c1	673	689	JUDGE	Ritu Raj Awasthi
+627aad947d0f4413926b9c7c330fa1c1	580	592	LAWYER	Dinesh Kumar
+627aad947d0f4413926b9c7c330fa1c1	703	720	JUDGE	Virendra Kumar - II
+627aad947d0f4413926b9c7c330fa1c1	213	226	RESPONDENT	State Of U.P.
+627aad947d0f4413926b9c7c330fa1c1	254	268	LAWYER	A.V.S. Chauhan
+627aad947d0f4413926b9c7c330fa1c1	593	617	LAWYER	Manish Kumar Singh Yadav
+627aad947d0f4413926b9c7c330fa1c1	269	287	LAWYER	Manish Kumar Yadav
+627aad947d0f4413926b9c7c330fa1c1	309	319	LAWYER	S N Pandey
+627aad947d0f4413926b9c7c330fa1c1	320	337	LAWYER	S.M. Mohsin Zaidi
+627aad947d0f4413926b9c7c330fa1c1	0	52	COURT	High Court Of Judicature At Allahabad , Lucknow Bench
+627aad947d0f4413926b9c7c330fa1c1	541	559	LAWYER	Arun Sinha,(Amicus
+627aad947d0f4413926b9c7c330fa1c1	500	513	RESPONDENT	State Of U.P.
+5f717d9800bf4cf484614dc7d2afbd55	353	366	LAWYER	K.M. Tripathi
+5f717d9800bf4cf484614dc7d2afbd55	303	324	LAWYER	Akash Deep Srivastava
+5f717d9800bf4cf484614dc7d2afbd55	415	435	JUDGE	Rohit Ranjan Agarwal
+5f717d9800bf4cf484614dc7d2afbd55	390	401	LAWYER	Sunil Kumar
+5f717d9800bf4cf484614dc7d2afbd55	176	206	PETITIONER	Reptakos Brett Company Limited
+5f717d9800bf4cf484614dc7d2afbd55	286	300	LAWYER	Pankaj Agarwal
+5f717d9800bf4cf484614dc7d2afbd55	227	258	RESPONDENT	Utkarsh Granite Private Limited
+5f717d9800bf4cf484614dc7d2afbd55	367	389	LAWYER	Krishna Mohan Tripathi
+5f717d9800bf4cf484614dc7d2afbd55	0	37	COURT	High Court Of Judicature At Allahabad
