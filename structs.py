@@ -84,10 +84,9 @@ class Sample:
 class Preprocessor(ABC):
     """
     An abstraction which allows standardizing the preprocessing
-    for every NER dataset. Such standardization makes it possible to quickly 
-    run our machine learning models on new datasets.
+    for every NER dataset. Such standardization makes it possible to 
+    **quickly** run new NER models on **every** NER dataset.
     """
-
     def __init__(
         self, 
         raw_data_folder_path: str, 
@@ -120,9 +119,13 @@ class Preprocessor(ABC):
         super().__init__()
         self.raw_data_folder_path = raw_data_folder_path
         self.entity_type_file_path = entity_type_file_path
+        assert entity_type_file_path.endswith('.txt')
         self.visualization_file_path = visualization_file_path
+        assert visualization_file_path.endswith('.bdocjs')
         self.annotations_file_path = annotations_file_path
+        assert annotations_file_path.endswith('.tsv')
         self.tokens_file_path = tokens_file_path
+        assert tokens_file_path.endswith('.json')
 
     @abstractmethod
     def get_samples(self) -> List[Sample]:
