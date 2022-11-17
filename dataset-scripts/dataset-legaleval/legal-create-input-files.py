@@ -5,7 +5,6 @@ from structs import Anno, Preprocessor, Sample, DatasetSplit
 from typing import List
 import util
 from gatenlp import Document
-from gatenlp.lib_spacy import AnnSpacy
 from enum import Enum
 import os
 import shutil

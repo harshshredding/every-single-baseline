@@ -58,8 +58,12 @@ for epoch in range(args['num_epochs']):
     with open(args['save_models_dir'] + f"/predictions_{EXPERIMENT}_epoch_{epoch}.tsv", 'w') \
             as predictions_file, \
             open(args['save_models_dir'] + f"/errors_{EXPERIMENT}_epoch_{epoch}.tsv", 'w') as errors_file:
-        predictions_file.write('\t'.join(['sample_id', 'begin', 'end', 'type', 'extraction']))
-        errors_file.write('\t'.join(['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']))
+        mistakes_file_writer = csv.writer(errors_file, delimiter='\t')
+        mistakes_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']
+        mistakes_file_writer.writerow(mistakes_file_header)
+        predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
+        predictions_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']
+        predictions_file_writer.writerow(predictions_file_header)
         with torch.no_grad():
             validation_start_time = time.time()
             token_level_accuracy_list = []
@@ -109,22 +113,19 @@ for epoch in range(args['num_epochs']):
                     start_offset = span[0]
                     end_offset = span[1]
                     extraction = get_extraction(tokens=tokens, offsets=offsets_list, start=start_offset, end=end_offset)
-                    predictions_file.write(
-                        '\n' + '\t'.join([sample_id, str(start_offset), str(end_offset), span[2], extraction]))
+                    predictions_file_writer.writerow([sample_id, str(start_offset), str(end_offset), span[2], extraction])
                 # write false negative errors
                 for span in FP:
                     start_offset = span[0]
                     end_offset = span[1]
                     extraction = get_extraction(tokens=tokens, offsets=offsets_list, start=start_offset, end=end_offset)
-                    errors_file.write(
-                        '\n' + '\t'.join([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FP']))
+                    mistakes_file_writer.writerow([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FP'])
                 # write false positive errors
                 for span in FN:
                     start_offset = span[0]
                     end_offset = span[1]
                     extraction = get_extraction(tokens=tokens, offsets=offsets_list, start=start_offset, end=end_offset)
-                    errors_file.write(
-                        '\n' + '\t'.join([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN']))
+                    mistakes_file_writer.writerow([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN'])
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
               f"Validation time : {str(time.time() - validation_start_time)} seconds")
         print("F1 macro", np.array(f1_list).mean())

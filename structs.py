@@ -1,7 +1,7 @@
 from enum import Enum
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Dict
 
 OUTSIDE_LABEL_STRING = 'o'
 
@@ -85,5 +85,51 @@ class Sample:
 
 class Preprocessor(ABC):
     @abstractmethod
-    def get_samples(self, raw_file_path) -> List[Sample]:
+    def get_samples(self, **kwargs) -> List[Sample]:
+        """
+        Extract samples from the given raw data file provided
+        by the organizers.
+
+        Args:
+            kwargs: variable num of dataset-specific arguments
+        """
         pass
+
+    @abstractmethod
+    def create_entity_types_file(self, output_file_path) -> None:
+        """
+        Create a .txt file that lists all possible entity types -- one per line.
+
+        For eg. the below txt file lists entity types ORG, PER, and LOC.
+        <<< file start
+        ORG
+        PER
+        LOC
+        <<< file end
+
+        Args:
+            output_file_path: the path of the entity types file to create
+        """
+        pass
+
+    @abstractmethod
+    def create_annotations_file(self, output_file_path, **kwargs) -> None:
+        """
+        Create a TSV(tab seperated values) format file that contains all the gold annotations for the dataset.
+
+        The tsv file should have the following columns:
+            - sample_id: The ID of the sample.
+            - begin: An integer representing the beginning offset of the annotation in the sample.
+            - end: An integer representing the end offset of the annotation in the sample.
+            - type: The entity type of the annotation.
+            - extraction: The text being annotated.
+
+        Args:
+            output_file_path: the path of the annotations file to create 
+            kwargs: variable num of dataset-specific arguments
+        """
+
+    @abstractmethod
+    def create_visualization_file()
+
+SampleAnnotations = Dict[str, List[Anno]]

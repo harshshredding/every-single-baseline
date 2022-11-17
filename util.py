@@ -141,8 +141,9 @@ def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, Lis
             row_to_write = [sample_id, sample_text, spans]
             writer.writerow(row_to_write)
 
-def create_gate_file(file_name_without_extension, sample_to_token_data: Dict[str, List[TokenData]],
-                     annos_dict: Dict[str, List[Anno]], num_samples=None):
+def create_gate_file(output_file_path: str, sample_to_token_data: Dict[str, List[TokenData]],
+                     annos_dict: Dict[str, List[Anno]], num_samples=None) -> None:
+    assert output_file_path[-7:] == '.bdocjs'
     sample_list = list(sample_to_token_data.keys())
     if num_samples is not None:
         sample_list = sample_list[:num_samples]
@@ -165,7 +166,7 @@ def create_gate_file(file_name_without_extension, sample_to_token_data: Dict[str
     default_ann_set = gate_document.annset()
     for gate_anno in all_gate_annos:
         default_ann_set.add(int(gate_anno[0]), int(gate_anno[1]), gate_anno[2], gate_anno[3])
-    gate_document.save(args['gate_input_folder_path'] + f'/{file_name_without_extension}.bdocjs')
+    gate_document.save(output_file_path)
 
 def p_string(obj) -> str:
     return json.dumps(obj=obj, indent=4)
@@ -480,14 +481,47 @@ def get_tweet_data(folder_path):
     return id_to_data
 
 
-def get_mistakes_annos(mistakes_file_path):
+def get_mistakes_annos(mistakes_file_path) -> SampleAnnotations:
+    """
+    Get the annotations that correspond to mistakes for each sample using
+    the given mistakes file. 
+
+    Args:
+        mistakes_file_path: the file-path representing the file(a .tsv file)
+        that contains the mistakes made by a model.
+    """
     df = pd.read_csv(mistakes_file_path, sep='\t')
     sample_to_annos = {}
     for _, row in df.iterrows():
         annos_list = sample_to_annos.get(str(row['sample_id']), [])
-        annos_list.append(Anno(row['begin'], row['end'], row['mistake_type'], row['extraction'], {"type":row['type']}))
+        print(row['begin'], row['sample_id'])
+        annos_list.append(Anno(int(row['begin']), int(row['end']), row['mistake_type'], row['extraction'], {"type":row['type']}))
         sample_to_annos[str(row['sample_id'])] = annos_list
     return sample_to_annos
+
+
+def create_gate_input_mistakes(mistakes_file_path: str, gate_visualization_file_path: str) -> None:
+    """
+    Create a gate-visualization-file(.bdocjs format) that contains the mistakes
+    made by a trained model.
+
+    Args:
+        - mistakes_file_path: the file path containing the mistakes of the model
+        - gate_visualization_file_path: the gate visualization file path to create 
+    """
+    sample_to_token_data = get_valid_data()
+    gold_annos_dict = get_valid_annos_dict()
+    mistake_annos_dict = get_mistakes_annos(mistakes_file_path)
+    combined_annos_dict = {}
+    for sample_id in gold_annos_dict:
+        gold_annos_list = gold_annos_dict[sample_id]
+        mistake_annos_list = mistake_annos_dict.get(sample_id, [])
+        combined_list = gold_annos_list + mistake_annos_list
+        for anno in combined_list:
+            anno.begin_offset = int(anno.begin_offset)
+            anno.end_offset = int(anno.end_offset)
+        combined_annos_dict[sample_id] = combined_list 
+    create_gate_file(gate_visualization_file_path, sample_to_token_data, combined_annos_dict)
 
 
 def get_train_annos_dict() -> Dict[str, List[Anno]]:
