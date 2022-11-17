@@ -59,7 +59,6 @@ class Label:
     def get_outside_label():
         return Label(OUTSIDE_LABEL_STRING, BioTag.out)
 
-
 @dataclass
 class Anno:
     begin_offset: int
@@ -67,7 +66,6 @@ class Anno:
     label_type: str
     extraction: str
     features: dict = field(default_factory=dict)
-
 
 @dataclass
 class TokenData:
@@ -84,38 +82,75 @@ class Sample:
     annos: List[Anno]
 
 class Preprocessor(ABC):
+    """
+    An abstraction which allows standardizing the preprocessing
+    for every NER dataset. Such standardization makes it possible to quickly 
+    run our machine learning models on new datasets.
+    """
+
+    def __init__(
+        self, 
+        raw_data_folder_path: str, 
+        entity_type_file_path: str, 
+        annotations_file_path: str,
+        visualization_file_path: str,
+        tokens_file_path: str
+    ) -> None:
+        """
+        Creates a preprocessor configured with some file paths
+        that represent its output locations.
+
+        Args:
+            raw_data_folder_path: str
+                the folder in which the raw data
+                (provided by the organizers) is located.
+            entity_type_file_path: str
+                the file(.txt formatted) in which all the entity types of 
+                the dataset are going to be listed(one per line).
+            annotations_file_path: str
+                the file(.tsv formatted) in which all the gold annotations of the
+                dataset are going to be stored.
+            visualization_file_path: str
+                the file(.bdocjs formatted) that is going to be
+                used by GATE developer to visualize the annotations.
+            tokens_file_path: str
+                the file(.json formatted) that will store the tokens
+                of each sample of this dataset.
+        """
+        super().__init__()
+        self.raw_data_folder_path = raw_data_folder_path
+        self.entity_type_file_path = entity_type_file_path
+        self.visualization_file_path = visualization_file_path
+        self.annotations_file_path = annotations_file_path
+        self.tokens_file_path = tokens_file_path
+
     @abstractmethod
-    def get_samples(self, **kwargs) -> List[Sample]:
+    def get_samples(self) -> List[Sample]:
         """
         Extract samples from the given raw data file provided
         by the organizers.
 
-        Args:
-            kwargs: variable num of dataset-specific arguments
         """
         pass
 
     @abstractmethod
-    def create_entity_types_file(self, output_file_path) -> None:
+    def create_entity_types_file(self) -> None:
         """
         Create a .txt file that lists all possible entity types -- one per line.
 
-        For eg. the below txt file lists entity types ORG, PER, and LOC.
+        For eg. the below mock txt file lists entity types ORG, PER, and LOC.
         <<< file start
         ORG
         PER
         LOC
         <<< file end
-
-        Args:
-            output_file_path: the path of the entity types file to create
         """
         pass
 
     @abstractmethod
-    def create_annotations_file(self, output_file_path, **kwargs) -> None:
+    def create_annotations_file(self) -> None:
         """
-        Create a TSV(tab seperated values) format file that contains all the gold annotations for the dataset.
+        Create a TSV(tab seperated values) formatted file that contains all the gold annotations for the dataset.
 
         The tsv file should have the following columns:
             - sample_id: The ID of the sample.
@@ -123,13 +158,33 @@ class Preprocessor(ABC):
             - end: An integer representing the end offset of the annotation in the sample.
             - type: The entity type of the annotation.
             - extraction: The text being annotated.
-
-        Args:
-            output_file_path: the path of the annotations file to create 
-            kwargs: variable num of dataset-specific arguments
         """
+        pass
 
     @abstractmethod
-    def create_visualization_file()
+    def create_visualization_file(self) -> None:
+        """
+        Create a .bdocjs formatted file which can me directly imported into gate developer.
+        """
+        pass
+
+    @abstractmethod
+    def create_tokens_file(self) -> None:
+        """
+        Create a json file that stores the tokens(and other corresponding information) 
+        for each sample.
+        """
+        pass
+
+    def run(self) -> None:
+        """
+        Execute the preprocessing steps that generate files which
+        can be used to train models.
+        """
+        self.create_entity_types_file()
+        self.create_annotations_file()
+        self.create_tokens_file()
+        self.create_visualization_file()
+
 
 SampleAnnotations = Dict[str, List[Anno]]
