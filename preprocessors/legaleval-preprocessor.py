@@ -92,6 +92,18 @@ train_judgement_preproc = PreprocessLegal(
 train_judgement_preproc.run()
 annos_dict = util.get_annos_dict(train_judgement_preproc.annotations_file_path)
 assert len(annos_dict['90d9a97c7b7749ec8a4f460fda6f937e']) == 2
+
+
+valid_judgement_preproc = PreprocessLegal(
+    raw_data_folder_path='../legal_raw',
+    entity_type_file_path='../preprocessed_data/legaleval_valid_judgement_types.txt',
+    annotations_file_path='../preprocessed_data/legaleval_valid_judgement_annos.tsv',
+    visualization_file_path='../preprocessed_data/legaleval_valid_judgement_visualisation.bdocjs',
+    tokens_file_path='../preprocessed_data/legaleval_valid_judgement_tokens.json',
+    sample_text_file_path="../preprocessed_data/legaleval_valid_judgement_sample_text.json",
+    dataset_split=DatasetSplit.valid,
+    legal_section=LegalSection.JUDGEMENT
+)
 # preproc.create_anno_file(DatasetSplit.train, LegalSection.PREAMBLE)
 # preproc.create_anno_file(DatasetSplit.valid, LegalSection.PREAMBLE)
 # preproc.create_gate_file(DatasetSplit.train, LegalSection.PREAMBLE)
