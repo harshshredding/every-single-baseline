@@ -171,14 +171,7 @@ class Preprocessor(ABC):
             sample_content[sample.id] = sample.text
         with util.open_make_dirs(self.sample_text_file_path, 'w') as output_file:
             json.dump(sample_content, output_file)
-
-
-    @abstractmethod
-    def run_tests(self) -> None:
-        """
-        Run all the tests for this pre-processor.
-        """
-        
+       
     def run(self) -> None:
         """
         Execute the preprocessing steps that generate files which
@@ -189,4 +182,3 @@ class Preprocessor(ABC):
         self.create_tokens_file()
         self.create_visualization_file()
         self.create_sample_text_file()
-        self.run_tests()

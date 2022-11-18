@@ -76,14 +76,10 @@ class PreprocessLegal(Preprocessor):
                 raw_annos = self.__get_raw_annos(raw_sample)
                 parsed_annos = [self.__parse_anno_raw(raw_anno) for raw_anno in raw_annos]
                 ret.append(Sample(sample_text, sample_id, parsed_annos))
-        return ret 
-
-    def run_tests(self) -> None:
-        pass
-        
+        return ret
 
 
-preproc = PreprocessLegal(
+train_judgement_preproc = PreprocessLegal(
     raw_data_folder_path='../legal_raw',
     entity_type_file_path='../preprocessed_data/legaleval_train_judgement_types.txt',
     annotations_file_path='../preprocessed_data/legaleval_train_judgement_annos.tsv',
@@ -93,9 +89,9 @@ preproc = PreprocessLegal(
     dataset_split=DatasetSplit.train,
     legal_section=LegalSection.JUDGEMENT
 )
-
-preproc.run()
-
+train_judgement_preproc.run()
+annos_dict = util.get_annos_dict(train_judgement_preproc.annotations_file_path)
+assert len(annos_dict['90d9a97c7b7749ec8a4f460fda6f937e']) == 2
 # preproc.create_anno_file(DatasetSplit.train, LegalSection.PREAMBLE)
 # preproc.create_anno_file(DatasetSplit.valid, LegalSection.PREAMBLE)
 # preproc.create_gate_file(DatasetSplit.train, LegalSection.PREAMBLE)
