@@ -12,6 +12,9 @@ import torch
 from read_gate_output import *
 import pandas as pd
 
+def raise_why():
+    raise Exception("why are we using this ?")
+
 def read_umls_file(umls_file_path):
     umls_embedding_dict = {}
     with open(umls_file_path, 'r') as f:
@@ -25,7 +28,7 @@ def read_umls_file(umls_file_path):
     return umls_embedding_dict
 
 
-def get_key_to_index(some_dict):
+def get_indices_for_dict_keys(some_dict):
     key_to_index = {}
     for index, key in enumerate(some_dict.keys()):
         key_to_index[key] = index
@@ -78,15 +81,17 @@ def read_pos_embeddings_file():
 #     pos_to_index = get_key_to_index(pos_dict)
 
 
-def print_args():
+def print_args() -> None:
+    """Print the configurations of the current run"""
     print("EXPERIMENT:", EXPERIMENT)
     print("TESTING_MODE", TESTING_MODE)
-    print(json.dumps(args,indent=4))
+    print(json.dumps(args, indent=4, sort_keys=True))
 
 
-def get_extraction(tokens, offsets, start, end):
+def get_extraction(tokens, token_offsets, start, end):
+    assert len(tokens) == len(token_offsets)
     extraction = []
-    for i, (start_offset, end_offset) in enumerate(offsets):
+    for i, (start_offset, end_offset) in enumerate(token_offsets):
         if start_offset >= start and end_offset <= end:
             extraction.append(tokens[i])
     return ' '.join(extraction)
@@ -107,7 +112,6 @@ def get_label_idx_dicts() -> tuple[Dict[Label, int], Dict[int, Label]]:
     assert len(label_to_idx_dict) == len(idx_to_label_dict)
     return label_to_idx_dict, idx_to_label_dict
 
-
 def get_optimizer(model):
     if args['optimizer'] == 'Ranger':
         #return torch_optimizer.Ranger(model.parameters(), args['learning_rate'])
@@ -119,13 +123,12 @@ def get_optimizer(model):
     else:
         raise Exception(f"optimizer not found: {args['optimizer']}")
 
-
 def print_list(some_list):
-    print('\n'.join([str(el) for el in some_list]))
-
+    print(p_string(some_list))
 
 def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, List[TokenData]],
                            annos_dict: Dict[str, List[Anno]], num_samples=None):
+    raise_why()
     with open(output_file_path, 'w') as output_file:
         writer = csv.writer(output_file)
         header = ['sample_id', 'text', 'spans']
@@ -143,6 +146,7 @@ def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, Lis
 
 def create_gate_file(output_file_path: str, sample_to_token_data: Dict[str, List[TokenData]],
                      annos_dict: Dict[str, List[Anno]], num_samples=None) -> None:
+    raise_why()
     assert output_file_path[-7:] == '.bdocjs'
     sample_list = list(sample_to_token_data.keys())
     if num_samples is not None:
@@ -228,7 +232,7 @@ def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding):
     return span_list_word_idx
 
 
-def f1(TP, FP, FN):
+def f1(TP, FP, FN) -> tuple[float, float, float]:
     if (TP + FP) == 0:
         precision = None
     else:
@@ -243,7 +247,7 @@ def f1(TP, FP, FN):
         f1_score = 2 * (precision * recall) / (precision + recall)
         return f1_score, precision, recall
 
-
+# TODO
 def get_raw_validation_data():
     output_dict = {}
     input_folder_path = args['raw_validation_files_path']
@@ -256,7 +260,7 @@ def get_raw_validation_data():
         output_dict[twitter_id] = data
     return output_dict
 
-
+# TODO
 def get_raw_test_data():
     output_dict = {}
     input_folder_path = args['raw_test_files_path']
@@ -269,7 +273,7 @@ def get_raw_test_data():
         output_dict[twitter_id] = data
     return output_dict
 
-
+# TODO
 def get_validation_ids():
     output = []
     input_folder_path = args['raw_validation_files_path']
@@ -500,7 +504,19 @@ def get_mistakes_annos(mistakes_file_path) -> SampleAnnotations:
     return sample_to_annos
 
 
-def create_gate_input_mistakes(mistakes_file_path: str, gate_visualization_file_path: str) -> None:
+def remove_if_exists(file_path: str):
+        """
+        If file exists, then remove it.
+
+        Args:
+            file_path: str
+                the file path of the file we wnat to remove
+        """
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
+
+def create_mistakes_visualization(mistakes_file_path: str, mistakes_visualization_file_path: str) -> None:
     """
     Create a gate-visualization-file(.bdocjs format) that contains the mistakes
     made by a trained model.
@@ -509,9 +525,9 @@ def create_gate_input_mistakes(mistakes_file_path: str, gate_visualization_file_
         - mistakes_file_path: the file path containing the mistakes of the model
         - gate_visualization_file_path: the gate visualization file path to create 
     """
-    sample_to_token_data = get_valid_data()
     gold_annos_dict = get_valid_annos_dict()
     mistake_annos_dict = get_mistakes_annos(mistakes_file_path)
+    sample_to_text_valid = get_valid_texts()
     combined_annos_dict = {}
     for sample_id in gold_annos_dict:
         gold_annos_list = gold_annos_dict[sample_id]
@@ -521,9 +537,55 @@ def create_gate_input_mistakes(mistakes_file_path: str, gate_visualization_file_
             anno.begin_offset = int(anno.begin_offset)
             anno.end_offset = int(anno.end_offset)
         combined_annos_dict[sample_id] = combined_list 
-    create_gate_file(gate_visualization_file_path, sample_to_token_data, combined_annos_dict)
+    create_visualization_file(
+        mistakes_visualization_file_path,
+        combined_annos_dict,
+        sample_to_text_valid
+        )
 
 
+def create_visualization_file(
+        visualization_file_path: str,
+        sample_to_annos: Dict[SampleId, List[Anno]],
+        sample_to_text: Dict[SampleId, str]
+    ) -> None:
+        """
+        Create a .bdocjs formatted file which can me directly imported into gate developer.
+        We create the file using the given text and annotations.
+
+        Args:
+            visualization_file_path: str
+                the path of the visualization file we want to create
+            annos_dict: Dict[str, List[Anno]]
+                mapping from sample ids to annotations
+            sample_to_text:
+                mapping from sample ids to text
+        """
+        assert visualization_file_path.endswith(".bdocjs")
+        sample_offset = 0
+        document_text = ""
+        ofsetted_annos = []
+        for sample_id in sample_to_annos:
+            document_text += (sample_to_text[sample_id] + '\n')
+            ofsetted_annos.append(Anno(sample_offset, len(document_text), 'Sample', '', {"id": sample_id}))
+            for anno in sample_to_annos[sample_id]:
+                new_start_offset = anno.begin_offset + sample_offset
+                new_end_offset = anno.end_offset + sample_offset
+                anno.features['orig_start_offset'] = anno.begin_offset
+                anno.features['orig_end_offset'] = anno.end_offset
+                ofsetted_annos.append(Anno(new_start_offset, new_end_offset, anno.label_type, anno.extraction, anno.features))
+            sample_offset += (len(sample_to_text[sample_id]) + 1)
+        gate_document = Document(document_text)
+        default_ann_set = gate_document.annset()
+        for ofsetted_annotation in ofsetted_annos:
+            default_ann_set.add(
+                int(ofsetted_annotation.begin_offset), 
+                int(ofsetted_annotation.end_offset), 
+                ofsetted_annotation.label_type, 
+                ofsetted_annotation.features)
+        gate_document.save(visualization_file_path)
+
+#TODO: remove this
 def get_train_annos_dict() -> Dict[str, List[Anno]]:
     if curr_dataset == Dataset.social_dis_ner:
         df = pd.read_csv(args['train_annos_file_path'], sep='\t')
@@ -568,6 +630,19 @@ def get_train_annos_dict() -> Dict[str, List[Anno]]:
     else:
         raise Exception(f"{args['dataset_name']} is not supported")
 
+def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
+    """
+    Read annotations for each sample from the given file and return 
+    a dict from sample_ids to corresponding annotations.
+    """
+    assert annos_file_path.endswith(".tsv")
+    df = pd.read_csv(annos_file_path, sep='\t')
+    sample_to_annos = {}
+    for i, row in df.iterrows():
+        annos_list = sample_to_annos.get(str(row['sample_id']), [])
+        annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
+        sample_to_annos[str(row['sample_id'])] = annos_list
+    return sample_to_annos
 
 def open_make_dirs(file_path, mode):
     Path(file_path).parent.mkdir(parents=True, exist_ok=True)
@@ -662,16 +737,34 @@ def read_data_from_folder(data_folder) -> Dict[str, List[TokenData]]:
     return sample_to_tokens
 
 
+# TODO: move to different module
 def get_train_data() -> Dict[str, List[TokenData]]:
     return read_data_from_folder(args['training_data_folder_path'])
 
 
+# TODO: move to different module
 def get_valid_data() -> Dict[str, List[TokenData]]:
     return read_data_from_folder(args['validation_data_folder_path'])
 
 
+# TODO: move to different module
 def get_test_data() -> Dict[str, List[TokenData]]:
     return read_data_from_folder(args['test_data_folder_path'])
+
+
+# TODO: move to different module
+def get_train_texts() -> Dict[SampleId, str]:
+    return get_texts(args['train_sample_text_data_file_path'])
+
+
+# TODO: move to different module
+def get_valid_texts() -> Dict[SampleId, str]:
+    return get_texts(args['valid_sample_text_data_file_path'])
+
+
+def get_texts(sample_text_file_path: str) -> Dict[SampleId, str]:
+    with open(sample_text_file_path, 'r') as sample_text_file:
+        return json.load(sample_text_file)
 
 
 def get_token_strings(sample_data: List[TokenData]):
@@ -680,9 +773,11 @@ def get_token_strings(sample_data: List[TokenData]):
         only_token_strings.append(token_data.token_string)
     return only_token_strings
 
+
 def get_annos_surrounding_token(annos: List[Anno], token: TokenData) -> List[Anno]:
     return [anno for anno in annos \
         if (anno.begin_offset <= token.token_start_offset) and (token.token_end_offset <= anno.end_offset)]
+
 
 def get_label_strings(sample_data: List[TokenData], annos: List[Anno]):
     ret_labels = []

@@ -1,13 +1,9 @@
 import json
-import csv
-import spacy
 from structs import Anno, Sample, DatasetSplit
 from preprocess import Preprocessor
 from typing import List
 import util
 from enum import Enum
-import os
-import shutil
 
 class LegalSection(Enum):
     PREAMBLE = 0
@@ -21,6 +17,7 @@ class PreprocessLegal(Preprocessor):
         annotations_file_path: str,
         visualization_file_path: str,
         tokens_file_path: str,
+        sample_text_file_path: str,
         dataset_split: DatasetSplit,
         legal_section: LegalSection
     ) -> None:
@@ -29,7 +26,8 @@ class PreprocessLegal(Preprocessor):
             entity_type_file_path,
             annotations_file_path, 
             visualization_file_path,
-            tokens_file_path
+            tokens_file_path,
+            sample_text_file_path
             )
         self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
@@ -55,7 +53,7 @@ class PreprocessLegal(Preprocessor):
         print("num types: ", len(types_set))
         assert len(types_set) == 14
         print(util.p_string(list(types_set)))
-        with util.open_make_dirs(f'./datasets/legaleval/types.txt', 'w') as types_file:
+        with util.open_make_dirs(self.entity_type_file_path, 'w') as types_file:
             for type in types_set:
                 print(type, file=types_file) 
 
@@ -82,11 +80,21 @@ class PreprocessLegal(Preprocessor):
 
     def run_tests(self) -> None:
         pass
+        
 
 
 preproc = PreprocessLegal(
-    raw_data_folder_path=''
+    raw_data_folder_path='../legal_raw',
+    entity_type_file_path='../preprocessed_data/legaleval_train_judgement_types.txt',
+    annotations_file_path='../preprocessed_data/legaleval_train_judgement_annos.tsv',
+    visualization_file_path='../preprocessed_data/legaleval_train_judgement_visualisation.bdocjs',
+    tokens_file_path='../preprocessed_data/legaleval_train_judgement_tokens.json',
+    sample_text_file_path="../preprocessed_data/legaleval_train_judgement_sample_text.json",
+    dataset_split=DatasetSplit.train,
+    legal_section=LegalSection.JUDGEMENT
 )
+
+preproc.run()
 
 # preproc.create_anno_file(DatasetSplit.train, LegalSection.PREAMBLE)
 # preproc.create_anno_file(DatasetSplit.valid, LegalSection.PREAMBLE)
