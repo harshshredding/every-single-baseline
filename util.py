@@ -1,15 +1,10 @@
 import csv
 from pathlib import Path
-from models import *
 from gatenlp import Document
-from args import *
 from structs import *
 from typing import Dict, List
 import json
 import os
-import pandas as pd
-import torch
-from read_gate_output import *
 import pandas as pd
 
 def raise_why():
@@ -48,46 +43,6 @@ def read_umls_file_small(umls_file_path):
             break
     return umls_embedding_dict
 
-
-def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
-    if '3Classes' in args['model_name']:
-        labels = get_labels_bio(sample_data, annos)
-        expanded_labels = expand_labels_rich(batch_encoding, labels)
-        return expanded_labels
-    elif '2Classes' in args['model_name']:
-        labels = get_label_strings(sample_data, annos)
-        expanded_labels = expand_labels(batch_encoding, labels)
-        return expanded_labels
-    raise Exception('Have to specify num of classes in model name ' + args['model_name'])
-
-
-def read_pos_embeddings_file():
-    return pd.read_pickle(args['pos_embeddings_path'])
-
-# if args['model_name'] != 'base':
-#     if TESTING_MODE:
-#         umls_embedding_dict = read_umls_file_small(args['umls_embeddings_path'])
-#         umls_embedding_dict[default_key] = [0 for _ in range(50)]
-#         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
-#         umls_key_to_index = get_key_to_index(umls_embedding_dict)
-#     else:
-#         umls_embedding_dict = read_umls_file(args['umls_embeddings_path'])
-#         umls_embedding_dict[default_key] = [0 for _ in range(50)]
-#         umls_embedding_dict = {k: np.array(v) for k, v in umls_embedding_dict.items()}
-#         umls_key_to_index = get_key_to_index(umls_embedding_dict)
-#     pos_dict = read_pos_embeddings_file()
-#     pos_dict[default_key] = [0 for _ in range(20)]
-#     pos_dict = {k: np.array(v) for k, v in pos_dict.items()}
-#     pos_to_index = get_key_to_index(pos_dict)
-
-
-def print_args() -> None:
-    """Print the configurations of the current run"""
-    print("EXPERIMENT:", EXPERIMENT)
-    print("TESTING_MODE", TESTING_MODE)
-    print(json.dumps(args, indent=4, sort_keys=True))
-
-
 def get_extraction(tokens, token_offsets, start, end):
     assert len(tokens) == len(token_offsets)
     extraction = []
@@ -95,33 +50,6 @@ def get_extraction(tokens, token_offsets, start, end):
         if start_offset >= start and end_offset <= end:
             extraction.append(tokens[i])
     return ' '.join(extraction)
-
-
-def get_label_idx_dicts() -> tuple[Dict[Label, int], Dict[int, Label]]:
-    label_to_idx_dict = {}
-    with open(args['types_file_path'], 'r') as types_file:
-        for line in types_file.readlines():
-            type_string = line.strip()
-            if len(type_string):
-                label_to_idx_dict[Label(type_string, BioTag.begin)] = len(label_to_idx_dict)
-                label_to_idx_dict[Label(type_string, BioTag.inside)] = len(label_to_idx_dict)
-    label_to_idx_dict[Label.get_outside_label()] = len(label_to_idx_dict)
-    idx_to_label_dict = {}
-    for label in label_to_idx_dict:
-        idx_to_label_dict[label_to_idx_dict[label]] = label
-    assert len(label_to_idx_dict) == len(idx_to_label_dict)
-    return label_to_idx_dict, idx_to_label_dict
-
-def get_optimizer(model):
-    if args['optimizer'] == 'Ranger':
-        #return torch_optimizer.Ranger(model.parameters(), args['learning_rate'])
-        raise Exception("no ranger optimizer")
-    elif args['optimizer'] == 'Adam':
-        return torch.optim.Adam(model.parameters(), args['learning_rate'])
-    elif args['optimizer'] == 'AdamW':
-        return torch.optim.AdamW(model.parameters(), args['learning_rate'])
-    else:
-        raise Exception(f"optimizer not found: {args['optimizer']}")
 
 def print_list(some_list):
     print(p_string(some_list))
@@ -194,13 +122,6 @@ def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
     return span_list_word
 
 
-def get_spans_from_seq_labels(predictions_sub, batch_encoding):
-    if '3Classes' in args['model_name']:
-        return get_spans_from_bio_labels(predictions_sub, batch_encoding)
-    elif '2Classes' in args['model_name']:
-        return get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
-    else:
-        raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
 
 def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding):
@@ -247,230 +168,11 @@ def f1(TP, FP, FN) -> tuple[float, float, float]:
         f1_score = 2 * (precision * recall) / (precision + recall)
         return f1_score, precision, recall
 
-# TODO
-def get_raw_validation_data():
-    output_dict = {}
-    input_folder_path = args['raw_validation_files_path']
-    data_files_list = os.listdir(input_folder_path)
-    for filename in data_files_list:
-        data_file_path = os.path.join(input_folder_path, filename)
-        with open(data_file_path, 'r') as f:
-            data = f.read()
-        twitter_id = filename[:-4]
-        output_dict[twitter_id] = data
-    return output_dict
-
-# TODO
-def get_raw_test_data():
-    output_dict = {}
-    input_folder_path = args['raw_test_files_path']
-    data_files_list = os.listdir(input_folder_path)
-    for filename in data_files_list:
-        data_file_path = os.path.join(input_folder_path, filename)
-        with open(data_file_path, 'r') as f:
-            data = f.read()
-        twitter_id = filename[:-4]
-        output_dict[twitter_id] = data
-    return output_dict
-
-# TODO
-def get_validation_ids():
-    output = []
-    input_folder_path = args['raw_validation_files_path']
-    data_files_list = os.listdir(input_folder_path)
-    for filename in data_files_list:
-        twitter_id = filename[:-4]
-        output.append(twitter_id)
-    return output
 
 
-def get_raw_train_data():
-    output_dict = {}
-    input_folder_path = args['raw_train_files_path']
-    data_files_list = os.listdir(input_folder_path)
-    for filename in data_files_list:
-        data_file_path = os.path.join(input_folder_path, filename)
-        with open(data_file_path, 'r') as f:
-            data = f.read()
-        twitter_id = filename[:-4]
-        output_dict[twitter_id] = data
-    return output_dict
 
 
-def read_disease_gazetteer():
-    disease_list = []
-    df = pd.read_csv(args['disease_gazetteer_path'], sep='\t')
-    for _, row in df.iterrows():
-        disease_term = row['term']
-        disease_list.append(disease_term)
-    return disease_list
 
-
-def prepare_model_input(batch_encoding, sample_data: List[TokenData]):
-    # umls_indices = torch.tensor(expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
-    #                             device=device)
-    # pos_indices = torch.tensor(expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
-    #                            device=device)
-    umls_indices = None
-    pos_indices = None
-    if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
-        model_input = (batch_encoding, umls_indices, pos_indices)
-    elif args['model_name'] == 'SeqLabelerDisGaz':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings)
-    elif args['model_name'] == 'SeqLabelerUMLSDisGaz':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
-    elif args['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
-    elif args['model_name'] == 'Silver3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
-                       silver_dis_embeddings)
-    elif args['model_name'] == 'LightWeightRIM3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'OneEncoder3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'TransformerEncoder3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'PositionalTransformerEncoder3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'SmallPositionalTransformerEncoder3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
-                       silver_dis_embeddings)
-    elif args['model_name'] == 'PosEncod3ClassesNoSilverNewGaz':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        # silver embeddings are going to be ignored during training
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'PosEncod3ClassesNoSilverBig':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        # silver embeddings are going to be ignored during training
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'PosEncod3ClassesNoSilverSpanish':
-        dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_dis_gaz_one_hot(sample_data)),
-                                          device=device)
-        umls_dis_gaz_embeddings = torch.tensor(expand_labels(batch_encoding, get_umls_dis_gaz_one_hot(sample_data)),
-                                               device=device)
-        silver_dis_embeddings = torch.tensor(expand_labels(batch_encoding, get_silver_dis_one_hot(sample_data)),
-                                             device=device)
-        # silver embeddings are going to be ignored during training
-        model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif args['model_name'] == 'PosEncod3ClassesOnlyRoberta':
-        model_input = [batch_encoding]
-    elif args['model_name'] == 'OnlyRoberta3Classes':
-        model_input = [batch_encoding]
-    elif args['model_name'] == 'JustBert3Classes':
-        model_input = [batch_encoding]
-    else:
-        raise Exception('Not implemented!')
-    return model_input
-
-
-def prepare_model():
-    if args['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
-        return SeqLabelerAllResourcesSmallerTopK(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    if args['model_name'] == 'SeqLabelerDisGaz':
-        return SeqLabelerDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                                pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    if args['model_name'] == 'SeqLabelerUMLSDisGaz':
-        return SeqLabelerUMLSDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                                    pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    if args['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
-        return SeqLabelerUMLSDisGaz3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                                            pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    if args['model_name'] == 'Silver3Classes':
-        return Silver3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-                              pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    if args['model_name'] == 'LightWeightRIM3Classes':
-        return LightWeightRIM3Classes().to(device)
-    if args['model_name'] == 'OneEncoder3Classes':
-        return OneEncoder3Classes().to(device)
-    if args['model_name'] == 'TransformerEncoder3Classes':
-        return TransformerEncoder3Classes().to(device)
-    if args['model_name'] == 'PositionalTransformerEncoder3Classes':
-        return PositionalTransformerEncoder3Classes().to(device)
-    if args['model_name'] == 'SmallPositionalTransformerEncoder3Classes':
-        return SmallPositionalTransformerEncoder3Classes().to(device)
-    if args['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
-        return ComprehensivePositionalTransformerEncoder3Classes(umls_pretrained=umls_embedding_dict,
-                                                                 umls_to_idx=umls_key_to_index,
-                                                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index) \
-            .to(device)
-    if args['model_name'] == 'PosEncod3ClassesNoSilverNewGaz':
-        return PosEncod3ClassesNoSilverNewGaz().to(device)
-    if args['model_name'] == 'PosEncod3ClassesNoSilverBig':
-        return PosEncod3ClassesNoSilverBig().to(device)
-    if args['model_name'] == 'PosEncod3ClassesNoSilverSpanish':
-        return PosEncod3ClassesNoSilverSpanish().to(device)
-    if args['model_name'] == 'PosEncod3ClassesOnlyRoberta':
-        return PosEncod3ClassesOnlyRoberta().to(device)
-    if args['model_name'] == 'OnlyRoberta3Classes':
-        return OnlyRoberta3Classes().to(device)
-    if args['model_name'] == 'JustBert3Classes':
-        return JustBert3Classes().to(device)
-    raise Exception(f"no code to prepare model {args['model_name']}")
 
 
 def get_tweet_data(folder_path):
@@ -516,34 +218,6 @@ def remove_if_exists(file_path: str):
             os.remove(file_path)
 
 
-def create_mistakes_visualization(mistakes_file_path: str, mistakes_visualization_file_path: str) -> None:
-    """
-    Create a gate-visualization-file(.bdocjs format) that contains the mistakes
-    made by a trained model.
-
-    Args:
-        - mistakes_file_path: the file path containing the mistakes of the model
-        - gate_visualization_file_path: the gate visualization file path to create 
-    """
-    gold_annos_dict = get_valid_annos_dict()
-    mistake_annos_dict = get_mistakes_annos(mistakes_file_path)
-    sample_to_text_valid = get_valid_texts()
-    combined_annos_dict = {}
-    for sample_id in gold_annos_dict:
-        gold_annos_list = gold_annos_dict[sample_id]
-        mistake_annos_list = mistake_annos_dict.get(sample_id, [])
-        combined_list = gold_annos_list + mistake_annos_list
-        for anno in combined_list:
-            anno.begin_offset = int(anno.begin_offset)
-            anno.end_offset = int(anno.end_offset)
-        combined_annos_dict[sample_id] = combined_list 
-    create_visualization_file(
-        mistakes_visualization_file_path,
-        combined_annos_dict,
-        sample_to_text_valid
-        )
-
-
 def create_visualization_file(
         visualization_file_path: str,
         sample_to_annos: Dict[SampleId, List[Anno]],
@@ -586,49 +260,6 @@ def create_visualization_file(
         gate_document.save(visualization_file_path)
 
 #TODO: remove this
-def get_train_annos_dict() -> Dict[str, List[Anno]]:
-    if curr_dataset == Dataset.social_dis_ner:
-        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['tweets_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], 'Disease', row['extraction']))
-            sample_to_annos[str(row['tweets_id'])] = annos_list
-        return sample_to_annos
-    elif curr_dataset == Dataset.few_nerd:
-        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['sample_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['sample_id'])] = annos_list
-        return sample_to_annos
-    elif curr_dataset == Dataset.genia:
-        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['sample_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['sample_id'])] = annos_list
-        return sample_to_annos
-    elif curr_dataset == Dataset.multiconer:
-        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['sample_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['sample_id'])] = annos_list
-        return sample_to_annos
-    elif curr_dataset == Dataset.legaleval:
-        df = pd.read_csv(args['train_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['sample_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['sample_id'])] = annos_list
-        return sample_to_annos
-    else:
-        raise Exception(f"{args['dataset_name']} is not supported")
 
 def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
     """
@@ -644,6 +275,26 @@ def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
         sample_to_annos[str(row['sample_id'])] = annos_list
     return sample_to_annos
 
+
+def get_label_idx_dicts(types_file_path: str) -> tuple[Dict[Label, int], Dict[int, Label]]:
+    """
+    get dictionaries mapping from labels to their corresponding indices.
+    """
+    label_to_idx_dict = {}
+    with open(types_file_path, 'r') as types_file:
+        for line in types_file.readlines():
+            type_string = line.strip()
+            if len(type_string):
+                label_to_idx_dict[Label(type_string, BioTag.begin)] = len(label_to_idx_dict)
+                label_to_idx_dict[Label(type_string, BioTag.inside)] = len(label_to_idx_dict)
+    label_to_idx_dict[Label.get_outside_label()] = len(label_to_idx_dict)
+    idx_to_label_dict = {}
+    for label in label_to_idx_dict:
+        idx_to_label_dict[label_to_idx_dict[label]] = label
+    assert len(label_to_idx_dict) == len(idx_to_label_dict)
+    return label_to_idx_dict, idx_to_label_dict
+
+
 def open_make_dirs(file_path, mode):
     Path(file_path).parent.mkdir(parents=True, exist_ok=True)
     return open(file_path, mode)
@@ -651,76 +302,26 @@ def open_make_dirs(file_path, mode):
 def create_directory_structure(folder_path):
     Path(folder_path).mkdir(parents=True, exist_ok=True)
 
-def get_valid_annos_dict() -> Dict[str, List[Anno]]:
-    if curr_dataset == Dataset.social_dis_ner:
-        df = pd.read_csv(args['valid_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['tweets_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], 'Disease', row['extraction']))
-            sample_to_annos[str(row['tweets_id'])] = annos_list
-        return sample_to_annos
-    else:
-        df = pd.read_csv(args['valid_annos_file_path'], sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['sample_id']), [])
-            annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['sample_id'])] = annos_list
-        return sample_to_annos
 
 
-
-
+# TODO: deprecate because every dataset should have the same representation.
 def parse_token_data(token_data_raw) -> TokenData:
     """
-    in: a json object representing a token
-    out: a TokenData object parsed from the input json object
-    """
-    if curr_dataset == Dataset.few_nerd:
-        return TokenData(
-            str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Token'][0]['string'],
-            token_data_raw['Token'][0]['length'],
-            token_data_raw['Token'][0]['startOffset'],
-            token_data_raw['Token'][0]['endOffset']
-        )
-    elif curr_dataset == Dataset.social_dis_ner:
-        return TokenData(
-            sample_id=str(token_data_raw['tweet_text'][0]['twitter_id']),
-            token_string=token_data_raw['Token'][0]['string'],
-            token_len=token_data_raw['Token'][0]['length'],
-            token_start_offset=token_data_raw['Token'][0]['startOffset'],
-            token_end_offset=token_data_raw['Token'][0]['endOffset'],
-        )
-    elif curr_dataset == Dataset.genia:
-        return TokenData(
-            str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Token'][0]['string'],
-            token_data_raw['Token'][0]['length'],
-            token_data_raw['Token'][0]['startOffset'],
-            token_data_raw['Token'][0]['endOffset'],
-        )
-    elif curr_dataset == Dataset.multiconer:
-        return TokenData(
-            str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Token'][0]['string'],
-            token_data_raw['Token'][0]['length'],
-            token_data_raw['Token'][0]['startOffset'],
-            token_data_raw['Token'][0]['endOffset'],
-        )
-    elif curr_dataset == Dataset.legaleval:
-        return TokenData(
-            str(token_data_raw['Sample'][0]['id']),
-            token_data_raw['Token'][0]['string'],
-            token_data_raw['Token'][0]['length'],
-            token_data_raw['Token'][0]['startOffset'],
-            token_data_raw['Token'][0]['endOffset'],
-        )  
-    else:
-        raise NotImplementedError(f"implement token data parsing for dataset {args['dataset_name']}")
+    Parse out a token data object out of the raw json.
+
+    token_data_raw(dict): raw JSON representing a token.
+    dataset(Dataset): the dataset the token belongs to.
+    """ 
+    return TokenData(
+        str(token_data_raw['Sample'][0]['id']),
+        token_data_raw['Token'][0]['string'],
+        token_data_raw['Token'][0]['length'],
+        token_data_raw['Token'][0]['startOffset'],
+        token_data_raw['Token'][0]['endOffset'],
+    )  
 
 
+# TODO:  deprecate
 def read_data_from_folder(data_folder) -> Dict[str, List[TokenData]]:
     sample_to_tokens = {}
     data_files_list = os.listdir(data_folder)
@@ -737,29 +338,26 @@ def read_data_from_folder(data_folder) -> Dict[str, List[TokenData]]:
     return sample_to_tokens
 
 
-# TODO: move to different module
-def get_train_data() -> Dict[str, List[TokenData]]:
-    return read_data_from_folder(args['training_data_folder_path'])
+def get_tokens_from_file(file_path) -> Dict[SampleId, List[TokenData]]:
+    """
+    Read tokens for each sample from the given file
+    and make them accessible in the returned dictionary.
+
+    file_path (str): The path to the tokens file (.json formatted).
+    """
+    ret = {}
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+    for token_data_json in data:
+        parsed_token_data = parse_token_data(token_data_json)
+        sample_id = str(parsed_token_data.sample_id)
+        sample_tokens = ret.get(sample_id, [])
+        sample_tokens.append(parsed_token_data)
+        ret[sample_id] = sample_tokens
+    return ret
 
 
-# TODO: move to different module
-def get_valid_data() -> Dict[str, List[TokenData]]:
-    return read_data_from_folder(args['validation_data_folder_path'])
 
-
-# TODO: move to different module
-def get_test_data() -> Dict[str, List[TokenData]]:
-    return read_data_from_folder(args['test_data_folder_path'])
-
-
-# TODO: move to different module
-def get_train_texts() -> Dict[SampleId, str]:
-    return get_texts(args['train_sample_text_data_file_path'])
-
-
-# TODO: move to different module
-def get_valid_texts() -> Dict[SampleId, str]:
-    return get_texts(args['valid_sample_text_data_file_path'])
 
 
 def get_texts(sample_text_file_path: str) -> Dict[SampleId, str]:
@@ -789,6 +387,10 @@ def get_label_strings(sample_data: List[TokenData], annos: List[Anno]):
             ret_labels.append(surrounding_annos[0].label_type)
     return ret_labels
 
+def assert_tokens_contain(token_data: List[TokenData], strings_to_check: List[str]):
+    token_strings_set = set(get_token_strings(token_data))
+    strings_to_check_set = set(strings_to_check)
+    assert strings_to_check_set.issubset(token_strings_set)
 
 # def get_labels_bio(sample_data: List[TokenData], annos: List[Anno], types_dict) -> List[Label]:
 #     labels = get_label_strings(sample_data, types_dict)

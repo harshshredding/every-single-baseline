@@ -90,8 +90,8 @@ train_judgement_preproc = PreprocessLegal(
     legal_section=LegalSection.JUDGEMENT
 )
 train_judgement_preproc.run()
-annos_dict = util.get_annos_dict(train_judgement_preproc.annotations_file_path)
-assert len(annos_dict['90d9a97c7b7749ec8a4f460fda6f937e']) == 2
+train_annos_dict = util.get_annos_dict(train_judgement_preproc.annotations_file_path)
+assert len(train_annos_dict['90d9a97c7b7749ec8a4f460fda6f937e']) == 2
 
 
 valid_judgement_preproc = PreprocessLegal(
@@ -104,6 +104,53 @@ valid_judgement_preproc = PreprocessLegal(
     dataset_split=DatasetSplit.valid,
     legal_section=LegalSection.JUDGEMENT
 )
+valid_judgement_preproc.run()
+# Tests
+valid_annos_dict = util.get_annos_dict(valid_judgement_preproc.annotations_file_path)
+valid_token_data = util.get_tokens_from_file(valid_judgement_preproc.tokens_file_path)
+valid_texts = util.get_texts(valid_judgement_preproc.sample_text_file_path)
+assert len(valid_annos_dict['03f3901e95ed493b866bd7807f623bc0']) == 3
+assert len(valid_annos_dict['b0311cba3aac4d909eec6e156c059617']) == 1
+util.assert_tokens_contain(
+    valid_token_data['03f3901e95ed493b866bd7807f623bc0'],
+    ['Union', 'of', 'India', 'VIII', 'Cooper']
+)
+util.assert_tokens_contain(
+    valid_token_data['b0311cba3aac4d909eec6e156c059617'],
+    ['Singh', 'Statutory', 'Principles']
+)
+assert ", our Constitution has no 'due process' clause or the VIII Amendment" in valid_texts['03f3901e95ed493b866bd7807f623bc0']
+
+
+train_preamble_preproc = PreprocessLegal(
+    raw_data_folder_path='../legal_raw',
+    entity_type_file_path='../preprocessed_data/legaleval_train_preamble_types.txt',
+    annotations_file_path='../preprocessed_data/legaleval_train_preamble_annos.tsv',
+    visualization_file_path='../preprocessed_data/legaleval_train_preamble_visualisation.bdocjs',
+    tokens_file_path='../preprocessed_data/legaleval_train_preamble_tokens.json',
+    sample_text_file_path="../preprocessed_data/legaleval_train_preamble_sample_text.json",
+    dataset_split=DatasetSplit.train,
+    legal_section=LegalSection.PREAMBLE
+)
+train_preamble_preproc.run()
+train_annos_dict = util.get_annos_dict(train_preamble_preproc.annotations_file_path)
+assert len(train_annos_dict['d79fb7f965a74e418212458285c7c213']) == 8
+
+
+valid_preamble_preproc = PreprocessLegal(
+    raw_data_folder_path='../legal_raw',
+    entity_type_file_path='../preprocessed_data/legaleval_valid_preamble_types.txt',
+    annotations_file_path='../preprocessed_data/legaleval_valid_preamble_annos.tsv',
+    visualization_file_path='../preprocessed_data/legaleval_valid_preamble_visualisation.bdocjs',
+    tokens_file_path='../preprocessed_data/legaleval_valid_preamble_tokens.json',
+    sample_text_file_path="../preprocessed_data/legaleval_valid_preamble_sample_text.json",
+    dataset_split=DatasetSplit.valid,
+    legal_section=LegalSection.PREAMBLE
+)
+valid_preamble_preproc.run()
+valid_annos_dict = util.get_annos_dict(valid_preamble_preproc.annotations_file_path)
+assert len(valid_annos_dict['1ea9dd0b69b64720851a2234a689082f']) == 13
+
 # preproc.create_anno_file(DatasetSplit.train, LegalSection.PREAMBLE)
 # preproc.create_anno_file(DatasetSplit.valid, LegalSection.PREAMBLE)
 # preproc.create_gate_file(DatasetSplit.train, LegalSection.PREAMBLE)
