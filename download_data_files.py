@@ -46,10 +46,15 @@ gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 # output = "few-nerd-dataset.zip"
 # gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 
-url = "https://drive.google.com/file/d/1RJQZ3ldxJ-fU8_KM_KJ2TBBTpl3FAuNF/view?usp=sharing"
-output = "multiconer.zip"
-gdown.download(url=url, output=output, quiet=False, fuzzy=True)
+# url = "https://drive.google.com/file/d/1RJQZ3ldxJ-fU8_KM_KJ2TBBTpl3FAuNF/view?usp=sharing"
+# output = "multiconer.zip"
+# gdown.download(url=url, output=output, quiet=False, fuzzy=True)
 
-url = "https://drive.google.com/file/d/1L1WrSIGAihXf4Giefxvw1I-gfMFq3oxO/view?usp=sharing"
-output = "legaleval.zip"
+# url = "https://drive.google.com/file/d/1L1WrSIGAihXf4Giefxvw1I-gfMFq3oxO/view?usp=sharing"
+# output = "legaleval.zip"
+# gdown.download(url=url, output=output, quiet=False, fuzzy=True)
+
+
+url = "https://drive.google.com/file/d/1McbugRZpA7W0WqgH61YL1EBh18Dt1Zsr/view?usp=sharing"
+output = "preprocessed_data.zip"
 gdown.download(url=url, output=output, quiet=False, fuzzy=True)
