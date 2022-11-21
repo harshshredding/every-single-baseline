@@ -1,6 +1,9 @@
 from structs import *
 import util
 import csv
+from abc import ABC, abstractmethod
+import spacy
+import json
 
 class Preprocessor(ABC):
     """
@@ -177,8 +180,19 @@ class Preprocessor(ABC):
         Execute the preprocessing steps that generate files which
         can be used to train models.
         """
+        print("Preprocessing...")
+        print("creating entity file... ")
         self.create_entity_types_file()
+        print("done")
+        print("creating annos file...")
         self.create_annotations_file()
+        print("done")
+        print("creating tokens file...")
         self.create_tokens_file()
+        print("done")
+        print("creating visualization file...")
         self.create_visualization_file()
+        print("done")
+        print("creating sample text file ")
         self.create_sample_text_file()
+        print("DONE Preprocessing!")

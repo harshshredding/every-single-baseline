@@ -1,10 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass, field
-from abc import ABC, abstractmethod
 from typing import List, Dict
-import spacy
-from gatenlp import Document
-import json
 
 OUTSIDE_LABEL_STRING = 'o'
 
