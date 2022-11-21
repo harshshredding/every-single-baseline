@@ -12,38 +12,21 @@ def print_args() -> None:
     print("TESTING_MODE", TESTING_MODE)
     print(json.dumps(args, indent=4, sort_keys=True))
 
+def get_loss_function():
+    return nn.CrossEntropyLoss()
+
+def get_bert_tokenizer():
+    """
+    Get the bert tokenizer
+    """
+    return AutoTokenizer.from_pretrained(args['bert_model_name'])
+
 def get_train_annos_dict() -> Dict[str, List[Anno]]:
     return util.get_annos_dict(args['train_annos_file_path'])
 
 def get_valid_annos_dict() -> Dict[str, List[Anno]]:
     return util.get_annos_dict(args['valid_annos_file_path'])
 
-def create_mistakes_visualization(mistakes_file_path: str, mistakes_visualization_file_path: str) -> None:
-    """
-    Create a gate-visualization-file(.bdocjs format) that contains the mistakes
-    made by a trained model.
-
-    Args:
-        - mistakes_file_path: the file path containing the mistakes of the model
-        - gate_visualization_file_path: the gate visualization file path to create 
-    """
-    gold_annos_dict = get_valid_annos_dict()
-    mistake_annos_dict = util.get_mistakes_annos(mistakes_file_path)
-    sample_to_text_valid = get_valid_texts()
-    combined_annos_dict = {}
-    for sample_id in gold_annos_dict:
-        gold_annos_list = gold_annos_dict[sample_id]
-        mistake_annos_list = mistake_annos_dict.get(sample_id, [])
-        combined_list = gold_annos_list + mistake_annos_list
-        for anno in combined_list:
-            anno.begin_offset = int(anno.begin_offset)
-            anno.end_offset = int(anno.end_offset)
-        combined_annos_dict[sample_id] = combined_list 
-    util.create_visualization_file(
-        mistakes_visualization_file_path,
-        combined_annos_dict,
-        sample_to_text_valid
-        )
 
 
 def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
@@ -57,12 +40,13 @@ def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
-
 def read_pos_embeddings_file():
     return pd.read_pickle(args['pos_embeddings_path'])
 
 def get_label_idx_dicts() -> tuple[Dict[Label, int], Dict[int, Label]]:
-    return util.get_label_idx_dicts(args['types_file_path'])
+    label_to_idx, idx_to_label = util.get_label_idx_dicts(args['types_file_path'])
+    assert len(label_to_idx) == args['num_types'] * 2 + 1
+    return label_to_idx, idx_to_label
 
 def get_optimizer(model):
     if args['optimizer'] == 'Ranger':
@@ -277,13 +261,13 @@ def prepare_model():
 
 
 # TODO: move to different module
-def get_train_data() -> Dict[str, List[TokenData]]:
-    return util.read_data_from_folder(args['training_data_folder_path'])
+def get_train_tokens() -> Dict[SampleId, List[TokenData]]:
+    return util.get_tokens_from_file(args['train_tokens_file_path'])
 
 
 # TODO: move to different module
-def get_valid_data() -> Dict[str, List[TokenData]]:
-    return util.read_data_from_folder(args['validation_data_folder_path'])
+def get_valid_tokens() -> Dict[SampleId, List[TokenData]]:
+    return util.get_tokens_from_file(args['valid_tokens_file_path'])
 
 
 # TODO: move to different module

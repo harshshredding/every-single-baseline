@@ -218,6 +218,39 @@ def remove_if_exists(file_path: str):
             os.remove(file_path)
 
 
+
+
+def create_mistakes_visualization(
+    mistakes_file_path: str,
+    mistakes_visualization_file_path: str,
+    valid_gold_annos_dict: Dict[SampleId, List[Anno]],
+    sample_to_text_valid: Dict[SampleId, str]
+    ) -> None:
+    """
+    Create a gate-visualization-file(.bdocjs format) that contains the mistakes
+    made by a trained model.
+
+    Args:
+        - mistakes_file_path: the file path containing the mistakes of the model
+        - gate_visualization_file_path: the gate visualization file path to create 
+    """
+    mistake_annos_dict = get_mistakes_annos(mistakes_file_path)
+    combined_annos_dict = {}
+    for sample_id in valid_gold_annos_dict:
+        gold_annos_list = valid_gold_annos_dict[sample_id]
+        mistake_annos_list = mistake_annos_dict.get(sample_id, [])
+        combined_list = gold_annos_list + mistake_annos_list
+        for anno in combined_list:
+            anno.begin_offset = int(anno.begin_offset)
+            anno.end_offset = int(anno.end_offset)
+        combined_annos_dict[sample_id] = combined_list 
+    create_visualization_file(
+        mistakes_visualization_file_path,
+        combined_annos_dict,
+        sample_to_text_valid
+        )
+
+
 def create_visualization_file(
         visualization_file_path: str,
         sample_to_annos: Dict[SampleId, List[Anno]],
@@ -372,18 +405,25 @@ def get_token_strings(sample_data: List[TokenData]):
     return only_token_strings
 
 
-def get_annos_surrounding_token(annos: List[Anno], token: TokenData) -> List[Anno]:
-    return [anno for anno in annos \
-        if (anno.begin_offset <= token.token_start_offset) and (token.token_end_offset <= anno.end_offset)]
+def get_biggest_anno_surrounding_token(annos: List[Anno], token: TokenData) -> List[Anno]:
+    all_annos_surrounding_token = [
+        anno for anno in annos 
+        if (anno.begin_offset <= token.token_start_offset) and (token.token_end_offset <= anno.end_offset)
+    ]
+    if len(all_annos_surrounding_token) > 1:
+        return [max(all_annos_surrounding_token, key=lambda x: (x.end_offset - x.begin_offset))]
+    else:
+        return all_annos_surrounding_token
 
 
 def get_label_strings(sample_data: List[TokenData], annos: List[Anno]):
     ret_labels = []
     for token_data in sample_data:
-        surrounding_annos = get_annos_surrounding_token(annos, token_data)
+        surrounding_annos = get_biggest_anno_surrounding_token(annos, token_data)
         if not len(surrounding_annos):
             ret_labels.append(OUTSIDE_LABEL_STRING)
         else:
+            assert len(surrounding_annos) == 1
             ret_labels.append(surrounding_annos[0].label_type)
     return ret_labels
 
@@ -422,7 +462,7 @@ def get_labels_bio(sample_token_data: List[TokenData], annos: List[Anno]) -> Lis
     """
     new_labels = []
     for token in sample_token_data:
-        annos_that_surround = get_annos_surrounding_token(annos, token)
+        annos_that_surround = get_biggest_anno_surrounding_token(annos, token)
         if not len(annos_that_surround):
             new_labels.append(Label.get_outside_label())
         else:

@@ -54,6 +54,7 @@ class Preprocessor(ABC):
         self.sample_text_file_path = sample_text_file_path
         assert sample_text_file_path.endswith('.json')
         self.nlp = spacy.load("en_core_web_sm")
+        print("Preprocessor Name:", type(self).__name__)
 
     @abstractmethod
     def get_samples(self) -> List[Sample]:

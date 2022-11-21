@@ -16,7 +16,7 @@ if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
 else:
     EXPERIMENT = 'test'
-curr_dataset = Dataset.legaleval
+curr_dataset = Dataset.living_ner
 if curr_dataset == Dataset.few_nerd:
     args = {
         "train_annos_file_path": "./datasets/few-nerd-dataset/gold-annos/few_nerd_train_annos.tsv",
@@ -148,6 +148,27 @@ elif curr_dataset == Dataset.legaleval:
         "learning_rate": 1e-5,
         "dataset_name": curr_dataset.name,
     }
+elif curr_dataset == Dataset.living_ner:
+    args = {
+            "train_annos_file_path": f"./preprocessed_data/living_ner_train_annos.tsv",
+            "valid_annos_file_path": f"./preprocessed_data/living_ner_valid_annos.tsv",
+            "train_tokens_file_path": f"./preprocessed_data/living_ner_train_tokens.json",
+            "valid_tokens_file_path": f"./preprocessed_data/living_ner_valid_tokens.json",
+            "train_sample_text_data_file_path": f"./preprocessed_data/living_ner_train_sample_text.json",
+            "valid_sample_text_data_file_path": f"./preprocessed_data/living_ner_valid_sample_text.json",
+            "types_file_path": "./preprocessed_data/living_ner_train_types.txt",
+            "num_types": 2,
+            # MODEL DETAILS
+            "bert_model_name": "bert-base-uncased",
+            "bert_model_output_dim": 768,
+            "num_epochs": 20,
+            "save_models_dir": "./models",
+            "errors_dir": './errors',
+            "model_name": "JustBert3Classes",
+            "optimizer": "Adam",
+            "learning_rate": 1e-5,
+            "dataset_name": curr_dataset.name,
+        }
 else:
     raise Exception(f'Dataset {curr_dataset} is not supported')
 default_key = "DEFAULT"
