@@ -2,7 +2,6 @@ from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
 from preprocess import Preprocessor
 from typing import List, Dict
 import os
-import train_util
 import pandas as pd
 
 class SocialDisNerPreprocessor(Preprocessor):
