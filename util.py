@@ -200,7 +200,6 @@ def get_mistakes_annos(mistakes_file_path) -> SampleAnnotations:
     sample_to_annos = {}
     for _, row in df.iterrows():
         annos_list = sample_to_annos.get(str(row['sample_id']), [])
-        print(row['begin'], row['sample_id'])
         annos_list.append(Anno(int(row['begin']), int(row['end']), row['mistake_type'], row['extraction'], {"type":row['type']}))
         sample_to_annos[str(row['sample_id'])] = annos_list
     return sample_to_annos
