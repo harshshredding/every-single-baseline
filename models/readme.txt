@@ -1,1 +1,0 @@
-All models are saved in this directory.
