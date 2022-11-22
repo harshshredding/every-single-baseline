@@ -93,13 +93,14 @@ elif curr_dataset == Dataset.social_dis_ner:
 elif curr_dataset == Dataset.multiconer:
     granularity = get_user_input('specify multiconer label granularity', ['coarse', 'fine'])
     args = {
-        "train_annos_file_path": f"./datasets/multiconer/gold-annos/train/{granularity}/annos-train.tsv",
-        "valid_annos_file_path": f"./datasets/multiconer/gold-annos/valid/{granularity}/annos-valid.tsv",
-        "training_data_folder_path": f"./datasets/multiconer/input-files/train/{granularity}",
-        "validation_data_folder_path": f"./datasets/multiconer/input-files/valid/{granularity}",
-        "gate_input_folder_path": "./datasets/multiconer/gate-input",
-        "types_file_path": f"./datasets/multiconer/{granularity}/types.txt",
-        "num_types": 33 if granularity == 'fine' else 6,
+        "train_annos_file_path": f"./preprocessed_data/multiconer_train_coarse_annos.tsv",
+        "valid_annos_file_path": f"./preprocessed_data/multiconer_valid_coarse_annos.tsv",
+        "train_tokens_file_path": f"./preprocessed_data/multiconer_train_coarse_tokens.json",
+        "valid_tokens_file_path": f"./preprocessed_data/multiconer_valid_coarse_tokens.json",
+        "train_sample_text_data_file_path": f"./preprocessed_data/multiconer_train_coarse_sample_text.json",
+        "valid_sample_text_data_file_path": f"./preprocessed_data/multiconer_valid_coarse_sample_text.json",
+        "types_file_path": "./preprocessed_data/multiconer_train_coarse_types.txt",
+        "num_types": 6,
         # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
         "bert_model_name": "bert-base-uncased",
         "granularity": granularity,
