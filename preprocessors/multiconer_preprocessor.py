@@ -75,6 +75,7 @@ class PreprocessMulticoner(Preprocessor):
 
     def get_samples(self) -> List[Sample]:
         return self.__get_samples(f"{self.raw_data_folder_path}/en-{self.dataset_split.name}.conll")
+        
 
     def __get_text(self, tokens: List[tuple]) -> str:
         return ' '.join([token_string for token_string, _ in tokens])
