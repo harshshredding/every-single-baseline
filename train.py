@@ -20,6 +20,8 @@ sample_to_token_data_train = train_util.get_train_tokens()
 sample_to_token_data_valid = train_util.get_valid_tokens()
 sample_to_text_train = train_util.get_train_texts()
 sample_to_text_valid = train_util.get_valid_texts()
+logging.info(f"num train samples {len(sample_to_text_train)}")
+logging.info(f"num valid samples {len(sample_to_text_valid)}")
 logging.info("finished reading data.")
 
 # ------ MODEL INITIALISATION --------

@@ -6,6 +6,7 @@ from typing import List, Dict
 import pandas as pd
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
 from preprocess import Preprocessor
+import util
 
 
 class LivingNerPreprocessor(Preprocessor):
@@ -58,7 +59,7 @@ class LivingNerPreprocessor(Preprocessor):
         by the organizers.
 
         """
-        ret = []
+        document_samples = []
         raw_text_files_folder_path = f"{self.raw_data_folder_path}/text-files"
         data_files_list = os.listdir(raw_text_files_folder_path)
         annos_dict = self.__get_annos_dict()
@@ -75,8 +76,13 @@ class LivingNerPreprocessor(Preprocessor):
                 data = new_str
             sample_id = filename[:-4]
             sample_annos = annos_dict.get(sample_id, [])
-            ret.append(Sample(data, sample_id, sample_annos))
-        return ret
+            document_samples.append(Sample(data, sample_id, sample_annos))
+        sentence_samples = []
+        for doc_sample in document_samples:
+            sentence_samples.extend(util.make_sentence_samples(doc_sample, self.nlp))
+        return sentence_samples
+        
+        
 
     def create_entity_types_file(self) -> None:
         """

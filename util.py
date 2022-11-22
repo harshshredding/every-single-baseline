@@ -217,6 +217,29 @@ def remove_if_exists(file_path: str):
             os.remove(file_path)
 
 
+def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
+    """
+    Takes a sample and creates mini-samples, where each
+    mini-sample represents a sentence.
+
+    sample: (Sample)
+        The sample object we want to split.
+    nlp: 
+        The spacy pipeline we want to use to perform sentence splitting.
+    """
+    ret_sent_samples = []
+    spacy_doc = nlp(sample.text)
+    assert spacy_doc.has_annotation("SENT_START")
+    for i, sent in enumerate(spacy_doc.sents):
+        annos_contained_in_sent = [anno for anno in sample.annos if (sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
+        sent_annos = []
+        for contained_anno in annos_contained_in_sent:
+            new_start = contained_anno.begin_offset - sent.start_char
+            new_end = contained_anno.end_offset - sent.start_char
+            new_extraction = sent.text[new_start:new_end]
+            sent_annos.append(Anno(new_start, new_end, contained_anno.label_type, new_extraction))
+        ret_sent_samples.append(Sample(sent.text, f"{sample.id}_sent_{i}", sent_annos)) 
+    return ret_sent_samples
 
 
 def create_mistakes_visualization(

@@ -159,7 +159,7 @@ elif curr_dataset == Dataset.living_ner:
             "types_file_path": "./preprocessed_data/living_ner_train_types.txt",
             "num_types": 2,
             # MODEL DETAILS
-            "bert_model_name": "bert-base-uncased",
+            "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
             "bert_model_output_dim": 768,
             "num_epochs": 20,
             "save_models_dir": "./models",
