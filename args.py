@@ -16,7 +16,7 @@ if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
 else:
     EXPERIMENT = 'test'
-curr_dataset = Dataset.living_ner
+curr_dataset = Dataset.legaleval
 if curr_dataset == Dataset.few_nerd:
     args = {
         "train_annos_file_path": "./datasets/few-nerd-dataset/gold-annos/few_nerd_train_annos.tsv",
@@ -127,12 +127,13 @@ elif curr_dataset == Dataset.multiconer:
 elif curr_dataset == Dataset.legaleval:
     section = get_user_input('specify section', ['JUDGEMENT', 'PREAMBLE'])
     args = {
-        "train_annos_file_path": f"./datasets/legaleval/gold-annos/train/{section}/annos-{section}-train.tsv",
-        "valid_annos_file_path": f"./datasets/legaleval/gold-annos/valid/{section}/annos-{section}-valid.tsv",
-        "gate_input_folder_path": "./datasets/legaleval/gate-input",
-        "training_data_folder_path": f"./datasets/legaleval/input-files/train/{section}",
-        "validation_data_folder_path": f"./datasets/legaleval/input-files/valid/{section}",
-        "types_file_path": "./datasets/legaleval/types.txt",
+        "train_annos_file_path": f"./preprocessed_data/legaleval_train_judgement_annos.tsv",
+        "valid_annos_file_path": f"./preprocessed_data/legaleval_valid_judgement_annos.tsv",
+        "train_tokens_file_path": f"./preprocessed_data/legaleval_train_judgement_tokens.json",
+        "valid_tokens_file_path": f"./preprocessed_data/legaleval_valid_judgement_tokens.json",
+        "train_sample_text_data_file_path": f"./preprocessed_data/legaleval_train_judgement_sample_text.json",
+        "valid_sample_text_data_file_path": f"./preprocessed_data/legaleval_valid_judgement_sample_text.json",
+        "types_file_path": "./preprocessed_data/legaleval_train_judgement_types.txt",
         "num_types": 14,
         # MODEL DETAILS
         "bert_model_name": "bert-base-uncased",
