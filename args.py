@@ -16,7 +16,7 @@ if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
 else:
     EXPERIMENT = 'test'
-curr_dataset = Dataset.multiconer
+curr_dataset = Dataset.social_dis_ner
 if curr_dataset == Dataset.few_nerd:
     args = {
         "train_annos_file_path": "./datasets/few-nerd-dataset/gold-annos/few_nerd_train_annos.tsv",
@@ -67,16 +67,18 @@ elif curr_dataset == Dataset.genia:
     }
 elif curr_dataset == Dataset.social_dis_ner:
     args = {
-        "train_annos_file_path": "./datasets/social-dis-ner-dataset/mentions.tsv",
-        "valid_annos_file_path": "./datasets/social-dis-ner-dataset/mentions.tsv",
-        "training_data_folder_path": f"./datasets/social-dis-ner-dataset/gate-output-no-custom-tokenization/train",
-        "validation_data_folder_path": f"./datasets/social-dis-ner-dataset/gate-output-no-custom-tokenization/valid",
-        "types_file_path": "./datasets/social-dis-ner-dataset/types.txt",
+        "train_annos_file_path": f"./preprocessed_data/social_dis_ner_train_annos.tsv",
+        "valid_annos_file_path": f"./preprocessed_data/social_dis_ner_valid_annos.tsv",
+        "train_tokens_file_path": f"./preprocessed_data/social_dis_ner_train_tokens.json",
+        "valid_tokens_file_path": f"./preprocessed_data/social_dis_ner_valid_tokens.json",
+        "train_sample_text_data_file_path": f"./preprocessed_data/social_dis_ner_train_sample_text.json",
+        "valid_sample_text_data_file_path": f"./preprocessed_data/social_dis_ner_valid_sample_text.json",
+        "types_file_path": "./preprocessed_data/social_dis_ner_train_types.txt",
         "num_types": 1,
-        # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
-        "bert_model_name": "xlm-roberta-large",
-        "bert_model_output_dim": 1023,
-        "num_epochs": 14,
+        # MODEL DETAILS 
+        "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
+        "bert_model_output_dim": 768,
+        "num_epochs": 15,
         "save_models_dir": "./models",
         "raw_validation_files_path": "./socialdisner-data/train-valid-txt-files/validation",
         "raw_train_files_path": "./socialdisner-data/train-valid-txt-files/training",
@@ -85,7 +87,7 @@ elif curr_dataset == Dataset.social_dis_ner:
         "pos_embeddings_path": './spanish_pos_emb.p',
         "disease_gazetteer_path": './dictionary_distemist.tsv',
         "errors_dir": './errors',
-        "model_name": "OnlyRoberta3Classes",
+        "model_name": "JustBert3Classes",
         "optimizer": "Adam",
         "learning_rate": 1e-5,
         "dataset_name": "social-dis-ner"

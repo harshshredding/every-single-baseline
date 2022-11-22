@@ -87,7 +87,7 @@ class SocialDisNerPreprocessor(Preprocessor):
         <<< file end
         """
         with open(self.entity_type_file_path, 'w') as output_file:
-            print('Disease', file=output_file)
+            print('ENFERMEDAD', file=output_file)
 
 
 prefix = f"{Dataset.social_dis_ner.name}_{DatasetSplit.valid.name}"
