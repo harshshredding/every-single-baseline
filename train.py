@@ -62,6 +62,8 @@ for epoch in range(args['num_epochs']):
         tokens = util.get_token_strings(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
+        if not len(batch_encoding.word_ids()): # If we don't have any tokens, no point training
+            continue
         expanded_labels = train_util.extract_expanded_labels(sample_data, batch_encoding, annos)
         expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
         model_input = train_util.prepare_model_input(batch_encoding, sample_data)
