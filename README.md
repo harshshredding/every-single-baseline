@@ -1,5 +1,5 @@
 # NER framework
-This framework should allow you to efficiently train a variety of NER models on your data. Moreover, it makes it easy to inspect the mistakes that the trained model is making.
+This framework should allow you to easily train a large variety of NER models on your data. Moreover, it makes it easy to inspect the mistakes that the trained models are making.
 
 # Steps to train on your data
 1. Create 3 files: 
