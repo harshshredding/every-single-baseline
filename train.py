@@ -7,7 +7,6 @@ import time
 import numpy as np
 import csv
 import logging
-logging.basicConfig(filename='train.log', encoding='utf-8', level=logging.INFO)
 
 train_util.print_args()
 
@@ -43,11 +42,8 @@ for _, annos in sample_to_annos_valid.items():
     for anno in annos:
         assert anno.label_type in all_types, f"{anno.label_type}"
 
-
-
-
 for epoch in range(args['num_epochs']):
-    epoch_loss = [] 
+    epoch_loss = []
     # --------- BEGIN TRAINING ----------------
     print(f"Train epoch {epoch}")
     train_start_time = time.time()
@@ -62,7 +58,7 @@ for epoch in range(args['num_epochs']):
         tokens = util.get_token_strings(sample_data)
         batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                         add_special_tokens=False, truncation=True, max_length=512).to(device)
-        if not len(batch_encoding.word_ids()): # If we don't have any tokens, no point training
+        if not len(batch_encoding.word_ids()):  # If we don't have any tokens, no point training
             continue
         if len(batch_encoding.word_ids()) > 512:
             logging.warn(f"sample_id: {sample_id} is too long, num subtokens {len(batch_encoding.word_ids())}")
@@ -107,7 +103,7 @@ for epoch in range(args['num_epochs']):
                 offsets_list = util.get_token_offsets(sample_data)
                 batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                                 add_special_tokens=False, truncation=True, max_length=512).to(device)
-                if not len(batch_encoding.word_ids()): # If we don't have any tokens, no point training
+                if not len(batch_encoding.word_ids()):  # If we don't have any tokens, no point training
                     continue
                 expanded_labels = train_util.extract_expanded_labels(sample_data, batch_encoding, annos)
                 expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
@@ -140,24 +136,31 @@ for epoch in range(args['num_epochs']):
                 for span in pred_spans_set:
                     start_offset = span[0]
                     end_offset = span[1]
-                    extraction = util.get_extraction(tokens=tokens, token_offsets=offsets_list, start=start_offset, end=end_offset)
-                    predictions_file_writer.writerow([sample_id, str(start_offset), str(end_offset), span[2], extraction])
+                    extraction = util.get_extraction(tokens=tokens, token_offsets=offsets_list, start=start_offset,
+                                                     end=end_offset)
+                    predictions_file_writer.writerow(
+                        [sample_id, str(start_offset), str(end_offset), span[2], extraction])
                 # write false negative errors
                 for span in FP:
                     start_offset = span[0]
                     end_offset = span[1]
-                    extraction = util.get_extraction(tokens=tokens, token_offsets=offsets_list, start=start_offset, end=end_offset)
-                    mistakes_file_writer.writerow([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FP'])
+                    extraction = util.get_extraction(tokens=tokens, token_offsets=offsets_list, start=start_offset,
+                                                     end=end_offset)
+                    mistakes_file_writer.writerow(
+                        [sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FP'])
                 # write false positive errors
                 for span in FN:
                     start_offset = span[0]
                     end_offset = span[1]
-                    extraction = util.get_extraction(tokens=tokens, token_offsets=offsets_list, start=start_offset, end=end_offset)
-                    mistakes_file_writer.writerow([sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN'])
+                    extraction = util.get_extraction(tokens=tokens, token_offsets=offsets_list, start=start_offset,
+                                                     end=end_offset)
+                    mistakes_file_writer.writerow(
+                        [sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN'])
         print("Token Level Accuracy", np.array(token_level_accuracy_list).mean(),
               f"Validation time : {str(time.time() - validation_start_time)} seconds")
         print("Macro f1: ", np.array(f1_list).mean())
         micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
-        print(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}") 
+        print(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
     visualize_errors_file_path = args['save_models_dir'] + f"/visualize_errors_{EXPERIMENT}_epoch_{epoch}.bdocjs"
-    util.create_mistakes_visualization(errors_file_path, visualize_errors_file_path, sample_to_annos_valid, sample_to_text_valid)
+    util.create_mistakes_visualization(errors_file_path, visualize_errors_file_path, sample_to_annos_valid,
+                                       sample_to_text_valid)

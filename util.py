@@ -1,14 +1,75 @@
 import csv
 from pathlib import Path
+
+import torch
 from gatenlp import Document
 from structs import *
-from typing import Dict, List
+from typing import Dict, List, Tuple
 import json
 import os
 import pandas as pd
+from collections import deque
+from spacy.tokens.span import Span
+import logging
+
+
+def visualize_constituency_tree_bfs(spacy_sentence_span):
+    """
+    Pretty print the constituency tree with helpful indentations.
+
+    Args:
+        spacy_sentence_span: (a spacy span)
+            The span of one sentence generated after running 
+            the benepar constituency parse pipeline.
+    """
+    queue = deque()
+    queue.append((spacy_sentence_span, 0))
+    while len(queue):
+        curr_span, depth = queue.popleft()
+        print(depth * "\t", curr_span._.labels, curr_span)
+        for const in curr_span._.children:
+            queue.append((const, depth + 1))
+
+
+def visualize_constituency_tree_dfs(spacy_sentence_span: Span):
+    """
+    Pretty print the constituency tree with helpful indentations.
+
+    Args:
+        spacy_sentence_span: (a spacy span)
+            The span of one sentence generated after running 
+            the benepar constituency parse pipeline.
+    """
+
+    def dfs(curr_span: Span, depth):
+        print(depth * "\t", curr_span._.labels,
+              (curr_span.start_char, curr_span.end_char), curr_span)
+        for const in curr_span._.children:
+            dfs(const, depth + 1)
+
+    dfs(spacy_sentence_span, 0)
+
+
+def get_noun_phrase_annotations(spacy_sentence_span: Span) -> List[Anno]:
+    """
+    From the given spacy sentence span, get all the noun-phrase annos.
+
+    Args:
+        spacy_sentence_span: (a spacy span)
+            The span of one sentence generated after running 
+            the benepar constituency parse pipeline.
+    """
+    ret = []
+    for const in spacy_sentence_span._.constituents:
+        if len(const._.labels) and const._.labels[0] == 'NP':
+            ret.append(Anno(const.start_char, const.end_char,
+                            const._.labels[0], str(const)))
+    return ret
+
 
 def raise_why():
     raise Exception("why are we using this ?")
+
 
 def read_umls_file(umls_file_path):
     umls_embedding_dict = {}
@@ -18,7 +79,8 @@ def read_umls_file(umls_file_path):
             line_split = line.split(',')
             assert len(line_split) == 51
             umls_id = line_split[0]
-            embedding_vector = [float(val) for val in line_split[1:len(line_split)]]
+            embedding_vector = [float(val)
+                                for val in line_split[1:len(line_split)]]
             umls_embedding_dict[umls_id] = embedding_vector
     return umls_embedding_dict
 
@@ -30,6 +92,10 @@ def get_indices_for_dict_keys(some_dict):
     return key_to_index
 
 
+def log_tensor(name, tensor: torch.Tensor):
+    logging.debug(f"{name}, {tensor.shape}, {type(tensor)}")
+
+
 def read_umls_file_small(umls_file_path):
     umls_embedding_dict = {}
     with open(umls_file_path, 'r') as f:
@@ -38,10 +104,12 @@ def read_umls_file_small(umls_file_path):
             line_split = line.split(',')
             assert len(line_split) == 51
             umls_id = line_split[0]
-            embedding_vector = [float(val) for val in line_split[1:len(line_split)]]
+            embedding_vector = [float(val)
+                                for val in line_split[1:len(line_split)]]
             umls_embedding_dict[umls_id] = embedding_vector
             break
     return umls_embedding_dict
+
 
 def get_extraction(tokens, token_offsets, start, end):
     assert len(tokens) == len(token_offsets)
@@ -51,8 +119,10 @@ def get_extraction(tokens, token_offsets, start, end):
             extraction.append(tokens[i])
     return ' '.join(extraction)
 
+
 def print_list(some_list):
     print(p_string(some_list))
+
 
 def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, List[TokenData]],
                            annos_dict: Dict[str, List[Anno]], num_samples=None):
@@ -72,6 +142,7 @@ def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, Lis
             row_to_write = [sample_id, sample_text, spans]
             writer.writerow(row_to_write)
 
+
 def create_gate_file(output_file_path: str, sample_to_token_data: Dict[str, List[TokenData]],
                      annos_dict: Dict[str, List[Anno]], num_samples=None) -> None:
     raise_why()
@@ -88,20 +159,25 @@ def create_gate_file(output_file_path: str, sample_to_token_data: Dict[str, List
         sample_data = sample_to_token_data[sample_id]
         sample_text = ' '.join(get_token_strings(sample_data)) + '\n'
         all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,
-                           anno.label_type, anno.features) for anno in gold_annos])
-        all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset + anno.end_offset,'Span', anno.features) for anno in gold_annos])
+                                anno.label_type, anno.features) for anno in gold_annos])
+        all_gate_annos.extend([(curr_sample_offset + anno.begin_offset, curr_sample_offset +
+                                anno.end_offset, 'Span', anno.features) for anno in gold_annos])
         document_text += sample_text
         curr_sample_offset += len(sample_text)
         sample_end_offset = curr_sample_offset
-        all_gate_annos.append((sample_start_offset, sample_end_offset, 'Sample', {'sample_id': sample_id}))
+        all_gate_annos.append(
+            (sample_start_offset, sample_end_offset, 'Sample', {'sample_id': sample_id}))
     gate_document = Document(document_text)
     default_ann_set = gate_document.annset()
     for gate_anno in all_gate_annos:
-        default_ann_set.add(int(gate_anno[0]), int(gate_anno[1]), gate_anno[2], gate_anno[3])
+        default_ann_set.add(int(gate_anno[0]), int(
+            gate_anno[1]), gate_anno[2], gate_anno[3])
     gate_document.save(output_file_path)
+
 
 def p_string(obj) -> str:
     return json.dumps(obj=obj, indent=4)
+
 
 def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
     span_list = []
@@ -122,6 +198,53 @@ def get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding):
     return span_list_word
 
 
+def enumerate_spans(sentence: List,
+                    offset: int = 0,
+                    max_span_width: int | None = None,
+                    min_span_width: int = 1,
+                    ) -> List[Tuple[int, int]]:
+    """
+    Given a sentence, return all token spans within the sentence. 
+    Spans are `inclusive`.
+    Additionally, you can provide a maximum and minimum span width,
+    which will be used to exclude spans outside of this range.
+
+    Finally, you can provide a function mapping `List[T] -> bool`, which will
+    be applied to every span to decide whether that span should be included. 
+    This allows filtering by length, regex matches, pos tags or any Spacy 
+    `Token` attributes, for example.
+
+    # Parameters
+
+    sentence : `List[T]`, required.
+        The sentence to generate spans for. The type is generic, as this 
+        function can be used with strings, or Spacy `Tokens` or other 
+        sequences.
+    offset : `int`, optional (default = `0`)
+        A numeric offset to add to all span start and end indices. This is 
+        helpful if the sentence is part of a larger structure, such as a 
+        document, which the indices need to respect.
+    max_span_width : `int`, optional (default = `None`)
+        The maximum length of spans which should be included. 
+        Defaults to len(sentence).
+    min_span_width : `int`, optional (default = `1`)
+        The minimum length of spans which should be included. Defaults to 1.
+    filter_function : `Callable[[List[T]], bool]`, optional (default = `None`)
+        A function mapping sequences of the passed type T to a boolean value.
+        If `True`, the span is included in the returned spans from the
+        sentence, otherwise it is excluded..
+    """
+    max_span_width = max_span_width or len(sentence)
+    spans: List[Tuple[int, int]] = []
+
+    for start_index in range(len(sentence)):
+        last_end_index = min(start_index + max_span_width, len(sentence))
+        first_end_index = min(start_index + min_span_width - 1, len(sentence))
+        for end_index in range(first_end_index, last_end_index):
+            start = offset + start_index
+            end = offset + end_index
+            spans.append((start, end))
+    return spans
 
 
 def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding):
@@ -169,12 +292,6 @@ def f1(TP, FP, FN) -> tuple[float, float, float]:
         return f1_score, precision, recall
 
 
-
-
-
-
-
-
 def get_tweet_data(folder_path):
     id_to_data = {}
     data_files_list = os.listdir(folder_path)
@@ -200,21 +317,22 @@ def get_mistakes_annos(mistakes_file_path) -> SampleAnnotations:
     sample_to_annos = {}
     for _, row in df.iterrows():
         annos_list = sample_to_annos.get(str(row['sample_id']), [])
-        annos_list.append(Anno(int(row['begin']), int(row['end']), row['mistake_type'], row['extraction'], {"type":row['type']}))
+        annos_list.append(Anno(int(row['begin']), int(
+            row['end']), row['mistake_type'], row['extraction'], {"type": row['type']}))
         sample_to_annos[str(row['sample_id'])] = annos_list
     return sample_to_annos
 
 
 def remove_if_exists(file_path: str):
-        """
-        If file exists, then remove it.
+    """
+    If file exists, then remove it.
 
-        Args:
-            file_path: str
-                the file path of the file we wnat to remove
-        """
-        if os.path.exists(file_path):
-            os.remove(file_path)
+    Args:
+        file_path: str
+            the file path of the file we wnat to remove
+    """
+    if os.path.exists(file_path):
+        os.remove(file_path)
 
 
 def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
@@ -231,23 +349,26 @@ def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
     spacy_doc = nlp(sample.text)
     assert spacy_doc.has_annotation("SENT_START")
     for i, sent in enumerate(spacy_doc.sents):
-        annos_contained_in_sent = [anno for anno in sample.annos if (sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
+        annos_contained_in_sent = [anno for anno in sample.annos if (
+                sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
         sent_annos = []
         for contained_anno in annos_contained_in_sent:
             new_start = contained_anno.begin_offset - sent.start_char
             new_end = contained_anno.end_offset - sent.start_char
             new_extraction = sent.text[new_start:new_end]
-            sent_annos.append(Anno(new_start, new_end, contained_anno.label_type, new_extraction))
-        ret_sent_samples.append(Sample(sent.text, f"{sample.id}_sent_{i}", sent_annos)) 
+            sent_annos.append(
+                Anno(new_start, new_end, contained_anno.label_type, new_extraction))
+        ret_sent_samples.append(
+            Sample(sent.text, f"{sample.id}_sent_{i}", sent_annos))
     return ret_sent_samples
 
 
 def create_mistakes_visualization(
-    mistakes_file_path: str,
-    mistakes_visualization_file_path: str,
-    valid_gold_annos_dict: Dict[SampleId, List[Anno]],
-    sample_to_text_valid: Dict[SampleId, str]
-    ) -> None:
+        mistakes_file_path: str,
+        mistakes_visualization_file_path: str,
+        valid_gold_annos_dict: Dict[SampleId, List[Anno]],
+        sample_to_text_valid: Dict[SampleId, str]
+) -> None:
     """
     Create a gate-visualization-file(.bdocjs format) that contains the mistakes
     made by a trained model.
@@ -265,56 +386,60 @@ def create_mistakes_visualization(
         for anno in combined_list:
             anno.begin_offset = int(anno.begin_offset)
             anno.end_offset = int(anno.end_offset)
-        combined_annos_dict[sample_id] = combined_list 
+        combined_annos_dict[sample_id] = combined_list
     create_visualization_file(
         mistakes_visualization_file_path,
         combined_annos_dict,
         sample_to_text_valid
-        )
+    )
 
 
 def create_visualization_file(
         visualization_file_path: str,
         sample_to_annos: Dict[SampleId, List[Anno]],
         sample_to_text: Dict[SampleId, str]
-    ) -> None:
-        """
-        Create a .bdocjs formatted file which can me directly imported into gate developer.
-        We create the file using the given text and annotations.
+) -> None:
+    """
+    Create a .bdocjs formatted file which can me directly imported into gate developer.
+    We create the file using the given text and annotations.
 
-        Args:
-            visualization_file_path: str
-                the path of the visualization file we want to create
-            annos_dict: Dict[str, List[Anno]]
-                mapping from sample ids to annotations
-            sample_to_text:
-                mapping from sample ids to text
-        """
-        assert visualization_file_path.endswith(".bdocjs")
-        sample_offset = 0
-        document_text = ""
-        ofsetted_annos = []
-        for sample_id in sample_to_annos:
-            document_text += (sample_to_text[sample_id] + '\n')
-            ofsetted_annos.append(Anno(sample_offset, len(document_text), 'Sample', '', {"id": sample_id}))
-            for anno in sample_to_annos[sample_id]:
-                new_start_offset = anno.begin_offset + sample_offset
-                new_end_offset = anno.end_offset + sample_offset
-                anno.features['orig_start_offset'] = anno.begin_offset
-                anno.features['orig_end_offset'] = anno.end_offset
-                ofsetted_annos.append(Anno(new_start_offset, new_end_offset, anno.label_type, anno.extraction, anno.features))
-            sample_offset += (len(sample_to_text[sample_id]) + 1)
-        gate_document = Document(document_text)
-        default_ann_set = gate_document.annset()
-        for ofsetted_annotation in ofsetted_annos:
-            default_ann_set.add(
-                int(ofsetted_annotation.begin_offset), 
-                int(ofsetted_annotation.end_offset), 
-                ofsetted_annotation.label_type, 
-                ofsetted_annotation.features)
-        gate_document.save(visualization_file_path)
+    Args:
+        visualization_file_path: str
+            the path of the visualization file we want to create
+        annos_dict: Dict[str, List[Anno]]
+            mapping from sample ids to annotations
+        sample_to_text:
+            mapping from sample ids to text
+    """
+    assert visualization_file_path.endswith(".bdocjs")
+    sample_offset = 0
+    document_text = ""
+    ofsetted_annos = []
+    for sample_id in sample_to_annos:
+        document_text += (sample_to_text[sample_id] + '\n')
+        ofsetted_annos.append(Anno(sample_offset, len(
+            document_text), 'Sample', '', {"id": sample_id}))
+        for anno in sample_to_annos[sample_id]:
+            new_start_offset = anno.begin_offset + sample_offset
+            new_end_offset = anno.end_offset + sample_offset
+            anno.features['orig_start_offset'] = anno.begin_offset
+            anno.features['orig_end_offset'] = anno.end_offset
+            ofsetted_annos.append(Anno(
+                new_start_offset, new_end_offset, anno.label_type, anno.extraction, anno.features))
+        sample_offset += (len(sample_to_text[sample_id]) + 1)
+    gate_document = Document(document_text)
+    default_ann_set = gate_document.annset()
+    for ofsetted_annotation in ofsetted_annos:
+        default_ann_set.add(
+            int(ofsetted_annotation.begin_offset),
+            int(ofsetted_annotation.end_offset),
+            ofsetted_annotation.label_type,
+            ofsetted_annotation.features)
+    gate_document.save(visualization_file_path)
 
-#TODO: remove this
+
+# TODO: remove this
+
 
 def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
     """
@@ -326,7 +451,8 @@ def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
     sample_to_annos = {}
     for i, row in df.iterrows():
         annos_list = sample_to_annos.get(str(row['sample_id']), [])
-        annos_list.append(Anno(row['begin'], row['end'], row['type'], row['extraction']))
+        annos_list.append(
+            Anno(row['begin'], row['end'], row['type'], row['extraction']))
         sample_to_annos[str(row['sample_id'])] = annos_list
     return sample_to_annos
 
@@ -340,8 +466,10 @@ def get_label_idx_dicts(types_file_path: str) -> tuple[Dict[Label, int], Dict[in
         for line in types_file.readlines():
             type_string = line.strip()
             if len(type_string):
-                label_to_idx_dict[Label(type_string, BioTag.begin)] = len(label_to_idx_dict)
-                label_to_idx_dict[Label(type_string, BioTag.inside)] = len(label_to_idx_dict)
+                label_to_idx_dict[Label(type_string, BioTag.begin)] = len(
+                    label_to_idx_dict)
+                label_to_idx_dict[Label(type_string, BioTag.inside)] = len(
+                    label_to_idx_dict)
     label_to_idx_dict[Label.get_outside_label()] = len(label_to_idx_dict)
     idx_to_label_dict = {}
     for label in label_to_idx_dict:
@@ -354,9 +482,9 @@ def open_make_dirs(file_path, mode):
     Path(file_path).parent.mkdir(parents=True, exist_ok=True)
     return open(file_path, mode)
 
+
 def create_directory_structure(folder_path):
     Path(folder_path).mkdir(parents=True, exist_ok=True)
-
 
 
 # TODO: deprecate because every dataset should have the same representation.
@@ -366,14 +494,14 @@ def parse_token_data(token_data_raw) -> TokenData:
 
     token_data_raw(dict): raw JSON representing a token.
     dataset(Dataset): the dataset the token belongs to.
-    """ 
+    """
     return TokenData(
         str(token_data_raw['Sample'][0]['id']),
         token_data_raw['Token'][0]['string'],
         token_data_raw['Token'][0]['length'],
         token_data_raw['Token'][0]['startOffset'],
         token_data_raw['Token'][0]['endOffset'],
-    )  
+    )
 
 
 # TODO:  deprecate
@@ -412,9 +540,6 @@ def get_tokens_from_file(file_path) -> Dict[SampleId, List[TokenData]]:
     return ret
 
 
-
-
-
 def get_texts(sample_text_file_path: str) -> Dict[SampleId, str]:
     with open(sample_text_file_path, 'r') as sample_text_file:
         return json.load(sample_text_file)
@@ -429,7 +554,7 @@ def get_token_strings(sample_data: List[TokenData]):
 
 def get_biggest_anno_surrounding_token(annos: List[Anno], token: TokenData) -> List[Anno]:
     all_annos_surrounding_token = [
-        anno for anno in annos 
+        anno for anno in annos
         if (anno.begin_offset <= token.token_start_offset) and (token.token_end_offset <= anno.end_offset)
     ]
     if len(all_annos_surrounding_token) > 1:
@@ -441,7 +566,8 @@ def get_biggest_anno_surrounding_token(annos: List[Anno], token: TokenData) -> L
 def get_label_strings(sample_data: List[TokenData], annos: List[Anno]):
     ret_labels = []
     for token_data in sample_data:
-        surrounding_annos = get_biggest_anno_surrounding_token(annos, token_data)
+        surrounding_annos = get_biggest_anno_surrounding_token(
+            annos, token_data)
         if not len(surrounding_annos):
             ret_labels.append(OUTSIDE_LABEL_STRING)
         else:
@@ -449,10 +575,12 @@ def get_label_strings(sample_data: List[TokenData], annos: List[Anno]):
             ret_labels.append(surrounding_annos[0].label_type)
     return ret_labels
 
+
 def assert_tokens_contain(token_data: List[TokenData], strings_to_check: List[str]):
     token_strings_set = set(get_token_strings(token_data))
     strings_to_check_set = set(strings_to_check)
     assert strings_to_check_set.issubset(token_strings_set)
+
 
 # def get_labels_bio(sample_data: List[TokenData], annos: List[Anno], types_dict) -> List[Label]:
 #     labels = get_label_strings(sample_data, types_dict)
@@ -476,6 +604,7 @@ def assert_tokens_contain(token_data: List[TokenData], strings_to_check: List[st
 #             new_labels.append(Label.get_outside_label())
 #     return new_labels
 
+
 def get_labels_bio(sample_token_data: List[TokenData], annos: List[Anno]) -> List[Label]:
     """
     Takes all tokens and gold annotations for a sample
@@ -489,12 +618,16 @@ def get_labels_bio(sample_token_data: List[TokenData], annos: List[Anno]) -> Lis
             new_labels.append(Label.get_outside_label())
         else:
             assert len(annos_that_surround) == 1
-            annos_with_same_start = [anno for anno in annos_that_surround if anno.begin_offset == token.token_start_offset]
+            annos_with_same_start = [
+                anno for anno in annos_that_surround if anno.begin_offset == token.token_start_offset]
             if len(annos_with_same_start):
-                new_labels.append(Label(annos_with_same_start[0].label_type, BioTag.begin))
+                new_labels.append(
+                    Label(annos_with_same_start[0].label_type, BioTag.begin))
             else:
-                new_labels.append(Label(annos_that_surround[0].label_type, BioTag.inside))
+                new_labels.append(
+                    Label(annos_that_surround[0].label_type, BioTag.inside))
     return new_labels
+
 
 def get_token_offsets(sample_data: List[TokenData]) -> List[tuple]:
     offsets_list = []
@@ -502,6 +635,7 @@ def get_token_offsets(sample_data: List[TokenData]) -> List[tuple]:
         offsets_list.append((token_data.token_start_offset,
                              token_data.token_end_offset))
     return offsets_list
+
 
 def get_umls_data(sample_data):
     raise NotImplementedError()
@@ -657,7 +791,8 @@ def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
         label = labels[word_idx]
         if (label.bio_tag == BioTag.begin) and (prev_word_idx == word_idx):
             assert prev_label is not None
-            new_labels.append(Label(label_type=prev_label.label_type, bio_tag=BioTag.inside))
+            new_labels.append(
+                Label(label_type=prev_label.label_type, bio_tag=BioTag.inside))
         else:
             new_labels.append(labels[word_idx])
         prev_word_idx = word_idx

@@ -1,3 +1,4 @@
+import logging
 import torch
 from structs import *
 from typing import List
@@ -12,6 +13,14 @@ def get_user_input(input_message: str, possible_values: List[str]):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
 TESTING_MODE = True
+
+if TESTING_MODE:
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+else:
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.WARN)
+
 if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
 else:

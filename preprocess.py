@@ -55,6 +55,16 @@ class Preprocessor(ABC):
         assert sample_text_file_path.endswith('.json')
         self.nlp = spacy.load("en_core_web_sm")
         print("Preprocessor Name:", type(self).__name__)
+        self.samples = None
+
+
+    def get_samples_cached(self) -> List[Sample]:
+        if self.samples is None:
+            print("first time")
+            self.samples = self.get_samples()
+        else:
+            print("using cache")
+        return self.samples
 
     @abstractmethod
     def get_samples(self) -> List[Sample]:
@@ -88,7 +98,7 @@ class Preprocessor(ABC):
             - type: The entity type of the annotation.
             - extraction: The text being annotated.
         """
-        samples = self.get_samples()
+        samples = self.get_samples_cached()
         with util.open_make_dirs(self.annotations_file_path, 'w') as annos_file:
             print("about to write")
             print(self.annotations_file_path)
@@ -125,7 +135,7 @@ class Preprocessor(ABC):
         Create a .bdocjs formatted file which can be directly imported 
         into gate developer using the gate bdocjs plugin. 
         """
-        samples = self.get_samples()
+        samples = self.get_samples_cached()
         self.add_token_annotations(samples)
         sample_to_annos = {}
         sample_to_text = {}
@@ -144,7 +154,7 @@ class Preprocessor(ABC):
         Create a json file that stores the tokens(and other corresponding information) 
         for each sample.
         """
-        samples = self.get_samples()
+        samples = self.get_samples_cached()
         nlp = spacy.load("en_core_web_sm")
         all_tokens_json = []
         for sample in samples:
@@ -169,7 +179,7 @@ class Preprocessor(ABC):
         The json file consists of one dictionary(mapping from
         sample ids to sample text content).
         """
-        samples = self.get_samples()
+        samples = self.get_samples_cached()
         sample_content = {}
         for sample in samples:
             sample_content[sample.id] = sample.text
