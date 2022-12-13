@@ -10,6 +10,7 @@ import os
 import pandas as pd
 from collections import deque
 from spacy.tokens.span import Span
+from transformers.tokenization_utils_base import BatchEncoding
 import logging
 
 
@@ -457,6 +458,16 @@ def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
     return sample_to_annos
 
 
+def get_all_types(types_file_path: str) -> List[str]:
+    ret = []
+    with open(types_file_path, 'r') as types_file:
+        for line in types_file:
+            type_name = line.strip()
+            if len(type_name):
+                ret.append(type_name)
+    return ret
+
+
 def get_label_idx_dicts(types_file_path: str) -> tuple[Dict[Label, int], Dict[int, Label]]:
     """
     get dictionaries mapping from labels to their corresponding indices.
@@ -798,3 +809,33 @@ def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
         prev_word_idx = word_idx
         prev_label = label
     return new_labels
+
+
+def get_token_level_spans(
+        sample_token_data: List[TokenData],
+        sample_annos: List[Anno]) -> List[tuple]:
+    """Convert char_offset spans to token-level spans
+    """
+    ret = []
+    for curr_anno in sample_annos:
+        begin_token = [i for i, token_data in enumerate(sample_token_data) if
+                       curr_anno.begin_offset == token_data.token_start_offset]
+
+        end_token = [i for i, token_data in enumerate(sample_token_data) if
+                     curr_anno.end_offset == token_data.token_end_offset]
+
+        if len(begin_token) and len(end_token):
+            ret.append((begin_token[0], end_token[0] + 1, curr_anno.label_type))
+    return ret
+
+
+def get_sub_token_level_spans(
+        token_level_spans: List[tuple],
+        batch_encoding: BatchEncoding
+) -> List[tuple]:
+    ret = []
+    for start_token_idx, end_token_idx, type_name in token_level_spans:
+        start_sub_token_idx = batch_encoding.word_to_tokens(start_token_idx).start
+        end_sub_token_idx = batch_encoding.word_to_tokens(end_token_idx - 1).end
+        ret.append((start_sub_token_idx, end_sub_token_idx, type_name))
+    return ret

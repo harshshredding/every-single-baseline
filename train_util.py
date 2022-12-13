@@ -45,8 +45,6 @@ def extract_expanded_labels(sample_data, batch_encoding, annos) -> List[Label]:
     raise Exception('Have to specify num of classes in model name ' + args['model_name'])
 
 
-
-
 def read_pos_embeddings_file():
     return pd.read_pickle(args['pos_embeddings_path'])
 
