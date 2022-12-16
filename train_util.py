@@ -288,6 +288,8 @@ def prepare_model():
         return OnlyRoberta3Classes().to(device)
     if args['model_name'] == 'JustBert3Classes':
         return JustBert3Classes().to(device)
+    if args['model_name'] == 'SpanBert':
+        return SpanBert().to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 

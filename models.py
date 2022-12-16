@@ -1,9 +1,15 @@
 from transformers import AutoModel, AutoTokenizer
+from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 import torch.nn as nn
 import torch
 from mi_rim import *
 from args import args
+from args import device
 from torch import Tensor
+import util
+from typing import List
+from structs import TokenData, Anno
+from transformers.tokenization_utils_base import BatchEncoding
 
 
 class Embedding(nn.Module):
@@ -19,6 +25,7 @@ class Embedding(nn.Module):
 
     def forward(self, input):
         return self.embedding(input)
+
 
 ######################################################################
 # ``PositionalEncoding`` module injects some information about the
@@ -45,7 +52,6 @@ class PositionalEncoding(nn.Module):
         x = self.dropout(x)
         x = torch.squeeze(x, dim=1)
         return x
-
 
 
 class SeqLabeler(torch.nn.Module):
@@ -473,6 +479,7 @@ class OnlyRoberta3Classes(torch.nn.Module):
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         return self.classifier(bert_embeddings)
 
+
 class JustBert3Classes(torch.nn.Module):
     def __init__(self):
         super(JustBert3Classes, self).__init__()
@@ -485,3 +492,113 @@ class JustBert3Classes(torch.nn.Module):
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         return self.classifier(bert_embeddings)
+
+
+class SpanBert(torch.nn.Module):
+    def __init__(self, all_types: List[str]):
+        super(SpanBert, self).__init__()
+        self.bert_model = AutoModel.from_pretrained('bert-base-uncased')
+        self.bert_tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
+        self.input_dim = 768
+        self.num_class = len(all_types) + 1
+        self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
+        self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)
+        self.loss_function = nn.CrossEntropyLoss()
+        self.type_to_idx = {type_name: i for i, type_name in enumerate(all_types)}
+        # Add NO_TYPE type which represents "no annotation"
+        self.type_to_idx['NO_TYPE'] = len(self.type_to_idx)
+        self.idx_to_type = {i: type_name for type_name, i in self.type_to_idx.items()}
+        assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
+
+    def forward(self,
+                sample_token_data: List[TokenData],
+                sample_annos: List[Anno]
+                ):
+        """Forward pass
+        Args:
+            sample_token_data (List[TokenData]): Token data of `one` sample.
+            sample_annos (List[Anno]): Annotations of one sample.
+        Returns:
+            Tensor[shape(batch_size, num_spans, num_classes)] classification of each span
+        """
+        tokens = util.get_token_strings(sample_token_data)
+        token_level_annos = util.get_token_level_spans(sample_token_data, sample_annos)
+        bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
+                                            add_special_tokens=False, truncation=True, max_length=512).to(device)
+        sub_token_level_annos = util.get_sub_token_level_spans(token_level_annos, bert_encoding)
+        bert_embeddings = self.bert_model(
+            bert_encoding['input_ids'], return_dict=True)
+        # SHAPE: (seq_len, 768)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        # SHAPE: (batch_size, seq_len, 768)
+        bert_embeddings = torch.unsqueeze(bert_embeddings, 0)
+        all_possible_spans_list = util.enumerate_spans(bert_encoding.word_ids())
+        all_possible_spans_labels = self.label_all_possible_spans(all_possible_spans_list, sub_token_level_annos)
+        # SHAPE: (batch_size, num_spans)
+        all_possible_spans_labels = torch.tensor([all_possible_spans_labels], device=device)
+        # SHAPE: (batch_size, seq_len, 2)
+        all_possible_spans_tensor: torch.Tensor = torch.tensor([all_possible_spans_list], device=device)
+        # SHAPE: (batch_size, num_spans, endpoint_dim)
+        span_embeddings = self.endpoint_span_extractor(bert_embeddings, all_possible_spans_tensor)
+        # SHAPE: (batch_size, num_spans, num_classes)
+        predicted_all_possible_spans_logits = self.classifier(span_embeddings)
+        loss = self.loss_function(torch.squeeze(predicted_all_possible_spans_logits, 0),
+                                  torch.squeeze(all_possible_spans_labels, 0))
+        predicted_annos = self.get_predicted_annos(
+            predicted_all_possible_spans_logits,
+            all_possible_spans_list,
+            bert_encoding,
+            sample_token_data
+        )
+        return loss, predicted_annos
+
+    def get_predicted_annos(
+            self,
+            predicted_all_possible_spans_logits,
+            all_possible_spans_list,
+            bert_encoding: BatchEncoding,
+            sample_token_data: List[TokenData]
+    ) -> List[Anno]:
+        ret = []
+        # SHAPE: (num_spans)
+        pred_all_possible_spans_type_indices_list = torch.argmax(torch.squeeze(predicted_all_possible_spans_logits, 0),
+                                                                 dim=1) \
+            .cpu() \
+            .detach().numpy()
+        assert len(pred_all_possible_spans_type_indices_list.shape) == 1
+        for i, span_type_idx in enumerate(pred_all_possible_spans_type_indices_list):
+            if span_type_idx != self.type_to_idx['NO_TYPE']:
+                # get sub-token level spans
+                span_start_subtoken_idx = all_possible_spans_list[i][0]
+                span_end_subtoken_idx = all_possible_spans_list[i][1]  # inclusive
+                # get token level spans
+                span_start_token_idx = bert_encoding.token_to_word(span_start_subtoken_idx)
+                span_end_token_idx = bert_encoding.token_to_word(span_end_subtoken_idx)
+                assert span_start_token_idx is not None
+                assert span_end_token_idx is not None
+                # get word char offsets
+                span_start_char_offset = sample_token_data[span_start_token_idx].token_start_offset
+                span_end_char_offset = sample_token_data[span_end_token_idx].token_end_offset
+                span_text = " ".join(
+                    util.get_token_strings(sample_token_data[span_start_token_idx: span_end_token_idx + 1]))
+                ret.append(
+                    Anno(span_start_char_offset,
+                         span_end_char_offset,
+                         self.idx_to_type[span_type_idx],
+                         span_text)
+                )
+        return ret
+
+    def label_all_possible_spans(self, all_possible_spans_list, sub_token_level_annos):
+        all_possible_spans_labels = []
+        for span in all_possible_spans_list:
+            corresponding_anno_list = [anno for anno in sub_token_level_annos if
+                                       (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
+            if len(corresponding_anno_list):
+                assert len(corresponding_anno_list) == 1, "Don't expect multiple annotations to match one span"
+                corresponding_anno = corresponding_anno_list[0]
+                all_possible_spans_labels.append(self.type_to_idx[corresponding_anno[2]])
+            else:
+                all_possible_spans_labels.append(self.type_to_idx["NO_TYPE"])
+        assert len(all_possible_spans_labels) == len(all_possible_spans_list)
+        return all_possible_spans_labels

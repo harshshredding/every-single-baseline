@@ -40,7 +40,7 @@ class SocialDisNerPreprocessor(Preprocessor):
         Read annotations for each sample from the given file and return
         a dict from sample_ids to corresponding annotations.
         """
-        annos_file_path = "../socialdisner-data/mentions.tsv"
+        annos_file_path = "socialdisner-data/mentions.tsv"
         df = pd.read_csv(annos_file_path, sep='\t')
         sample_to_annos = {}
         for i, row in df.iterrows():
@@ -92,12 +92,12 @@ class SocialDisNerPreprocessor(Preprocessor):
 
 prefix = f"{Dataset.social_dis_ner.name}_{DatasetSplit.valid.name}"
 valid_preproc = SocialDisNerPreprocessor(
-    raw_data_folder_path='../socialdisner-data/train-valid-txt-files/validation',
-    entity_type_file_path=f'../preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'../preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'../preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'../preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"../preprocessed_data/{prefix}_sample_text.json",
+    raw_data_folder_path='socialdisner-data/train-valid-txt-files/validation',
+    entity_type_file_path=f'preprocessed_data/{prefix}_types.txt',
+    annotations_file_path=f'preprocessed_data/{prefix}_annos.tsv',
+    visualization_file_path=f'preprocessed_data/{prefix}_visualization.bdocjs',
+    tokens_file_path=f'preprocessed_data/{prefix}_tokens.json',
+    sample_text_file_path=f"preprocessed_data/{prefix}_sample_text.json",
     dataset_split=DatasetSplit.valid,
 )
 valid_preproc.run()
@@ -105,12 +105,12 @@ valid_preproc.run()
 
 prefix = f"{Dataset.social_dis_ner.name}_{DatasetSplit.train.name}"
 train_preproc = SocialDisNerPreprocessor(
-    raw_data_folder_path='../socialdisner-data/train-valid-txt-files/training',
-    entity_type_file_path=f'../preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'../preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'../preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'../preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"../preprocessed_data/{prefix}_sample_text.json",
+    raw_data_folder_path='socialdisner-data/train-valid-txt-files/training',
+    entity_type_file_path=f'preprocessed_data/{prefix}_types.txt',
+    annotations_file_path=f'preprocessed_data/{prefix}_annos.tsv',
+    visualization_file_path=f'preprocessed_data/{prefix}_visualization.bdocjs',
+    tokens_file_path=f'preprocessed_data/{prefix}_tokens.json',
+    sample_text_file_path=f"preprocessed_data/{prefix}_sample_text.json",
     dataset_split=DatasetSplit.train,
 )
 train_preproc.run()

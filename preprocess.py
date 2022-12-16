@@ -5,20 +5,22 @@ from abc import ABC, abstractmethod
 import spacy
 import json
 
+
 class Preprocessor(ABC):
     """
     An abstraction which allows standardizing the preprocessing
     for every NER dataset. Such standardization makes it possible to 
     **quickly** run new NER models on **every** NER dataset.
     """
+
     def __init__(
-        self, 
-        raw_data_folder_path: str, 
-        entity_type_file_path: str, 
-        annotations_file_path: str,
-        visualization_file_path: str,
-        tokens_file_path: str,
-        sample_text_file_path: str
+            self,
+            raw_data_folder_path: str,
+            entity_type_file_path: str,
+            annotations_file_path: str,
+            visualization_file_path: str,
+            tokens_file_path: str,
+            sample_text_file_path: str
     ) -> None:
         """
         Creates a preprocessor configured with some file paths
@@ -57,7 +59,6 @@ class Preprocessor(ABC):
         print("Preprocessor Name:", type(self).__name__)
         self.samples = None
 
-
     def get_samples_cached(self) -> List[Sample]:
         if self.samples is None:
             print("first time")
@@ -86,7 +87,7 @@ class Preprocessor(ABC):
         LOC
         <<< file end
         """
-        
+
     def create_annotations_file(self) -> None:
         """
         Create a TSV(tab seperated values) formatted file that contains all the gold annotations for the dataset.
@@ -111,7 +112,6 @@ class Preprocessor(ABC):
                     row = [sample.id, anno.begin_offset, anno.end_offset, anno.label_type, anno.extraction]
                     writer.writerow(row)
 
-    
     def add_token_annotations(self, samples: List[Sample]) -> None:
         """
         Adds token annotations to each given sample by tokenizing
@@ -129,7 +129,6 @@ class Preprocessor(ABC):
                 token_annos.append(Anno(start_offset, end_offset, "Token", str(token)))
             sample.annos.extend(token_annos)
 
-
     def create_visualization_file(self) -> None:
         """
         Create a .bdocjs formatted file which can be directly imported 
@@ -144,10 +143,9 @@ class Preprocessor(ABC):
             sample_to_text[sample.id] = sample.text
         util.create_visualization_file(
             self.visualization_file_path,
-            sample_to_annos, 
+            sample_to_annos,
             sample_to_text
         )
-
 
     def create_tokens_file(self) -> None:
         """
@@ -163,13 +161,12 @@ class Preprocessor(ABC):
                 start_offset = token.idx
                 end_offset = start_offset + len(token)
                 token_json = {'Token': [{"string": str(token), "startOffset": start_offset,
-                                     "endOffset": end_offset, "length": len(token)}],
+                                         "endOffset": end_offset, "length": len(token)}],
                               'Sample': [{"id": sample.id, "startOffset": 0}],
-                            }
+                              }
                 all_tokens_json.append(token_json)
         with util.open_make_dirs(self.tokens_file_path, 'w') as output_file:
             json.dump(all_tokens_json, output_file, indent=4)
-
 
     def create_sample_text_file(self) -> None:
         """
@@ -185,7 +182,7 @@ class Preprocessor(ABC):
             sample_content[sample.id] = sample.text
         with util.open_make_dirs(self.sample_text_file_path, 'w') as output_file:
             json.dump(sample_content, output_file)
-       
+
     def run(self) -> None:
         """
         Execute the preprocessing steps that generate files which
