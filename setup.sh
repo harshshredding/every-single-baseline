@@ -4,13 +4,8 @@ cd ~/
 
 apt-get -y install vim
 
-echo "Install Anaconda"
-wget https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh
-chmod u+x Anaconda3-2022.10-Linux-x86_64.sh
-./Anaconda3-2022.10-Linux-x86_64.sh
-echo "Done Installing Anaconda"
-
 echo "Creating Anaconda environment"
+conda init bash
 source ~/.bashrc
 conda create -n new_env python=3.10
 conda activate new_env

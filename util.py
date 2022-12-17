@@ -836,6 +836,7 @@ def get_sub_token_level_spans(
     for start_token_idx, end_token_idx, type_name in token_level_spans:
         start_sub_token_span = batch_encoding.word_to_tokens(start_token_idx)
         end_sub_token_span = batch_encoding.word_to_tokens(end_token_idx - 1)
+        # TODO: Some span annotations aren't valid because bert doesn't have embeddings for them.
         if (start_sub_token_span is not None) and (end_sub_token_span is not None):
             start_sub_token_idx = start_sub_token_span.start
             end_sub_token_idx = end_sub_token_span.end
