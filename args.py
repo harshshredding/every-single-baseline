@@ -19,7 +19,7 @@ if TESTING_MODE:
     logging.getLogger().setLevel(logging.DEBUG)
 else:
     logging.basicConfig()
-    logging.getLogger().setLevel(logging.WARN)
+    logging.getLogger().setLevel(logging.INFO)
 
 if not TESTING_MODE:
     EXPERIMENT = get_user_input('specify experiment name:', [])
