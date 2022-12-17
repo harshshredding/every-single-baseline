@@ -7,6 +7,9 @@ import numpy as np
 import logging
 import csv
 
+# logging config
+logging.basicConfig(level=logging.INFO)
+
 train_util.print_args()
 
 # -------- CREATE IMPORTANT DIRECTORIES -------
