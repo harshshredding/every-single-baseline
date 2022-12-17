@@ -1,10 +1,10 @@
 from structs import *
-from typing import Dict, List
 import json
 import pandas as pd
 from args import *
-import util
 from models import *
+import csv
+import util
 
 
 def print_args() -> None:
@@ -289,7 +289,8 @@ def prepare_model():
     if args['model_name'] == 'JustBert3Classes':
         return JustBert3Classes().to(device)
     if args['model_name'] == 'SpanBert':
-        return SpanBert().to(device)
+        all_types = util.get_all_types(args['types_file_path'])
+        return SpanBert(all_types).to(device)
     raise Exception(f"no code to prepare model {args['model_name']}")
 
 
@@ -316,3 +317,50 @@ def get_train_texts() -> Dict[SampleId, str]:
 # TODO: move to different module
 def get_valid_texts() -> Dict[SampleId, str]:
     return util.get_texts(args['valid_sample_text_data_file_path'])
+
+
+def prepare_file_headers(mistakes_file_writer, predictions_file_writer):
+    predictions_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction']
+    predictions_file_writer.writerow(predictions_file_header)
+
+    mistakes_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']
+    mistakes_file_writer.writerow(mistakes_file_header)
+
+
+def store_predictions(
+        sample_id: str,
+        token_data_valid: List[TokenData],
+        predicted_annos_valid: List[Anno],
+        predictions_file_writer
+):
+    # write predictions
+    for anno in predicted_annos_valid:
+        extraction = util.get_extraction(token_data_valid, anno.begin_offset, anno.end_offset)
+        predictions_file_writer.writerow(
+            [sample_id, str(anno.begin_offset), str(anno.end_offset), anno.label_type, extraction]
+        )
+
+
+def store_mistakes(
+        sample_id: str,
+        false_positives,
+        false_negatives,
+        mistakes_file_writer,
+        token_data_valid: List[TokenData],
+):
+    # write false positive errors
+    for span in false_positives:
+        start_offset = span[0]
+        end_offset = span[1]
+        extraction = util.get_extraction(token_data_valid, start_offset, end_offset)
+        mistakes_file_writer.writerow(
+            [sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FP']
+        )
+    # write false negative errors
+    for span in false_negatives:
+        start_offset = span[0]
+        end_offset = span[1]
+        extraction = util.get_extraction(token_data_valid, start_offset, end_offset)
+        mistakes_file_writer.writerow(
+            [sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN']
+        )

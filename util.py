@@ -112,12 +112,11 @@ def read_umls_file_small(umls_file_path):
     return umls_embedding_dict
 
 
-def get_extraction(tokens, token_offsets, start, end):
-    assert len(tokens) == len(token_offsets)
+def get_extraction(tokens_data: List[TokenData], start_offset: int, end_offset: int):
     extraction = []
-    for i, (start_offset, end_offset) in enumerate(token_offsets):
-        if start_offset >= start and end_offset <= end:
-            extraction.append(tokens[i])
+    for token in tokens_data:
+        if (start_offset <= token.token_start_offset) and (token.token_end_offset <= end_offset):
+            extraction.append(token.token_string)
     return ' '.join(extraction)
 
 

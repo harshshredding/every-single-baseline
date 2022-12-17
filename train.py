@@ -5,15 +5,28 @@ from args import *
 import time
 import numpy as np
 import logging
+import csv
 
 train_util.print_args()
 
 # -------- CREATE IMPORTANT DIRECTORIES -------
-util.create_directory_structure('./err')
+logging.info("Create folders for training")
+
+training_results_folder_path = './training_results'
+
+mistakes_folder_path = f'{training_results_folder_path}/mistakes'
+error_visualization_folder_path = f'{training_results_folder_path}/error_visualizations'
+predictions_folder_path = f'{training_results_folder_path}/predictions'
+models_folder_path = f'{training_results_folder_path}/models'
+
+util.create_directory_structure(mistakes_folder_path)
+util.create_directory_structure(error_visualization_folder_path)
+util.create_directory_structure(predictions_folder_path)
+util.create_directory_structure(models_folder_path)
 
 # -------- READ DATA ---------
 # TODO: read Samples instead of reading annos, text, tokens separately.
-logging.info("starting to read data.")
+logging.info("Starting to read data.")
 sample_to_annos_train = train_util.get_train_annos_dict()
 sample_to_annos_valid = train_util.get_valid_annos_dict()
 sample_to_token_data_train = train_util.get_train_tokens()
@@ -29,8 +42,7 @@ logging.info("Starting model initialization.")
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 model = train_util.prepare_model()
 optimizer = train_util.get_optimizer(model)
-label_to_idx_dict, idx_to_label_dict = train_util.get_label_idx_dicts()
-all_types = set([label.label_type for label in label_to_idx_dict])
+all_types = util.get_all_types(args['types_file_path'])
 logging.info(f"all types\n {util.p_string(list(all_types))}")
 logging.info("Finished model initialization.")
 
@@ -48,10 +60,10 @@ for epoch in range(args['num_epochs']):
     logging.info(f"Train epoch {epoch}")
     train_start_time = time.time()
     model.train()
-    sample_ids = list(sample_to_token_data_train.keys())
+    train_sample_ids = list(sample_to_token_data_train.keys())
     if TESTING_MODE:
-        sample_ids = sample_ids[:10]
-    for sample_id in sample_ids:
+        train_sample_ids = train_sample_ids[:10]
+    for sample_id in train_sample_ids:
         optimizer.zero_grad()
         sample_token_data = sample_to_token_data_train[sample_id]
         sample_annos = sample_to_annos_train.get(sample_id, [])
@@ -59,44 +71,71 @@ for epoch in range(args['num_epochs']):
         loss.backward()
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())
+    logging.info(f"Done training epoch {epoch}")
     logging.info(
-        f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training time: {str(time.time() - train_start_time)} "
+        f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training Time: {str(time.time() - train_start_time)} "
         f"seconds")
-    torch.save(model.state_dict(), args['save_models_dir'] + f"/Epoch_{epoch}_{EXPERIMENT}")
+    torch.save(model.state_dict(), f"{models_folder_path}/Epoch_{epoch}_{EXPERIMENT}")
+    logging.info("done saving model")
     # ------------------ BEGIN VALIDATION -------------------
+    logging.info("Starting validation")
     model.eval()
-    # errors_file_path = args['save_models_dir'] + f"/errors_{EXPERIMENT}_epoch_{epoch}.tsv"
-    # predictions_file_path = args['save_models_dir'] + f"/predictions_{EXPERIMENT}_epoch_{epoch}.tsv"
-    # with open(predictions_file_path, 'w') as predictions_file, open(errors_file_path, 'w') as errors_file:
-    #     mistakes_file_writer = csv.writer(errors_file, delimiter='\t')
-    #     mistakes_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']
-    #     mistakes_file_writer.writerow(mistakes_file_header)
-    #     predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
-    #     predictions_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']
-    #     predictions_file_writer.writerow(predictions_file_header)
-    #     with torch.no_grad():
-    #         validation_start_time = time.time()
-    #         token_level_accuracy_list = []
-    #         f1_list = []
-    #         sample_ids = list(sample_to_token_data_valid.keys())
-    #         if TESTING_MODE:
-    #             sample_ids = sample_ids[:10]
-    #         num_TP_total = 0
-    #         num_FP_total = 0
-    #         num_FN_total = 0
-    #         for sample_id in sample_ids:
-    #             sample_token_data = sample_to_token_data_valid[sample_id]
-    #             sample_annos = sample_to_annos_valid.get(sample_id, [])
-    #             tokens = util.get_token_strings(sample_token_data)
-    #             offsets_list = util.get_token_offsets(sample_token_data)
-    #             batch_encoding = bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
-    #                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
-    #             if not len(batch_encoding.word_ids()):  # If we don't have any tokens, no point training
-    #                 continue
-    #             expanded_labels = train_util.extract_expanded_labels(sample_token_data, batch_encoding, sample_annos)
-    #             expanded_labels_indices = [label_to_idx_dict[label] for label in expanded_labels]
-    #             model_input = train_util.prepare_model_input(batch_encoding, sample_token_data)
-    #             output = model(*model_input)
+    mistakes_file_path = f"{mistakes_folder_path}/mistakes_{EXPERIMENT}_epoch_{epoch}.tsv"
+    predictions_file_path = f"{predictions_folder_path}/predictions_{EXPERIMENT}_epoch_{epoch}.tsv"
+    with open(predictions_file_path, 'w') as predictions_file, open(mistakes_file_path, 'w') as mistakes_file:
+        #  --- GET FILES READY FOR WRITING ---
+        predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
+        mistakes_file_writer = csv.writer(mistakes_file, delimiter='\t')
+        train_util.prepare_file_headers(mistakes_file_writer, predictions_file_writer)
+        with torch.no_grad():
+            validation_start_time = time.time()
+            f1_list = []
+            valid_sample_ids = list(sample_to_token_data_valid.keys())
+            if TESTING_MODE:
+                valid_sample_ids = valid_sample_ids[:10]
+            num_TP_total = 0
+            num_FP_total = 0
+            num_FN_total = 0
+            for sample_id in valid_sample_ids:
+                token_data_valid = sample_to_token_data_valid[sample_id]
+                gold_annos_valid = sample_to_annos_valid.get(sample_id, [])
+                loss, predicted_annos_valid = model(token_data_valid, gold_annos_valid)
+                gold_annos_set_valid = set(
+                    [
+                        (gold_anno.begin_offset, gold_anno.end_offset, gold_anno.label_type)
+                        for gold_anno in gold_annos_valid
+                    ]
+                )
+                predicted_annos_set_valid = set(
+                    [
+                        (predicted_anno.begin_offset, predicted_anno.end_offset, predicted_anno.label_type)
+                        for predicted_anno in predicted_annos_valid
+                    ]
+                )
+
+                # calculate true positives, false positives, and false negatives
+                true_positives_sample = gold_annos_set_valid.intersection(predicted_annos_set_valid)
+                false_positives_sample = predicted_annos_set_valid.difference(gold_annos_set_valid)
+                false_negatives_sample = gold_annos_set_valid.difference(predicted_annos_set_valid)
+                num_TP = len(true_positives_sample)
+                num_TP_total += num_TP
+                num_FP = len(false_positives_sample)
+                num_FP_total += num_FP
+                num_FN = len(false_negatives_sample)
+                num_FN_total += num_FN
+
+                # write sample predictions
+                train_util.store_predictions(sample_id, token_data_valid, predicted_annos_valid,
+                                             predictions_file_writer)
+                train_util.store_mistakes(sample_id, false_positives_sample, false_negatives_sample,
+                                          mistakes_file_writer, token_data_valid)
+    micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
+    logging.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
+    visualize_errors_file_path = f"{error_visualization_folder_path}/" \
+                                 f"visualize_errors_{EXPERIMENT}_epoch_{epoch}.bdocjs"
+    util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, sample_to_annos_valid,
+                                       sample_to_text_valid)
+    logging.info(f"Epoch {epoch} DONE!\n\n\n")
     #             pred_label_indices_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
     #             token_level_accuracy = accuracy_score(list(pred_label_indices_expanded), list(expanded_labels_indices))
     #             token_level_accuracy_list.append(token_level_accuracy)
