@@ -4,11 +4,8 @@ from transformers import AutoTokenizer
 from args import *
 import time
 import numpy as np
-import logging
+import logging  # configured in args.py
 import csv
-
-# logging config
-logging.basicConfig(level=logging.INFO)
 
 train_util.print_args()
 
