@@ -8,9 +8,9 @@ import json
 
 class Preprocessor(ABC):
     """
-    An abstraction which allows standardizing the preprocessing
-    for every NER dataset. Such standardization makes it possible to 
-    **quickly** run new NER models on **every** NER dataset.
+    An abstraction which standardizes the preprocessing
+    of all NER datasets. This standardization makes it **easy** to 
+    run new NER models on **all** NER dataset.
     """
 
     def __init__(

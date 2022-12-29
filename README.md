@@ -11,6 +11,3 @@ This framework should allow you to quickly train a large variety of popular NER 
 4. Train your model.
 5. Inspect the mistakes your model made by opening `mistakes.bdocjs` in GATE developer.
 6. Improve your model and go back to step 4.
-
-
-Set PYTHONPATH to root directory.
