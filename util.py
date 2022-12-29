@@ -493,7 +493,13 @@ def open_make_dirs(file_path, mode):
     return open(file_path, mode)
 
 
-def create_directory_structure(folder_path):
+def create_directory_structure(folder_path: str):
+    """
+    Creates all the directories on the given `folder_path`.
+    Doesn't throw an error if directories already exist.
+    Args:
+        foler_path: the directory path to create.
+    """
     Path(folder_path).mkdir(parents=True, exist_ok=True)
 
 
