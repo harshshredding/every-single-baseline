@@ -4,10 +4,12 @@ from typing import List, Dict
 
 OUTSIDE_LABEL_STRING = 'o'
 
+
 class BioTag(Enum):
     out = 0
     begin = 1
     inside = 2
+
 
 class Dataset(Enum):
     social_dis_ner = 1
@@ -17,10 +19,12 @@ class Dataset(Enum):
     multiconer = 5
     legaleval = 6
 
+
 class DatasetSplit(Enum):
     train = 0
     valid = 1
     test = 2
+
 
 class Label:
     def __init__(self, label_type, bio_tag):
@@ -58,6 +62,7 @@ class Label:
     def get_outside_label():
         return Label(OUTSIDE_LABEL_STRING, BioTag.out)
 
+
 @dataclass
 class Anno:
     begin_offset: int
@@ -65,6 +70,7 @@ class Anno:
     label_type: str
     extraction: str
     features: dict = field(default_factory=dict)
+
 
 @dataclass
 class TokenData:
@@ -74,11 +80,13 @@ class TokenData:
     token_start_offset: int
     token_end_offset: int
 
+
 @dataclass
 class Sample:
     text: str
     id: str
     annos: List[Anno]
+
 
 SampleAnnotations = Dict[str, List[Anno]]
 SampleId = str

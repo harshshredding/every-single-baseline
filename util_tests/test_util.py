@@ -2,7 +2,6 @@ from util import get_token_level_spans, get_sub_token_level_spans, get_all_types
 from structs import TokenData, Anno
 from transformers import AutoTokenizer
 from transformers.tokenization_utils_base import BatchEncoding
-import unittest
 
 
 def test_token_level_spans():
