@@ -6,8 +6,8 @@ apt-get -y install vim
 
 echo "Creating Anaconda environment"
 conda init bash
-source ~/.bashrc
 conda create -n new_env python=3.10
+. "/opt/conda/etc/profile.d/conda.sh"
 conda activate new_env
 echo "Done creating anaconda environment"
 
