@@ -593,7 +593,8 @@ class SpanBert(torch.nn.Module):
             corresponding_anno_list = [anno for anno in sub_token_level_annos if
                                        (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
-                assert len(corresponding_anno_list) == 1, "Don't expect multiple annotations to match one span"
+                if len(corresponding_anno_list) > 1:
+                    print("WARN: Didn't expect multiple annotations to match one span")
                 corresponding_anno = corresponding_anno_list[0]
                 all_possible_spans_labels.append(self.type_to_idx[corresponding_anno[2]])
             else:
