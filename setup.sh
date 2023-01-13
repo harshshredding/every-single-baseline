@@ -12,7 +12,7 @@ conda activate new_env
 echo "Done creating anaconda environment"
 
 echo "Install Pytorch"
-pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu116
+conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 
 echo "Install Allennlp"
 sudo apt-get install build-essential
