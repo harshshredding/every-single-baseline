@@ -1,5 +1,7 @@
 # NER framework
-This framework allows you to quickly train your model on all the popular NER datasets. Moreover, it makes it easy to inspect the mistakes that the trained models are making.
+This framework allows you to: 
+- quickly train your model on all the popular NER datasets.
+- quickly train all popular models on your dataset.
 
 # Steps to train on your data
 1. Create 3 files: 
