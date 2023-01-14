@@ -157,8 +157,8 @@ for epoch in range(args['num_epochs']):
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
-    dropbox_util.upload_file(predictions_file_path)
-    dropbox_util.upload_file(mistakes_file_path)
+    # dropbox_util.upload_file(predictions_file_path)
+    # dropbox_util.upload_file(mistakes_file_path)
     dropbox_util.upload_file(performance_file_path)
 
     logger.info(f"Epoch {epoch} DONE!\n\n\n")
