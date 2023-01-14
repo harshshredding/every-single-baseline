@@ -1,4 +1,5 @@
 import util
+import utils.dropbox as dropbox_util
 import train_util
 from transformers import AutoTokenizer
 from args import *
@@ -7,10 +8,14 @@ import numpy as np
 import logging  # configured in args.py
 import csv
 
+logger = logging.getLogger('train')
+logger.setLevel(logging.INFO)
+logging.getLogger('dropbox').setLevel(logging.WARN)
+
 train_util.print_args()
 
 # -------- CREATE IMPORTANT DIRECTORIES -------
-logging.info("Create folders for training")
+logger.info("Create folders for training")
 
 training_results_folder_path = './training_results'
 
@@ -24,27 +29,31 @@ util.create_directory_structure(error_visualization_folder_path)
 util.create_directory_structure(predictions_folder_path)
 util.create_directory_structure(models_folder_path)
 
+dropbox_util.verify_connection()
+
+
 # -------- READ DATA ---------
 # TODO: read Samples instead of reading annos, text, tokens separately.
-logging.info("Starting to read data.")
+logger.info("Starting to read data.")
 sample_to_annos_train = train_util.get_train_annos_dict()
 sample_to_annos_valid = train_util.get_valid_annos_dict()
 sample_to_token_data_train = train_util.get_train_tokens()
 sample_to_token_data_valid = train_util.get_valid_tokens()
 sample_to_text_train = train_util.get_train_texts()
 sample_to_text_valid = train_util.get_valid_texts()
-logging.info(f"num train samples {len(sample_to_text_train)}")
-logging.info(f"num valid samples {len(sample_to_text_valid)}")
-logging.info("finished reading data.")
+logger.info(f"num train samples {len(sample_to_text_train)}")
+logger.info(f"num valid samples {len(sample_to_text_valid)}")
+logger.info("finished reading data.")
+
 
 # ------ MODEL INITIALISATION --------
-logging.info("Starting model initialization.")
+logger.info("Starting model initialization.")
 bert_tokenizer = AutoTokenizer.from_pretrained(args['bert_model_name'])
 model = train_util.prepare_model()
 optimizer = train_util.get_optimizer(model)
 all_types = util.get_all_types(args['types_file_path'])
-logging.info(f"all types\n {util.p_string(list(all_types))}")
-logging.info("Finished model initialization.")
+logger.info(f"all types\n {util.p_string(list(all_types))}")
+logger.info("Finished model initialization.")
 
 # verify that all label types in annotations are valid types
 for _, sample_annos in sample_to_annos_train.items():
@@ -57,7 +66,7 @@ for _, sample_annos in sample_to_annos_valid.items():
 for epoch in range(args['num_epochs']):
     epoch_loss = []
     # --------- BEGIN TRAINING ----------------
-    logging.info(f"Train epoch {epoch}")
+    logger.info(f"Train epoch {epoch}")
     train_start_time = time.time()
     model.train()
     train_sample_ids = list(sample_to_token_data_train.keys())
@@ -71,14 +80,14 @@ for epoch in range(args['num_epochs']):
         loss.backward()
         optimizer.step()
         epoch_loss.append(loss.cpu().detach().numpy())
-    logging.info(f"Done training epoch {epoch}")
-    logging.info(
+    logger.info(f"Done training epoch {epoch}")
+    logger.info(
         f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training Time: {str(time.time() - train_start_time)} "
         f"seconds")
-    torch.save(model.state_dict(), f"{models_folder_path}/Epoch_{epoch}_{EXPERIMENT}")
-    logging.info("done saving model")
+    # torch.save(model.state_dict(), f"{models_folder_path}/Epoch_{epoch}_{EXPERIMENT}")
+    # logger.info("done saving model")
     # ------------------ BEGIN VALIDATION -------------------
-    logging.info("Starting validation")
+    logger.info("Starting validation")
     model.eval()
     mistakes_file_path = f"{mistakes_folder_path}/mistakes_{EXPERIMENT}_epoch_{epoch}.tsv"
     predictions_file_path = f"{predictions_folder_path}/predictions_{EXPERIMENT}_epoch_{epoch}.tsv"
@@ -127,15 +136,22 @@ for epoch in range(args['num_epochs']):
                 # write sample predictions
                 train_util.store_predictions(sample_id, token_data_valid, predicted_annos_valid,
                                              predictions_file_writer)
+                # write sample mistakes
                 train_util.store_mistakes(sample_id, false_positives_sample, false_negatives_sample,
                                           mistakes_file_writer, token_data_valid)
     micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
-    logging.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
+    logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
     visualize_errors_file_path = f"{error_visualization_folder_path}/" \
                                  f"visualize_errors_{EXPERIMENT}_epoch_{epoch}.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, sample_to_annos_valid,
                                        sample_to_text_valid)
-    logging.info(f"Epoch {epoch} DONE!\n\n\n")
+
+    # upload files to dropbox
+    dropbox_util.upload_file(visualize_errors_file_path)
+    dropbox_util.upload_file(predictions_file_path)
+    dropbox_util.upload_file(mistakes_file_path)
+
+    logger.info(f"Epoch {epoch} DONE!\n\n\n")
     #             pred_label_indices_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()
     #             token_level_accuracy = accuracy_score(list(pred_label_indices_expanded), list(expanded_labels_indices))
     #             token_level_accuracy_list.append(token_level_accuracy)
