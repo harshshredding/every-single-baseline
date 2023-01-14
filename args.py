@@ -5,7 +5,7 @@ from typing import List
 import sys
 
 from IPython.core import ultratb
-sys.excepthook = ultratb.FormattedTB(mode='Verbose', color_scheme='Linux', call_pdb=False)
+sys.excepthook = ultratb.FormattedTB(color_scheme='Linux', call_pdb=False)
 
 
 def get_user_input(input_message: str, possible_values: List[str]):
