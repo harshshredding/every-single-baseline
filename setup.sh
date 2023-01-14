@@ -1,7 +1,5 @@
 #!/bin/sh
 
-cd ~/
-
 apt-get -y install vim
 
 echo "Creating Anaconda environment"
@@ -11,15 +9,14 @@ conda create -n new_env python=3.10
 conda activate new_env
 echo "Done creating anaconda environment"
 
-echo "Install Pytorch"
+echo "Installing Pytorch"
 conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 
-echo "Install Allennlp"
-sudo apt-get install build-essential
+echo "Installing Allennlp"
+sudo apt-get -y install build-essential
 pip install allennlp
 
 echo "Setup project"
-cd every-single-baseline/
 pip install -r requirements.txt
 git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"

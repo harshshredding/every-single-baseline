@@ -23,11 +23,15 @@ mistakes_folder_path = f'{training_results_folder_path}/mistakes'
 error_visualization_folder_path = f'{training_results_folder_path}/error_visualizations'
 predictions_folder_path = f'{training_results_folder_path}/predictions'
 models_folder_path = f'{training_results_folder_path}/models'
+performance_folder_path = f'{training_results_folder_path}/performance'
+performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}.csv"
+train_util.create_performance_file_header(performance_file_path)
 
 util.create_directory_structure(mistakes_folder_path)
 util.create_directory_structure(error_visualization_folder_path)
 util.create_directory_structure(predictions_folder_path)
 util.create_directory_structure(models_folder_path)
+util.create_directory_structure(performance_folder_path)
 
 dropbox_util.verify_connection()
 
@@ -89,9 +93,10 @@ for epoch in range(args['num_epochs']):
     # ------------------ BEGIN VALIDATION -------------------
     logger.info("Starting validation")
     model.eval()
-    mistakes_file_path = f"{mistakes_folder_path}/mistakes_{EXPERIMENT}_epoch_{epoch}.tsv"
-    predictions_file_path = f"{predictions_folder_path}/predictions_{EXPERIMENT}_epoch_{epoch}.tsv"
-    with open(predictions_file_path, 'w') as predictions_file, open(mistakes_file_path, 'w') as mistakes_file:
+    mistakes_file_path = f"{mistakes_folder_path}/mistakes_{EXPERIMENT_NAME}_epoch_{epoch}.tsv"
+    predictions_file_path = f"{predictions_folder_path}/predictions_{EXPERIMENT_NAME}_epoch_{epoch}.tsv"
+    with open(predictions_file_path, 'w') as predictions_file, \
+         open(mistakes_file_path, 'w') as mistakes_file:
         #  --- GET FILES READY FOR WRITING ---
         predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
         mistakes_file_writer = csv.writer(mistakes_file, delimiter='\t')
@@ -142,14 +147,16 @@ for epoch in range(args['num_epochs']):
     micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
     logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
     visualize_errors_file_path = f"{error_visualization_folder_path}/" \
-                                 f"visualize_errors_{EXPERIMENT}_epoch_{epoch}.bdocjs"
+                                 f"visualize_errors_{EXPERIMENT_NAME}_epoch_{epoch}.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, sample_to_annos_valid,
                                        sample_to_text_valid)
+    train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME)
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
     dropbox_util.upload_file(predictions_file_path)
     dropbox_util.upload_file(mistakes_file_path)
+    dropbox_util.upload_file(performance_file_path)
 
     logger.info(f"Epoch {epoch} DONE!\n\n\n")
     #             pred_label_indices_expanded = torch.argmax(output, dim=1).cpu().detach().numpy()

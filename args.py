@@ -28,11 +28,11 @@ else:
 print("TESTING MODE: ", TESTING_MODE)
 
 if not TESTING_MODE:
-    EXPERIMENT = get_user_input('specify experiment name:', [])
+    EXPERIMENT_NAME = get_user_input('specify experiment name:', [])
 else:
-    EXPERIMENT = 'test'
+    EXPERIMENT_NAME = 'test'
 
-curr_dataset = Dataset.genia
+curr_dataset = Dataset.legaleval
 
 if curr_dataset == Dataset.few_nerd:
     args = {
@@ -156,18 +156,15 @@ elif curr_dataset == Dataset.legaleval:
         "types_file_path": "./preprocessed_data/legaleval_train_judgement_types.txt",
         "num_types": 14,
         # MODEL DETAILS
-        "bert_model_name": "bert-base-uncased",
+        "bert_model_name": "bert-base-cased",
         "bert_model_output_dim": 768,
         "num_epochs": 15,
         "save_models_dir": "./models",
-        "umls_embeddings_path": "./embeddings.csv",
-        "pos_embeddings_path": './spanish_pos_emb.p',
-        "disease_gazetteer_path": './dictionary_distemist.tsv',
         "errors_dir": './errors',
-        "model_name": "JustBert3Classes",
+        "model_name": "SpanBert",
         "optimizer": "Adam",
         "learning_rate": 1e-5,
-        "dataset_name": curr_dataset.name,
+        "dataset_name": "GENIA"
     }
 elif curr_dataset == Dataset.living_ner:
     args = {

@@ -9,7 +9,7 @@ import util
 
 def print_args() -> None:
     """Print the configurations of the current run"""
-    print("EXPERIMENT:", EXPERIMENT)
+    print("EXPERIMENT:", EXPERIMENT_NAME)
     print("TESTING_MODE", TESTING_MODE)
     print(json.dumps(args, indent=4, sort_keys=True))
 
@@ -65,6 +65,18 @@ def get_optimizer(model):
         return torch.optim.AdamW(model.parameters(), args['learning_rate'])
     else:
         raise Exception(f"optimizer not found: {args['optimizer']}")
+
+
+def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str):
+    with open(performance_file_path, 'a') as performance_file:
+        mistakes_file_writer = csv.writer(performance_file)
+        mistakes_file_writer.writerow([experiment_name, str(epoch), str(f1_score)])
+
+
+def create_performance_file_header(performance_file_path):
+    with open(performance_file_path, 'w') as performance_file:
+        mistakes_file_writer = csv.writer(performance_file)
+        mistakes_file_writer.writerow(['experiment_name', 'epoch', 'f1_score'])
 
 
 # if args['model_name'] != 'base':

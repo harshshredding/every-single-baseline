@@ -20,6 +20,7 @@ def verify_connection():
     """
     dropbox_client = get_dropbox_client()
     dropbox_client.users_get_current_account()
+    print("DROPBOX: connection verified")
 
 
 def get_dropbox_file_names() -> List[str]:
