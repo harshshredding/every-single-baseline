@@ -32,7 +32,7 @@ if not TESTING_MODE:
 else:
     EXPERIMENT_NAME = 'test'
 
-curr_dataset = Dataset.legaleval
+curr_dataset = Dataset.multiconer
 
 if curr_dataset == Dataset.few_nerd:
     args = {
@@ -121,15 +121,11 @@ elif curr_dataset == Dataset.multiconer:
         "num_types": 6,
         # "bert_model_name": "dccuchile/bert-base-spanish-wwm-cased",
         "bert_model_name": "bert-base-uncased",
-        "granularity": granularity,
         "bert_model_output_dim": 768,
         "num_epochs": 15,
         "save_models_dir": "./models",
-        "umls_embeddings_path": "./embeddings.csv",
-        "pos_embeddings_path": './spanish_pos_emb.p',
-        "disease_gazetteer_path": './dictionary_distemist.tsv',
         "errors_dir": './errors',
-        "model_name": "JustBert3Classes",
+        "model_name": "SpanBert",
         "optimizer": "Adam",
         "learning_rate": 1e-5,
         "dataset_name": "multiconer",
