@@ -24,14 +24,17 @@ error_visualization_folder_path = f'{training_results_folder_path}/error_visuali
 predictions_folder_path = f'{training_results_folder_path}/predictions'
 models_folder_path = f'{training_results_folder_path}/models'
 performance_folder_path = f'{training_results_folder_path}/performance'
-performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}.csv"
-train_util.create_performance_file_header(performance_file_path)
 
+# Create training-results directories
 util.create_directory_structure(mistakes_folder_path)
 util.create_directory_structure(error_visualization_folder_path)
 util.create_directory_structure(predictions_folder_path)
 util.create_directory_structure(models_folder_path)
 util.create_directory_structure(performance_folder_path)
+
+
+performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}.csv"
+train_util.create_performance_file_header(performance_file_path)
 
 dropbox_util.verify_connection()
 
