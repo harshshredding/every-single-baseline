@@ -10,7 +10,10 @@ import csv
 from dataset_configs import span_bert_configurations
 import torch
 
-logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s')
+# Setup logging
+root_logger = logging.getLogger()
+roots_handler = root_logger.handlers[0]
+roots_handler.setFormatter(logging.Formatter('%(name)s: %(message)s')) # change formatting
 logger = logging.getLogger('train')
 logger.setLevel(logging.INFO)
 logging.getLogger('dropbox').setLevel(logging.WARN)
