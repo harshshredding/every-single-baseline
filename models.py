@@ -1,7 +1,6 @@
 from transformers import AutoModel, AutoTokenizer
 from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 from mi_rim import *
-from args import args
 from args import device
 from torch import Tensor
 import util
@@ -53,14 +52,14 @@ class PositionalEncoding(nn.Module):
 
 
 class SeqLabeler(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(SeqLabeler, self).__init__()
         self.num_mechanisms = 1
         self.top_k = 1
         self.hidden_size = 128
         self.num_class = 2
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, [768])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
 
     def forward(self, encoding):
@@ -74,14 +73,14 @@ class SeqLabeler(torch.nn.Module):
 
 
 class SeqLabelerUMLS(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(SeqLabelerUMLS, self).__init__()
         self.num_mechanisms = 2
         self.top_k = 2
         self.hidden_size = 128
         self.num_class = 2
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, input_sizes=[768, 50])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
 
     def forward(self, bert_encoding, umls_embeddings):
@@ -95,14 +94,14 @@ class SeqLabelerUMLS(torch.nn.Module):
 
 
 class SeqLabelerAllResources(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(SeqLabelerAllResources, self).__init__()
         self.num_mechanisms = 3
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 2
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, input_sizes=[768, 50, 20])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
@@ -120,14 +119,14 @@ class SeqLabelerAllResources(torch.nn.Module):
 
 
 class SeqLabelerAllResourcesSmallerTopK(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(SeqLabelerAllResourcesSmallerTopK, self).__init__()
         self.num_mechanisms = 3
         self.top_k = 2
         self.hidden_size = 128
         self.num_class = 2
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, input_sizes=[768, 50, 20])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
@@ -145,14 +144,14 @@ class SeqLabelerAllResourcesSmallerTopK(torch.nn.Module):
 
 
 class SeqLabelerDisGaz(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(SeqLabelerDisGaz, self).__init__()
         self.num_mechanisms = 4
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 2
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, input_sizes=[768, 50, 20, 2])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
@@ -170,14 +169,14 @@ class SeqLabelerDisGaz(torch.nn.Module):
 
 
 class SeqLabelerUMLSDisGaz(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(SeqLabelerUMLSDisGaz, self).__init__()
         self.num_mechanisms = 5
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 2
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k, self.hidden_size, input_sizes=[768, 50, 20, 2, 2])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
@@ -195,15 +194,15 @@ class SeqLabelerUMLSDisGaz(torch.nn.Module):
 
 
 class SeqLabelerUMLSDisGaz3Classes(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(SeqLabelerUMLSDisGaz3Classes, self).__init__()
         self.num_mechanisms = 5
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 3
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k,
-                          self.hidden_size, input_sizes=[args['bert_model_output_dim'], 50, 20, 2, 2])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+                          self.hidden_size, input_sizes=[dataset_config['bert_model_output_dim'], 50, 20, 2, 2])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
@@ -221,15 +220,15 @@ class SeqLabelerUMLSDisGaz3Classes(torch.nn.Module):
 
 
 class Silver3Classes(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(Silver3Classes, self).__init__()
         self.num_mechanisms = 6
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 3
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k,
-                          self.hidden_size, input_sizes=[args['bert_model_output_dim'], 50, 20, 2, 2, 2])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+                          self.hidden_size, input_sizes=[dataset_config['bert_model_output_dim'], 50, 20, 2, 2, 2])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.umls = Embedding(50, len(umls_pretrained), umls_pretrained, umls_to_idx)
         self.pos = Embedding(20, len(pos_pretrained), pos_pretrained, pos_to_idx)
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
@@ -249,15 +248,15 @@ class Silver3Classes(torch.nn.Module):
 
 
 class LightWeightRIM3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(LightWeightRIM3Classes, self).__init__()
         self.num_mechanisms = 4
         self.top_k = 3
         self.hidden_size = 128
         self.num_class = 3
         self.rim = MI_RIM('lstm', self.num_mechanisms, self.top_k,
-                          self.hidden_size, input_sizes=[args['bert_model_output_dim'], 2, 2, 2])
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+                          self.hidden_size, input_sizes=[dataset_config['bert_model_output_dim'], 2, 2, 2])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.classifier = nn.Linear(self.num_mechanisms * self.hidden_size, self.num_class)
 
     def forward(self, bert_encoding, dis_gaz_embedding, umls_dis_gaz_embedding, silver_gaz_embedding):
@@ -271,9 +270,9 @@ class LightWeightRIM3Classes(torch.nn.Module):
 
 
 class OneEncoder3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(OneEncoder3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1030
         self.num_class = 3
         self.num_heads = 10
@@ -289,9 +288,9 @@ class OneEncoder3Classes(torch.nn.Module):
 
 
 class TransformerEncoder3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(TransformerEncoder3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1030
         self.num_class = 3
         self.num_heads = 10
@@ -308,9 +307,9 @@ class TransformerEncoder3Classes(torch.nn.Module):
 
 
 class PositionalTransformerEncoder3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(PositionalTransformerEncoder3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1030
         self.num_class = 3
         self.num_heads = 10
@@ -329,9 +328,9 @@ class PositionalTransformerEncoder3Classes(torch.nn.Module):
 
 
 class SmallPositionalTransformerEncoder3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(SmallPositionalTransformerEncoder3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1030
         self.num_class = 3
         self.num_heads = 10
@@ -349,9 +348,9 @@ class SmallPositionalTransformerEncoder3Classes(torch.nn.Module):
 
 
 class ComprehensivePositionalTransformerEncoder3Classes(torch.nn.Module):
-    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx):
+    def __init__(self, umls_pretrained, umls_to_idx, pos_pretrained, pos_to_idx, dataset_config):
         super(ComprehensivePositionalTransformerEncoder3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1100
         self.num_class = 3
         self.num_heads = 10
@@ -376,9 +375,9 @@ class ComprehensivePositionalTransformerEncoder3Classes(torch.nn.Module):
 
 
 class PosEncod3ClassesNoSilverNewGaz(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(PosEncod3ClassesNoSilverNewGaz, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1030
         self.num_class = 3
         self.num_heads = 10
@@ -398,9 +397,9 @@ class PosEncod3ClassesNoSilverNewGaz(torch.nn.Module):
 
 
 class PosEncod3ClassesNoSilverBig(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(PosEncod3ClassesNoSilverBig, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 2568
         self.num_class = 3
         self.num_heads = 8
@@ -421,9 +420,9 @@ class PosEncod3ClassesNoSilverBig(torch.nn.Module):
 
 
 class PosEncod3ClassesNoSilverSpanish(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(PosEncod3ClassesNoSilverSpanish, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 776
         self.num_class = 3
         self.num_heads = 8
@@ -444,9 +443,9 @@ class PosEncod3ClassesNoSilverSpanish(torch.nn.Module):
 
 
 class PosEncod3ClassesOnlyRoberta(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(PosEncod3ClassesOnlyRoberta, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1024
         self.num_class = 3
         self.num_heads = 8
@@ -465,11 +464,11 @@ class PosEncod3ClassesOnlyRoberta(torch.nn.Module):
 
 
 class OnlyRoberta3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(OnlyRoberta3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
         self.input_dim = 1024
-        self.num_class = (args['num_types'] * 2) + 1
+        self.num_class = (dataset_config['num_types'] * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
 
     def forward(self, bert_encoding):
@@ -479,11 +478,11 @@ class OnlyRoberta3Classes(torch.nn.Module):
 
 
 class JustBert3Classes(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, dataset_config):
         super(JustBert3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(args['bert_model_name'])
-        self.input_dim = args['bert_model_output_dim']
-        self.num_class = (args['num_types'] * 2) + 1
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
+        self.input_dim = dataset_config['bert_model_output_dim']
+        self.num_class = (dataset_config['num_types'] * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
 
     def forward(self, bert_encoding):
@@ -493,11 +492,11 @@ class JustBert3Classes(torch.nn.Module):
 
 
 class SpanBert(torch.nn.Module):
-    def __init__(self, all_types: List[str]):
+    def __init__(self, all_types: List[str], dataset_config):
         super(SpanBert, self).__init__()
-        self.bert_model = AutoModel.from_pretrained('bert-base-uncased')
-        self.bert_tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
-        self.input_dim = 768
+        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(dataset_config['bert_model_name'])
+        self.input_dim = dataset_config['bert_model_output_dim']
         self.num_class = len(all_types) + 1
         self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
         self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)

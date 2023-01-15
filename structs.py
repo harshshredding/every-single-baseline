@@ -16,8 +16,10 @@ class Dataset(Enum):
     few_nerd = 2
     genia = 3
     living_ner = 4
-    multiconer = 5
-    legaleval = 6
+    multiconer_coarse = 5
+    multiconer_fine = 6
+    legaleval_judgement = 7
+    legaleval_preamble = 8
 
 
 class DatasetSplit(Enum):
