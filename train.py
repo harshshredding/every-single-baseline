@@ -13,7 +13,7 @@ import torch
 # Setup logging
 root_logger = logging.getLogger()
 roots_handler = root_logger.handlers[0]
-roots_handler.setFormatter(logging.Formatter('%(name)s: %(message)s')) # change formatting
+roots_handler.setFormatter(logging.Formatter('%(name)s: %(message)s'))  # change formatting
 logger = logging.getLogger('train')
 logger.setLevel(logging.INFO)
 logging.getLogger('dropbox').setLevel(logging.WARN)
@@ -43,6 +43,8 @@ dropbox_util.verify_connection()
 
 for dataset_config in span_bert_configurations:
     train_util.print_args(dataset_config)
+    dataset_name = dataset_config['dataset'].name
+
     # -------- READ DATA ---------
     # TODO: read Samples instead of reading annos, text, tokens separately.
     logger.info("Starting to read data.")
@@ -103,8 +105,8 @@ for dataset_config in span_bert_configurations:
         # ------------------ BEGIN VALIDATION -------------------
         logger.info("Starting validation")
         model.eval()
-        mistakes_file_path = f"{mistakes_folder_path}/mistakes_{EXPERIMENT_NAME}_epoch_{epoch}.tsv"
-        predictions_file_path = f"{predictions_folder_path}/predictions_{EXPERIMENT_NAME}_epoch_{epoch}.tsv"
+        mistakes_file_path = f"{mistakes_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_mistakes.tsv"
+        predictions_file_path = f"{predictions_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_predictions.tsv"
         with open(predictions_file_path, 'w') as predictions_file, \
                 open(mistakes_file_path, 'w') as mistakes_file:
             #  --- GET FILES READY FOR WRITING ---
@@ -157,7 +159,7 @@ for dataset_config in span_bert_configurations:
         micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
         logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
         visualize_errors_file_path = f"{error_visualization_folder_path}/" \
-                                     f"visualize_errors_{EXPERIMENT_NAME}_epoch_{epoch}.bdocjs"
+                                     f"{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_visualize_errors.bdocjs"
         util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, sample_to_annos_valid,
                                            sample_to_text_valid)
         train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME,
@@ -226,6 +228,5 @@ for dataset_config in span_bert_configurations:
     # visualize_errors_file_path = args['save_models_dir'] + f"/visualize_errors_{EXPERIMENT}_epoch_{epoch}.bdocjs"
     # util.create_mistakes_visualization(errors_file_path, visualize_errors_file_path, sample_to_annos_valid,
     #                                    sample_to_text_valid)
-
 
 print("Training Finished!!")
