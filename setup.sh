@@ -4,13 +4,13 @@ apt-get -y install vim
 
 echo "Creating Anaconda environment"
 conda init bash
-conda create -n new_env python=3.10
+conda create -n new_env python=3.10 -y
 . "/opt/conda/etc/profile.d/conda.sh"
 conda activate new_env
 echo "Done creating anaconda environment"
 
 echo "Installing Pytorch"
-conda install pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+conda install -y pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 
 echo "Installing Allennlp"
 sudo apt-get -y install build-essential

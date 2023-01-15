@@ -73,16 +73,16 @@ def get_optimizer(model, dataset_config):
         raise Exception(f"optimizer not found: {dataset_config['optimizer']}")
 
 
-def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str):
+def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str, dataset: Dataset):
     with open(performance_file_path, 'a') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow([experiment_name, str(epoch), str(f1_score)])
+        mistakes_file_writer.writerow([experiment_name, dataset.name, str(epoch), str(f1_score)])
 
 
 def create_performance_file_header(performance_file_path):
     with open(performance_file_path, 'w') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow(['experiment_name', 'epoch', 'f1_score'])
+        mistakes_file_writer.writerow(['experiment_name', 'dataset_name', 'epoch', 'f1_score'])
 
 
 # if dataset_config['model_name'] != 'base':

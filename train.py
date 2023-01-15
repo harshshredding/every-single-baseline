@@ -160,7 +160,8 @@ for dataset_config in span_bert_configurations:
                                      f"visualize_errors_{EXPERIMENT_NAME}_epoch_{epoch}.bdocjs"
         util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, sample_to_annos_valid,
                                            sample_to_text_valid)
-        train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME)
+        train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME,
+                                            dataset_config['dataset'])
 
         # upload files to dropbox
         dropbox_util.upload_file(visualize_errors_file_path)
