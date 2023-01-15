@@ -1,19 +1,23 @@
 from structs import *
-import json
 import pandas as pd
 from args import EXPERIMENT_NAME, TESTING_MODE
 from models import *
 import csv
 import util
 from typing import Dict
+from colorama import Fore, Style
 
 
 def print_args(dataset_config: Dict) -> None:
     """Print the configurations of the current run"""
+    print(Fore.GREEN)
+    print("\n\n------ DATASET CONFIG --------")
     print("EXPERIMENT_NAME:", EXPERIMENT_NAME)
     print("TESTING_MODE:", TESTING_MODE)
     for k, v in dataset_config.items():
         print(k, v)
+    print("-----------CONFIG----------\n\n")
+    print(Style.RESET_ALL)
 
 
 def get_loss_function():
