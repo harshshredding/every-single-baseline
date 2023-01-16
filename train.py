@@ -1,6 +1,7 @@
 import util
 import utils.dropbox as dropbox_util
 import train_util
+import transformers
 from transformers import AutoTokenizer
 from args import TESTING_MODE, EXPERIMENT_NAME
 import time
@@ -17,6 +18,7 @@ roots_handler.setFormatter(logging.Formatter('%(name)s: %(message)s'))  # change
 logger = logging.getLogger('train')
 logger.setLevel(logging.INFO)
 logging.getLogger('dropbox').setLevel(logging.WARN)
+transformers.logging.set_verbosity_error()
 
 # -------- CREATE IMPORTANT DIRECTORIES -------
 logger.info("Create folders for training")
