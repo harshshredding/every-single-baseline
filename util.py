@@ -247,7 +247,7 @@ def enumerate_spans(sentence: List,
     return spans
 
 
-def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding):
+def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding) -> List[tuple[int, int, str]]:
     span_list = []
     start = None
     start_label = None
@@ -467,24 +467,23 @@ def get_all_types(types_file_path: str) -> List[str]:
     return ret
 
 
-def get_label_idx_dicts(types_file_path: str) -> tuple[Dict[Label, int], Dict[int, Label]]:
+def get_bio_label_idx_dicts(all_types: List[str], dataset_config) -> tuple[Dict[Label, int], Dict[int, Label]]:
     """
-    get dictionaries mapping from labels to their corresponding indices.
+    get dictionaries mapping from BIO labels to their corresponding indices.
     """
     label_to_idx_dict = {}
-    with open(types_file_path, 'r') as types_file:
-        for line in types_file.readlines():
-            type_string = line.strip()
-            if len(type_string):
-                label_to_idx_dict[Label(type_string, BioTag.begin)] = len(
-                    label_to_idx_dict)
-                label_to_idx_dict[Label(type_string, BioTag.inside)] = len(
-                    label_to_idx_dict)
+    for type_string in all_types:
+        assert len(type_string), "Type cannot be an empty string"
+        label_to_idx_dict[Label(type_string, BioTag.begin)] = len(
+            label_to_idx_dict)
+        label_to_idx_dict[Label(type_string, BioTag.inside)] = len(
+            label_to_idx_dict)
     label_to_idx_dict[Label.get_outside_label()] = len(label_to_idx_dict)
     idx_to_label_dict = {}
     for label in label_to_idx_dict:
         idx_to_label_dict[label_to_idx_dict[label]] = label
     assert len(label_to_idx_dict) == len(idx_to_label_dict)
+    assert len(label_to_idx_dict) == dataset_config['num_types'] * 2 + 1
     return label_to_idx_dict, idx_to_label_dict
 
 

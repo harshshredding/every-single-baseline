@@ -7,7 +7,7 @@ import time
 import numpy as np
 import logging  # configured in args.py
 import csv
-from dataset_configs import span_bert_configurations
+from configs.seq_label_configurations import dataset_config_list
 import torch
 
 # Setup logging
@@ -41,7 +41,7 @@ train_util.create_performance_file_header(performance_file_path)
 
 dropbox_util.verify_connection()
 
-for dataset_config in span_bert_configurations:
+for dataset_config in dataset_config_list:
     train_util.print_args(dataset_config)
     dataset_name = dataset_config['dataset'].name
 
@@ -92,7 +92,7 @@ for dataset_config in span_bert_configurations:
             optimizer.zero_grad()
             sample_token_data = sample_to_token_data_train[sample_id]
             sample_annos = sample_to_annos_train.get(sample_id, [])
-            loss, predicted_annos = model(sample_token_data, sample_annos)
+            loss, predicted_annos = model(sample_token_data, sample_annos, dataset_config)
             loss.backward()
             optimizer.step()
             epoch_loss.append(loss.cpu().detach().numpy())
@@ -106,7 +106,8 @@ for dataset_config in span_bert_configurations:
         logger.info("Starting validation")
         model.eval()
         mistakes_file_path = f"{mistakes_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_mistakes.tsv"
-        predictions_file_path = f"{predictions_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_predictions.tsv"
+        predictions_file_path = f"{predictions_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}" \
+                                f"_predictions.tsv"
         with open(predictions_file_path, 'w') as predictions_file, \
                 open(mistakes_file_path, 'w') as mistakes_file:
             #  --- GET FILES READY FOR WRITING ---
@@ -125,7 +126,7 @@ for dataset_config in span_bert_configurations:
                 for sample_id in valid_sample_ids:
                     token_data_valid = sample_to_token_data_valid[sample_id]
                     gold_annos_valid = sample_to_annos_valid.get(sample_id, [])
-                    loss, predicted_annos_valid = model(token_data_valid, gold_annos_valid)
+                    loss, predicted_annos_valid = model(token_data_valid, gold_annos_valid, dataset_config)
                     gold_annos_set_valid = set(
                         [
                             (gold_anno.begin_offset, gold_anno.end_offset, gold_anno.label_type)
@@ -229,4 +230,4 @@ for dataset_config in span_bert_configurations:
     # util.create_mistakes_visualization(errors_file_path, visualize_errors_file_path, sample_to_annos_valid,
     #                                    sample_to_text_valid)
 
-print("Training Finished!!")
+logger.info("Training Finished!!")

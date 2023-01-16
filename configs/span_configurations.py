@@ -1,6 +1,6 @@
 from structs import Dataset
 
-span_bert_configurations = [
+dataset_config_list = [
     # LEGAL EVAL JUDGEMENT
     {
         "train_annos_file_path": f"./preprocessed_data/legaleval_train_judgement_annos.tsv",

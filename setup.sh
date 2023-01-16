@@ -4,9 +4,9 @@ apt-get -y install vim
 
 echo "Creating Anaconda environment"
 conda init bash
-conda create -n new_env python=3.10 -y
+conda create -n nlp python=3.10 -y
 . "/opt/conda/etc/profile.d/conda.sh"
-conda activate new_env
+conda activate nlp
 echo "Done creating anaconda environment"
 
 echo "Installing Pytorch"

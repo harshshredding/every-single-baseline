@@ -9,37 +9,40 @@ from collections import Counter
 import benepar
 import spacy
 
+
 class Granularity(Enum):
     coarse = 0
     fine = 1
 
+
 class PreprocessMulticoner(Preprocessor):
     def __init__(
-        self, 
-        raw_data_folder_path: str, 
-        entity_type_file_path: str, 
-        annotations_file_path: str,
-        visualization_file_path: str,
-        tokens_file_path: str,
-        sample_text_file_path: str,
-        dataset_split: DatasetSplit,
-        granularity: Granularity
+            self,
+            raw_data_folder_path: str,
+            entity_type_file_path: str,
+            annotations_file_path: str,
+            visualization_file_path: str,
+            tokens_file_path: str,
+            sample_text_file_path: str,
+            dataset_split: DatasetSplit,
+            granularity: Granularity
     ) -> None:
         super().__init__(
             raw_data_folder_path,
             entity_type_file_path,
-            annotations_file_path, 
+            annotations_file_path,
             visualization_file_path,
             tokens_file_path,
             sample_text_file_path
-            )
+        )
         self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
         self.granularity = granularity
         self.coarse_to_fine = {
-            'Coarse_Location':['Facility', 'OtherLOC', 'HumanSettlement', 'Station'],
+            'Coarse_Location': ['Facility', 'OtherLOC', 'HumanSettlement', 'Station'],
             'Coarse_Creative_Work': ['VisualWork', 'MusicalWork', 'WrittenWork', 'ArtWork', 'Software', 'OtherCW'],
-            'Coarse_Group': ['MusicalGRP', 'PublicCorp', 'PrivateCorp', 'OtherCorp', 'AerospaceManufacturer', 'SportsGRP', 'CarManufacturer', 'TechCorp', 'ORG'],
+            'Coarse_Group': ['MusicalGRP', 'PublicCorp', 'PrivateCorp', 'OtherCorp', 'AerospaceManufacturer',
+                             'SportsGRP', 'CarManufacturer', 'TechCorp', 'ORG'],
             'Coarse_Person': ['Scientist', 'Artist', 'Athlete', 'Politician', 'Cleric', 'SportsManager', 'OtherPER'],
             'Coarse_Product': ['Clothing', 'Vehicle', 'Food', 'Drink', 'OtherPROD'],
             'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease'],
@@ -66,8 +69,8 @@ class PreprocessMulticoner(Preprocessor):
             train_labels_set.update(labels_list)
             train_labels_occurences.extend(labels_list)
         predefined_labels = set(self.__get_all_fine_grained_labels()) \
-                            if self.granularity == Granularity.fine \
-                            else set(list(self.coarse_to_fine.keys()))
+            if self.granularity == Granularity.fine \
+            else set(list(self.coarse_to_fine.keys()))
         if self.granularity == Granularity.fine:
             assert predefined_labels.difference(train_labels_set) == {'TechCorp', 'OtherCW', 'OtherCorp', 'O'}
         else:
@@ -75,14 +78,13 @@ class PreprocessMulticoner(Preprocessor):
         label_occurence_count = Counter(train_labels_occurences)
         print("top level occurence count")
         print(json.dumps(label_occurence_count, indent=4))
-        print("num fine labels", len(train_labels_set)) 
+        print("num fine labels", len(train_labels_set))
         with util.open_make_dirs(self.entity_type_file_path, 'w') as types_file:
             for fine_label in train_labels_set:
                 print(fine_label, file=types_file)
 
     def get_samples(self) -> List[Sample]:
         return self.__get_samples(f"{self.raw_data_folder_path}/en-{self.dataset_split.name}.conll")
-         
 
     def __get_text(self, tokens: List[tuple]) -> str:
         return ' '.join([token_string for token_string, _ in tokens])
@@ -104,7 +106,7 @@ class PreprocessMulticoner(Preprocessor):
                         token_string, token_label = line.split(" _ _ ")
                         tokens_list = samples_dict.get(curr_sample_id, [])
                         tokens_list.append((token_string, token_label))
-                        samples_dict[curr_sample_id] = tokens_list 
+                        samples_dict[curr_sample_id] = tokens_list
             return samples_dict
 
     def __remove_bio(self, label_string):
@@ -135,12 +137,12 @@ class PreprocessMulticoner(Preprocessor):
                 if token_label.startswith("B-"):
                     curr_span_start = token_offset
                     curr_span_type = self.__remove_bio(token_label) if self.granularity == Granularity.fine \
-                            else fine_to_coarse[self.__remove_bio(token_label)]
+                        else fine_to_coarse[self.__remove_bio(token_label)]
                     curr_span_text = token_string
                 elif token_label.startswith("I-"):
                     assert curr_span_text is not None
                     curr_span_text = " ".join([curr_span_text, token_string])
-                token_offset += (len(token_string) + 1) # add one for one space between tokens 
+                token_offset += (len(token_string) + 1)  # add one for one space between tokens
             if curr_span_start is not None:
                 assert curr_span_type is not None
                 assert curr_span_text is not None
@@ -148,7 +150,6 @@ class PreprocessMulticoner(Preprocessor):
                 curr_span_start, curr_span_type, curr_span_text = None, None, None
             annos_dict[sample_id] = spans
         return annos_dict
-
 
     def __get_samples(self, raw_file_path) -> List[Sample]:
         ret: List[Sample] = []
@@ -183,9 +184,10 @@ class PreprocessMulticoner(Preprocessor):
             sample_to_text[sample.id] = sample.text
         util.create_visualization_file(
             self.visualization_file_path,
-            sample_to_annos, 
+            sample_to_annos,
             sample_to_text
         )
+
 
 prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"
 train_coarse_preproc = PreprocessMulticoner(
@@ -200,7 +202,6 @@ train_coarse_preproc = PreprocessMulticoner(
 )
 train_coarse_preproc.run()
 
-
 prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.fine.name}"
 train_fine_preproc = PreprocessMulticoner(
     raw_data_folder_path='./multiconer-data-raw/train_dev',
@@ -213,7 +214,6 @@ train_fine_preproc = PreprocessMulticoner(
     granularity=Granularity.fine
 )
 train_fine_preproc.run()
-
 
 prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.coarse.name}"
 valid_coarse_preproc = PreprocessMulticoner(
