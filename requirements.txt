@@ -10,3 +10,4 @@ gatenlp
 dropbox
 ipython
 colorama
+matplotlib

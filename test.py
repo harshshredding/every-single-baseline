@@ -1,18 +1,3 @@
-from util import enumerate_spans, log_tensor, get_token_level_spans, get_sub_token_level_spans
-from typing import List
-import torch
-from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
-from args import args, device
-from transformers import AutoModel, AutoTokenizer
-import torch.nn as nn
-from transformers.tokenization_utils_base import BatchEncoding
-from structs import Anno, TokenData
-import train_util
-import util
-import logging
-from bs4 import BeautifulSoup
-
-
 # class SpanBert(torch.nn.Module):
 #     def __init__(self):
 #         super(SpanBert, self).__init__()
@@ -98,14 +83,16 @@ from bs4 import BeautifulSoup
 # print(batch_encoding.word_to_tokens(4))
 
 
-with open('GENIA_term_3.02/GENIAcorpus3.02.xml', 'r') as genia_file:
-    soup = BeautifulSoup(genia_file, 'xml')
-    ret = []
-    all_sentences = list(soup.find_all('sentence'))
-    num_total = len(all_sentences)
-    num_half = int(len(all_sentences)*0.5)
-    num_quarter = int(len(all_sentences)*0.25)
-    print("num total", num_total)
-    print("Train", (0, num_half))
-    print("Valid", (num_half, num_half + num_quarter))
-    print("Test", (num_half + num_quarter, num_half + 2*num_quarter))
+# with open('GENIA_term_3.02/GENIAcorpus3.02.xml', 'r') as genia_file:
+#     soup = BeautifulSoup(genia_file, 'xml')
+#     ret = []
+#     all_sentences = list(soup.find_all('sentence'))
+#     num_total = len(all_sentences)
+#     num_half = int(len(all_sentences)*0.5)
+#     num_quarter = int(len(all_sentences)*0.25)
+#     print("num total", num_total)
+#     print("Train", (0, num_half))
+#     print("Valid", (num_half, num_half + num_quarter))
+#     print("Test", (num_half + num_quarter, num_half + 2*num_quarter))
+
+

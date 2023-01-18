@@ -1,6 +1,9 @@
 import dropbox
 from pathlib import Path
 from typing import List
+import logging
+
+logging.getLogger('dropbox').setLevel(logging.WARN)
 
 home = str(Path.home())
 
@@ -23,7 +26,7 @@ def verify_connection():
     print("DROPBOX: connection verified")
 
 
-def get_dropbox_file_names() -> List[str]:
+def get_all_file_names_in_folder() -> List[str]:
     """
     Get all file names in the dropbox root folder.
     """
@@ -43,3 +46,13 @@ def upload_file(file_to_upload_path: str):
     with open(file_to_upload_path, "rb") as file_to_upload:
         dropbox_client.files_upload(file_to_upload.read(), f'/{file_name}', mode=dropbox.files.WriteMode.overwrite)
     print(f"Dropbox: Successfully uploaded {file_name}")
+
+
+def download_file(remote_path: str, local_path: str):
+    """
+    Downloads a file at `remote_path` in dropbox to `local_path` on the local machine.
+    """
+    print(f"Dropbox: downloading {remote_path}")
+    dropbox_client = get_dropbox_client()
+    dropbox_client.files_download_to_file(local_path, remote_path)
+    print(f"Dropbox: successfully downloaded to {local_path}")
