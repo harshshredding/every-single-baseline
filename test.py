@@ -95,4 +95,7 @@
 #     print("Valid", (num_half, num_half + num_quarter))
 #     print("Test", (num_half + num_quarter, num_half + 2*num_quarter))
 
+import yaml
 
+with open('./configs/dataset_configs/legaleval_judgement_config.yaml', 'r') as yaml_file:
+    print(yaml.safe_load(yaml_file))

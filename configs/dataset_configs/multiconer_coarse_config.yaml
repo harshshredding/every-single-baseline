@@ -1,0 +1,9 @@
+train_annos_file_path: ./preprocessed_data/multiconer_train_coarse_annos.tsv
+valid_annos_file_path: ./preprocessed_data/multiconer_valid_coarse_annos.tsv
+train_tokens_file_path: ./preprocessed_data/multiconer_train_coarse_tokens.json
+valid_tokens_file_path: ./preprocessed_data/multiconer_valid_coarse_tokens.json
+train_sample_text_data_file_path: ./preprocessed_data/multiconer_train_coarse_sample_text.json
+valid_sample_text_data_file_path: ./preprocessed_data/multiconer_valid_coarse_sample_text.json
+types_file_path: ./preprocessed_data/multiconer_train_coarse_types.txt
+num_types: 6
+dataset_name: multiconer_coarse

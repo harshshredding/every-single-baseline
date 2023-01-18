@@ -1,0 +1,9 @@
+train_annos_file_path: ./preprocessed_data/legaleval_train_preamble_annos.tsv
+valid_annos_file_path: ./preprocessed_data/legaleval_valid_preamble_annos.tsv
+train_tokens_file_path: ./preprocessed_data/legaleval_train_preamble_tokens.json
+valid_tokens_file_path: ./preprocessed_data/legaleval_valid_preamble_tokens.json
+train_sample_text_data_file_path: ./preprocessed_data/legaleval_train_preamble_sample_text.json
+valid_sample_text_data_file_path: ./preprocessed_data/legaleval_valid_preamble_sample_text.json
+types_file_path: ./preprocessed_data/legaleval_train_preamble_types.txt
+num_types: 10
+dataset_name: legaleval_preamble

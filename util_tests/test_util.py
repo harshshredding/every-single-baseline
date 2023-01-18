@@ -35,7 +35,7 @@ def test_sub_token_level_spans():
 
 
 def test_get_all_types():
-    all_types = get_all_types('util_tests/test_types.txt')
+    all_types = get_all_types('util_tests/test_types.txt', 3)
     assert len(all_types) == 3
     assert all_types == ['test_type_1', 'test_type_2', 'test_type_3']
 

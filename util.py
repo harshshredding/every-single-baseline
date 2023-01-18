@@ -457,13 +457,15 @@ def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
     return sample_to_annos
 
 
-def get_all_types(types_file_path: str) -> List[str]:
+def get_all_types(types_file_path: str, num_expected_types: int) -> List[str]:
     ret = []
     with open(types_file_path, 'r') as types_file:
         for line in types_file:
             type_name = line.strip()
             if len(type_name):
                 ret.append(type_name)
+    assert len(ret) == num_expected_types, f"Expected {num_expected_types} num types, " \
+                                           f"but found {len(ret)} in types file."
     return ret
 
 
