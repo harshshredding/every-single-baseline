@@ -307,7 +307,7 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     if model_config.model_name == 'SpanBert':
         return SpanBert(all_types, model_config).to(device)
     if model_config.model_name == 'JustBert3ClassesCRF':
-        return JustBert3ClassesCRF(all_types, model_config, dataset_config)
+        return JustBert3ClassesCRF(all_types, model_config, dataset_config).to(device)
     raise Exception(f"no code to prepare model {model_config.model_name}")
 
 
