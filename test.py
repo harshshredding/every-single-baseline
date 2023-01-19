@@ -13,4 +13,3 @@ sample_token_data = token_data_dict['5239d808-f300-46ea-aa3b-5093040213a3']
 sample_annos = annos_dict['5239d808-f300-46ea-aa3b-5093040213a3']
 model = JustBert3ClassesCRF(all_types, model_config, dataset_config)
 model.forward(sample_token_data, sample_annos, model_config)
-pass

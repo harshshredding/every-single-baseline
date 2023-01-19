@@ -494,11 +494,12 @@ class JustBert3Classes(torch.nn.Module):
         self.label_to_idx = label_to_idx
         self.idx_to_label = idx_to_label
         self.loss_function = nn.CrossEntropyLoss()
+        self.dataset_config = dataset_config
+        self.model_config = model_config
 
     def forward(self,
                 sample_token_data: List[TokenData],
                 sample_annos: List[Anno],
-                dataset_config
                 ):
         tokens = util.get_token_strings(sample_token_data)
         offsets_list = util.get_token_offsets(sample_token_data)
@@ -508,7 +509,7 @@ class JustBert3Classes(torch.nn.Module):
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         predictions_logits = self.classifier(bert_embeddings)
         expanded_labels = train_util.extract_expanded_labels(sample_token_data, bert_encoding, sample_annos,
-                                                             dataset_config)
+                                                             self.model_config)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         loss = self.loss_function(predictions_logits, expanded_labels_tensor)
@@ -516,7 +517,7 @@ class JustBert3Classes(torch.nn.Module):
         predicted_label_indices_expanded = torch.argmax(predictions_logits, dim=1).cpu().detach().numpy()
         predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
         predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
-                                                                           dataset_config)
+                                                                           self.model_config)
         predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
                                         predicted_spans_token_index]
         predicted_annos = []
@@ -548,6 +549,8 @@ class JustBert3ClassesCRF(torch.nn.Module):
         self.crf = CRF(self.flair_dictionary, len(self.flair_dictionary), False)
         self.viterbi_decoder = ViterbiDecoder(self.flair_dictionary)
         self.linear = nn.Linear(self.input_dim, len(self.flair_dictionary))
+        self.model_config = model_config
+        self.dataset_config = dataset_config
 
     def _get_flair_label_dictionary(self):
         flair_dictionary = Dictionary(add_unk=False)
@@ -558,8 +561,7 @@ class JustBert3ClassesCRF(torch.nn.Module):
 
     def forward(self,
                 sample_token_data: List[TokenData],
-                sample_annos: List[Anno],
-                model_config: ModelConfig
+                sample_annos: List[Anno]
                 ):
         tokens = util.get_token_strings(sample_token_data)
         offsets_list = util.get_token_offsets(sample_token_data)
@@ -575,7 +577,7 @@ class JustBert3ClassesCRF(torch.nn.Module):
         # TODO: calculate length using tensor
 
         expanded_labels = train_util.extract_expanded_labels(sample_token_data, bert_encoding, sample_annos,
-                                                             model_config)
+                                                             self.model_config)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         lengths = torch.tensor([len(expanded_labels_tensor)], dtype=torch.long)
@@ -587,7 +589,7 @@ class JustBert3ClassesCRF(torch.nn.Module):
                                             predicted_label_strings]
         predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
         predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
-                                                                           model_config)
+                                                                           self.model_config)
         predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
                                         predicted_spans_token_index]
         predicted_annos = []
@@ -621,8 +623,7 @@ class SpanBert(torch.nn.Module):
 
     def forward(self,
                 sample_token_data: List[TokenData],
-                sample_annos: List[Anno],
-                dataset_config
+                sample_annos: List[Anno]
                 ):
         """Forward pass
         Args:

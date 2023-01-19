@@ -26,6 +26,18 @@ class ModelConfig(NamedTuple):
     learning_rate: float
 
 
+class ExperimentConfig(NamedTuple):
+    dataset_config: DatasetConfig
+    model_config: ModelConfig
+
+
+def get_experiment_config(model_name: str, dataset_name: str) -> ExperimentConfig:
+    return ExperimentConfig(
+        get_dataset_config_by_name(dataset_name),
+        get_model_config_by_name(model_name)
+    )
+
+
 def read_dataset_config(config_file_path: str) -> DatasetConfig:
     with open(config_file_path, 'r') as yaml_file:
         dataset_config_raw = yaml.safe_load(yaml_file)

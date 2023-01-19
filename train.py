@@ -8,8 +8,9 @@ import time
 import numpy as np
 import logging  # configured in args.py
 import csv
-from configs.seq_label_configurations import dataset_config_list
+from configs.seq_label_crf_experiments import experiments
 import torch
+from utils.config import DatasetConfig, ModelConfig
 
 # Setup logging
 root_logger = logging.getLogger()
@@ -43,9 +44,12 @@ train_util.create_performance_file_header(performance_file_path)
 
 dropbox_util.verify_connection()
 
-for dataset_config in dataset_config_list:
+dataset_config: DatasetConfig
+model_config: ModelConfig
+
+for dataset_config, model_config in experiments:
     train_util.print_args(dataset_config)
-    dataset_name = dataset_config['dataset'].name
+    dataset_name = dataset_config.dataset_name
 
     # -------- READ DATA ---------
     # TODO: read Samples instead of reading annos, text, tokens separately.
@@ -62,10 +66,10 @@ for dataset_config in dataset_config_list:
 
     # ------ MODEL INITIALISATION --------
     logger.info("Starting model initialization.")
-    bert_tokenizer = AutoTokenizer.from_pretrained(dataset_config['bert_model_name'])
-    model = train_util.prepare_model(dataset_config)
-    optimizer = train_util.get_optimizer(model, dataset_config)
-    all_types = util.get_all_types(dataset_config['types_file_path'])
+    bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+    model = train_util.prepare_model(model_config, dataset_config)
+    optimizer = train_util.get_optimizer(model, model_config)
+    all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
     logger.debug(f"all types\n {util.p_string(list(all_types))}")
     logger.info("Finished model initialization.")
 
@@ -77,7 +81,7 @@ for dataset_config in dataset_config_list:
         for anno in sample_annos:
             assert anno.label_type in all_types, f"{anno.label_type}"
 
-    for epoch in range(dataset_config['num_epochs']):
+    for epoch in range(model_config.num_epochs):
         # Don't train for more than 2 epochs while testing
         if TESTING_MODE and epoch > 1:
             break
@@ -94,7 +98,7 @@ for dataset_config in dataset_config_list:
             optimizer.zero_grad()
             sample_token_data = sample_to_token_data_train[sample_id]
             sample_annos = sample_to_annos_train.get(sample_id, [])
-            loss, predicted_annos = model(sample_token_data, sample_annos, dataset_config)
+            loss, predicted_annos = model(sample_token_data, sample_annos)
             loss.backward()
             optimizer.step()
             epoch_loss.append(loss.cpu().detach().numpy())
@@ -128,7 +132,7 @@ for dataset_config in dataset_config_list:
                 for sample_id in valid_sample_ids:
                     token_data_valid = sample_to_token_data_valid[sample_id]
                     gold_annos_valid = sample_to_annos_valid.get(sample_id, [])
-                    loss, predicted_annos_valid = model(token_data_valid, gold_annos_valid, dataset_config)
+                    loss, predicted_annos_valid = model(token_data_valid, gold_annos_valid)
                     gold_annos_set_valid = set(
                         [
                             (gold_anno.begin_offset, gold_anno.end_offset, gold_anno.label_type)
@@ -166,7 +170,7 @@ for dataset_config in dataset_config_list:
         util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, sample_to_annos_valid,
                                            sample_to_text_valid)
         train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME,
-                                            dataset_config['dataset'])
+                                            dataset_config.dataset_name)
 
         # upload files to dropbox
         dropbox_util.upload_file(visualize_errors_file_path)

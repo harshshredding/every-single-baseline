@@ -9,14 +9,13 @@ from colorama import Fore, Style
 from utils.config import ModelConfig, DatasetConfig
 
 
-def print_args(dataset_config: Dict) -> None:
+def print_args(dataset_config: DatasetConfig) -> None:
     """Print the configurations of the current run"""
     print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
-    print("EXPERIMENT_NAME:", EXPERIMENT_NAME)
-    print("TESTING_MODE:", TESTING_MODE)
-    for k, v in dataset_config.items():
-        print(k, v)
+    print("experiment:", EXPERIMENT_NAME)
+    print("is_testing:", TESTING_MODE)
+    print("dataset:", dataset_config.dataset_name)
     print("-----------CONFIG----------\n\n")
     print(Style.RESET_ALL)
 
@@ -54,6 +53,7 @@ def extract_expanded_labels(sample_token_data: List[TokenData],
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + model_config.model_name)
 
+
 def read_pos_embeddings_file(dataset_config: DatasetConfig):
     return pd.read_pickle(dataset_config['pos_embeddings_path'])
 
@@ -70,10 +70,10 @@ def get_optimizer(model, model_config: ModelConfig):
         raise Exception(f"optimizer not found: {model_config.optimizer}")
 
 
-def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str, dataset: Dataset):
+def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str, dataset_name: str):
     with open(performance_file_path, 'a') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow([experiment_name, dataset.name, str(epoch), str(f1_score)])
+        mistakes_file_writer.writerow([experiment_name, dataset_name, str(epoch), str(f1_score)])
 
 
 def create_performance_file_header(performance_file_path):
@@ -301,12 +301,13 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     #     return PosEncod3ClassesOnlyRoberta().to(device)
     # if dataset_config['model_name'] == 'OnlyRoberta3Classes':
     #     return OnlyRoberta3Classes().to(device)
+    all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
     if model_config.model_name == 'JustBert3Classes':
-        all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
         return JustBert3Classes(all_types, model_config, dataset_config).to(device)
     if model_config.model_name == 'SpanBert':
-        all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
         return SpanBert(all_types, model_config).to(device)
+    if model_config.model_name == 'JustBert3ClassesCRF':
+        return JustBert3ClassesCRF(all_types, model_config, dataset_config)
     raise Exception(f"no code to prepare model {model_config.model_name}")
 
 
