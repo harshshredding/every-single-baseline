@@ -1,0 +1,3 @@
+ACCESS_TOKEN="ya29.a0AX9GBdV99kKEODQmDDyCmBZuj9DhQ5eaByB7uNR8O1F7ANDwW6YyG5ISpxR3hvn3pPP07I8nJm2-qVAZka3bs_oAz4HCA9AlvPlGjdpyvFp9HTlNrtQAevdHKG_ewLFIKdON289oY2paFhB2WVpy8P7yy7fvaCgYKAZ4SARASFQHUCsbCh3rQGpU5ZQ9F1xo7EuVz6Q0163"
+
+curl -H "Authorization: Bearer ${ACCESS_TOKEN}" https://www.googleapis.com/drive/v3/files/1g0-paW5K6VcbaU_8HkHj06KHcjZIFkCM?alt=media -o preprocessed_data.zip
