@@ -13,7 +13,7 @@ echo "Installing Pytorch"
 conda install -y pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
 
 echo "Installing Allennlp"
-sudo apt-get install pkg-config
+sudo apt-get -y install pkg-config
 sudo apt-get -y install build-essential
 pip install allennlp
 
