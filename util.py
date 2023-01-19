@@ -11,6 +11,7 @@ import pandas as pd
 from collections import deque
 from spacy.tokens.span import Span
 from transformers.tokenization_utils_base import BatchEncoding
+from utils.config import DatasetConfig
 import logging
 
 
@@ -469,7 +470,8 @@ def get_all_types(types_file_path: str, num_expected_types: int) -> List[str]:
     return ret
 
 
-def get_bio_label_idx_dicts(all_types: List[str], dataset_config) -> tuple[Dict[Label, int], Dict[int, Label]]:
+def get_bio_label_idx_dicts(all_types: List[str], dataset_config: DatasetConfig) -> tuple[
+    Dict[Label, int], Dict[int, Label]]:
     """
     get dictionaries mapping from BIO labels to their corresponding indices.
     """
@@ -485,7 +487,7 @@ def get_bio_label_idx_dicts(all_types: List[str], dataset_config) -> tuple[Dict[
     for label in label_to_idx_dict:
         idx_to_label_dict[label_to_idx_dict[label]] = label
     assert len(label_to_idx_dict) == len(idx_to_label_dict)
-    assert len(label_to_idx_dict) == dataset_config['num_types'] * 2 + 1
+    assert len(label_to_idx_dict) == dataset_config.num_types * 2 + 1
     return label_to_idx_dict, idx_to_label_dict
 
 
@@ -499,7 +501,7 @@ def create_directory_structure(folder_path: str):
     Creates all the directories on the given `folder_path`.
     Doesn't throw an error if directories already exist.
     Args:
-        foler_path: the directory path to create.
+        folder_path: the directory path to create.
     """
     Path(folder_path).mkdir(parents=True, exist_ok=True)
 

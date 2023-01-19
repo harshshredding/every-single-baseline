@@ -6,6 +6,7 @@ import csv
 import util
 from typing import Dict
 from colorama import Fore, Style
+from utils.config import ModelConfig, DatasetConfig
 
 
 def print_args(dataset_config: Dict) -> None:
@@ -24,50 +25,49 @@ def get_loss_function():
     return nn.CrossEntropyLoss()
 
 
-def get_bert_tokenizer(dataset_config):
+def get_bert_tokenizer(model_config: ModelConfig):
     """
     Get the bert tokenizer
     """
-    return AutoTokenizer.from_pretrained(dataset_config['bert_model_name'])
+    return AutoTokenizer.from_pretrained(model_config.bert_model_name)
 
 
-def get_train_annos_dict(dataset_config) -> Dict[str, List[Anno]]:
-    return util.get_annos_dict(dataset_config['train_annos_file_path'])
+def get_train_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]:
+    return util.get_annos_dict(dataset_config.train_annos_file_path)
 
 
-def get_valid_annos_dict(dataset_config) -> Dict[str, List[Anno]]:
-    return util.get_annos_dict(dataset_config['valid_annos_file_path'])
+def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]:
+    return util.get_annos_dict(dataset_config.valid_annos_file_path)
 
 
 def extract_expanded_labels(sample_token_data: List[TokenData],
                             batch_encoding,
                             annos: List[Anno],
-                            dataset_config) -> List[Label]:
-    if '3Classes' in dataset_config['model_name']:
+                            model_config: ModelConfig) -> List[Label]:
+    if '3Classes' in model_config.model_name:
         labels = util.get_labels_bio(sample_token_data, annos)
         expanded_labels = util.expand_labels_rich(batch_encoding, labels)
         return expanded_labels
-    elif '2Classes' in dataset_config['model_name']:
+    elif '2Classes' in model_config.model_name:
         labels = util.get_label_strings(sample_token_data, annos)
         expanded_labels = util.expand_labels(batch_encoding, labels)
         return expanded_labels
-    raise Exception('Have to specify num of classes in model name ' + dataset_config['model_name'])
+    raise Exception('Have to specify num of classes in model name ' + model_config.model_name)
 
-
-def read_pos_embeddings_file(dataset_config):
+def read_pos_embeddings_file(dataset_config: DatasetConfig):
     return pd.read_pickle(dataset_config['pos_embeddings_path'])
 
 
-def get_optimizer(model, dataset_config):
-    if dataset_config['optimizer'] == 'Ranger':
+def get_optimizer(model, model_config: ModelConfig):
+    if model_config.optimizer == 'Ranger':
         # return torch_optimizer.Ranger(model.parameters(), dataset_config['learning_rate'])
         raise Exception("no ranger optimizer")
-    elif dataset_config['optimizer'] == 'Adam':
-        return torch.optim.Adam(model.parameters(), dataset_config['learning_rate'])
-    elif dataset_config['optimizer'] == 'AdamW':
-        return torch.optim.AdamW(model.parameters(), dataset_config['learning_rate'])
+    elif model_config.optimizer == 'Adam':
+        return torch.optim.Adam(model.parameters(), model_config.learning_rate)
+    elif model_config.optimizer == 'AdamW':
+        return torch.optim.AdamW(model.parameters(), model_config.learning_rate)
     else:
-        raise Exception(f"optimizer not found: {dataset_config['optimizer']}")
+        raise Exception(f"optimizer not found: {model_config.optimizer}")
 
 
 def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str, dataset: Dataset):
@@ -99,16 +99,16 @@ def create_performance_file_header(performance_file_path):
 #     pos_to_index = get_key_to_index(pos_dict)
 
 
-def get_spans_from_seq_labels(predictions_sub, batch_encoding, dataset_config):
-    if '3Classes' in dataset_config['model_name']:
+def get_spans_from_seq_labels(predictions_sub, batch_encoding, model_config: ModelConfig):
+    if '3Classes' in model_config.model_name:
         return util.get_spans_from_bio_labels(predictions_sub, batch_encoding)
-    elif '2Classes' in dataset_config['model_name']:
+    elif '2Classes' in model_config.model_name:
         return util.get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
     else:
-        raise Exception('Have to specify num of classes in model name ' + dataset_config['model_name'])
+        raise Exception(f"Have to specify num of classes in model name {model_config.model_name}")
 
 
-def read_disease_gazetteer(dataset_config):
+def read_disease_gazetteer(dataset_config: DatasetConfig):
     disease_list = []
     df = pd.read_csv(dataset_config['disease_gazetteer_path'], sep='\t')
     for _, row in df.iterrows():
@@ -117,34 +117,34 @@ def read_disease_gazetteer(dataset_config):
     return disease_list
 
 
-def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_config):
+def prepare_model_input(batch_encoding, sample_data: List[TokenData], model_config: ModelConfig):
     # umls_indices = torch.tensor(util.expand_labels(batch_encoding, get_umls_indices(sample_data, umls_key_to_index)),
     #                             device=device)
     # pos_indices = torch.tensor(util.expand_labels(batch_encoding, get_pos_indices(sample_data, pos_to_index)),
     #                            device=device)
     umls_indices = None
     pos_indices = None
-    if dataset_config['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
+    if model_config.model_name == 'SeqLabelerAllResourcesSmallerTopK':
         model_input = (batch_encoding, umls_indices, pos_indices)
-    elif dataset_config['model_name'] == 'SeqLabelerDisGaz':
+    elif model_config.model_name == 'SeqLabelerDisGaz':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings)
-    elif dataset_config['model_name'] == 'SeqLabelerUMLSDisGaz':
+    elif model_config.model_name == 'SeqLabelerUMLSDisGaz':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
             util.expand_labels(batch_encoding, util.get_umls_dis_gaz_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
-    elif dataset_config['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
+    elif model_config.model_name == 'SeqLabelerUMLSDisGaz3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
             util.expand_labels(batch_encoding, util.get_umls_dis_gaz_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings)
-    elif dataset_config['model_name'] == 'Silver3Classes':
+    elif model_config.model_name == 'Silver3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -155,7 +155,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
                        silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'LightWeightRIM3Classes':
+    elif model_config.model_name == 'LightWeightRIM3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -165,7 +165,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             util.expand_labels(batch_encoding, util.get_silver_dis_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'OneEncoder3Classes':
+    elif model_config.model_name == 'OneEncoder3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -175,7 +175,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             util.expand_labels(batch_encoding, util.get_silver_dis_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'TransformerEncoder3Classes':
+    elif model_config.model_name == 'TransformerEncoder3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -185,7 +185,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             util.expand_labels(batch_encoding, util.get_silver_dis_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'PositionalTransformerEncoder3Classes':
+    elif model_config.model_name == 'PositionalTransformerEncoder3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -195,7 +195,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             util.expand_labels(batch_encoding, util.get_silver_dis_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'SmallPositionalTransformerEncoder3Classes':
+    elif model_config.model_name == 'SmallPositionalTransformerEncoder3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -205,7 +205,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             util.expand_labels(batch_encoding, util.get_silver_dis_one_hot(sample_data)),
             device=device)
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
+    elif model_config.model_name == 'ComprehensivePositionalTransformerEncoder3Classes':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -216,7 +216,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             device=device)
         model_input = (batch_encoding, umls_indices, pos_indices, dis_gaz_embeddings, umls_dis_gaz_embeddings,
                        silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'PosEncod3ClassesNoSilverNewGaz':
+    elif model_config.model_name == 'PosEncod3ClassesNoSilverNewGaz':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -227,7 +227,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             device=device)
         # silver embeddings are going to be ignored during training
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'PosEncod3ClassesNoSilverBig':
+    elif model_config.model_name == 'PosEncod3ClassesNoSilverBig':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -238,7 +238,7 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             device=device)
         # silver embeddings are going to be ignored during training
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'PosEncod3ClassesNoSilverSpanish':
+    elif model_config.model_name == 'PosEncod3ClassesNoSilverSpanish':
         dis_gaz_embeddings = torch.tensor(util.expand_labels(batch_encoding, util.get_dis_gaz_one_hot(sample_data)),
                                           device=device)
         umls_dis_gaz_embeddings = torch.tensor(
@@ -249,18 +249,18 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], dataset_co
             device=device)
         # silver embeddings are going to be ignored during training
         model_input = (batch_encoding, dis_gaz_embeddings, umls_dis_gaz_embeddings, silver_dis_embeddings)
-    elif dataset_config['model_name'] == 'PosEncod3ClassesOnlyRoberta':
+    elif model_config.model_name == 'PosEncod3ClassesOnlyRoberta':
         model_input = [batch_encoding]
-    elif dataset_config['model_name'] == 'OnlyRoberta3Classes':
+    elif model_config.model_name == 'OnlyRoberta3Classes':
         model_input = [batch_encoding]
-    elif dataset_config['model_name'] == 'JustBert3Classes':
+    elif model_config.model_name == 'JustBert3Classes':
         model_input = [batch_encoding]
     else:
         raise Exception('Not implemented!')
     return model_input
 
 
-def prepare_model(dataset_config):
+def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     # if dataset_config['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
     #     return SeqLabelerAllResourcesSmallerTopK(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
     #                                              pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
@@ -301,38 +301,38 @@ def prepare_model(dataset_config):
     #     return PosEncod3ClassesOnlyRoberta().to(device)
     # if dataset_config['model_name'] == 'OnlyRoberta3Classes':
     #     return OnlyRoberta3Classes().to(device)
-    if dataset_config['model_name'] == 'JustBert3Classes':
-        all_types = util.get_all_types(dataset_config['types_file_path'])
-        return JustBert3Classes(all_types, dataset_config).to(device)
-    if dataset_config['model_name'] == 'SpanBert':
-        all_types = util.get_all_types(dataset_config['types_file_path'])
-        return SpanBert(all_types, dataset_config).to(device)
-    raise Exception(f"no code to prepare model {dataset_config['model_name']}")
+    if model_config.model_name == 'JustBert3Classes':
+        all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
+        return JustBert3Classes(all_types, model_config, dataset_config).to(device)
+    if model_config.model_name == 'SpanBert':
+        all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
+        return SpanBert(all_types, model_config).to(device)
+    raise Exception(f"no code to prepare model {model_config.model_name}")
 
 
 # TODO: move to different module
-def get_train_tokens(dataset_config) -> Dict[SampleId, List[TokenData]]:
-    return util.get_tokens_from_file(dataset_config['train_tokens_file_path'])
+def get_train_token_data_dict(dataset_config: DatasetConfig) -> Dict[SampleId, List[TokenData]]:
+    return util.get_tokens_from_file(dataset_config.train_tokens_file_path)
 
 
 # TODO: move to different module
-def get_valid_tokens(dataset_config) -> Dict[SampleId, List[TokenData]]:
-    return util.get_tokens_from_file(dataset_config['valid_tokens_file_path'])
+def get_valid_token_data_dict(dataset_config: DatasetConfig) -> Dict[SampleId, List[TokenData]]:
+    return util.get_tokens_from_file(dataset_config.valid_tokens_file_path)
 
 
 # TODO: move to different module
-def get_test_data(dataset_config) -> Dict[str, List[TokenData]]:
-    return util.read_data_from_folder(dataset_config['test_data_folder_path'])
+def get_test_data(dataset_config: DatasetConfig) -> Dict[str, List[TokenData]]:
+    return util.read_data_from_folder(dataset_config.test_data_folder_path)
 
 
 # TODO: move to different module
-def get_train_texts(dataset_config) -> Dict[SampleId, str]:
-    return util.get_texts(dataset_config['train_sample_text_data_file_path'])
+def get_train_texts(dataset_config: DatasetConfig) -> Dict[SampleId, str]:
+    return util.get_texts(dataset_config.train_sample_text_data_file_path)
 
 
 # TODO: move to different module
-def get_valid_texts(dataset_config) -> Dict[SampleId, str]:
-    return util.get_texts(dataset_config['valid_sample_text_data_file_path'])
+def get_valid_texts(dataset_config: DatasetConfig) -> Dict[SampleId, str]:
+    return util.get_texts(dataset_config.valid_sample_text_data_file_path)
 
 
 def prepare_file_headers(mistakes_file_writer, predictions_file_writer):

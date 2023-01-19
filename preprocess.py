@@ -15,12 +15,12 @@ class Preprocessor(ABC):
 
     def __init__(
             self,
-            raw_data_folder_path: str,
             entity_type_file_path: str,
             annotations_file_path: str,
             visualization_file_path: str,
             tokens_file_path: str,
-            sample_text_file_path: str
+            sample_text_file_path: str,
+            raw_data_folder_path: str | None = None,
     ) -> None:
         """
         Creates a preprocessor configured with some file paths

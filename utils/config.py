@@ -1,5 +1,7 @@
 from typing import NamedTuple
+from utils.universal import die
 import yaml
+import glob
 
 
 class DatasetConfig(NamedTuple):
@@ -59,3 +61,21 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
         assert isinstance(model_config.num_epochs, int)
         assert isinstance(model_config.learning_rate, float)
         return model_config
+
+
+def get_model_config_by_name(model_name: str) -> ModelConfig:
+    all_config_file_paths = glob.glob('configs/model_configs/*.yaml')
+    for config_file_path in all_config_file_paths:
+        model_config = read_model_config(config_file_path)
+        if model_config.model_name == model_name:
+            return model_config
+    die(f"Should have been able to find model config with name {model_name}")
+
+
+def get_dataset_config_by_name(dataset_name: str) -> DatasetConfig:
+    all_config_file_paths = glob.glob('configs/dataset_configs/*.yaml')
+    for config_file_path in all_config_file_paths:
+        dataset_config = read_dataset_config(config_file_path)
+        if dataset_config.dataset_name == dataset_name:
+            return dataset_config
+    die(f"Should have been able to find model config with name {dataset_name}")

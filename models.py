@@ -8,6 +8,10 @@ from typing import List
 from structs import TokenData, Anno
 from transformers.tokenization_utils_base import BatchEncoding
 import train_util
+from flair.models.sequence_tagger_utils.crf import CRF
+from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecoder
+from flair.data import Dictionary
+from utils.config import DatasetConfig, ModelConfig
 
 
 class Embedding(nn.Module):
@@ -479,12 +483,12 @@ class OnlyRoberta3Classes(torch.nn.Module):
 
 
 class JustBert3Classes(torch.nn.Module):
-    def __init__(self, all_types: List[str], dataset_config):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(JustBert3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(dataset_config['bert_model_name'])
-        self.input_dim = dataset_config['bert_model_output_dim']
-        self.num_class = (dataset_config['num_types'] * 2) + 1
+        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+        self.input_dim = model_config.bert_model_output_dim
+        self.num_class = (dataset_config.num_types * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
         label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
         self.label_to_idx = label_to_idx
@@ -528,12 +532,83 @@ class JustBert3Classes(torch.nn.Module):
         return loss, predicted_annos
 
 
+class JustBert3ClassesCRF(torch.nn.Module):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super(JustBert3ClassesCRF, self).__init__()
+        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+        self.input_dim = model_config.bert_model_output_dim
+        self.num_class = (dataset_config.num_types * 2) + 1
+        label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
+        self.label_to_idx = label_to_idx
+        self.idx_to_label = idx_to_label
+        self.flair_dictionary = self._get_flair_label_dictionary()
+        self.loss_function = ViterbiLoss(self.flair_dictionary)
+        assert len(self.idx_to_label) + 2 == len(self.flair_dictionary)
+        self.crf = CRF(self.flair_dictionary, len(self.flair_dictionary), False)
+        self.viterbi_decoder = ViterbiDecoder(self.flair_dictionary)
+        self.linear = nn.Linear(self.input_dim, len(self.flair_dictionary))
+
+    def _get_flair_label_dictionary(self):
+        flair_dictionary = Dictionary(add_unk=False)
+        for i in range(len(self.idx_to_label)):
+            assert flair_dictionary.add_item(str(self.idx_to_label[i])) == i
+        flair_dictionary.set_start_stop_tags()
+        return flair_dictionary
+
+    def forward(self,
+                sample_token_data: List[TokenData],
+                sample_annos: List[Anno],
+                model_config: ModelConfig
+                ):
+        tokens = util.get_token_strings(sample_token_data)
+        offsets_list = util.get_token_offsets(sample_token_data)
+        bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
+                                            add_special_tokens=False, truncation=True, max_length=512).to(device)
+        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        # SHAPE (seq_len, num_classes)
+        features = self.linear(bert_embeddings)
+        # SHAPE (1, seq_len, num_classes)
+        features = torch.unsqueeze(features, 0)
+        features = self.crf(features)
+        # TODO: calculate length using tensor
+
+        expanded_labels = train_util.extract_expanded_labels(sample_token_data, bert_encoding, sample_annos,
+                                                             model_config)
+        expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
+        expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
+        lengths = torch.tensor([len(expanded_labels_tensor)], dtype=torch.long)
+        features_tuple = (features, lengths, self.crf.transitions)
+        loss = self.loss_function(features_tuple, expanded_labels_tensor)
+        predictions, all_tags = self.viterbi_decoder.decode(features_tuple, False, None)
+        predicted_label_strings = [label for label, score in predictions[0]]
+        predicted_label_indices_expanded = [self.flair_dictionary.get_idx_for_item(label_string) for label_string in
+                                            predicted_label_strings]
+        predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
+        predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
+                                                                           model_config)
+        predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
+                                        predicted_spans_token_index]
+        predicted_annos = []
+        for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
+            predicted_annos.append(
+                Anno(
+                    span_char_offsets[0],
+                    span_char_offsets[1],
+                    span_char_offsets[2],
+                    " ".join(tokens[span_token_idx[0]: span_token_idx[1] + 1])
+                )
+            )
+        return loss, predicted_annos
+
+
 class SpanBert(torch.nn.Module):
-    def __init__(self, all_types: List[str], dataset_config):
+    def __init__(self, all_types: List[str], model_config: ModelConfig):
         super(SpanBert, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(dataset_config['bert_model_name'])
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(dataset_config['bert_model_name'])
-        self.input_dim = dataset_config['bert_model_output_dim']
+        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+        self.input_dim = model_config.bert_model_output_dim
         self.num_class = len(all_types) + 1
         self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
         self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)
