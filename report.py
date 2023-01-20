@@ -27,7 +27,7 @@ def main():
                 ExperimentResult(Experiment(experiment.experiment_name, experiment.dataset_name), score)
             )
     all_datasets = ['legaleval_judgement', 'legaleval_preamble', 'multiconer_coarse', 'multiconer_fine']
-    column_names = ['dataset_name', 'seq_label_semeval', 'semeval_spanner']
+    column_names = ['dataset_name', 'seq_label_semeval', 'semeval_spanner', 'crf_seq_label_semeval']
     table_data = []
     for dataset_name in all_datasets:
         row = [dataset_name]
@@ -36,7 +36,7 @@ def main():
                 if experiment_result.experiment.experiment_name == experiment_name \
                         and experiment_result.experiment.dataset_name == dataset_name:
                     row.append(experiment_result.max_performance)
-        assert len(row) == 3
+        assert len(row) == 4
         table_data.append(row)
     generate_table_pdf(table_data, column_names, './table.pdf')
 
