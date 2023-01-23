@@ -13,3 +13,4 @@ colorama
 matplotlib
 pyyaml
 flair
+benepar
