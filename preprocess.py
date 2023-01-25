@@ -4,7 +4,7 @@ import csv
 from abc import ABC, abstractmethod
 import spacy
 import json
-
+from annotators import Annotator
 
 class Preprocessor(ABC):
     """
@@ -20,7 +20,9 @@ class Preprocessor(ABC):
             visualization_file_path: str,
             tokens_file_path: str,
             sample_text_file_path: str,
+            samples_file_path: str,
             raw_data_folder_path: str | None = None,
+            annotators: List[Annotator] = []
     ) -> None:
         """
         Creates a preprocessor configured with some file paths
@@ -55,14 +57,23 @@ class Preprocessor(ABC):
         assert tokens_file_path.endswith('.json')
         self.sample_text_file_path = sample_text_file_path
         assert sample_text_file_path.endswith('.json')
-        self.nlp = spacy.load("en_core_web_sm")
+        self.samples_file_path = samples_file_path
+        assert samples_file_path.endswith('.json')
+        self.nlp = spacy.load("en_core_web_md")
         print("Preprocessor Name:", type(self).__name__)
         self.samples = None
+        self.annotators = annotators
+
+    def run_annotators(self, samples: List[Sample]):
+        assert self.samples is not None
+        for annotator in self.annotators:
+            annotator.annotate(samples)
 
     def get_samples_cached(self) -> List[Sample]:
         if self.samples is None:
-            print("first time")
+            print("first time extracting samples")
             self.samples = self.get_samples()
+            self.run_annotators(self.samples)
         else:
             print("using cache")
         return self.samples
@@ -108,8 +119,9 @@ class Preprocessor(ABC):
             writer.writerow(header)
             for sample in samples:
                 sample_annos = sample.annos
-                for anno in sample_annos:
-                    row = [sample.id, anno.begin_offset, anno.end_offset, anno.label_type, anno.extraction]
+                for anno in sample_annos.gold:
+                    row = [sample.id, anno.begin_offset,
+                           anno.end_offset, anno.label_type, anno.extraction]
                     writer.writerow(row)
 
     def add_token_annotations(self, samples: List[Sample]) -> None:
@@ -126,8 +138,9 @@ class Preprocessor(ABC):
             for token in tokenized_doc:
                 start_offset = token.idx
                 end_offset = start_offset + len(token)
-                token_annos.append(Anno(start_offset, end_offset, "Token", str(token)))
-            sample.annos.extend(token_annos)
+                token_annos.append(
+                    Anno(start_offset, end_offset, "Token", str(token)))
+            sample.annos.external.extend(token_annos)
 
     def create_visualization_file(self) -> None:
         """
@@ -139,7 +152,8 @@ class Preprocessor(ABC):
         sample_to_annos = {}
         sample_to_text = {}
         for sample in samples:
-            sample_to_annos[sample.id] = sample.annos
+            gold_and_external_annos = sample.annos.gold + sample.annos.external
+            sample_to_annos[sample.id] = gold_and_external_annos
             sample_to_text[sample.id] = sample.text
         util.create_visualization_file(
             self.visualization_file_path,
@@ -153,10 +167,9 @@ class Preprocessor(ABC):
         for each sample.
         """
         samples = self.get_samples_cached()
-        nlp = spacy.load("en_core_web_sm")
         all_tokens_json = []
         for sample in samples:
-            doc = nlp(sample.text)
+            doc = self.nlp(sample.text)
             for token in doc:
                 start_offset = token.idx
                 end_offset = start_offset + len(token)
@@ -183,6 +196,13 @@ class Preprocessor(ABC):
         with util.open_make_dirs(self.sample_text_file_path, 'w') as output_file:
             json.dump(sample_content, output_file)
 
+    def store_samples(self) -> None:
+        """
+        Persist the samples on disk.
+        """
+        samples = self.get_samples_cached()
+        util.write_samples(samples, self.samples_file_path)
+
     def run(self) -> None:
         """
         Execute the preprocessing steps that generate files which
@@ -203,4 +223,6 @@ class Preprocessor(ABC):
         print("done")
         print("creating sample text file ")
         self.create_sample_text_file()
+        print("creating samples json file")
+        self.store_samples()
         print("DONE Preprocessing!")

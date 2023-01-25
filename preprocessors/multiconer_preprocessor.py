@@ -1,14 +1,15 @@
 import json
-import structs
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
+from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from preprocess import Preprocessor
 from typing import List, Dict
 import util
 from enum import Enum
 from collections import Counter
-import benepar
 import spacy
-
+from utils.universal import die
+import benepar
+from annotators import NounPhraseAnnotator, Annotator
+benepar.download('benepar_en3')
 
 class Granularity(Enum):
     coarse = 0
@@ -24,16 +25,20 @@ class PreprocessMulticoner(Preprocessor):
             visualization_file_path: str,
             tokens_file_path: str,
             sample_text_file_path: str,
+            samples_file_path: str,
             dataset_split: DatasetSplit,
-            granularity: Granularity
+            granularity: Granularity,
+            annotators: List[Annotator]
     ) -> None:
         super().__init__(
-            raw_data_folder_path,
-            entity_type_file_path,
-            annotations_file_path,
-            visualization_file_path,
-            tokens_file_path,
-            sample_text_file_path
+            raw_data_folder_path=raw_data_folder_path,
+            entity_type_file_path=entity_type_file_path,
+            annotations_file_path=annotations_file_path,
+            visualization_file_path=visualization_file_path,
+            tokens_file_path=tokens_file_path,
+            sample_text_file_path=sample_text_file_path,
+            samples_file_path=samples_file_path,
+            annotators=annotators
         )
         self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
@@ -65,7 +70,7 @@ class PreprocessMulticoner(Preprocessor):
         train_labels_set = set()
         train_labels_occurences = []
         for sample in samples:
-            labels_list = [anno.label_type for anno in sample.annos]
+            labels_list = [anno.label_type for anno in sample.annos.gold]
             train_labels_set.update(labels_list)
             train_labels_occurences.extend(labels_list)
         predefined_labels = set(self.__get_all_fine_grained_labels()) \
@@ -84,7 +89,13 @@ class PreprocessMulticoner(Preprocessor):
                 print(fine_label, file=types_file)
 
     def get_samples(self) -> List[Sample]:
-        return self.__get_samples(f"{self.raw_data_folder_path}/en-{self.dataset_split.name}.conll")
+        if self.dataset_split == DatasetSplit.valid:
+            return self.__get_samples(f"{self.raw_data_folder_path}/en-dev.conll")
+        elif self.dataset_split == DatasetSplit.train:
+            return self.__get_samples(f"{self.raw_data_folder_path}/en-train.conll")
+        else:
+            die("Cannot handle a dataset other than train or valid")
+            
 
     def __get_text(self, tokens: List[tuple]) -> str:
         return ' '.join([token_string for token_string, _ in tokens])
@@ -158,85 +169,63 @@ class PreprocessMulticoner(Preprocessor):
         for sample_id in sample_to_tokens:
             tokens = sample_to_tokens[sample_id]
             sample_text = self.__get_text(tokens)
-            sample_annos = annos_dict.get(sample_id, [])
-            ret.append(Sample(sample_text, sample_id, sample_annos))
+            sample_gold_annos = annos_dict.get(sample_id, [])
+            ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, [])))
         return ret
 
-    # Overriding
-    def create_visualization_file(self) -> None:
-        """
-        Create a .bdocjs formatted file which can be directly imported 
-        into gate developer using the gate bdocjs plugin. 
-        """
-        samples = self.get_samples_cached()
-        # Add noun-phrase annotations
-        for sample in samples:
-            spacy_doc = self.nlp_benepar(sample.text)
-            sent = list(spacy_doc.sents)[0]
-            noun_phrase_annos = util.get_noun_phrase_annotations(sent)
-            sample.annos.extend(noun_phrase_annos)
 
-        self.add_token_annotations(samples)
-        sample_to_annos = {}
-        sample_to_text = {}
-        for sample in samples:
-            sample_to_annos[sample.id] = sample.annos
-            sample_to_text[sample.id] = sample.text
-        util.create_visualization_file(
-            self.visualization_file_path,
-            sample_to_annos,
-            sample_to_text
-        )
+# prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"
+# train_coarse_preproc = PreprocessMulticoner(
+#     raw_data_folder_path='./multiconer-data-raw/train_dev',
+#     entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#     annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#     visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#     tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#     sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#     dataset_split=DatasetSplit.train,
+#     granularity=Granularity.coarse
+# )
+# train_coarse_preproc.run()
+
+# prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.fine.name}"
+# train_fine_preproc = PreprocessMulticoner(
+#     raw_data_folder_path='./multiconer-data-raw/train_dev',
+#     entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#     annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#     visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#     tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#     sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#     dataset_split=DatasetSplit.train,
+#     granularity=Granularity.fine
+# )
+# train_fine_preproc.run()
 
 
-prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"
-train_coarse_preproc = PreprocessMulticoner(
-    raw_data_folder_path='./multiconer-data-raw/train_dev',
-    entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.train,
-    granularity=Granularity.coarse
-)
-train_coarse_preproc.run()
-
-prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.fine.name}"
-train_fine_preproc = PreprocessMulticoner(
-    raw_data_folder_path='./multiconer-data-raw/train_dev',
-    entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.train,
-    granularity=Granularity.fine
-)
-train_fine_preproc.run()
-
-prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.coarse.name}"
+annotators: List[Annotator] = [NounPhraseAnnotator()]
+prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}_{Granularity.coarse.name}"
 valid_coarse_preproc = PreprocessMulticoner(
-    raw_data_folder_path='./multiconer-data-raw/train_dev',
+    raw_data_folder_path='/Users/harshverma/Downloads/train_dev',
     entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
     annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
     visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
     tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
     sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+    samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
     dataset_split=DatasetSplit.valid,
-    granularity=Granularity.coarse
+    granularity=Granularity.coarse,
+    annotators=annotators
 )
 valid_coarse_preproc.run()
 
-prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.fine.name}"
-valid_fine_preproc = PreprocessMulticoner(
-    raw_data_folder_path='./multiconer-data-raw/train_dev',
-    entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.valid,
-    granularity=Granularity.fine
-)
-valid_fine_preproc.run()
+# prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.fine.name}"
+# valid_fine_preproc = PreprocessMulticoner(
+#     raw_data_folder_path='./multiconer-data-raw/train_dev',
+#     entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#     annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#     visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#     tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#     sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#     dataset_split=DatasetSplit.valid,
+#     granularity=Granularity.fine
+# )
+# valid_fine_preproc.run()

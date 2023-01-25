@@ -84,10 +84,16 @@ class TokenData:
 
 
 @dataclass
+class AnnotationCollection:
+    gold: List[Anno]
+    external: List[Anno]
+
+
+@dataclass
 class Sample:
     text: str
     id: str
-    annos: List[Anno]
+    annos: AnnotationCollection
 
 
 SampleAnnotations = Dict[str, List[Anno]]

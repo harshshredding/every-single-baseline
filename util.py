@@ -13,7 +13,41 @@ from spacy.tokens.span import Span
 from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import DatasetConfig
 import logging
+from  pudb import set_trace
 
+def write_samples(samples: List[Sample], output_json_file_path: str):
+    with open(output_json_file_path, 'w') as output_file:
+            json.dump(samples, output_file, default=vars)
+
+
+def read_samples(input_json_file_path: str) -> List[Sample]:
+    ret = []
+    with open(input_json_file_path, 'r') as f:
+        sample_list_raw = json.load(f)
+        assert type(sample_list_raw) == list
+        for sample_raw in sample_list_raw:
+            sample = Sample(
+                text=sample_raw['text'],
+                id=sample_raw['id'],
+                annos=AnnotationCollection(
+                    gold=get_annotations_from_raw_list(sample_raw["annos"]["gold"]), 
+                    external=get_annotations_from_raw_list(sample_raw["annos"]["external"])
+                )
+            )
+            ret.append(sample)
+    return ret
+
+def get_annotations_from_raw_list(annotation_raw_list) -> List[Anno]:
+    return [
+        Anno(
+            begin_offset=annotation_raw['begin_offset'],
+            end_offset=annotation_raw['end_offset'],
+            label_type=annotation_raw['label_type'],
+            extraction=annotation_raw['extraction'],
+            features={}
+        )
+        for annotation_raw in annotation_raw_list
+    ]
 
 def visualize_constituency_tree_bfs(spacy_sentence_span):
     """
@@ -62,10 +96,10 @@ def get_noun_phrase_annotations(spacy_sentence_span: Span) -> List[Anno]:
             the benepar constituency parse pipeline.
     """
     ret = []
-    for const in spacy_sentence_span._.constituents:
-        if len(const._.labels) and const._.labels[0] == 'NP':
-            ret.append(Anno(const.start_char, const.end_char,
-                            const._.labels[0], str(const)))
+    for constituent in spacy_sentence_span._.constituents:
+        if len(constituent._.labels) and ('NP' in constituent._.labels):
+            ret.append(Anno(constituent.start_char, constituent.end_char,
+                            "NounPhrase", str(constituent)))
     return ret
 
 
@@ -395,6 +429,7 @@ def create_mistakes_visualization(
     )
 
 
+# TODO: Make method use the Sample data-structure.
 def create_visualization_file(
         visualization_file_path: str,
         sample_to_annos: Dict[SampleId, List[Anno]],
