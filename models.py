@@ -5,7 +5,7 @@ from args import device
 from torch import Tensor
 import util
 from typing import List
-from structs import TokenData, Anno
+from structs import TokenData, Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import train_util
 from flair.models.sequence_tagger_utils.crf import CRF
@@ -668,7 +668,7 @@ class SpanBert(torch.nn.Module):
             predicted_all_possible_spans_logits,
             all_possible_spans_list,
             bert_encoding: BatchEncoding,
-            sample_token_data: List[TokenData]
+            token_annos: List[Anno]
     ) -> List[Anno]:
         ret = []
         # SHAPE: (num_spans)
@@ -688,10 +688,10 @@ class SpanBert(torch.nn.Module):
                 assert span_start_token_idx is not None
                 assert span_end_token_idx is not None
                 # get word char offsets
-                span_start_char_offset = sample_token_data[span_start_token_idx].token_start_offset
-                span_end_char_offset = sample_token_data[span_end_token_idx].token_end_offset
-                span_text = " ".join(
-                    util.get_token_strings(sample_token_data[span_start_token_idx: span_end_token_idx + 1]))
+                span_start_char_offset = token_annos[span_start_token_idx].begin_offset
+                span_end_char_offset = token_annos[span_end_token_idx].end_offset
+                all_token_strings = [token_anno.extraction for token_anno in token_annos]
+                span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
                 ret.append(
                     Anno(span_start_char_offset,
                          span_end_char_offset,
@@ -714,3 +714,74 @@ class SpanBert(torch.nn.Module):
                 all_possible_spans_labels.append(self.type_to_idx["NO_TYPE"])
         assert len(all_possible_spans_labels) == len(all_possible_spans_list)
         return all_possible_spans_labels
+
+
+
+class SpanBertNounPhrase(SpanBert):
+    def __init__(self, all_types: List[str], model_config: ModelConfig):
+        super().__init__(all_types, model_config)
+        self.classifier = nn.Linear(self.input_dim*2 + 1, self.num_class)
+    
+    def forward(self, sample: Sample):
+        """Forward pass
+        Args:
+            sample_token_data (List[TokenData]): Token data of `one` sample.
+            sample_annos (List[Anno]): Annotations of one sample.
+        Returns:
+            Tensor[shape(batch_size, num_spans, num_classes)] classification of each span
+        """
+        tokens = util.get_tokens_from_sample(sample)
+        token_annos = util.get_token_annos_from_sample(sample)
+        gold_spans_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=sample.annos.gold)
+        noun_phrase_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=sample.annos.external)
+        bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
+                                            add_special_tokens=False, truncation=True, max_length=512).to(device)
+        gold_spans_sub_token_level = util.get_sub_token_level_spans(gold_spans_token_level, bert_encoding)
+        noun_phrase_sub_token_level = util.get_sub_token_level_spans(noun_phrase_token_level, bert_encoding)
+        bert_embeddings = self.bert_model(
+            bert_encoding['input_ids'], return_dict=True)
+        # SHAPE: (seq_len, 768)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        # SHAPE: (batch_size, seq_len, 768)
+        bert_embeddings = torch.unsqueeze(bert_embeddings, 0)
+        # SHAPE: (num_spans)
+        all_possible_spans_list = util.enumerate_spans(bert_encoding.word_ids())
+        gold_labels_all_spans = self.label_all_possible_spans(all_possible_spans_list, gold_spans_sub_token_level)
+        noun_phrase_labels_all_spans = self.get_noun_phrase_labels_for_all_spans(all_possible_spans_list, noun_phrase_sub_token_level)
+        # SHAPE: (batch_size, num_spans)
+        gold_labels_all_spans = torch.tensor([gold_labels_all_spans], device=device)
+        # SHAPE: (batch_size, num_spans, 1)
+        noun_phrase_labels_all_spans = torch.tensor([gold_labels_all_spans], device=device).unsqueeze(2)
+        # SHAPE: (batch_size, seq_len, 2)
+        all_possible_spans_tensor: torch.Tensor = torch.tensor([all_possible_spans_list], device=device)
+        # SHAPE: (batch_size, num_spans, endpoint_dim)
+        span_embeddings = self.endpoint_span_extractor(bert_embeddings, all_possible_spans_tensor)
+        # SHAPE: (batch_size, num_spans, endpoint_dim + 1)
+        span_embeddings = torch.cat((span_embeddings, noun_phrase_labels_all_spans), dim=2)
+        # SHAPE: (batch_size, num_spans, num_classes)
+        predicted_all_possible_spans_logits = self.classifier(span_embeddings)
+        loss = self.loss_function(torch.squeeze(predicted_all_possible_spans_logits, 0),
+                                  torch.squeeze(gold_labels_all_spans, 0))
+        predicted_annos = self.get_predicted_annos(
+            predicted_all_possible_spans_logits,
+            all_possible_spans_list,
+            bert_encoding,
+            token_annos
+        )
+        return loss, predicted_annos
+    
+    def get_noun_phrase_labels_for_all_spans(self, all_possible_spans_list, noun_phrase_spans_sub_token):
+        for noun_phrase_span in noun_phrase_spans_sub_token:
+            assert noun_phrase_span[2] == 'NounPhrase'
+        noun_phrase_labels = []
+        for span in all_possible_spans_list:
+            corresponding_anno_list = [anno for anno in noun_phrase_spans_sub_token 
+                                       if (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
+            if len(corresponding_anno_list):
+                if len(corresponding_anno_list) > 1:
+                    print("WARN: Didn't expect multiple annotations to match one span")
+                noun_phrase_labels.append(1)
+            else:
+                noun_phrase_labels.append(0)
+        assert len(noun_phrase_labels) == len(all_possible_spans_list)
+        return noun_phrase_labels

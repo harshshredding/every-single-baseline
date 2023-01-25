@@ -13,11 +13,12 @@ from spacy.tokens.span import Span
 from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import DatasetConfig
 import logging
-from  pudb import set_trace
+from pudb import set_trace
+
 
 def write_samples(samples: List[Sample], output_json_file_path: str):
     with open(output_json_file_path, 'w') as output_file:
-            json.dump(samples, output_file, default=vars)
+        json.dump(samples, output_file, default=vars)
 
 
 def read_samples(input_json_file_path: str) -> List[Sample]:
@@ -30,12 +31,15 @@ def read_samples(input_json_file_path: str) -> List[Sample]:
                 text=sample_raw['text'],
                 id=sample_raw['id'],
                 annos=AnnotationCollection(
-                    gold=get_annotations_from_raw_list(sample_raw["annos"]["gold"]), 
-                    external=get_annotations_from_raw_list(sample_raw["annos"]["external"])
+                    gold=get_annotations_from_raw_list(
+                        sample_raw["annos"]["gold"]),
+                    external=get_annotations_from_raw_list(
+                        sample_raw["annos"]["external"])
                 )
             )
             ret.append(sample)
     return ret
+
 
 def get_annotations_from_raw_list(annotation_raw_list) -> List[Anno]:
     return [
@@ -48,6 +52,7 @@ def get_annotations_from_raw_list(annotation_raw_list) -> List[Anno]:
         )
         for annotation_raw in annotation_raw_list
     ]
+
 
 def visualize_constituency_tree_bfs(spacy_sentence_span):
     """
@@ -385,7 +390,7 @@ def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
     assert spacy_doc.has_annotation("SENT_START")
     for i, sent in enumerate(spacy_doc.sents):
         annos_contained_in_sent = [anno for anno in sample.annos if (
-                sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
+            sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
         sent_annos = []
         for contained_anno in annos_contained_in_sent:
             new_start = contained_anno.begin_offset - sent.start_char
@@ -474,7 +479,18 @@ def create_visualization_file(
     gate_document.save(visualization_file_path)
 
 
-# TODO: remove this
+def get_tokens_from_sample(sample: Sample) -> List[str]:
+    token_annos = get_token_annos_from_sample(sample)
+    return [token_anno.extraction for token_anno in token_annos]
+
+
+def get_token_annos_from_sample(sample: Sample) -> List[Anno]:
+    external_annos = sample.annos.external
+    token_annos = [
+        anno for anno in external_annos if anno.label_type == 'Token']
+    assert len(
+        token_annos), f"No token annotation exists in sample {sample.id}!"
+    return token_annos
 
 
 def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
@@ -506,7 +522,7 @@ def get_all_types(types_file_path: str, num_expected_types: int) -> List[str]:
 
 
 def get_bio_label_idx_dicts(all_types: List[str], dataset_config: DatasetConfig) -> tuple[
-    Dict[Label, int], Dict[int, Label]]:
+        Dict[Label, int], Dict[int, Label]]:
     """
     get dictionaries mapping from BIO labels to their corresponding indices.
     """
@@ -855,20 +871,23 @@ def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
 
 
 def get_token_level_spans(
-        sample_token_data: List[TokenData],
-        sample_annos: List[Anno]) -> List[tuple]:
-    """Convert char_offset spans to token-level spans
+        token_annos: List[Anno],
+        annos_to_convert: List[Anno]) -> List[tuple]:
+    """
+    Convert char_offset spans to token-level spans
     """
     ret = []
-    for curr_anno in sample_annos:
-        begin_token = [i for i, token_data in enumerate(sample_token_data) if
-                       curr_anno.begin_offset == token_data.token_start_offset]
+    for curr_gold_anno in annos_to_convert:
+        begin_token = [i for i, token_anno in enumerate(token_annos) if
+                       curr_gold_anno.begin_offset == token_anno.begin_offset]
 
-        end_token = [i for i, token_data in enumerate(sample_token_data) if
-                     curr_anno.end_offset == token_data.token_end_offset]
+        end_token = [i for i, token_anno in enumerate(token_annos) if
+                     curr_gold_anno.end_offset == token_anno.end_offset]
 
         if len(begin_token) and len(end_token):
-            ret.append((begin_token[0], end_token[0] + 1, curr_anno.label_type))
+            assert len(begin_token) == 1
+            assert len(end_token) == 1
+            ret.append((begin_token[0], end_token[0] + 1, curr_gold_anno.label_type))
     return ret
 
 
@@ -876,6 +895,9 @@ def get_sub_token_level_spans(
         token_level_spans: List[tuple],
         batch_encoding: BatchEncoding
 ) -> List[tuple]:
+    """
+    Convert token-level spans to sub-token-level spans.
+    """
     ret = []
     for start_token_idx, end_token_idx, type_name in token_level_spans:
         start_sub_token_span = batch_encoding.word_to_tokens(start_token_idx)

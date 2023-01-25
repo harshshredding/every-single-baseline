@@ -1,7 +1,7 @@
 import torch
 from typing import List
 import sys
-
+from pudb import set_trace
 from IPython.core import ultratb
 
 sys.excepthook = ultratb.FormattedTB(color_scheme='Linux', call_pdb=False)
@@ -18,8 +18,8 @@ def get_user_input(input_message: str, possible_values: List[str]):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device:", device)
 
-if len(sys.argv) == 2:
-    assert sys.argv[1] == 'production', "The argument to script can ONLY be 'production' or nothing."
+if (len(sys.argv) == 2) and (sys.argv[0] == 'train.py'):
+    assert sys.argv[1] == 'production', f"The argument to script can ONLY be 'production' or nothing. argv : {sys.argv}"
     TESTING_MODE = False
 else:
     TESTING_MODE = True

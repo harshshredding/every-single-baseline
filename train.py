@@ -48,7 +48,7 @@ dataset_config: DatasetConfig
 model_config: ModelConfig
 
 for dataset_config, model_config in experiments:
-    train_util.print_args(dataset_config)
+    train_util.print_args(dataset_config, EXPERIMENT_NAME, TESTING_MODE)
     dataset_name = dataset_config.dataset_name
 
     # -------- READ DATA ---------

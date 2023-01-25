@@ -11,6 +11,8 @@ class DatasetConfig(NamedTuple):
     valid_tokens_file_path: str
     train_sample_text_data_file_path: str
     valid_sample_text_data_file_path: str
+    train_samples_file_path: str
+    valid_samples_file_path: str
     types_file_path: str
     num_types: int
     dataset_name: str
@@ -48,6 +50,8 @@ def read_dataset_config(config_file_path: str) -> DatasetConfig:
             valid_tokens_file_path=dataset_config_raw['valid_tokens_file_path'],
             train_sample_text_data_file_path=dataset_config_raw['train_sample_text_data_file_path'],
             valid_sample_text_data_file_path=dataset_config_raw['valid_sample_text_data_file_path'],
+            train_samples_file_path=dataset_config_raw['train_samples_file_path'],
+            valid_samples_file_path=dataset_config_raw['valid_samples_file_path'],
             types_file_path=dataset_config_raw['types_file_path'],
             num_types=int(dataset_config_raw['num_types']),
             dataset_name=dataset_config_raw['dataset_name']

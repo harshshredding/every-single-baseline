@@ -1,30 +1,33 @@
 import util
+import train_util
 from structs import TokenData, Anno
 from transformers import AutoTokenizer
 from transformers.tokenization_utils_base import BatchEncoding
 from structs import Sample, Anno, AnnotationCollection
+from utils.config import get_dataset_config_by_name
 
 
 def test_token_level_spans():
     assert len(util.get_token_level_spans([], [])) == 0
     # text  = "This is Harsh"
-    token_data = [TokenData("sample_id", "This", 4, 0, 4),
-                  TokenData("sample_id", "is", 2, 5, 7),
-                  TokenData("sample_id", "Harsh", 5, 8, 13)
+    token_annos = [ Anno(0,4,"Token", "This"),
+                    Anno(5,7,"Token", "is"),
+                    Anno(8,13,"Token", "Harsh")
                   ]
     sample_annos = [Anno(8, 13, 'name', 'Harsh')]
     assert util.get_token_level_spans(
-        token_data, sample_annos) == [(2, 3, 'name')]
+        token_annos, sample_annos) == [(2, 3, 'name')]
 
     # text = "This is Harsh Verma"
-    token_data = [TokenData("sample_id", "This", 4, 0, 4),
-                  TokenData("sample_id", "is", 2, 5, 7),
-                  TokenData("sample_id", "Harsh", 5, 8, 13),
-                  TokenData("sample_id", "Verma", 5, 14, 19)
+
+    token_annos = [ Anno(0, 4, "Token", "This"),
+                    Anno(5, 7, "Token", "is"),
+                    Anno(8, 13, "Token", "Harsh"),
+                    Anno(14, 19, "Token", "Verma")
                   ]
     sample_annos = [Anno(8, 13, 'name', 'Harsh'), Anno(
         14, 19, 'name', 'Verma'), Anno(8, 19, 'name', 'Harsh Verma')]
-    assert util.get_token_level_spans(token_data, sample_annos) == [
+    assert util.get_token_level_spans(token_annos, sample_annos) == [
         (2, 3, 'name'), (3, 4, 'name'), (2, 4, 'name')]
 
 
@@ -85,3 +88,37 @@ def test_read_and_write_samples():
     samples = util.read_samples(output_json_file_path)
     assert len(samples) == 2
     assert samples[1].annos.external[0].label_type == 'Name'
+
+
+def test_get_tokens_from_sample():
+    dataset_config = get_dataset_config_by_name('multiconer_coarse')
+    token_data_dict = train_util.get_valid_token_data_dict(dataset_config)
+    sample_id = "5239d808-f300-46ea-aa3b-5093040213a3"
+    token_data = token_data_dict[sample_id]
+    tokens_from_token_data = util.get_token_strings(token_data)
+
+    all_samples = util.read_samples(dataset_config.valid_samples_file_path)
+    sample = [sample for sample in all_samples if sample.id == sample_id]
+    assert len(sample) == 1, f"Could not find sample with id {sample_id}"
+    sample = sample[0]
+    tokens_from_sample = util.get_tokens_from_sample(sample)
+
+    assert len(token_data) == len(tokens_from_sample)
+    assert tokens_from_token_data == tokens_from_sample
+
+    # Following is a more thorough test that compares all samples
+    for sample_id in token_data_dict: 
+        token_data = token_data_dict[sample_id]
+        tokens_from_token_data = util.get_token_strings(token_data)
+
+        sample = [sample for sample in all_samples if sample.id == sample_id]
+        assert len(sample) == 1, f"Could not find sample with id {sample_id}"
+        sample = sample[0]
+        tokens_from_sample = util.get_tokens_from_sample(sample)
+
+        assert tokens_from_token_data == tokens_from_sample
+
+
+
+
+

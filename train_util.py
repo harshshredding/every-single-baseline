@@ -1,6 +1,5 @@
 from structs import *
 import pandas as pd
-from args import EXPERIMENT_NAME, TESTING_MODE
 from models import *
 import csv
 import util
@@ -9,7 +8,7 @@ from colorama import Fore, Style
 from utils.config import ModelConfig, DatasetConfig
 
 
-def print_args(dataset_config: DatasetConfig) -> None:
+def print_args(dataset_config: DatasetConfig, EXPERIMENT_NAME, TESTING_MODE) -> None:
     """Print the configurations of the current run"""
     print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
@@ -53,7 +52,7 @@ def extract_expanded_labels(sample_token_data: List[TokenData],
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + model_config.model_name)
 
-
+# TODO: remove following method
 def read_pos_embeddings_file(dataset_config: DatasetConfig):
     return pd.read_pickle(dataset_config['pos_embeddings_path'])
 
@@ -107,7 +106,7 @@ def get_spans_from_seq_labels(predictions_sub, batch_encoding, model_config: Mod
     else:
         raise Exception(f"Have to specify num of classes in model name {model_config.model_name}")
 
-
+# TODO: remove following method
 def read_disease_gazetteer(dataset_config: DatasetConfig):
     disease_list = []
     df = pd.read_csv(dataset_config['disease_gazetteer_path'], sep='\t')

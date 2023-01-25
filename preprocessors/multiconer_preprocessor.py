@@ -202,7 +202,7 @@ class PreprocessMulticoner(Preprocessor):
 
 
 annotators: List[Annotator] = [NounPhraseAnnotator()]
-prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}_{Granularity.coarse.name}"
+prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}"
 valid_coarse_preproc = PreprocessMulticoner(
     raw_data_folder_path='/Users/harshverma/Downloads/train_dev',
     entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',

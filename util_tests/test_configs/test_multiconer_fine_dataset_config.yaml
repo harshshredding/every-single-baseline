@@ -4,6 +4,8 @@ train_tokens_file_path: ./preprocessed_data/multiconer_train_fine_tokens.json
 valid_tokens_file_path: ./preprocessed_data/multiconer_valid_fine_tokens.json
 train_sample_text_data_file_path: ./preprocessed_data/multiconer_train_fine_sample_text.json
 valid_sample_text_data_file_path: ./preprocessed_data/multiconer_valid_fine_sample_text.json
+train_samples_file_path: ./preprocessed_data/multiconer_train_fine_samples.json
+valid_samples_file_path: ./preprocessed_data/multiconer_valid_fine_samples.json
 types_file_path: ./preprocessed_data/multiconer_train_fine_types.txt
 num_types: 6
 dataset_name: multiconer_fine
