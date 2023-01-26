@@ -3,16 +3,22 @@ from typing import List
 import sys
 from pudb import set_trace
 from IPython.core import ultratb
+import glob
+from pathlib import Path
 
 sys.excepthook = ultratb.FormattedTB(color_scheme='Linux', call_pdb=False)
 
-
 def get_user_input(input_message: str, possible_values: List[str]):
-    user_input = input(f"{input_message}\n choose from {possible_values}")
+    user_input = input(f"{input_message}\n choose from {possible_values}: \n")
     if len(possible_values):
         while user_input not in possible_values:
-            user_input = input(f"incorrect input '{user_input}', please choose from {possible_values}")
+            user_input = input(f"incorrect input '{user_input}', please choose from {possible_values}: \n")
     return user_input
+
+def get_experiment_name_from_user():
+    all_experiment_file_paths = glob.glob('./experiments/*.py')
+    all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
+    return get_user_input("Specify experiment name", all_experiment_names)
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -20,16 +26,13 @@ print("using device:", device)
 
 if (len(sys.argv) == 2) and (sys.argv[0] == 'train.py'):
     assert sys.argv[1] == 'production', f"The argument to script can ONLY be 'production' or nothing. argv : {sys.argv}"
-    TESTING_MODE = False
+    DRY_RUN_MODE = False
 else:
-    TESTING_MODE = True
+    DRY_RUN_MODE = True
 
-print("TESTING MODE: ", TESTING_MODE)
+print("TESTING MODE: ", DRY_RUN_MODE)
 
-if not TESTING_MODE:
-    EXPERIMENT_NAME = get_user_input('specify experiment name:', [])
-else:
-    EXPERIMENT_NAME = 'test'
+EXPERIMENT_NAME = get_experiment_name_from_user()
 
 # curr_dataset = Dataset.multiconer
 #

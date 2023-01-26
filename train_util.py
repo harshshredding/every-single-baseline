@@ -6,18 +6,28 @@ import util
 from typing import Dict
 from colorama import Fore, Style
 from utils.config import ModelConfig, DatasetConfig
+import time
+import utils.dropbox as dropbox_util
 
-
-def print_args(dataset_config: DatasetConfig, EXPERIMENT_NAME, TESTING_MODE) -> None:
+def print_experiment_info(dataset_config: DatasetConfig, EXPERIMENT_NAME, TESTING_MODE) -> None:
     """Print the configurations of the current run"""
     print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
-    print("experiment:", EXPERIMENT_NAME)
-    print("is_testing:", TESTING_MODE)
-    print("dataset:", dataset_config.dataset_name)
+    print("Experiment:", EXPERIMENT_NAME)
+    print("DRY_RUN_MODE:", TESTING_MODE)
+    print("Dataset:", dataset_config.dataset_name)
     print("-----------CONFIG----------\n\n")
     print(Style.RESET_ALL)
 
+
+def check_label_types(train_samples: List[Sample], valid_samples: List[Sample], all_types: List[str]):
+    # verify that all label types in annotations are valid types
+    for sample in train_samples:
+        for anno in sample.annos.gold:
+            assert anno.label_type in all_types, f"anno label type {anno.label_type} not expected"
+    for sample in valid_samples:
+        for anno in sample.annos.gold:
+            assert anno.label_type in all_types, f"anno label type {anno.label_type} not expected"
 
 def get_loss_function():
     return nn.CrossEntropyLoss()
@@ -307,6 +317,8 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
         return SpanBert(all_types, model_config).to(device)
     if model_config.model_name == 'JustBert3ClassesCRF':
         return JustBert3ClassesCRF(all_types, model_config, dataset_config).to(device)
+    if model_config.model_name == 'SpanBertNounPhrase':
+        return SpanBertNounPhrase(all_types, model_config).to(device)
     raise Exception(f"no code to prepare model {model_config.model_name}")
 
 
@@ -335,6 +347,14 @@ def get_valid_texts(dataset_config: DatasetConfig) -> Dict[SampleId, str]:
     return util.get_texts(dataset_config.valid_sample_text_data_file_path)
 
 
+def get_train_samples(dataset_config: DatasetConfig) -> List[Sample]:
+    return util.read_samples(dataset_config.train_samples_file_path)
+
+
+def get_valid_samples(dataset_config: DatasetConfig) -> List[Sample]:
+    return util.read_samples(dataset_config.valid_samples_file_path)
+
+
 def prepare_file_headers(mistakes_file_writer, predictions_file_writer):
     predictions_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction']
     predictions_file_writer.writerow(predictions_file_header)
@@ -344,39 +364,117 @@ def prepare_file_headers(mistakes_file_writer, predictions_file_writer):
 
 
 def store_predictions(
-        sample_id: str,
-        token_data_valid: List[TokenData],
+        sample: Sample,
         predicted_annos_valid: List[Anno],
         predictions_file_writer
 ):
     # write predictions
     for anno in predicted_annos_valid:
-        extraction = util.get_extraction(token_data_valid, anno.begin_offset, anno.end_offset)
         predictions_file_writer.writerow(
-            [sample_id, str(anno.begin_offset), str(anno.end_offset), anno.label_type, extraction]
+            [sample.id, str(anno.begin_offset), str(anno.end_offset), anno.label_type, anno.extraction]
         )
 
 
 def store_mistakes(
-        sample_id: str,
+        sample: Sample,
         false_positives,
         false_negatives,
-        mistakes_file_writer,
-        token_data_valid: List[TokenData],
+        mistakes_file_writer
 ):
     # write false positive errors
     for span in false_positives:
         start_offset = span[0]
         end_offset = span[1]
-        extraction = util.get_extraction(token_data_valid, start_offset, end_offset)
+        extraction = sample.text[start_offset: end_offset]
         mistakes_file_writer.writerow(
-            [sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FP']
+            [sample.id, str(start_offset), str(end_offset), span[2], extraction, 'FP']
         )
     # write false negative errors
     for span in false_negatives:
         start_offset = span[0]
         end_offset = span[1]
-        extraction = util.get_extraction(token_data_valid, start_offset, end_offset)
+        extraction = sample.text[start_offset: end_offset]
         mistakes_file_writer.writerow(
-            [sample_id, str(start_offset), str(end_offset), span[2], extraction, 'FN']
+            [sample.id, str(start_offset), str(end_offset), span[2], extraction, 'FN']
         )
+
+
+
+def validate(
+    logger,
+    model: torch.nn.Module,
+    validation_samples: List[Sample],
+    mistakes_folder_path: str,
+    predictions_folder_path: str,
+    error_visualization_folder_path: str,
+    performance_file_path: str,
+    EXPERIMENT_NAME: str,
+    dataset_name: str,
+    epoch: int,
+):
+    logger.info("Starting validation")
+    model.eval()
+    mistakes_file_path = f"{mistakes_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_mistakes.tsv"
+    predictions_file_path = f"{predictions_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}" \
+                            f"_predictions.tsv"
+    with open(predictions_file_path, 'w') as predictions_file, \
+            open(mistakes_file_path, 'w') as mistakes_file:
+        #  --- GET FILES READY FOR WRITING ---
+        predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
+        mistakes_file_writer = csv.writer(mistakes_file, delimiter='\t')
+        train_util.prepare_file_headers(mistakes_file_writer, predictions_file_writer)
+        with torch.no_grad():
+            num_TP_total = 0
+            num_FP_total = 0
+            num_FN_total = 0
+            # Validation Loop
+            for validation_sample in validation_samples:
+                loss, predicted_annos_valid = model(validation_sample)
+                gold_annos_set_valid = set(
+                    [
+                        (gold_anno.begin_offset, gold_anno.end_offset, gold_anno.label_type)
+                        for gold_anno in validation_sample.annos.gold
+                    ]
+                )
+                predicted_annos_set_valid = set(
+                    [
+                        (predicted_anno.begin_offset, predicted_anno.end_offset, predicted_anno.label_type)
+                        for predicted_anno in predicted_annos_valid
+                    ]
+                )
+
+                # calculate true positives, false positives, and false negatives
+                true_positives_sample = gold_annos_set_valid.intersection(predicted_annos_set_valid)
+                false_positives_sample = predicted_annos_set_valid.difference(gold_annos_set_valid)
+                false_negatives_sample = gold_annos_set_valid.difference(predicted_annos_set_valid)
+                num_TP = len(true_positives_sample)
+                num_TP_total += num_TP
+                num_FP = len(false_positives_sample)
+                num_FP_total += num_FP
+                num_FN = len(false_negatives_sample)
+                num_FN_total += num_FN
+
+                # write sample predictions
+                train_util.store_predictions(validation_sample, predicted_annos_valid, predictions_file_writer)
+                # write sample mistakes
+                train_util.store_mistakes(validation_sample, false_positives_sample, false_negatives_sample,
+                                            mistakes_file_writer)
+    micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
+    logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
+    visualize_errors_file_path = f"{error_visualization_folder_path}/" \
+                                    f"{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_visualize_errors.bdocjs"
+    util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, validation_samples)
+    train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME,
+                                        dataset_name)
+
+    # upload files to dropbox
+    dropbox_util.upload_file(visualize_errors_file_path)
+    # dropbox_util.upload_file(predictions_file_path)
+    # dropbox_util.upload_file(mistakes_file_path)
+    dropbox_util.upload_file(performance_file_path)
+
+    logger.info(f"Done validating!\n\n\n")
+
+
+def save_model(model, models_folder_path, epoch, EXPERIMENT):
+    torch.save(model.state_dict(), f"{models_folder_path}/Epoch_{epoch}_{EXPERIMENT}")

@@ -56,3 +56,5 @@ def download_file(remote_path: str, local_path: str):
     dropbox_client = get_dropbox_client()
     dropbox_client.files_download_to_file(local_path, remote_path)
     print(f"Dropbox: successfully downloaded to {local_path}")
+
+verify_connection()

@@ -764,7 +764,6 @@ class SpanBertNounPhrase(SpanBert):
         span_embeddings = torch.cat((span_embeddings, noun_phrase_labels_all_spans), dim=2)
         # SHAPE: (batch_size, num_spans, num_classes)
         predicted_all_possible_spans_logits = self.classifier(span_embeddings)
-        set_trace()
         loss = self.loss_function(torch.squeeze(predicted_all_possible_spans_logits, 0),
                                   torch.squeeze(gold_labels_all_spans, 0))
         predicted_annos = self.get_predicted_annos(

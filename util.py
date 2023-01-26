@@ -413,8 +413,7 @@ def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
 def create_mistakes_visualization(
         mistakes_file_path: str,
         mistakes_visualization_file_path: str,
-        valid_gold_annos_dict: Dict[SampleId, List[Anno]],
-        sample_to_text_valid: Dict[SampleId, str]
+        validation_samples: List[Sample]
 ) -> None:
     """
     Create a gate-visualization-file(.bdocjs format) that contains the mistakes
@@ -426,14 +425,15 @@ def create_mistakes_visualization(
     """
     mistake_annos_dict = get_mistakes_annos(mistakes_file_path)
     combined_annos_dict = {}
-    for sample_id in valid_gold_annos_dict:
-        gold_annos_list = valid_gold_annos_dict[sample_id]
-        mistake_annos_list = mistake_annos_dict.get(sample_id, [])
+    for sample in validation_samples:
+        gold_annos_list = sample.annos.gold
+        mistake_annos_list = mistake_annos_dict.get(sample.id, [])
         combined_list = gold_annos_list + mistake_annos_list
         for anno in combined_list:
             anno.begin_offset = int(anno.begin_offset)
             anno.end_offset = int(anno.end_offset)
-        combined_annos_dict[sample_id] = combined_list
+        combined_annos_dict[sample.id] = combined_list
+    sample_to_text_valid = {sample.id: sample.text for sample in validation_samples}
     create_visualization_file(
         mistakes_visualization_file_path,
         combined_annos_dict,
