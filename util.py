@@ -41,6 +41,13 @@ def read_samples(input_json_file_path: str) -> List[Sample]:
     return ret
 
 
+def get_annos_of_type_from_collection(
+        label_type: str,
+        collection: AnnotationCollection
+    ) -> List[Anno]:
+    return [anno for anno in collection.external if anno.label_type == label_type]
+
+
 def get_annotations_from_raw_list(annotation_raw_list) -> List[Anno]:
     return [
         Anno(

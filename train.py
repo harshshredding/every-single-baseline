@@ -8,7 +8,7 @@ import time
 import numpy as np
 import logging  # configured in args.py
 import csv
-from configs.seq_label_crf_experiments import experiments
+from experiments.span_noun_phrase_experiments import experiments
 import torch
 from utils.config import DatasetConfig, ModelConfig
 

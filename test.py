@@ -1,10 +1,6 @@
-import benepar
-import spacy
-from spacy.tokens.span import Span
-from typing import List
-from structs import Anno, AnnotationCollection, Sample
-import json
-from transformers import AutoTokenizer
+from models import SpanBertNounPhrase
+from utils.config import get_model_config_by_name, get_dataset_config_by_name
+import util
 
 # def get_all_noun_phrases(span) -> List[Span]:
 #     ret = []
@@ -31,18 +27,11 @@ from transformers import AutoTokenizer
 #         print(noun_phrase)
 #     print("-"*10)
 
-benepar.download('benepar_en3')
-nlp = spacy.load('en_core_web_md')
-nlp.add_pipe('benepar', config={'model': 'benepar_en3'})
 
-doc = nlp("This is a sentence."\
-          "And this is another sentence."\
-          "I love apples and bananas."\
-          "John loves Alice"\
-          )
-
-for sent in doc.sents:
-    print_sentence_info(sent)
-    annos = get_noun_phrase_annos(sent)
-    print(annos)
-
+dataset_config = get_dataset_config_by_name('multiconer_coarse')
+model_config = get_model_config_by_name("SpanBertNounPhrase")
+all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
+model = SpanBertNounPhrase(all_types, model_config)
+all_samples = util.read_samples(dataset_config.valid_samples_file_path)
+one_sample = all_samples[0]
+model(one_sample)

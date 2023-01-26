@@ -200,22 +200,42 @@ class PreprocessMulticoner(Preprocessor):
 # )
 # train_fine_preproc.run()
 
+def preprocess_valid_coarse():
+    annotators: List[Annotator] = [NounPhraseAnnotator()]
+    prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}"
+    valid_coarse_preproc = PreprocessMulticoner(
+        raw_data_folder_path='/Users/harshverma/Downloads/train_dev',
+        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+        dataset_split=DatasetSplit.valid,
+        granularity=Granularity.coarse,
+        annotators=annotators
+    )
+    valid_coarse_preproc.run()
 
-annotators: List[Annotator] = [NounPhraseAnnotator()]
-prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}"
-valid_coarse_preproc = PreprocessMulticoner(
-    raw_data_folder_path='/Users/harshverma/Downloads/train_dev',
-    entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-    samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-    dataset_split=DatasetSplit.valid,
-    granularity=Granularity.coarse,
-    annotators=annotators
-)
-valid_coarse_preproc.run()
+def preprocess_train_coarse():
+    annotators: List[Annotator] = [NounPhraseAnnotator()]
+    prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.train.name}"
+    train_coarse_preproc = PreprocessMulticoner(
+        raw_data_folder_path='/Users/harshverma/Downloads/train_dev',
+        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+        dataset_split=DatasetSplit.train,
+        granularity=Granularity.coarse,
+        annotators=annotators
+    )
+    train_coarse_preproc.run()
+
+preprocess_train_coarse()
+preprocess_valid_coarse()
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.fine.name}"
 # valid_fine_preproc = PreprocessMulticoner(

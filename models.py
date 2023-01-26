@@ -12,6 +12,8 @@ from flair.models.sequence_tagger_utils.crf import CRF
 from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecoder
 from flair.data import Dictionary
 from utils.config import DatasetConfig, ModelConfig
+from utils.config import get_experiment_config
+from pudb import set_trace
 
 
 class Embedding(nn.Module):
@@ -622,8 +624,7 @@ class SpanBert(torch.nn.Module):
         assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
 
     def forward(self,
-                sample_token_data: List[TokenData],
-                sample_annos: List[Anno]
+                sample: Sample
                 ):
         """Forward pass
         Args:
@@ -632,11 +633,12 @@ class SpanBert(torch.nn.Module):
         Returns:
             Tensor[shape(batch_size, num_spans, num_classes)] classification of each span
         """
-        tokens = util.get_token_strings(sample_token_data)
-        token_level_annos = util.get_token_level_spans(sample_token_data, sample_annos)
+        tokens = util.get_tokens_from_sample(sample)
+        token_annos = util.get_token_annos_from_sample(sample)
+        gold_token_level_annos = util.get_token_level_spans(token_annos, sample.annos.gold)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
-        sub_token_level_annos = util.get_sub_token_level_spans(token_level_annos, bert_encoding)
+        gold_sub_token_level_annos = util.get_sub_token_level_spans(gold_token_level_annos, bert_encoding)
         bert_embeddings = self.bert_model(
             bert_encoding['input_ids'], return_dict=True)
         # SHAPE: (seq_len, 768)
@@ -644,7 +646,7 @@ class SpanBert(torch.nn.Module):
         # SHAPE: (batch_size, seq_len, 768)
         bert_embeddings = torch.unsqueeze(bert_embeddings, 0)
         all_possible_spans_list = util.enumerate_spans(bert_encoding.word_ids())
-        all_possible_spans_labels = self.label_all_possible_spans(all_possible_spans_list, sub_token_level_annos)
+        all_possible_spans_labels = self.label_all_possible_spans(all_possible_spans_list, gold_sub_token_level_annos)
         # SHAPE: (batch_size, num_spans)
         all_possible_spans_labels = torch.tensor([all_possible_spans_labels], device=device)
         # SHAPE: (batch_size, seq_len, 2)
@@ -659,7 +661,7 @@ class SpanBert(torch.nn.Module):
             predicted_all_possible_spans_logits,
             all_possible_spans_list,
             bert_encoding,
-            sample_token_data
+            token_annos
         )
         return loss, predicted_annos
 
@@ -720,6 +722,8 @@ class SpanBert(torch.nn.Module):
 class SpanBertNounPhrase(SpanBert):
     def __init__(self, all_types: List[str], model_config: ModelConfig):
         super().__init__(all_types, model_config)
+        # Cannot use super's classifier because we are concatenating
+        # noun-phrase information(bit) to span embeddings.
         self.classifier = nn.Linear(self.input_dim*2 + 1, self.num_class)
     
     def forward(self, sample: Sample):
@@ -733,13 +737,13 @@ class SpanBertNounPhrase(SpanBert):
         tokens = util.get_tokens_from_sample(sample)
         token_annos = util.get_token_annos_from_sample(sample)
         gold_spans_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=sample.annos.gold)
-        noun_phrase_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=sample.annos.external)
+        noun_phrase_annos = util.get_annos_of_type_from_collection('NounPhrase', sample.annos)
+        noun_phrase_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=noun_phrase_annos)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
         gold_spans_sub_token_level = util.get_sub_token_level_spans(gold_spans_token_level, bert_encoding)
         noun_phrase_sub_token_level = util.get_sub_token_level_spans(noun_phrase_token_level, bert_encoding)
-        bert_embeddings = self.bert_model(
-            bert_encoding['input_ids'], return_dict=True)
+        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         # SHAPE: (seq_len, 768)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         # SHAPE: (batch_size, seq_len, 768)
@@ -751,7 +755,7 @@ class SpanBertNounPhrase(SpanBert):
         # SHAPE: (batch_size, num_spans)
         gold_labels_all_spans = torch.tensor([gold_labels_all_spans], device=device)
         # SHAPE: (batch_size, num_spans, 1)
-        noun_phrase_labels_all_spans = torch.tensor([gold_labels_all_spans], device=device).unsqueeze(2)
+        noun_phrase_labels_all_spans = torch.tensor([noun_phrase_labels_all_spans], device=device).unsqueeze(2)
         # SHAPE: (batch_size, seq_len, 2)
         all_possible_spans_tensor: torch.Tensor = torch.tensor([all_possible_spans_list], device=device)
         # SHAPE: (batch_size, num_spans, endpoint_dim)
@@ -760,6 +764,7 @@ class SpanBertNounPhrase(SpanBert):
         span_embeddings = torch.cat((span_embeddings, noun_phrase_labels_all_spans), dim=2)
         # SHAPE: (batch_size, num_spans, num_classes)
         predicted_all_possible_spans_logits = self.classifier(span_embeddings)
+        set_trace()
         loss = self.loss_function(torch.squeeze(predicted_all_possible_spans_logits, 0),
                                   torch.squeeze(gold_labels_all_spans, 0))
         predicted_annos = self.get_predicted_annos(
