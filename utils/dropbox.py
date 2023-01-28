@@ -1,3 +1,5 @@
+import time
+import os
 import dropbox
 from pathlib import Path
 from typing import List
@@ -14,6 +16,76 @@ def get_dropbox_client():
         app_secret="5ypbsp6nr9a366o",
         oauth2_refresh_token="XdwSHDUZYVgAAAAAAAAAAbEuMwhu2GFdTvdcm8O9oUiHoSvOza18wSWC9ej7U3W0"
     )
+
+
+def upload_big_file(local_file_path: str):
+    print(f"Dropbox: Uploading {local_file_path}")
+    dropbox_client = get_dropbox_client()
+    file_name = Path(local_file_path).name
+    remote_path = f'/{file_name}'
+    file_size = os.path.getsize(local_file_path)
+    CHUNK_SIZE = 8 * 1024 * 1024
+    since = time.time()
+    with open(local_file_path, 'rb') as local_file:
+        uploaded_size = 0
+        upload_session_start_result = dropbox_client.files_upload_session_start(local_file.read(CHUNK_SIZE))
+        cursor = dropbox.files.UploadSessionCursor(session_id=upload_session_start_result.session_id,
+                                                    offset=local_file.tell())
+        commit = dropbox.files.CommitInfo(path=remote_path, mode=dropbox.files.WriteMode.overwrite)
+        while local_file.tell() <= file_size:
+            if ((file_size - local_file.tell()) <= CHUNK_SIZE):
+                dropbox_client.files_upload_session_finish(local_file.read(CHUNK_SIZE), cursor, commit)
+                time_elapsed = time.time() - since
+                print('Uploaded {:.2f}%'.format(100).ljust(15) + ' --- {:.0f}m {:.0f}s'
+                        .format(time_elapsed//60,time_elapsed%60).rjust(15))
+                break
+            else:
+                dropbox_client.files_upload_session_append_v2(local_file.read(CHUNK_SIZE), cursor)
+                cursor.offset = local_file.tell()
+                uploaded_size += CHUNK_SIZE
+                uploaded_percent = 100*uploaded_size/file_size
+                time_elapsed = time.time() - since
+                print('Uploaded {:.2f}%'.format(uploaded_percent).ljust(15) + ' --- {:.0f}m {:.0f}s'.format(time_elapsed//60,time_elapsed%60).rjust(15), end='\r')
+
+
+
+def upload_big_file_cleaner(local_file_path: str, remote_file_path: str):
+    # get client
+    dbx = get_dropbox_client()
+    file_size = os.path.getsize(local_file_path)
+    # Upload 8 MB chunks at a time
+    CHUNK_SIZE = 8 * 1024 * 1024
+    with open(local_file_path, 'rb') as local_file:
+        uploaded_size = 0
+        upload_session_start_result = dbx.files_upload_session_start(local_file.read(CHUNK_SIZE))
+        cursor = dropbox.files.UploadSessionCursor(
+            session_id=upload_session_start_result.session_id,
+            offset=local_file.tell()
+        )
+        commit = dropbox.files.CommitInfo(
+            path=remote_file_path,
+            mode=dropbox.files.WriteMode.overwrite
+        )
+        print("Starting Upload.")
+        while local_file.tell() <= file_size: 
+            if ((file_size - local_file.tell()) <= CHUNK_SIZE):
+                # Last chunk remaining, so commit
+                dbx.files_upload_session_finish(
+                    local_file.read(CHUNK_SIZE),
+                    cursor,
+                    commit
+                )
+                print("Done uploading !")
+                break
+            else:
+                dbx.files_upload_session_append_v2(
+                    local_file.read(CHUNK_SIZE),
+                    cursor
+                )
+                cursor.offset = local_file.tell()
+                uploaded_size += CHUNK_SIZE
+                uploaded_percent = 100*uploaded_size/file_size
+                print('Uploaded {:.2f}%'.format(uploaded_percent))
 
 
 def verify_connection():
