@@ -28,8 +28,8 @@ class ModelConfig:
     optimizer: str
     learning_rate: float
 
-@dataclass
-class ExperimentConfig:
+
+class ExperimentConfig(NamedTuple):
     dataset_config: DatasetConfig
     model_config: ModelConfig
 

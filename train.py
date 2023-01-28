@@ -51,7 +51,7 @@ dataset_config: DatasetConfig
 model_config: ModelConfig
 
 for dataset_config, model_config in experiments:
-    train_util.print_experiment_info(dataset_config, EXPERIMENT_NAME, DRY_RUN_MODE)
+    train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, DRY_RUN_MODE)
     dataset_name = dataset_config.dataset_name
 
     # -------- READ DATA ---------

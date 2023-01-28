@@ -9,13 +9,18 @@ from utils.config import ModelConfig, DatasetConfig
 import time
 import utils.dropbox as dropbox_util
 
-def print_experiment_info(dataset_config: DatasetConfig, EXPERIMENT_NAME, TESTING_MODE) -> None:
+def print_experiment_info(
+    dataset_config: DatasetConfig,
+    model_config: ModelConfig,
+    EXPERIMENT_NAME,
+    TESTING_MODE) -> None:
     """Print the configurations of the current run"""
     print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
     print("Experiment:", EXPERIMENT_NAME)
     print("DRY_RUN_MODE:", TESTING_MODE)
     print("Dataset:", dataset_config.dataset_name)
+    print("Model:", model_config.model_name)
     print("-----------CONFIG----------\n\n")
     print(Style.RESET_ALL)
 
