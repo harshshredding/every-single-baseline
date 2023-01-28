@@ -15,6 +15,7 @@ class Preprocessor(ABC):
 
     def __init__(
             self,
+            name: str,
             entity_type_file_path: str,
             annotations_file_path: str,
             visualization_file_path: str,
@@ -46,6 +47,7 @@ class Preprocessor(ABC):
                 of each sample of this dataset.
         """
         super().__init__()
+        self.name = name
         self.raw_data_folder_path = raw_data_folder_path
         self.entity_type_file_path = entity_type_file_path
         assert entity_type_file_path.endswith('.txt')
@@ -208,7 +210,7 @@ class Preprocessor(ABC):
         Execute the preprocessing steps that generate files which
         can be used to train models.
         """
-        print("Preprocessing...")
+        print(f"Preprocessing {self.name}")
         print("creating entity file... ")
         self.create_entity_types_file()
         print("done")

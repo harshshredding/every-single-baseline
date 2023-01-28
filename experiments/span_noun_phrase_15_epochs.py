@@ -6,3 +6,6 @@ experiments = [
     get_experiment_config('SpanBertNounPhrase', 'legaleval_judgement'),
     get_experiment_config('SpanBertNounPhrase', 'legaleval_preamble'),
 ]
+
+for experiment in experiments:
+    experiment.model_config.num_epochs = 15

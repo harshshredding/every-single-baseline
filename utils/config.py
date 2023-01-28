@@ -2,9 +2,10 @@ from typing import NamedTuple
 from utils.universal import die
 import yaml
 import glob
+from dataclasses import dataclass
 
-
-class DatasetConfig(NamedTuple):
+@dataclass
+class DatasetConfig:
     train_annos_file_path: str
     valid_annos_file_path: str
     train_tokens_file_path: str
@@ -17,8 +18,8 @@ class DatasetConfig(NamedTuple):
     num_types: int
     dataset_name: str
 
-
-class ModelConfig(NamedTuple):
+@dataclass
+class ModelConfig:
     bert_model_name: str
     bert_model_output_dim: int
     num_epochs: int
@@ -27,8 +28,8 @@ class ModelConfig(NamedTuple):
     optimizer: str
     learning_rate: float
 
-
-class ExperimentConfig(NamedTuple):
+@dataclass
+class ExperimentConfig:
     dataset_config: DatasetConfig
     model_config: ModelConfig
 

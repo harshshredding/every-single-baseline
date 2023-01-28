@@ -1,7 +1,10 @@
 import utils.dropbox as dropbox_util
 import subprocess
 
-# zip preprocessed data again
-subprocess.run(['zip','-r','preprocessed_data.zip','preprocessed_data'])
-# upload zipped file to dropbox
-dropbox_util.upload_file('./preprocessed_data.zip')
+def throws():
+    raise StopIteration
+
+try:
+    throws()
+except StopIteration:
+    print("Caught StopIteration !")
