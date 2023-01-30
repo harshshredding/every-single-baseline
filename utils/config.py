@@ -71,7 +71,7 @@ def read_dataset_config(config_file_path: str) -> DatasetConfig:
 def read_model_config(model_config_file_path: str) -> ModelConfig:
     with open(model_config_file_path, 'r') as yaml_file:
         model_config_raw = yaml.safe_load(yaml_file)
-        assert len(model_config_raw) == 7, "model config should only have 7 attributes currently"
+        assert len(model_config_raw) == 8, "model config should only have 7 attributes currently"
         model_config = ModelConfig(
             model_config_name=model_config_raw['model_config_name'],
             bert_model_name=model_config_raw['bert_model_name'],
