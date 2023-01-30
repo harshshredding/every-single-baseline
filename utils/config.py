@@ -59,7 +59,10 @@ def read_dataset_config(config_file_path: str) -> DatasetConfig:
             valid_samples_file_path=dataset_config_raw['valid_samples_file_path'],
             types_file_path=dataset_config_raw['types_file_path'],
             num_types=int(dataset_config_raw['num_types']),
-            dataset_name=dataset_config_raw['dataset_name']
+            dataset_name=dataset_config_raw['dataset_name'],
+            test_sample_text_data_file_path=dataset_config_raw['test_sample_text_data_file_path'],
+            test_samples_file_path=dataset_config_raw['test_samples_file_path'],
+            test_tokens_file_path=dataset_config_raw['test_tokens_file_path']
         )
         assert isinstance(dataset_config.num_types, int)
         return dataset_config
