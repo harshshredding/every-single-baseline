@@ -26,19 +26,23 @@ def parse_annos(annotation_json: str, sample_text: str) -> List[Anno]:
 class MedicalCausalClaimPreprocessor(Preprocessor):
     def __init__(
             self,
+            name: str,
             entity_type_file_path: str,
             annotations_file_path: str,
             visualization_file_path: str,
             tokens_file_path: str,
             sample_text_file_path: str,
             dataset_split: DatasetSplit,
+            samples_file_path: str,
     ) -> None:
         super().__init__(
-            entity_type_file_path,
-            annotations_file_path,
-            visualization_file_path,
-            tokens_file_path,
-            sample_text_file_path
+            name=name,
+            entity_type_file_path=entity_type_file_path,
+            annotations_file_path=annotations_file_path,
+            visualization_file_path=visualization_file_path,
+            tokens_file_path=tokens_file_path,
+            sample_text_file_path=sample_text_file_path,
+            samples_file_path=samples_file_path
         )
         self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) or (

@@ -1,3 +1,4 @@
+model_config_name: SpanBertNounPhrase
 bert_model_name: bert-base-cased
 bert_model_output_dim: 768
 num_epochs: 10

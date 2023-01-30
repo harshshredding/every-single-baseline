@@ -20,6 +20,7 @@ class DatasetConfig:
 
 @dataclass
 class ModelConfig:
+    model_config_name: str
     bert_model_name: str
     bert_model_output_dim: int
     num_epochs: int
@@ -34,10 +35,10 @@ class ExperimentConfig(NamedTuple):
     model_config: ModelConfig
 
 
-def get_experiment_config(model_name: str, dataset_name: str) -> ExperimentConfig:
+def get_experiment_config(model_config_name: str, dataset_name: str) -> ExperimentConfig:
     return ExperimentConfig(
         get_dataset_config_by_name(dataset_name),
-        get_model_config_by_name(model_name)
+        get_model_config_by_name(model_config_name)
     )
 
 
@@ -66,6 +67,7 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
         model_config_raw = yaml.safe_load(yaml_file)
         assert len(model_config_raw) == 7, "model config should only have 7 attributes currently"
         model_config = ModelConfig(
+            model_config_name=model_config_raw['model_config_name'],
             bert_model_name=model_config_raw['bert_model_name'],
             bert_model_output_dim=int(model_config_raw['bert_model_output_dim']),
             num_epochs=int(model_config_raw['num_epochs']),
@@ -80,13 +82,13 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
         return model_config
 
 
-def get_model_config_by_name(model_name: str) -> ModelConfig:
+def get_model_config_by_name(model_config_name: str) -> ModelConfig:
     all_config_file_paths = glob.glob('configs/model_configs/*.yaml')
     for config_file_path in all_config_file_paths:
         model_config = read_model_config(config_file_path)
-        if model_config.model_name == model_name:
+        if model_config.model_config_name == model_config_name:
             return model_config
-    die(f"Should have been able to find model config with name {model_name}")
+    die(f"Should have been able to find model config with name {model_config_name}")
 
 
 def get_dataset_config_by_name(dataset_name: str) -> DatasetConfig:
