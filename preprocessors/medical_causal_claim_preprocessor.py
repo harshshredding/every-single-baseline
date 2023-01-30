@@ -1,5 +1,5 @@
 from typing import List
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
+from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from preprocess import Preprocessor
 import csv
 import json
@@ -54,7 +54,7 @@ class MedicalCausalClaimPreprocessor(Preprocessor):
         by the organizers.
 
         """
-        with open('/home/harsh/every-single-baseline/causal_claims_raw/st1_train_sample_inc_text.csv',
+        with open('/Users/harshverma/every-single-baseline/medical_claim_subtask_1_raw/st1_train_inc_text.csv',
                   'r') as data_csv_file:
             reader = csv.DictReader(data_csv_file)
             ret = []
@@ -62,8 +62,8 @@ class MedicalCausalClaimPreprocessor(Preprocessor):
                 post_id = row['post_id']
                 sample_text = row['text']
                 labels_json = row['stage1_labels']
-                annos = parse_annos(labels_json, sample_text)
-                ret.append(Sample(sample_text, post_id, annos))
+                gold_annos = parse_annos(labels_json, sample_text)
+                ret.append(Sample(sample_text, post_id, AnnotationCollection(gold_annos, [])))
             return ret
 
     def create_entity_types_file(self) -> None:
@@ -76,12 +76,14 @@ class MedicalCausalClaimPreprocessor(Preprocessor):
 
 def main():
     train_preprocessor = MedicalCausalClaimPreprocessor(
-        entity_type_file_path=f'preprocessed_data/test_medical_causal_types.txt',
-        annotations_file_path=f'preprocessed_data/test_medical_causal_annos.tsv',
-        visualization_file_path=f'preprocessed_data/test_medical_causal_visualization.bdocjs',
-        tokens_file_path=f'preprocessed_data/test_medical_causal_tokens.json',
-        sample_text_file_path=f"preprocessed_data/test_medical_causal_sample_text.json",
+        name="Medical Causal Claim Train",
+        entity_type_file_path=f'preprocessed_data/medical_causal_train_types.txt',
+        annotations_file_path=f'preprocessed_data/medical_causal_train_annos.tsv',
+        visualization_file_path=f'preprocessed_data/medical_causal_train_visualization.bdocjs',
+        tokens_file_path=f'preprocessed_data/medical_causal_train_tokens.json',
+        sample_text_file_path=f"preprocessed_data/medical_causal_train_sample_text.json",
         dataset_split=DatasetSplit.train,
+        samples_file_path="preprocessed_data/medical_causal_train_samples.json"
     )
     train_preprocessor.run()
 

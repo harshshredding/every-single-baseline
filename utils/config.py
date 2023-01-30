@@ -10,10 +10,13 @@ class DatasetConfig:
     valid_annos_file_path: str
     train_tokens_file_path: str
     valid_tokens_file_path: str
+    test_tokens_file_path: str
     train_sample_text_data_file_path: str
     valid_sample_text_data_file_path: str
+    test_sample_text_data_file_path: str
     train_samples_file_path: str
     valid_samples_file_path: str
+    test_samples_file_path: str
     types_file_path: str
     num_types: int
     dataset_name: str

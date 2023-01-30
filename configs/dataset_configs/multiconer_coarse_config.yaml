@@ -9,3 +9,6 @@ valid_samples_file_path: ./preprocessed_data/multiconer_coarse_valid_samples.jso
 types_file_path: ./preprocessed_data/multiconer_coarse_train_types.txt
 num_types: 6
 dataset_name: multiconer_coarse
+test_tokens_file_path: change_this
+test_sample_text_data_file_path: change_this
+test_samples_file_path: change_this
