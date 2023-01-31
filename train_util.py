@@ -9,11 +9,12 @@ from utils.config import ModelConfig, DatasetConfig
 import time
 import utils.dropbox as dropbox_util
 
+
 def print_experiment_info(
-    dataset_config: DatasetConfig,
-    model_config: ModelConfig,
-    EXPERIMENT_NAME,
-    TESTING_MODE) -> None:
+        dataset_config: DatasetConfig,
+        model_config: ModelConfig,
+        EXPERIMENT_NAME,
+        TESTING_MODE) -> None:
     """Print the configurations of the current run"""
     print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
@@ -33,6 +34,7 @@ def check_label_types(train_samples: List[Sample], valid_samples: List[Sample], 
     for sample in valid_samples:
         for anno in sample.annos.gold:
             assert anno.label_type in all_types, f"anno label type {anno.label_type} not expected"
+
 
 def get_loss_function():
     return nn.CrossEntropyLoss()
@@ -66,6 +68,7 @@ def extract_expanded_labels(sample_token_data: List[TokenData],
         expanded_labels = util.expand_labels(batch_encoding, labels)
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + model_config.model_name)
+
 
 # TODO: remove following method
 def read_pos_embeddings_file(dataset_config: DatasetConfig):
@@ -120,6 +123,7 @@ def get_spans_from_seq_labels(predictions_sub, batch_encoding, model_config: Mod
         return util.get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
     else:
         raise Exception(f"Have to specify num of classes in model name {model_config.model_name}")
+
 
 # TODO: remove following method
 def read_disease_gazetteer(dataset_config: DatasetConfig):
@@ -404,18 +408,17 @@ def store_mistakes(
         )
 
 
-
 def validate(
-    logger,
-    model: torch.nn.Module,
-    validation_samples: List[Sample],
-    mistakes_folder_path: str,
-    predictions_folder_path: str,
-    error_visualization_folder_path: str,
-    performance_file_path: str,
-    EXPERIMENT_NAME: str,
-    dataset_name: str,
-    epoch: int,
+        logger,
+        model: torch.nn.Module,
+        validation_samples: List[Sample],
+        mistakes_folder_path: str,
+        predictions_folder_path: str,
+        error_visualization_folder_path: str,
+        performance_file_path: str,
+        EXPERIMENT_NAME: str,
+        dataset_name: str,
+        epoch: int,
 ):
     logger.info("Starting validation")
     model.eval()
@@ -463,18 +466,18 @@ def validate(
                 train_util.store_predictions(validation_sample, predicted_annos_valid, predictions_file_writer)
                 # write sample mistakes
                 train_util.store_mistakes(validation_sample, false_positives_sample, false_negatives_sample,
-                                            mistakes_file_writer)
+                                          mistakes_file_writer)
     micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
     logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
     visualize_errors_file_path = f"{error_visualization_folder_path}/" \
-                                    f"{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_visualize_errors.bdocjs"
+                                 f"{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_visualize_errors.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, validation_samples)
     train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME,
                                         dataset_name)
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
-    # dropbox_util.upload_file(predictions_file_path)
+    dropbox_util.upload_file(predictions_file_path)
     # dropbox_util.upload_file(mistakes_file_path)
     dropbox_util.upload_file(performance_file_path)
 
