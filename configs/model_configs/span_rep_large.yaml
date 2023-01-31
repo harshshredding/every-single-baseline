@@ -1,5 +1,5 @@
 model_config_name: SpanLarge
-bert_model_name: roberta-large
+bert_model_name: xlm-roberta-large
 bert_model_output_dim: 1024
 num_epochs: 10
 save_models_dir: ./models
