@@ -1,5 +1,5 @@
 from typing import List
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
+from structs import Anno, Sample, DatasetSplit, AnnotationCollection
 from preprocess import Preprocessor
 import csv
 import json
@@ -45,8 +45,9 @@ class MedicalCausalClaimPreprocessor(Preprocessor):
             samples_file_path=samples_file_path
         )
         self.dataset_split = dataset_split
-        assert (dataset_split == DatasetSplit.train) or (
-                dataset_split == DatasetSplit.valid)
+        assert (dataset_split == DatasetSplit.train) or \
+               (dataset_split == DatasetSplit.valid) or \
+               (dataset_split == DatasetSplit.test)
 
     def get_samples(self) -> List[Sample]:
         """
@@ -54,16 +55,34 @@ class MedicalCausalClaimPreprocessor(Preprocessor):
         by the organizers.
 
         """
-        with open('/Users/harshverma/every-single-baseline/medical_claim_subtask_1_raw/st1_train_inc_text.csv',
-                  'r') as data_csv_file:
+        if self.dataset_split == DatasetSplit.train:
+            raw_data_file_path = "./medical_claim_subtask_1_raw/st1_train_inc_text.csv"
+        elif self.dataset_split == DatasetSplit.valid:
+            raw_data_file_path = "./medical_claim_subtask_1_raw/st1_train_inc_text.csv"
+        elif self.dataset_split == DatasetSplit.test:
+            raw_data_file_path = "./medical_claim_subtask_1_raw/st1_test_inc_text.csv"
+        else:
+            raise RuntimeError("no other dataset split possible")
+
+        with open(raw_data_file_path, 'r') as data_csv_file:
             reader = csv.DictReader(data_csv_file)
             ret = []
             for row in reader:
                 post_id = row['post_id']
                 sample_text = row['text']
-                labels_json = row['stage1_labels']
-                gold_annos = parse_annos(labels_json, sample_text)
+                gold_annos = []
+                if (self.dataset_split == DatasetSplit.train) or (self.dataset_split == DatasetSplit.valid):
+                    labels_json = row['stage1_labels']
+                    gold_annos = parse_annos(labels_json, sample_text)
                 ret.append(Sample(sample_text, post_id, AnnotationCollection(gold_annos, [])))
+            if self.dataset_split == DatasetSplit.train:
+                percent_85 = int(len(ret) * 0.85)
+                ret = ret[:percent_85]
+            elif self.dataset_split == DatasetSplit.valid:
+                percent_85 = int(len(ret) * 0.85)
+                ret = ret[percent_85:]
+            elif self.dataset_split == DatasetSplit.test:
+                pass
             return ret
 
     def create_entity_types_file(self) -> None:
@@ -74,7 +93,7 @@ class MedicalCausalClaimPreprocessor(Preprocessor):
             print('per_exp', file=output_file)
 
 
-def main():
+def train_preprocess():
     train_preprocessor = MedicalCausalClaimPreprocessor(
         name="Medical Causal Claim Train",
         entity_type_file_path=f'preprocessed_data/medical_causal_train_types.txt',
@@ -86,6 +105,40 @@ def main():
         samples_file_path="preprocessed_data/medical_causal_train_samples.json"
     )
     train_preprocessor.run()
+
+
+def valid_preprocess():
+    valid_preprocessor = MedicalCausalClaimPreprocessor(
+        name="Medical Causal Claim Valid",
+        entity_type_file_path=f'preprocessed_data/medical_causal_valid_types.txt',
+        annotations_file_path=f'preprocessed_data/medical_causal_valid_annos.tsv',
+        visualization_file_path=f'preprocessed_data/medical_causal_valid_visualization.bdocjs',
+        tokens_file_path=f'preprocessed_data/medical_causal_valid_tokens.json',
+        sample_text_file_path=f"preprocessed_data/medical_causal_valid_sample_text.json",
+        dataset_split=DatasetSplit.valid,
+        samples_file_path="preprocessed_data/medical_causal_valid_samples.json"
+    )
+    valid_preprocessor.run()
+
+
+def test_preprocess():
+    test_preprocessor = MedicalCausalClaimPreprocessor(
+        name="Medical Causal Claim Test",
+        entity_type_file_path=f'preprocessed_data/medical_causal_test_types.txt',
+        annotations_file_path=f'preprocessed_data/medical_causal_test_annos.tsv',
+        visualization_file_path=f'preprocessed_data/medical_causal_test_visualization.bdocjs',
+        tokens_file_path=f'preprocessed_data/medical_causal_test_tokens.json',
+        sample_text_file_path=f"preprocessed_data/medical_causal_test_sample_text.json",
+        dataset_split=DatasetSplit.test,
+        samples_file_path="preprocessed_data/medical_causal_test_samples.json"
+    )
+    test_preprocessor.run()
+
+
+def main():
+    train_preprocess()
+    valid_preprocess()
+    test_preprocess()
 
 
 if __name__ == '__main__':

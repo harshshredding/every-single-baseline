@@ -6,13 +6,8 @@ from args import DRY_RUN_MODE, EXPERIMENT_NAME
 import time
 import numpy as np
 import logging  # configured in args.py
-import csv
 import importlib
-from experiments.span_noun_phrase_experiments import experiments
-import torch
 from utils.config import DatasetConfig, ModelConfig
-import utils.dropbox as dropbox_util
-from preamble import *
 
 experiments_module = importlib.import_module(f"experiments.{EXPERIMENT_NAME}")
 experiments = experiments_module.experiments
@@ -36,6 +31,8 @@ error_visualization_folder_path = f'{training_results_folder_path}/error_visuali
 predictions_folder_path = f'{training_results_folder_path}/predictions'
 models_folder_path = f'{training_results_folder_path}/models'
 performance_folder_path = f'{training_results_folder_path}/performance'
+test_predictions_folder_path = f'{training_results_folder_path}/test_predictions'
+
 
 # Create training-results directories
 util.create_directory_structure(mistakes_folder_path)
@@ -43,6 +40,7 @@ util.create_directory_structure(error_visualization_folder_path)
 util.create_directory_structure(predictions_folder_path)
 util.create_directory_structure(models_folder_path)
 util.create_directory_structure(performance_folder_path)
+util.create_directory_structure(test_predictions_folder_path)
 
 performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}.csv"
 train_util.create_performance_file_header(performance_file_path)
@@ -59,8 +57,10 @@ for dataset_config, model_config in experiments:
     logger.info("Starting to read data.")
     train_samples = train_util.get_train_samples(dataset_config)
     valid_samples = train_util.get_valid_samples(dataset_config)
-    logger.info(f"num train samples {len(train_samples)}")
-    logger.info(f"num valid samples {len(valid_samples)}")
+    test_samples = train_util.get_test_samples(dataset_config)
+    logger.info(f"num train samples: {len(train_samples)}")
+    logger.info(f"num valid samples: {len(valid_samples)}")
+    logger.info(f"num test samples: {len(test_samples)}")
     logger.info("finished reading data.")
 
     # ------ MODEL INITIALISATION --------
@@ -86,11 +86,9 @@ for dataset_config, model_config in experiments:
         train_start_time = time.time()
         model.train()
         if DRY_RUN_MODE: 
-            samples_for_training = train_samples[:10]
-        else:
-            samples_for_training = train_samples
+            train_samples = train_samples[:10]
         # Training Loop
-        for train_sample in samples_for_training:
+        for train_sample in train_samples:
             optimizer.zero_grad()
             loss, predicted_annos = model(train_sample)
             loss.backward()
@@ -103,20 +101,29 @@ for dataset_config, model_config in experiments:
         
         # Begin Validation
         if DRY_RUN_MODE:
-            samples_for_validation = valid_samples[:10]
-        else:
-            samples_for_validation = valid_samples
+            valid_samples = valid_samples[:10]
+            test_samples = test_samples[:10]
         logger.info(f"Epoch {epoch} DONE!\n\n\n")
 
         train_util.validate(
             logger=logger,
             model=model,
-            validation_samples=samples_for_validation,
+            validation_samples=valid_samples,
             mistakes_folder_path=mistakes_folder_path,
             predictions_folder_path=predictions_folder_path,
             error_visualization_folder_path=error_visualization_folder_path,
             performance_file_path=performance_file_path,
             EXPERIMENT_NAME=EXPERIMENT_NAME,
+            dataset_name=dataset_name,
+            epoch=epoch
+        )
+
+        train_util.test(
+            logger=logger,
+            model=model,
+            test_samples=test_samples,
+            test_predictions_folder_path=test_predictions_folder_path,
+            experiment_name=EXPERIMENT_NAME,
             dataset_name=dataset_name,
             epoch=epoch
         )

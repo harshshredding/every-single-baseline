@@ -1,10 +1,4 @@
-import utils.dropbox as dropbox_util
-import subprocess
+import requests
+import bs4
 
-def throws():
-    raise StopIteration
-
-try:
-    throws()
-except StopIteration:
-    print("Caught StopIteration !")
+query_string=""

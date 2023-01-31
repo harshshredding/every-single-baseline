@@ -2,9 +2,10 @@ from structs import *
 import util
 import csv
 from abc import ABC, abstractmethod
-import spacy
 import json
 from annotators import Annotator
+from preamble import *
+
 
 class Preprocessor(ABC):
     """
@@ -61,8 +62,6 @@ class Preprocessor(ABC):
         assert sample_text_file_path.endswith('.json')
         self.samples_file_path = samples_file_path
         assert samples_file_path.endswith('.json')
-        self.nlp = spacy.load("en_core_web_md")
-        print("Preprocessor Name:", type(self).__name__)
         self.samples = None
         self.annotators = annotators
 
@@ -150,7 +149,6 @@ class Preprocessor(ABC):
         into gate developer using the gate bdocjs plugin. 
         """
         samples = self.get_samples_cached()
-        self.add_token_annotations(samples)
         sample_to_annos = {}
         sample_to_text = {}
         for sample in samples:
@@ -162,26 +160,6 @@ class Preprocessor(ABC):
             sample_to_annos,
             sample_to_text
         )
-
-    def create_tokens_file(self) -> None:
-        """
-        Create a json file that stores the tokens(and other corresponding information) 
-        for each sample.
-        """
-        samples = self.get_samples_cached()
-        all_tokens_json = []
-        for sample in samples:
-            doc = self.nlp(sample.text)
-            for token in doc:
-                start_offset = token.idx
-                end_offset = start_offset + len(token)
-                token_json = {'Token': [{"string": str(token), "startOffset": start_offset,
-                                         "endOffset": end_offset, "length": len(token)}],
-                              'Sample': [{"id": sample.id, "startOffset": 0}],
-                              }
-                all_tokens_json.append(token_json)
-        with util.open_make_dirs(self.tokens_file_path, 'w') as output_file:
-            json.dump(all_tokens_json, output_file, indent=4)
 
     def create_sample_text_file(self) -> None:
         """
@@ -216,9 +194,6 @@ class Preprocessor(ABC):
         print("done")
         print("creating annos file...")
         self.create_annotations_file()
-        print("done")
-        print("creating tokens file...")
-        self.create_tokens_file()
         print("done")
         print("creating visualization file...")
         self.create_visualization_file()

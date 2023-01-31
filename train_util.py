@@ -364,12 +364,20 @@ def get_valid_samples(dataset_config: DatasetConfig) -> List[Sample]:
     return util.read_samples(dataset_config.valid_samples_file_path)
 
 
+def get_test_samples(dataset_config: DatasetConfig) -> List[Sample]:
+    return util.read_samples(dataset_config.test_samples_file_path)
+
+
 def prepare_file_headers(mistakes_file_writer, predictions_file_writer):
-    predictions_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction']
-    predictions_file_writer.writerow(predictions_file_header)
+    prepare_predictions_file_header(predictions_file_writer)
 
     mistakes_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction', 'mistake_type']
     mistakes_file_writer.writerow(mistakes_file_header)
+
+
+def prepare_predictions_file_header(predictions_file_writer):
+    predictions_file_header = ['sample_id', 'begin', 'end', 'type', 'extraction']
+    predictions_file_writer.writerow(predictions_file_header)
 
 
 def store_predictions(
@@ -481,6 +489,36 @@ def validate(
     # dropbox_util.upload_file(mistakes_file_path)
     dropbox_util.upload_file(performance_file_path)
 
+    logger.info(f"Done validating!\n\n\n")
+
+
+def test(
+        logger,
+        model: torch.nn.Module,
+        test_samples: List[Sample],
+        test_predictions_folder_path: str,
+        experiment_name: str,
+        dataset_name: str,
+        epoch: int,
+):
+    logger.info("Starting Testing")
+    model.eval()
+    predictions_file_path = f"{test_predictions_folder_path}/{experiment_name}_{dataset_name}_" \
+                            f"test_results_epoch_{epoch}" \
+                            f"_predictions.tsv"
+    with open(predictions_file_path, 'w') as predictions_file:
+        #  --- GET FILES READY FOR WRITING ---
+        predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
+        train_util.prepare_predictions_file_header(predictions_file_writer)
+
+        with torch.no_grad():
+            # Test Loop
+            for test_sample in test_samples:
+                loss, predicted_annos_valid = model(test_sample)
+                # write sample predictions
+                train_util.store_predictions(test_sample, predicted_annos_valid, predictions_file_writer)
+    # Upload predictions to dropbox
+    dropbox_util.upload_file(predictions_file_path)
     logger.info(f"Done validating!\n\n\n")
 
 

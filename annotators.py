@@ -4,7 +4,7 @@ import benepar
 from structs import Sample
 import spacy
 import util
-from preamble import progress
+from preamble import show_progress
 
 class Annotator(ABC):
     """
@@ -32,7 +32,7 @@ class NounPhraseAnnotator(Annotator):
     """
     def annotate(self, samples: List[Sample]):
         print("Annotator: Noun Phrases")
-        for sample in progress(samples):
+        for sample in show_progress(samples):
             try:
                 spacy_doc = self.nlp(sample.text)
             except StopIteration:

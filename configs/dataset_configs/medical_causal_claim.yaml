@@ -1,0 +1,14 @@
+train_annos_file_path: ./preprocessed_data/medical_causal_train_annos.tsv
+valid_annos_file_path: ./preprocessed_data/medical_causal_valid_annos.tsv
+train_tokens_file_path: ./preprocessed_data/medical_causal_train_tokens.json
+valid_tokens_file_path: ./preprocessed_data/medical_causal_valid_tokens.json
+train_sample_text_data_file_path: ./preprocessed_data/medical_causal_train_sample_text.json
+valid_sample_text_data_file_path: ./preprocessed_data/medical_causal_valid_sample_text.json
+train_samples_file_path: ./preprocessed_data/medical_causal_train_samples.json
+valid_samples_file_path: ./preprocessed_data/medical_causal_valid_samples.json
+types_file_path: ./preprocessed_data/medical_causal_train_types.txt
+test_tokens_file_path: ./preprocessed_data/medical_causal_test_tokens.json
+test_sample_text_data_file_path: ./preprocessed_data/medical_causal_test_sample_text.json
+test_samples_file_path: ./preprocessed_data/medical_causal_test_samples.json
+num_types: 4
+dataset_name: medical_causal_claim
