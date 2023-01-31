@@ -8,6 +8,7 @@ import numpy as np
 import logging  # configured in args.py
 import importlib
 from utils.config import DatasetConfig, ModelConfig
+from random import shuffle
 
 experiments_module = importlib.import_module(f"experiments.{EXPERIMENT_NAME}")
 experiments = experiments_module.experiments
@@ -87,6 +88,9 @@ for dataset_config, model_config in experiments:
         model.train()
         if DRY_RUN_MODE: 
             train_samples = train_samples[:10]
+
+        shuffle(train_samples)  # shuffle samples every epoch
+
         # Training Loop
         for train_sample in train_samples:
             optimizer.zero_grad()
