@@ -71,7 +71,7 @@ class PreprocessMulticoner(Preprocessor):
         return ret
 
     def create_entity_types_file(self) -> None:
-        samples = self.__get_samples(f"multiconer-data-raw/train_dev/en-train.conll")
+        samples = self.__get_samples(f"multiconer-data-raw/public_data/EN-English/en_train.conll")
         train_labels_set = set()
         train_labels_occurences = []
         for sample in samples:
@@ -95,9 +95,9 @@ class PreprocessMulticoner(Preprocessor):
 
     def get_samples(self) -> List[Sample]:
         if self.dataset_split == DatasetSplit.valid:
-            return self.__get_samples("multiconer-data-raw/train_dev/en-valid.conll")
+            return self.__get_samples("multiconer-data-raw/public_data/EN-English/en_dev.conll")
         elif self.dataset_split == DatasetSplit.train:
-            return self.__get_samples("multiconer-data-raw/train_dev/en-train.conll")
+            return self.__get_samples("multiconer-data-raw/public_data/EN-English/en_train.conll")
         elif self.dataset_split == DatasetSplit.test:
             return self.__get_samples('multiconer-data-raw/public_data/EN-English/en_test.conll')
         else:
