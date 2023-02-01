@@ -83,7 +83,7 @@ def google_get(query_plain):
 def get_google_search_headings(query_string_plain: str) -> List[str]:
     request_result = google_get(query_string_plain)
     print(request_result)
-    
+
     html_text = request_result.text
 
     # H3 with classes LC20lb MBeuO DKV0Md

@@ -51,9 +51,7 @@ def store_google_data(process_id, chunk_start, chunk_end):
     assert len(all_sample_texts) == total_num_samples
     all_sample_texts = all_sample_texts[chunk_start: chunk_end]
     if chunk_end != total_num_samples:
-        assert (chunk_end - chunk_start) == 24794
-    else:
-        assert chunk_start == 247940 and chunk_end == total_num_samples
+        assert (chunk_end - chunk_start) == chunk_size
     data_to_store = []
     for i, (sample_id, google_query) in enumerate(all_sample_texts):
         if (i % 100) == 0:
@@ -72,12 +70,14 @@ def store_google_data(process_id, chunk_start, chunk_end):
 
 processes = []
 
-for pid in range(11):
-    chunk = total_num_samples // 10
-    if pid == 10:
-        process = Process(target=store_google_data, args=(pid, pid * chunk, total_num_samples))
+num_threads = 5
+chunk_size = total_num_samples // num_threads
+
+for pid in range(num_threads + 1):
+    if pid == num_threads:
+        process = Process(target=store_google_data, args=(pid, pid * chunk_size, total_num_samples))
     else:
-        process = Process(target=store_google_data, args=(pid, pid * chunk, (pid + 1)*chunk))
+        process = Process(target=store_google_data, args=(pid, pid * chunk_size, (pid + 1)*chunk_size))
     process.start()
     processes.append(process)
 
