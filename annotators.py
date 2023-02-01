@@ -80,6 +80,7 @@ def get_google_search_headings(query_string_plain: str) -> List[str]:
 
     request_result = requests.get(url)
     html_text = request_result.text
+    print(url)
 
     # H3 with classes LC20lb MBeuO DKV0Md
     soup = bs4.BeautifulSoup(html_text, "html.parser")
