@@ -1,4 +1,4 @@
-import requests
-import bs4
+from annotators import GoogleSearch
 
-query_string=""
+google_search = GoogleSearch()
+

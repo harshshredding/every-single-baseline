@@ -21,7 +21,8 @@ def print_experiment_info(
     print("Experiment:", EXPERIMENT_NAME)
     print("DRY_RUN_MODE:", TESTING_MODE)
     print("Dataset:", dataset_config.dataset_name)
-    print("Model:", model_config.model_name)
+    print("Model Config Name:", model_config.model_config_name)
+    print("Model Name:", model_config.model_name)
     print("-----------CONFIG----------\n\n")
     print(Style.RESET_ALL)
 

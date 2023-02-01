@@ -623,16 +623,10 @@ class SpanBert(torch.nn.Module):
         self.idx_to_type = {i: type_name for type_name, i in self.type_to_idx.items()}
         assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
 
-    def forward(self,
-                sample: Sample
-                ):
-        """Forward pass
-        Args:
-            sample_token_data (List[TokenData]): Token data of `one` sample.
-            sample_annos (List[Anno]): Annotations of one sample.
-        Returns:
-            Tensor[shape(batch_size, num_spans, num_classes)] classification of each span
-        """
+    def forward(
+            self,
+            sample: Sample
+    ):
         tokens = util.get_tokens_from_sample(sample)
         token_annos = util.get_token_annos_from_sample(sample)
         gold_token_level_annos = util.get_token_level_spans(token_annos, sample.annos.gold)
@@ -718,14 +712,13 @@ class SpanBert(torch.nn.Module):
         return all_possible_spans_labels
 
 
-
 class SpanBertNounPhrase(SpanBert):
     def __init__(self, all_types: List[str], model_config: ModelConfig):
         super().__init__(all_types, model_config)
         # Cannot use super's classifier because we are concatenating
         # noun-phrase information(bit) to span embeddings.
-        self.classifier = nn.Linear(self.input_dim*2 + 1, self.num_class)
-    
+        self.classifier = nn.Linear(self.input_dim * 2 + 1, self.num_class)
+
     def forward(self, sample: Sample):
         """Forward pass
         Args:
@@ -738,7 +731,8 @@ class SpanBertNounPhrase(SpanBert):
         token_annos = util.get_token_annos_from_sample(sample)
         gold_spans_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=sample.annos.gold)
         noun_phrase_annos = util.get_annos_of_type_from_collection('NounPhrase', sample.annos)
-        noun_phrase_token_level = util.get_token_level_spans(token_annos=token_annos, annos_to_convert=noun_phrase_annos)
+        noun_phrase_token_level = util.get_token_level_spans(token_annos=token_annos,
+                                                             annos_to_convert=noun_phrase_annos)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
         gold_spans_sub_token_level = util.get_sub_token_level_spans(gold_spans_token_level, bert_encoding)
@@ -751,7 +745,8 @@ class SpanBertNounPhrase(SpanBert):
         # SHAPE: (num_spans)
         all_possible_spans_list = util.enumerate_spans(bert_encoding.word_ids())
         gold_labels_all_spans = self.label_all_possible_spans(all_possible_spans_list, gold_spans_sub_token_level)
-        noun_phrase_labels_all_spans = self.get_noun_phrase_labels_for_all_spans(all_possible_spans_list, noun_phrase_sub_token_level)
+        noun_phrase_labels_all_spans = self.get_noun_phrase_labels_for_all_spans(all_possible_spans_list,
+                                                                                 noun_phrase_sub_token_level)
         # SHAPE: (batch_size, num_spans)
         gold_labels_all_spans = torch.tensor([gold_labels_all_spans], device=device)
         # SHAPE: (batch_size, num_spans, 1)
@@ -773,13 +768,13 @@ class SpanBertNounPhrase(SpanBert):
             token_annos
         )
         return loss, predicted_annos
-    
+
     def get_noun_phrase_labels_for_all_spans(self, all_possible_spans_list, noun_phrase_spans_sub_token):
         for noun_phrase_span in noun_phrase_spans_sub_token:
             assert noun_phrase_span[2] == 'NounPhrase'
         noun_phrase_labels = []
         for span in all_possible_spans_list:
-            corresponding_anno_list = [anno for anno in noun_phrase_spans_sub_token 
+            corresponding_anno_list = [anno for anno in noun_phrase_spans_sub_token
                                        if (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
