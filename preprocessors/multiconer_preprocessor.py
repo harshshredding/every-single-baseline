@@ -10,9 +10,6 @@ from utils.universal import die
 import benepar
 from annotators import Annotator, GoogleSearch, TokenAnnotator
 from preamble import *
-from multiprocessing import Process
-import torch
-torch.multiprocessing.set_start_method('spawn')
 benepar.download('benepar_en3')
 
 
@@ -352,15 +349,6 @@ def google_preprocess_test_fine(thread_num: int):
     test_fine_preproc.run()
 
 
-processes = []
-
-for thread_num in range(11):
-    process = Process(target=google_preprocess_test_fine, args=(thread_num,))
-    process.start()
-    processes.append(process)
-
-for process in processes:
-    process.join()
 
 # def preprocess_valid_coarse():
 #     prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}"
