@@ -10,6 +10,7 @@ from utils.universal import die
 import benepar
 from annotators import Annotator, GoogleSearch, TokenAnnotator
 from preamble import *
+from multiprocessing import Process
 
 benepar.download('benepar_en3')
 
@@ -31,7 +32,8 @@ class PreprocessMulticoner(Preprocessor):
             samples_file_path: str,
             dataset_split: DatasetSplit,
             granularity: Granularity,
-            annotators: List[Annotator]
+            annotators: List[Annotator],
+            thread_num: int
     ) -> None:
         super().__init__(
             name=name,
@@ -43,6 +45,7 @@ class PreprocessMulticoner(Preprocessor):
             samples_file_path=samples_file_path,
             annotators=annotators
         )
+        self.thread_num = thread_num
         self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) \
                or (dataset_split == DatasetSplit.valid) \
@@ -199,7 +202,20 @@ class PreprocessMulticoner(Preprocessor):
             sample_text = self.__get_text(tokens)
             sample_gold_annos = annos_dict.get(sample_id, [])
             ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, [])))
-        return ret
+
+        if 'en_test' in raw_file_path:
+            expected_num_samples = 247947
+            assert len(ret) == expected_num_samples
+            chunk = expected_num_samples // 10
+            assert chunk == 24794
+            if self.thread_num < 10:
+                return ret[self.thread_num * chunk: (self.thread_num + 1) * chunk]
+            elif self.thread_num == 10:
+                return ret[10 * chunk:]
+            else:
+                raise RuntimeError("Cannot support more than 11 threads")
+        else:
+            return ret
 
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"
@@ -229,44 +245,98 @@ class PreprocessMulticoner(Preprocessor):
 # train_fine_preproc.run()
 
 
-def preprocess_train_fine():
-    prefix = f"{Dataset.multiconer_fine.name}_{DatasetSplit.train.name}"
-    train_fine_preproc = PreprocessMulticoner(
-        name="Multi_Train_Fine",
-        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-        dataset_split=DatasetSplit.train,
-        granularity=Granularity.fine,
-        annotators=[]
-    )
-    train_fine_preproc.run()
+# def preprocess_train_fine():
+#     prefix = f"{Dataset.multiconer_fine.name}_{DatasetSplit.train.name}"
+#     train_fine_preproc = PreprocessMulticoner(
+#         name="Multi_Train_Fine",
+#         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#         tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#         sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+#         dataset_split=DatasetSplit.train,
+#         granularity=Granularity.fine,
+#         annotators=[]
+#     )
+#     train_fine_preproc.run()
+#
+#
+# def preprocess_valid_fine():
+#     prefix = f"{Dataset.multiconer_fine.name}_{DatasetSplit.valid.name}"
+#     valid_fine_preproc = PreprocessMulticoner(
+#         name="Multi_Valid_Fine",
+#         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#         tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#         sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+#         dataset_split=DatasetSplit.valid,
+#         granularity=Granularity.fine,
+#         annotators=[]
+#     )
+#     valid_fine_preproc.run()
+#
+#
+# def preprocess_test_fine():
+#     prefix = f"{Dataset.multiconer_fine.name}_{DatasetSplit.test.name}"
+#     test_fine_preproc = PreprocessMulticoner(
+#         name="Multi_Test_Fine",
+#         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#         tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#         sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+#         dataset_split=DatasetSplit.test,
+#         granularity=Granularity.fine,
+#         annotators=[]
+#     )
+#     test_fine_preproc.run()
+#
+#
+# def google_preprocess_train_fine():
+#     prefix = f"google_{Dataset.multiconer_fine.name}_{DatasetSplit.train.name}"
+#     annotators = [GoogleSearch(), TokenAnnotator()]
+#     train_fine_preproc = PreprocessMulticoner(
+#         name="Multi_Train_Fine",
+#         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#         tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#         sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+#         dataset_split=DatasetSplit.train,
+#         granularity=Granularity.fine,
+#         annotators=annotators
+#     )
+#     train_fine_preproc.run()
+#
+#
+# def google_preprocess_valid_fine():
+#     prefix = f"google_{Dataset.multiconer_fine.name}_{DatasetSplit.valid.name}"
+#     annotators = [GoogleSearch(), TokenAnnotator()]
+#     valid_fine_preproc = PreprocessMulticoner(
+#         name="Multi_Valid_Fine",
+#         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#         tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#         sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+#         dataset_split=DatasetSplit.valid,
+#         granularity=Granularity.fine,
+#         annotators=annotators
+#     )
+#     valid_fine_preproc.run()
 
 
-def preprocess_valid_fine():
-    prefix = f"{Dataset.multiconer_fine.name}_{DatasetSplit.valid.name}"
-    valid_fine_preproc = PreprocessMulticoner(
-        name="Multi_Valid_Fine",
-        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-        dataset_split=DatasetSplit.valid,
-        granularity=Granularity.fine,
-        annotators=[]
-    )
-    valid_fine_preproc.run()
-
-
-def preprocess_test_fine():
-    prefix = f"{Dataset.multiconer_fine.name}_{DatasetSplit.test.name}"
+def google_preprocess_test_fine(thread_num: int):
+    prefix = f"{thread_num}_google_{Dataset.multiconer_fine.name}_{DatasetSplit.test.name}"
+    annotators = [GoogleSearch(), TokenAnnotator()]
     test_fine_preproc = PreprocessMulticoner(
-        name="Multi_Test_Fine",
+        name=f"Multi_Test_Fine_{thread_num}",
         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
@@ -275,64 +345,21 @@ def preprocess_test_fine():
         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
         dataset_split=DatasetSplit.test,
         granularity=Granularity.fine,
-        annotators=[]
+        annotators=annotators,
+        thread_num=thread_num
     )
     test_fine_preproc.run()
 
 
-def google_preprocess_train_fine():
-    prefix = f"google_{Dataset.multiconer_fine.name}_{DatasetSplit.train.name}"
-    annotators = [GoogleSearch(), TokenAnnotator()]
-    train_fine_preproc = PreprocessMulticoner(
-        name="Multi_Train_Fine",
-        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-        dataset_split=DatasetSplit.train,
-        granularity=Granularity.fine,
-        annotators=annotators
-    )
-    train_fine_preproc.run()
+processes = []
 
+for thread_num in range(11):
+    process = Process(target=google_preprocess_test_fine, args=(thread_num))
+    process.start()
+    processes.append(process)
 
-def google_preprocess_valid_fine():
-    prefix = f"google_{Dataset.multiconer_fine.name}_{DatasetSplit.valid.name}"
-    annotators = [GoogleSearch(), TokenAnnotator()]
-    valid_fine_preproc = PreprocessMulticoner(
-        name="Multi_Valid_Fine",
-        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-        dataset_split=DatasetSplit.valid,
-        granularity=Granularity.fine,
-        annotators=annotators
-    )
-    valid_fine_preproc.run()
-
-
-def google_preprocess_test_fine():
-    prefix = f"google_{Dataset.multiconer_fine.name}_{DatasetSplit.test.name}"
-    annotators = [GoogleSearch(), TokenAnnotator()]
-    test_fine_preproc = PreprocessMulticoner(
-        name="Multi_Test_Fine",
-        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-        dataset_split=DatasetSplit.test,
-        granularity=Granularity.fine,
-        annotators=annotators
-    )
-    test_fine_preproc.run()
-
+for process in processes:
+    process.join()
 
 # def preprocess_valid_coarse():
 #     prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}"
@@ -374,7 +401,7 @@ def google_preprocess_test_fine():
 
 # google_preprocess_train_fine()
 # google_preprocess_valid_fine()
-google_preprocess_test_fine()
+google_preprocess_test_fine(1)
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.fine.name}"
 # valid_fine_preproc = PreprocessMulticoner(
