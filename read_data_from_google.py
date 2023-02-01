@@ -4,6 +4,7 @@ from preamble import *
 from annotators import get_google_search_headings
 import json
 from multiprocessing import Process
+import time
 
 total_num_samples = 247947
 
@@ -40,6 +41,7 @@ def __read_raw_data(raw_file_path: str) -> Dict[SampleId, List[tuple]]:
 
 
 def store_google_data(process_id, chunk_start, chunk_end):
+    time.sleep(1)
     print(f"Starting google process {process_id}")
     raw_file_path = "multiconer-data-raw/public_data/EN-English/en_test.conll"
     all_sample_texts = []
@@ -70,7 +72,7 @@ def store_google_data(process_id, chunk_start, chunk_end):
 
 processes = []
 
-num_threads = 5
+num_threads = 1
 chunk_size = total_num_samples // num_threads
 
 for pid in range(num_threads + 1):
