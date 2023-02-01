@@ -354,7 +354,7 @@ def google_preprocess_test_fine(thread_num: int):
 processes = []
 
 for thread_num in range(11):
-    process = Process(target=google_preprocess_test_fine, args=(thread_num))
+    process = Process(target=google_preprocess_test_fine, args=(thread_num,))
     process.start()
     processes.append(process)
 
