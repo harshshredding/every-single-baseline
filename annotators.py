@@ -77,7 +77,7 @@ def google_get(query_plain):
     with requests.session() as c:
         url = 'https://www.google.com/search'
         query = {'q': query_plain}
-        return requests.get(url, params=query)
+        return requests.get(url, params=query, headers={'User-agent': 'your bot 0.1'})
 
 
 def get_google_search_headings(query_string_plain: str) -> List[str]:
