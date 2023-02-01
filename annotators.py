@@ -73,14 +73,16 @@ class TokenAnnotator(Annotator):
             sample.annos.external.extend(token_annos)
 
 
-def get_google_search_headings(query_string_plain: str) -> List[str]:
-    tokens = query_string_plain.split(" ")
-    query_string_for_search = "+".join(tokens)
-    url = f"https://www.google.com/search?q={query_string_for_search}"
+def google_get(query_plain):
+    with requests.session() as c:
+        url = 'https://www.google.com/search'
+        query = {'q': query_plain}
+        return requests.get(url, params=query)
 
-    request_result = requests.get(url)
+
+def get_google_search_headings(query_string_plain: str) -> List[str]:
+    request_result = google_get(query_string_plain)
     html_text = request_result.text
-    print(url)
 
     # H3 with classes LC20lb MBeuO DKV0Md
     soup = bs4.BeautifulSoup(html_text, "html.parser")
@@ -100,5 +102,3 @@ class GoogleSearch(Annotator):
             google_search_results = get_google_search_headings(sample.text)
             search_result_string = ".".join(google_search_results)
             sample.text = ".".join([sample.text, search_result_string])
-
-
