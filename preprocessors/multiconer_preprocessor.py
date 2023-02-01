@@ -11,7 +11,8 @@ import benepar
 from annotators import Annotator, GoogleSearch, TokenAnnotator
 from preamble import *
 from multiprocessing import Process
-
+import torch
+torch.multiprocessing.set_start_method('spawn')
 benepar.download('benepar_en3')
 
 
