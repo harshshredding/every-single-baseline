@@ -53,7 +53,7 @@ def store_google_data(process_id, chunk_start, chunk_end):
     if chunk_end != total_num_samples:
         assert (chunk_end - chunk_start) == 24794
     else:
-        assert chunk_start == 24794 and chunk_end == total_num_samples
+        assert chunk_start == 247940 and chunk_end == total_num_samples
     data_to_store = []
     for i, (sample_id, google_query) in enumerate(all_sample_texts):
         if (i % 100) == 0:
