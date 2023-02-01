@@ -59,6 +59,8 @@ def store_google_data(process_id, chunk_start, chunk_end):
         if (i % 100) == 0:
             print(f"pid {process_id} done with {i}")
         google_search_results = get_google_search_headings(google_query)
+        assert len(google_search_results)
+        print(google_search_results)
         search_result_string = ".".join(google_search_results)
         final_sample = ".".join([google_query, search_result_string])
         data_to_store.append({"sample_id": sample_id, "sample_text": final_sample})
