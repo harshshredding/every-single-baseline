@@ -121,7 +121,7 @@ for dataset_config, model_config in experiments:
             epoch=epoch
         )
 
-        if ((epoch + 1) % 4) == 0:  # Test every fourth epoch
+        if ((epoch + 1) % 6) == 0:  # Test every fourth epoch
             train_util.test(
                 logger=logger,
                 model=model,
