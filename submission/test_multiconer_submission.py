@@ -2,8 +2,6 @@ import submission.multiconer_submission as multiconer_submission
 from structs import Anno
 
 
-def test_
-
 def test_read_multiconer_predictions():
     predicted_annotations = multiconer_submission.read_multiconer_predictions()
     assert len(predicted_annotations) > 240000
