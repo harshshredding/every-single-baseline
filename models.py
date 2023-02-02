@@ -658,7 +658,20 @@ class SpanBert(torch.nn.Module):
             bert_encoding,
             token_annos
         )
+        predicted_annos = self.heuristic_decode(predicted_annos)
         return loss, predicted_annos
+
+    def heuristic_decode(self, predicted_annos: List[Anno]):
+        to_remove = []
+        for curr_anno in predicted_annos:
+            overlapping_annos = [
+                anno for anno in predicted_annos
+                if not ((curr_anno.begin_offset >= anno.end_offset) or (anno.begin_offset >= curr_anno.end_offset))
+            ]
+            max_confidence = max([anno.features['confidence_value'] for anno in overlapping_annos])
+            if curr_anno.features['confidence_value'] < max_confidence:
+                to_remove.append(curr_anno)
+        return [anno for anno in predicted_annos if anno not in to_remove]
 
     def get_predicted_annos(
             self,
@@ -669,10 +682,17 @@ class SpanBert(torch.nn.Module):
     ) -> List[Anno]:
         ret = []
         # SHAPE: (num_spans)
-        pred_all_possible_spans_type_indices_list = torch.argmax(torch.squeeze(predicted_all_possible_spans_logits, 0),
-                                                                 dim=1) \
+        pred_all_possible_spans_type_indices_list = torch \
+            .argmax(torch.squeeze(predicted_all_possible_spans_logits, 0), dim=1) \
             .cpu() \
             .detach().numpy()
+        # SHAPE: (num_spans)
+        pred_all_possible_spans_max_values = torch \
+            .max(torch.squeeze(predicted_all_possible_spans_logits, 0), dim=1) \
+            .values \
+            .cpu() \
+            .detach().numpy()
+
         assert len(pred_all_possible_spans_type_indices_list.shape) == 1
         for i, span_type_idx in enumerate(pred_all_possible_spans_type_indices_list):
             if span_type_idx != self.type_to_idx['NO_TYPE']:
@@ -690,10 +710,13 @@ class SpanBert(torch.nn.Module):
                 all_token_strings = [token_anno.extraction for token_anno in token_annos]
                 span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
                 ret.append(
-                    Anno(span_start_char_offset,
-                         span_end_char_offset,
-                         self.idx_to_type[span_type_idx],
-                         span_text)
+                    Anno(
+                        span_start_char_offset,
+                        span_end_char_offset,
+                        self.idx_to_type[span_type_idx],
+                        span_text,
+                        {"confidence_value": pred_all_possible_spans_max_values[i]}
+                    )
                 )
         return ret
 
