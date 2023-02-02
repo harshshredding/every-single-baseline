@@ -62,6 +62,23 @@ def get_test_data_list():
     return read_raw_data_list(test_data_file_path)
 
 
+def print_duplicate_test_data():
+    test_data_list = get_test_data_list()
+    all_sentences_dict = {}
+    for sample_id, tokens in test_data_list:
+        if sample_id in all_sentences_dict:
+            all_sentences_dict[sample_id].append(tokens)
+        else:
+            all_sentences_dict[sample_id] = [tokens]
+    for sample_id in all_sentences_dict:
+        if len(all_sentences_dict[sample_id]) > 1:
+            print("----------------------")
+            print(f"SAMPLE_ID: {sample_id}")
+            for tokens in all_sentences_dict[sample_id]:
+                print(tokens)
+                print()
+
+
 def get_test_sample_ids():
     return set([line.strip()[5:] for line in open(test_data_file_path) if line.startswith("#")])
 

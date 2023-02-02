@@ -785,3 +785,14 @@ class SpanBertNounPhrase(SpanBert):
                 noun_phrase_labels.append(0)
         assert len(noun_phrase_labels) == len(all_possible_spans_list)
         return noun_phrase_labels
+
+
+class SpanBertSpanWidthEmbedding(SpanBert):
+    def __init__(self, all_types: List[str], model_config: ModelConfig):
+        super(SpanBertSpanWidthEmbedding, self).__init__(all_types=all_types, model_config=model_config)
+        self.endpoint_span_extractor = EndpointSpanExtractor(
+            self.input_dim,
+            span_width_embedding_dim=16,
+            num_width_embeddings=512
+        )
+        self.classifier = nn.Linear((self.input_dim * 2) + 16, self.num_class)

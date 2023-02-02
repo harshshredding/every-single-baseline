@@ -325,6 +325,8 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
         return JustBert3ClassesCRF(all_types, model_config, dataset_config).to(device)
     if model_config.model_name == 'SpanBertNounPhrase':
         return SpanBertNounPhrase(all_types, model_config).to(device)
+    if model_config.model_name == 'SpanBertSpanWidthEmbedding':
+        return SpanBertSpanWidthEmbedding(all_types, model_config).to(device)
     raise Exception(f"no code to prepare model {model_config.model_name}")
 
 
