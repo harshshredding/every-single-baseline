@@ -500,17 +500,18 @@ class JustBert3Classes(torch.nn.Module):
         self.model_config = model_config
 
     def forward(self,
-                sample_token_data: List[TokenData],
-                sample_annos: List[Anno],
+                sample: Sample
                 ):
-        tokens = util.get_token_strings(sample_token_data)
-        offsets_list = util.get_token_offsets(sample_token_data)
+        tokens = util.get_tokens_from_sample(sample)
+        offsets_list = util.get_token_offsets_from_sample(sample)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         predictions_logits = self.classifier(bert_embeddings)
-        expanded_labels = train_util.extract_expanded_labels(sample_token_data, bert_encoding, sample_annos,
+        expanded_labels = train_util.extract_expanded_labels(util.get_token_annos_from_sample(sample),
+                                                             bert_encoding,
+                                                             sample.annos.gold,
                                                              self.model_config)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)

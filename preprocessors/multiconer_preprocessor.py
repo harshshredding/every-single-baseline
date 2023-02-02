@@ -10,12 +10,71 @@ from utils.universal import die
 import benepar
 from annotators import Annotator, GoogleSearch, TokenAnnotator
 from preamble import *
+
 benepar.download('benepar_en3')
 
 
 class Granularity(Enum):
     coarse = 0
     fine = 1
+
+
+def read_raw_data(raw_file_path: str) -> Dict[SampleId, List[tuple]]:
+    with open(raw_file_path, 'r') as dev_file:
+        samples_dict = {}
+        curr_sample_id = None
+        for line in list(dev_file.readlines()):
+            line = line.strip()
+            if len(line):
+                if line.startswith('#'):
+                    sample_info = line.split()
+                    assert (len(sample_info) == 4) \
+                           or (len(sample_info) == 3)  # test files don't have domain in info
+                    sample_id = sample_info[2]
+                    curr_sample_id = sample_id
+                else:
+                    assert curr_sample_id is not None
+                    split_line = line.split("_ _")
+                    assert len(split_line) == 2
+                    token_string = split_line[0].strip()
+                    token_label = split_line[1].strip()
+                    if not len(token_label):
+                        token_label = 'O'
+                    tokens_list = samples_dict.get(curr_sample_id, [])
+                    tokens_list.append((token_string, token_label))
+                    samples_dict[curr_sample_id] = tokens_list
+        return samples_dict
+
+
+def read_raw_data_list(raw_file_path: str) -> List[tuple[SampleId, List[tuple]]]:
+    ret = []
+    with open(raw_file_path, 'r') as dev_file:
+        curr_sample_id = None
+        working_tokens_list = []
+        for line in list(dev_file.readlines()):
+            line = line.strip()
+            if len(line):
+                if line.startswith('#'):
+                    if curr_sample_id is not None:
+                        ret.append((curr_sample_id, working_tokens_list))
+                    sample_info = line.split()
+                    assert (len(sample_info) == 4) \
+                           or (len(sample_info) == 3)  # test files don't have domain in info
+                    sample_id = sample_info[2]
+                    curr_sample_id = sample_id
+                    working_tokens_list = []
+                else:
+                    assert curr_sample_id is not None
+                    split_line = line.split("_ _")
+                    assert len(split_line) == 2
+                    token_string = split_line[0].strip()
+                    token_label = split_line[1].strip()
+                    if not len(token_label):
+                        token_label = 'O'
+                    working_tokens_list.append((token_string, token_label))
+        if curr_sample_id is not None:
+            ret.append((curr_sample_id, working_tokens_list))
+    return ret
 
 
 class PreprocessMulticoner(Preprocessor):
@@ -123,32 +182,6 @@ class PreprocessMulticoner(Preprocessor):
             curr_offset = curr_offset + len(token_string) + 1
         return ret
 
-    def __read_raw_data(self, raw_file_path: str) -> Dict[SampleId, List[tuple]]:
-        with open(raw_file_path, 'r') as dev_file:
-            samples_dict = {}
-            curr_sample_id = None
-            for line in list(dev_file.readlines()):
-                line = line.strip()
-                if len(line):
-                    if line.startswith('#'):
-                        sample_info = line.split()
-                        assert (len(sample_info) == 4) \
-                               or (len(sample_info) == 3)  # test files don't have domain in info
-                        sample_id = sample_info[2]
-                        curr_sample_id = sample_id
-                    else:
-                        assert curr_sample_id is not None
-                        split_line = line.split("_ _")
-                        assert len(split_line) == 2
-                        token_string = split_line[0].strip()
-                        token_label = split_line[1].strip()
-                        if not len(token_label):
-                            token_label = 'O'
-                        tokens_list = samples_dict.get(curr_sample_id, [])
-                        tokens_list.append((token_string, token_label))
-                        samples_dict[curr_sample_id] = tokens_list
-            return samples_dict
-
     def __remove_bio(self, label_string):
         return label_string[2:] if len(label_string) > 2 else label_string
 
@@ -193,7 +226,7 @@ class PreprocessMulticoner(Preprocessor):
 
     def __get_samples(self, raw_file_path) -> List[Sample]:
         ret: List[Sample] = []
-        sample_to_tokens = self.__read_raw_data(raw_file_path)
+        sample_to_tokens = read_raw_data(raw_file_path)
         annos_dict = self.__build_annos_dict(sample_to_tokens)
         for sample_id in sample_to_tokens:
             tokens = sample_to_tokens[sample_id]
@@ -349,7 +382,6 @@ def google_preprocess_test_fine(thread_num: int):
     test_fine_preproc.run()
 
 
-
 # def preprocess_valid_coarse():
 #     prefix = f"{Dataset.multiconer_coarse.name}_{DatasetSplit.valid.name}"
 #     valid_coarse_preproc = PreprocessMulticoner(
@@ -390,7 +422,8 @@ def google_preprocess_test_fine(thread_num: int):
 
 # google_preprocess_train_fine()
 # google_preprocess_valid_fine()
-google_preprocess_test_fine(1)
+if __name__ == '__main__':
+    google_preprocess_test_fine(1)
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.fine.name}"
 # valid_fine_preproc = PreprocessMulticoner(

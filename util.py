@@ -44,7 +44,7 @@ def read_samples(input_json_file_path: str) -> List[Sample]:
 def get_annos_of_type_from_collection(
         label_type: str,
         collection: AnnotationCollection
-    ) -> List[Anno]:
+) -> List[Anno]:
     return [anno for anno in collection.external if anno.label_type == label_type]
 
 
@@ -370,9 +370,6 @@ def get_mistakes_annos(mistakes_file_path) -> SampleAnnotations:
     return sample_to_annos
 
 
-
-
-
 def remove_if_exists(file_path: str):
     """
     If file exists, then remove it.
@@ -400,7 +397,7 @@ def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
     assert spacy_doc.has_annotation("SENT_START")
     for i, sent in enumerate(spacy_doc.sents):
         annos_contained_in_sent = [anno for anno in sample.annos if (
-            sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
+                sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
         sent_annos = []
         for contained_anno in annos_contained_in_sent:
             new_start = contained_anno.begin_offset - sent.start_char
@@ -532,7 +529,7 @@ def get_all_types(types_file_path: str, num_expected_types: int) -> List[str]:
 
 
 def get_bio_label_idx_dicts(all_types: List[str], dataset_config: DatasetConfig) -> tuple[
-        Dict[Label, int], Dict[int, Label]]:
+    Dict[Label, int], Dict[int, Label]]:
     """
     get dictionaries mapping from BIO labels to their corresponding indices.
     """
@@ -632,10 +629,10 @@ def get_token_strings(sample_data: List[TokenData]):
     return only_token_strings
 
 
-def get_biggest_anno_surrounding_token(annos: List[Anno], token: TokenData) -> List[Anno]:
+def get_biggest_anno_surrounding_token(annos: List[Anno], token_anno: Anno) -> List[Anno]:
     all_annos_surrounding_token = [
         anno for anno in annos
-        if (anno.begin_offset <= token.token_start_offset) and (token.token_end_offset <= anno.end_offset)
+        if (anno.begin_offset <= token_anno.begin_offset) and (token_anno.end_offset <= anno.end_offset)
     ]
     if len(all_annos_surrounding_token) > 1:
         return [max(all_annos_surrounding_token, key=lambda x: (x.end_offset - x.begin_offset))]
@@ -685,21 +682,21 @@ def assert_tokens_contain(token_data: List[TokenData], strings_to_check: List[st
 #     return new_labels
 
 
-def get_labels_bio(sample_token_data: List[TokenData], annos: List[Anno]) -> List[Label]:
+def get_labels_bio(token_anno_list: List[Anno], gold_annos: List[Anno]) -> List[Label]:
     """
     Takes all tokens and gold annotations for a sample
     and outputs a labels(one for each token) representing 
     whether a token is at the beginning(B), inside(I), or outside(O) of an entity.
     """
     new_labels = []
-    for token in sample_token_data:
-        annos_that_surround = get_biggest_anno_surrounding_token(annos, token)
+    for token_anno in token_anno_list:
+        annos_that_surround = get_biggest_anno_surrounding_token(gold_annos, token_anno)
         if not len(annos_that_surround):
             new_labels.append(Label.get_outside_label())
         else:
             assert len(annos_that_surround) == 1
             annos_with_same_start = [
-                anno for anno in annos_that_surround if anno.begin_offset == token.token_start_offset]
+                anno for anno in annos_that_surround if anno.begin_offset == token_anno.begin_offset]
             if len(annos_with_same_start):
                 new_labels.append(
                     Label(annos_with_same_start[0].label_type, BioTag.begin))
@@ -715,6 +712,11 @@ def get_token_offsets(sample_data: List[TokenData]) -> List[tuple]:
         offsets_list.append((token_data.token_start_offset,
                              token_data.token_end_offset))
     return offsets_list
+
+
+def get_token_offsets_from_sample(sample: Sample) -> List[tuple]:
+    token_annos = get_token_annos_from_sample(sample)
+    return [(token_anno.begin_offset, token_anno.end_offset) for token_anno in token_annos]
 
 
 def get_umls_data(sample_data):

@@ -56,17 +56,13 @@ def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]
     return util.get_annos_dict(dataset_config.valid_annos_file_path)
 
 
-def extract_expanded_labels(sample_token_data: List[TokenData],
+def extract_expanded_labels(token_annos: List[Anno],
                             batch_encoding,
-                            annos: List[Anno],
+                            gold_annos: List[Anno],
                             model_config: ModelConfig) -> List[Label]:
     if '3Classes' in model_config.model_name:
-        labels = util.get_labels_bio(sample_token_data, annos)
+        labels = util.get_labels_bio(token_annos, gold_annos)
         expanded_labels = util.expand_labels_rich(batch_encoding, labels)
-        return expanded_labels
-    elif '2Classes' in model_config.model_name:
-        labels = util.get_label_strings(sample_token_data, annos)
-        expanded_labels = util.expand_labels(batch_encoding, labels)
         return expanded_labels
     raise Exception('Have to specify num of classes in model name ' + model_config.model_name)
 
