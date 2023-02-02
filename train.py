@@ -34,7 +34,6 @@ models_folder_path = f'{training_results_folder_path}/models'
 performance_folder_path = f'{training_results_folder_path}/performance'
 test_predictions_folder_path = f'{training_results_folder_path}/test_predictions'
 
-
 # Create training-results directories
 util.create_directory_structure(mistakes_folder_path)
 util.create_directory_structure(error_visualization_folder_path)
@@ -86,7 +85,7 @@ for dataset_config, model_config in experiments:
         logger.info(f"Train epoch {epoch}")
         train_start_time = time.time()
         model.train()
-        if DRY_RUN_MODE: 
+        if DRY_RUN_MODE:
             train_samples = train_samples[:10]
 
         shuffle(train_samples)  # shuffle samples every epoch
@@ -102,7 +101,7 @@ for dataset_config, model_config in experiments:
         logger.info(
             f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training Time: {str(time.time() - train_start_time)} "
             f"seconds")
-        
+
         # Begin Validation
         if DRY_RUN_MODE:
             valid_samples = valid_samples[:10]
@@ -122,14 +121,15 @@ for dataset_config, model_config in experiments:
             epoch=epoch
         )
 
-        train_util.test(
-            logger=logger,
-            model=model,
-            test_samples=test_samples,
-            test_predictions_folder_path=test_predictions_folder_path,
-            experiment_name=EXPERIMENT_NAME,
-            dataset_name=dataset_name,
-            epoch=epoch
-        )
+        if ((epoch + 1) % 4) == 0:  # Test every fourth epoch
+            train_util.test(
+                logger=logger,
+                model=model,
+                test_samples=test_samples,
+                test_predictions_folder_path=test_predictions_folder_path,
+                experiment_name=EXPERIMENT_NAME,
+                dataset_name=dataset_name,
+                epoch=epoch
+            )
 
 logger.info("Experiment Finished!!")
