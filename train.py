@@ -77,7 +77,7 @@ for dataset_config, model_config in experiments:
 
     for epoch in range(model_config.num_epochs):
         # Don't train for more than 2 epochs while testing
-        if DRY_RUN_MODE and epoch > 1:
+        if DRY_RUN_MODE and epoch > 4:
             break
 
         epoch_loss = []
