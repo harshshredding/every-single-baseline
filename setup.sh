@@ -21,5 +21,6 @@ echo "Setup project"
 pip install -r requirements.txt
 git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"
+git config credential.helper store
 python download_preprocessed_data.py
 python unzip_data_files.py
