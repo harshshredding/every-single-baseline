@@ -9,7 +9,7 @@ test_data_file_path = "./multiconer-data-raw/public_data/EN-English/en_test.conl
 
 def read_multiconer_predictions() -> dict[str, List[Anno]]:
     predictions_file_path = './submission/predictions/' \
-                            'submit_multiconer_multiconer_fine_test_results_epoch_9_predictions.tsv'
+                            'seq_large_experiment_multiconer_fine_test_results_epoch_11_predictions.tsv'
     df = pd.read_csv(predictions_file_path, sep='\t')
     sample_to_annos = {}
     for _, row in df.iterrows():
@@ -78,6 +78,24 @@ def print_duplicate_test_data():
                 print(tokens)
                 print()
 
+
+def store_duplicate_test_data():
+    test_data_list = get_test_data_list()
+    all_sentences_dict = {}
+    for sample_id, tokens in test_data_list:
+        if sample_id in all_sentences_dict:
+            all_sentences_dict[sample_id].append(tokens)
+        else:
+            all_sentences_dict[sample_id] = [tokens]
+    with open("./submission/duplicates.txt", 'w') as duplicates_file:
+        for sample_id in all_sentences_dict:
+            if len(all_sentences_dict[sample_id]) > 1:
+                print("----------------------", file=duplicates_file)
+                print(f"SAMPLE_ID: {sample_id}", file=duplicates_file)
+                for tokens in all_sentences_dict[sample_id]:
+                    tokens = [token_string for token_string, label in tokens]
+                    print(tokens, file=duplicates_file)
+                    print('', file=duplicates_file)
 
 def get_test_sample_ids():
     return set([line.strip()[5:] for line in open(test_data_file_path) if line.startswith("#")])
