@@ -8,12 +8,14 @@ from pathlib import Path
 
 sys.excepthook = ultratb.FormattedTB(color_scheme='Linux', call_pdb=False)
 
+
 def get_user_input(input_message: str, possible_values: List[str]):
     user_input = input(f"{input_message}\n choose from {possible_values}: \n")
     if len(possible_values):
         while user_input not in possible_values:
             user_input = input(f"incorrect input '{user_input}', please choose from {possible_values}: \n")
     return user_input
+
 
 def get_experiment_name_from_user():
     all_experiment_file_paths = glob.glob('./experiments/*.py')

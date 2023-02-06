@@ -121,15 +121,14 @@ for dataset_config, model_config in experiments:
             epoch=epoch
         )
 
-        if ((epoch + 1) % 5) == 0:  # Test every fourth epoch
-            train_util.test(
-                logger=logger,
-                model=model,
-                test_samples=test_samples,
-                test_predictions_folder_path=test_predictions_folder_path,
-                experiment_name=EXPERIMENT_NAME,
-                dataset_name=dataset_name,
-                epoch=epoch
-            )
+        #     train_util.test(
+        #         logger=logger,
+        #         model=model,
+        #         test_samples=test_samples,
+        #         test_predictions_folder_path=test_predictions_folder_path,
+        #         experiment_name=EXPERIMENT_NAME,
+        #         dataset_name=dataset_name,
+        #         epoch=epoch
+        #     )
 
 logger.info("Experiment Finished!!")

@@ -658,7 +658,7 @@ class SpanBert(torch.nn.Module):
             bert_encoding,
             token_annos
         )
-        predicted_annos = self.heuristic_decode(predicted_annos)
+        # predicted_annos = self.heuristic_decode(predicted_annos)
         return loss, predicted_annos
 
     def heuristic_decode(self, predicted_annos: List[Anno]):

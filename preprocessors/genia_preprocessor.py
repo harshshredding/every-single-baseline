@@ -1,9 +1,9 @@
 from typing import List, Tuple
 
 from preprocess import Preprocessor
-from structs import Anno, Sample, DatasetSplit
+from structs import Anno, Sample, DatasetSplit, Dataset, AnnotationCollection
+from annotators import Annotator
 from bs4 import BeautifulSoup
-import util
 
 
 def get_first_sample_soup():
@@ -99,64 +99,41 @@ def get_samples(split: DatasetSplit) -> List[Sample]:
             if split_range[0] <= sample_id < split_range[1]:
                 sample_text = get_text(sent_tag)
                 sample_annos = get_parent_annos(get_annos(sent_tag))
-                ret.append(Sample(sample_text, str(sample_id), sample_annos))
+                ret.append(
+                    Sample(
+                        text=sample_text,
+                        id=str(sample_id),
+                        annos=AnnotationCollection(sample_annos, [])
+                    )
+                )
         return ret
 
 
 class PreprocessGenia(Preprocessor):
+    """
+    A preprocessor for the Genia dataset.
+    """
 
     def __init__(
             self,
-            raw_data_folder_path: str,
-            entity_type_file_path: str,
-            annotations_file_path: str,
-            visualization_file_path: str,
-            tokens_file_path: str,
-            sample_text_file_path: str,
+            preprocessor_type: str,
             dataset_split: DatasetSplit,
+            annotators: List[Annotator]
     ) -> None:
         super().__init__(
-            raw_data_folder_path,
-            entity_type_file_path,
-            annotations_file_path,
-            visualization_file_path,
-            tokens_file_path,
-            sample_text_file_path
+            preprocessor_type=preprocessor_type,
+            dataset=Dataset.genia,
+            annotators=annotators,
+            dataset_split=dataset_split
         )
         self.dataset_split = dataset_split
 
     def get_samples(self) -> List[Sample]:
         return get_samples(self.dataset_split)
 
-    def create_entity_types_file(self) -> None:
+    def get_entity_types(self) -> List[str]:
         all_types_set = set()
         for sample in self.get_samples():
-            all_types_set.update([anno.label_type for anno in sample.annos])
+            all_types_set.update([anno.label_type for anno in sample.annos.gold])
         assert len(all_types_set) == 5
-        with util.open_make_dirs(self.entity_type_file_path, 'w') as types_file:
-            for type_name in all_types_set:
-                print(type_name, file=types_file)
-
-
-if __name__ == '__main__':
-    genia_preproc = PreprocessGenia(
-        raw_data_folder_path='./GENIA_term_3.02',
-        entity_type_file_path='./preprocessed_data/genia_valid_types.txt',
-        annotations_file_path='./preprocessed_data/genia_valid_annos.tsv',
-        visualization_file_path='./preprocessed_data/genia_valid_visualisation.bdocjs',
-        tokens_file_path='./preprocessed_data/genia_valid_tokens.json',
-        sample_text_file_path="./preprocessed_data/genia_valid_text.json",
-        dataset_split=DatasetSplit.valid,
-    )
-    genia_preproc.run()
-
-    genia_preproc = PreprocessGenia(
-        raw_data_folder_path='./GENIA_term_3.02',
-        entity_type_file_path='./preprocessed_data/genia_train_types.txt',
-        annotations_file_path='./preprocessed_data/genia_train_annos.tsv',
-        visualization_file_path='./preprocessed_data/genia_train_visualisation.bdocjs',
-        tokens_file_path='./preprocessed_data/genia_train_tokens.json',
-        sample_text_file_path="./preprocessed_data/genia_train_text.json",
-        dataset_split=DatasetSplit.train,
-    )
-    genia_preproc.run()
+        return list(all_types_set)

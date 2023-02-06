@@ -4,6 +4,7 @@ import yaml
 import glob
 from dataclasses import dataclass
 
+
 @dataclass
 class DatasetConfig:
     train_annos_file_path: str
@@ -20,6 +21,7 @@ class DatasetConfig:
     types_file_path: str
     num_types: int
     dataset_name: str
+
 
 @dataclass
 class ModelConfig:
