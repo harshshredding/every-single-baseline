@@ -63,6 +63,9 @@ for dataset_config, model_config in experiments:
     logger.info(f"num test samples: {len(test_samples)}")
     logger.info("finished reading data.")
 
+    # Check samples
+    util.ensure_no_sample_gets_truncated_by_bert(train_samples, dataset_config)
+
     # ------ MODEL INITIALISATION --------
     logger.info("Starting model initialization.")
     bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)

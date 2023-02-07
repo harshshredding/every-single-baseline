@@ -12,6 +12,7 @@ from collections import deque
 from spacy.tokens.span import Span
 from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import DatasetConfig
+from utils.easy_testing import get_bert_tokenizer
 import logging
 from pudb import set_trace
 import shutil
@@ -23,6 +24,17 @@ def delete_preprocessed_data_folder():
     Deletes the preprocessed data folder in the root directory.
     """
     shutil.rmtree('./preprocessed_data')
+
+
+def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_config: DatasetConfig):
+    bert_tokenizer = get_bert_tokenizer()
+    for sample in samples:
+        tokens = get_tokens_from_sample(sample)
+        batch_encoding = bert_tokenizer(
+            tokens, is_split_into_words=True, truncation=True, return_tensors='pt', add_special_tokens=False
+        )
+        if batch_encoding['input_ids'].shape[1] == bert_tokenizer.model_max_length:
+            print(f"WARN: In dataset {dataset_config.dataset_name}, the sample {sample.id} is being truncated")
 
 
 def write_samples(samples: List[Sample], output_json_file_path: str):
