@@ -14,9 +14,10 @@ from dataclasses import dataclass
 
 
 def get_user_input(input_message: str, possible_values: List[str]):
-    user_input = input(f"{input_message}\n choose from: \n")
+    options_string = ''
     for option in possible_values:
-        print(f"- {option}")
+        options_string += f"- {option}\n"
+    user_input = input(f"{input_message}\n choose from: \n {options_string}")
     if len(possible_values):
         while user_input not in possible_values:
             user_input = input(f"incorrect input '{user_input}', please choose from the given possible values: \n")
