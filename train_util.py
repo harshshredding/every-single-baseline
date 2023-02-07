@@ -84,16 +84,23 @@ def get_optimizer(model, model_config: ModelConfig):
         raise Exception(f"optimizer not found: {model_config.optimizer}")
 
 
-def store_performance_result(performance_file_path, f1_score, epoch: int, experiment_name: str, dataset_name: str):
+def store_performance_result(
+        performance_file_path,
+        f1_score,
+        epoch: int,
+        experiment_name: str,
+        dataset_name: str,
+        model_config_name: str,
+):
     with open(performance_file_path, 'a') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow([experiment_name, dataset_name, str(epoch), str(f1_score)])
+        mistakes_file_writer.writerow([experiment_name, dataset_name, model_config_name, str(epoch), str(f1_score)])
 
 
 def create_performance_file_header(performance_file_path):
     with open(performance_file_path, 'w') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow(['experiment_name', 'dataset_name', 'epoch', 'f1_score'])
+        mistakes_file_writer.writerow(['experiment_name', 'dataset_name', 'model_name', 'epoch', 'f1_score'])
 
 
 # if dataset_config['model_name'] != 'base':
@@ -423,15 +430,16 @@ def validate(
         predictions_folder_path: str,
         error_visualization_folder_path: str,
         performance_file_path: str,
-        EXPERIMENT_NAME: str,
+        experiment_name: str,
         dataset_name: str,
+        model_config_name: str,
         epoch: int,
 ):
     logger.info("Starting validation")
     model.eval()
-    mistakes_file_path = f"{mistakes_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_mistakes.tsv"
-    predictions_file_path = f"{predictions_folder_path}/{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}" \
-                            f"_predictions.tsv"
+    output_file_prefix = f"{experiment_name}_{dataset_name}_{model_config_name}_epoch_{epoch}"
+    mistakes_file_path = f"{mistakes_folder_path}/{output_file_prefix}_mistakes.tsv"
+    predictions_file_path = f"{predictions_folder_path}/{output_file_prefix}_predictions.tsv"
     with open(predictions_file_path, 'w') as predictions_file, \
             open(mistakes_file_path, 'w') as mistakes_file:
         #  --- GET FILES READY FOR WRITING ---
@@ -476,11 +484,10 @@ def validate(
                                           mistakes_file_writer)
     micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
     logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
-    visualize_errors_file_path = f"{error_visualization_folder_path}/" \
-                                 f"{EXPERIMENT_NAME}_{dataset_name}_epoch_{epoch}_visualize_errors.bdocjs"
+    visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, validation_samples)
-    train_util.store_performance_result(performance_file_path, micro_f1, epoch, EXPERIMENT_NAME,
-                                        dataset_name)
+    train_util.store_performance_result(performance_file_path, micro_f1, epoch, experiment_name=experiment_name,
+                                        dataset_name=dataset_name, model_config_name=model_config_name)
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
@@ -498,13 +505,14 @@ def test(
         test_predictions_folder_path: str,
         experiment_name: str,
         dataset_name: str,
+        model_config_name: str,
         epoch: int,
 ):
     logger.info("Starting Testing")
     model.eval()
-    predictions_file_path = f"{test_predictions_folder_path}/{experiment_name}_{dataset_name}_" \
-                            f"test_results_epoch_{epoch}" \
-                            f"_predictions.tsv"
+    predictions_file_path = f"{test_predictions_folder_path}/{experiment_name}_{dataset_name}_{model_config_name}_" \
+                            f"epoch_{epoch}" \
+                            f"_test_predictions.tsv"
     with open(predictions_file_path, 'w') as predictions_file:
         #  --- GET FILES READY FOR WRITING ---
         predictions_file_writer = csv.writer(predictions_file, delimiter='\t')

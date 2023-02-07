@@ -1,0 +1,6 @@
+train_samples_file_path: ./preprocessed_data/genia_train_vanilla_samples.json
+valid_samples_file_path: ./preprocessed_data/genia_valid_vanilla_samples.json
+test_samples_file_path: change_this
+types_file_path: ./preprocessed_data/genia_train_vanilla_types.txt
+num_types: 5
+dataset_name: genia

@@ -7,14 +7,6 @@ from dataclasses import dataclass
 
 @dataclass
 class DatasetConfig:
-    train_annos_file_path: str
-    valid_annos_file_path: str
-    train_tokens_file_path: str
-    valid_tokens_file_path: str
-    test_tokens_file_path: str
-    train_sample_text_data_file_path: str
-    valid_sample_text_data_file_path: str
-    test_sample_text_data_file_path: str
     train_samples_file_path: str
     valid_samples_file_path: str
     test_samples_file_path: str
@@ -51,20 +43,12 @@ def read_dataset_config(config_file_path: str) -> DatasetConfig:
     with open(config_file_path, 'r') as yaml_file:
         dataset_config_raw = yaml.safe_load(yaml_file)
         dataset_config = DatasetConfig(
-            train_annos_file_path=dataset_config_raw['train_annos_file_path'],
-            valid_annos_file_path=dataset_config_raw['valid_annos_file_path'],
-            train_tokens_file_path=dataset_config_raw['train_tokens_file_path'],
-            valid_tokens_file_path=dataset_config_raw['valid_tokens_file_path'],
-            train_sample_text_data_file_path=dataset_config_raw['train_sample_text_data_file_path'],
-            valid_sample_text_data_file_path=dataset_config_raw['valid_sample_text_data_file_path'],
             train_samples_file_path=dataset_config_raw['train_samples_file_path'],
             valid_samples_file_path=dataset_config_raw['valid_samples_file_path'],
+            test_samples_file_path=dataset_config_raw['test_samples_file_path'],
             types_file_path=dataset_config_raw['types_file_path'],
             num_types=int(dataset_config_raw['num_types']),
             dataset_name=dataset_config_raw['dataset_name'],
-            test_sample_text_data_file_path=dataset_config_raw['test_sample_text_data_file_path'],
-            test_samples_file_path=dataset_config_raw['test_samples_file_path'],
-            test_tokens_file_path=dataset_config_raw['test_tokens_file_path']
         )
         assert isinstance(dataset_config.num_types, int)
         return dataset_config

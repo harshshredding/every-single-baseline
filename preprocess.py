@@ -35,7 +35,7 @@ class Preprocessor(ABC):
         self.data_folder_path = f"./preprocessed_data"
         self.visualization_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_visualization.bdocjs"
         self.samples_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_samples.json"
-        self.entity_types_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_types.json"
+        self.entity_types_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_types.txt"
         self.samples = None
         self.annotators = annotators
 

@@ -14,6 +14,15 @@ from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import DatasetConfig
 import logging
 from pudb import set_trace
+import shutil
+
+
+def delete_preprocessed_data_folder():
+    """
+    Use with CAUTION.
+    Deletes the preprocessed data folder in the root directory.
+    """
+    shutil.rmtree('./preprocessed_data')
 
 
 def write_samples(samples: List[Sample], output_json_file_path: str):

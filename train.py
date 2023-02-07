@@ -116,7 +116,8 @@ for dataset_config, model_config in experiments:
             predictions_folder_path=predictions_folder_path,
             error_visualization_folder_path=error_visualization_folder_path,
             performance_file_path=performance_file_path,
-            EXPERIMENT_NAME=EXPERIMENT_NAME,
+            experiment_name=EXPERIMENT_NAME,
+            model_config_name=model_config.model_config_name,
             dataset_name=dataset_name,
             epoch=epoch
         )

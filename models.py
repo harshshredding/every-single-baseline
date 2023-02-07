@@ -608,6 +608,19 @@ class JustBert3ClassesCRF(torch.nn.Module):
         return loss, predicted_annos
 
 
+def heuristic_decode(predicted_annos: List[Anno]):
+    to_remove = []
+    for curr_anno in predicted_annos:
+        overlapping_annos = [
+            anno for anno in predicted_annos
+            if not ((curr_anno.begin_offset >= anno.end_offset) or (anno.begin_offset >= curr_anno.end_offset))
+        ]
+        max_confidence = max([anno.features['confidence_value'] for anno in overlapping_annos])
+        if curr_anno.features['confidence_value'] < max_confidence:
+            to_remove.append(curr_anno)
+    return [anno for anno in predicted_annos if anno not in to_remove]
+
+
 class SpanBert(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig):
         super(SpanBert, self).__init__()
@@ -660,18 +673,6 @@ class SpanBert(torch.nn.Module):
         )
         # predicted_annos = self.heuristic_decode(predicted_annos)
         return loss, predicted_annos
-
-    def heuristic_decode(self, predicted_annos: List[Anno]):
-        to_remove = []
-        for curr_anno in predicted_annos:
-            overlapping_annos = [
-                anno for anno in predicted_annos
-                if not ((curr_anno.begin_offset >= anno.end_offset) or (anno.begin_offset >= curr_anno.end_offset))
-            ]
-            max_confidence = max([anno.features['confidence_value'] for anno in overlapping_annos])
-            if curr_anno.features['confidence_value'] < max_confidence:
-                to_remove.append(curr_anno)
-        return [anno for anno in predicted_annos if anno not in to_remove]
 
     def get_predicted_annos(
             self,
