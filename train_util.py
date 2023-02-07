@@ -6,20 +6,65 @@ import util
 from typing import Dict
 from colorama import Fore, Style
 from utils.config import ModelConfig, DatasetConfig
-import time
 import utils.dropbox as dropbox_util
+import argparse
+import glob
+from pathlib import Path
+from dataclasses import dataclass
+
+
+def get_user_input(input_message: str, possible_values: List[str]):
+    user_input = input(f"{input_message}\n choose from: \n")
+    for option in possible_values:
+        print(f"- {option}")
+    if len(possible_values):
+        while user_input not in possible_values:
+            user_input = input(f"incorrect input '{user_input}', please choose from the given possible values: \n")
+    return user_input
+
+
+def get_experiment_name_from_user():
+    all_experiment_file_paths = glob.glob('./experiments/*.py')
+    all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
+    return get_user_input("Specify experiment name", all_experiment_names)
+
+
+@dataclass
+class TrainingArgs:
+    device: torch.device
+    is_dry_run_mode: bool
+    experiment_name: str
+    is_testing: bool
+
+
+def parse_training_args() -> TrainingArgs:
+    parser = argparse.ArgumentParser(description='Train models and store their output for inspection.')
+    parser.add_argument('--production', action='store_true',
+                        help='start training on ALL data (10 samples only by default)')
+    parser.add_argument('--test', action='store_true', help="Evaluate on the test dataset.")
+    args = parser.parse_args()
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("using device:", device)
+
+    experiment_name = get_experiment_name_from_user()
+
+    return TrainingArgs(device, not args.production, experiment_name, args.test)
 
 
 def print_experiment_info(
         dataset_config: DatasetConfig,
         model_config: ModelConfig,
-        EXPERIMENT_NAME,
-        TESTING_MODE) -> None:
+        experiment_name: str,
+        is_dry_run: bool,
+        is_testing: bool,
+) -> None:
     """Print the configurations of the current run"""
     print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
-    print("Experiment:", EXPERIMENT_NAME)
-    print("DRY_RUN_MODE:", TESTING_MODE)
+    print("Experiment:", experiment_name)
+    print("DRY_RUN_MODE:", is_dry_run)
+    print("Is testing:", is_testing)
     print("Dataset:", dataset_config.dataset_name)
     print("Model Config Name:", model_config.model_config_name)
     print("Model Name:", model_config.model_name)

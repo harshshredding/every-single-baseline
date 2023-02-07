@@ -2,13 +2,18 @@ import util
 import train_util
 import transformers
 from transformers import AutoTokenizer
-from args import DRY_RUN_MODE, EXPERIMENT_NAME
 import time
 import numpy as np
 import logging  # configured in args.py
 import importlib
 from utils.config import DatasetConfig, ModelConfig
 from random import shuffle
+from preamble import *
+
+training_args = train_util.parse_training_args()
+EXPERIMENT_NAME = training_args.experiment_name
+IS_DRY_RUN = training_args.is_dry_run_mode
+IS_TESTING = training_args.is_testing
 
 experiments_module = importlib.import_module(f"experiments.{EXPERIMENT_NAME}")
 experiments = experiments_module.experiments
@@ -49,7 +54,7 @@ dataset_config: DatasetConfig
 model_config: ModelConfig
 
 for dataset_config, model_config in experiments:
-    train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, DRY_RUN_MODE)
+    train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, IS_DRY_RUN, IS_TESTING)
     dataset_name = dataset_config.dataset_name
 
     # -------- READ DATA ---------
@@ -57,10 +62,11 @@ for dataset_config, model_config in experiments:
     logger.info("Starting to read data.")
     train_samples = train_util.get_train_samples(dataset_config)
     valid_samples = train_util.get_valid_samples(dataset_config)
-    test_samples = train_util.get_test_samples(dataset_config)
+    test_samples = train_util.get_test_samples(dataset_config) if IS_TESTING else None
     logger.info(f"num train samples: {len(train_samples)}")
     logger.info(f"num valid samples: {len(valid_samples)}")
-    logger.info(f"num test samples: {len(test_samples)}")
+    if IS_TESTING:
+        logger.info(f"num test samples: {len(test_samples)}")
     logger.info("finished reading data.")
 
     # Check samples
@@ -80,7 +86,7 @@ for dataset_config, model_config in experiments:
 
     for epoch in range(model_config.num_epochs):
         # Don't train for more than 2 epochs while testing
-        if DRY_RUN_MODE and epoch > 4:
+        if IS_DRY_RUN and epoch > 4:
             break
 
         epoch_loss = []
@@ -88,7 +94,7 @@ for dataset_config, model_config in experiments:
         logger.info(f"Train epoch {epoch}")
         train_start_time = time.time()
         model.train()
-        if DRY_RUN_MODE:
+        if IS_DRY_RUN:
             train_samples = train_samples[:10]
 
         shuffle(train_samples)  # shuffle samples every epoch
@@ -106,7 +112,7 @@ for dataset_config, model_config in experiments:
             f"seconds")
 
         # Begin Validation
-        if DRY_RUN_MODE:
+        if IS_DRY_RUN:
             valid_samples = valid_samples[:10]
             test_samples = test_samples[:10]
         logger.info(f"Epoch {epoch} DONE!\n\n\n")
@@ -125,14 +131,17 @@ for dataset_config, model_config in experiments:
             epoch=epoch
         )
 
-        #     train_util.test(
-        #         logger=logger,
-        #         model=model,
-        #         test_samples=test_samples,
-        #         test_predictions_folder_path=test_predictions_folder_path,
-        #         experiment_name=EXPERIMENT_NAME,
-        #         dataset_name=dataset_name,
-        #         epoch=epoch
-        #     )
+        if IS_TESTING:
+            train_util.test(
+                logger=logger,
+                model=model,
+                test_samples=test_samples,
+                test_predictions_folder_path=test_predictions_folder_path,
+                experiment_name=EXPERIMENT_NAME,
+                dataset_name=dataset_name,
+                epoch=epoch,
+                model_config_name=model_config.model_config_name
+            )
+
 
 logger.info("Experiment Finished!!")
