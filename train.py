@@ -62,7 +62,8 @@ for dataset_config, model_config in experiments:
     logger.info("Starting to read data.")
     train_samples = train_util.get_train_samples(dataset_config)
     valid_samples = train_util.get_valid_samples(dataset_config)
-    test_samples = train_util.get_test_samples(dataset_config) if IS_TESTING else None
+    if IS_TESTING:
+        test_samples = train_util.get_test_samples(dataset_config)
     logger.info(f"num train samples: {len(train_samples)}")
     logger.info(f"num valid samples: {len(valid_samples)}")
     if IS_TESTING:
@@ -114,7 +115,8 @@ for dataset_config, model_config in experiments:
         # Begin Validation
         if IS_DRY_RUN:
             valid_samples = valid_samples[:10]
-            test_samples = test_samples[:10]
+            if IS_TESTING:
+                test_samples = test_samples[:10]
         logger.info(f"Epoch {epoch} DONE!\n\n\n")
 
         train_util.validate(
