@@ -1,7 +1,6 @@
 from transformers import AutoModel, AutoTokenizer
 from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 from mi_rim import *
-from args import device
 from torch import Tensor
 import util
 from typing import List
