@@ -16,3 +16,4 @@ flair
 benepar
 pudb
 openai
+allennlp
