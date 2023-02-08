@@ -1,13 +1,7 @@
-import openai
-from util import get_user_input
-openai.api_key = "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"
+from utils.openai import get_diseases_social_dis_ner, get_diseases_social_dis_ner_spanish_version
+import util
+import train_util
+from utils.config import get_dataset_config_by_name
 
-prompt = get_user_input('enter prompt', [])
-print("You Entered:", prompt)
-
-response = openai.Completion.create(
-    model="text-davinci-003",
-    prompt=prompt,
-    temperature=0.6,
-)
-print("response:", response.choices[0].text)
+valid_samples = train_util.get_valid_samples(get_dataset_config_by_name('social_dis_ner'))
+# print(get_diseases_social_dis_ner(tweet))

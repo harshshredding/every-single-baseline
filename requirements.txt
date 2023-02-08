@@ -15,3 +15,4 @@ pyyaml
 flair
 benepar
 pudb
+openai

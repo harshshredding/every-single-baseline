@@ -33,6 +33,7 @@ geometry: margin=2cm
 - Look at NeurIPS [Deep Bidirectional Language-Knowledge Graph Pretraining][dragon]
   - They improve pre-training using Knowledge Graphs.
 - **Please read:** A [Frustratingly Easy Approach for Entity and Relation Extraction][pipeline]
+- Current NER cost function doesn't take into account **how close your predicted span was** to the actual span.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.

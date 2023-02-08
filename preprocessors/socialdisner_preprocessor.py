@@ -4,38 +4,33 @@ Preprocessing for SocialDisNER dataset.
 import os
 from typing import List, Dict
 import pandas as pd
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
+from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from preprocess import Preprocessor
+from preamble import *
+from annotators import Annotator
 
 
-class SocialDisNerPreprocessor(Preprocessor):
+class PreprocessSocialDisNer(Preprocessor):
     """
     The SocialDisNER dataset preprocessor.
     """
 
     def __init__(
-        self,
-        raw_data_folder_path: str,
-        entity_type_file_path: str,
-        annotations_file_path: str,
-        visualization_file_path: str,
-        tokens_file_path: str,
-        sample_text_file_path: str,
-        dataset_split: DatasetSplit,
+            self,
+            preprocessor_type: str,
+            dataset_split: DatasetSplit,
+            annotators: List[Annotator]
     ) -> None:
         super().__init__(
-            raw_data_folder_path,
-            entity_type_file_path,
-            annotations_file_path,
-            visualization_file_path,
-            tokens_file_path,
-            sample_text_file_path
+            preprocessor_type=preprocessor_type,
+            dataset_split=dataset_split,
+            dataset=Dataset.social_dis_ner,
+            annotators=annotators
         )
-        self.dataset_split = dataset_split
-        assert (dataset_split == DatasetSplit.train) or (
-            dataset_split == DatasetSplit.valid)
+        assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
 
-    def __get_tweet_annos_dict(self) -> Dict[SampleId, List[Anno]]:
+    @staticmethod
+    def __get_tweet_annos_dict() -> Dict[SampleId, List[Anno]]:
         """
         Read annotations for each sample from the given file and return
         a dict from sample_ids to corresponding annotations.
@@ -56,11 +51,18 @@ class SocialDisNerPreprocessor(Preprocessor):
         by the organizers.
 
         """
+        match self.dataset_split:
+            case DatasetSplit.train:
+                raw_data_folder_path = 'socialdisner-data/train-valid-txt-files/training'
+            case DatasetSplit.valid:
+                raw_data_folder_path = 'socialdisner-data/train-valid-txt-files/validation'
+            case _:
+                raise RuntimeError('only train and valid are supported')
         ret = []
-        data_files_list = os.listdir(self.raw_data_folder_path)
+        data_files_list = os.listdir(raw_data_folder_path)
         tweet_to_annos = self.__get_tweet_annos_dict()
         for filename in data_files_list:
-            data_file_path = os.path.join(self.raw_data_folder_path, filename)
+            data_file_path = os.path.join(raw_data_folder_path, filename)
             with open(data_file_path, 'r') as f:
                 data = f.read()
                 new_str = str()
@@ -72,10 +74,16 @@ class SocialDisNerPreprocessor(Preprocessor):
                 data = new_str
             twitter_id = filename[:-4]
             tweet_annos = tweet_to_annos.get(twitter_id, [])
-            ret.append(Sample(data, twitter_id, tweet_annos))
+            ret.append(
+                Sample(
+                    text=data,
+                    id=twitter_id,
+                    annos=AnnotationCollection(tweet_annos, [])
+                )
+            )
         return ret
 
-    def create_entity_types_file(self) -> None:
+    def get_entity_types(self) -> List[str]:
         """
         Create a .txt file that lists all possible entity types -- one per line.
 
@@ -86,31 +94,4 @@ class SocialDisNerPreprocessor(Preprocessor):
         LOC
         <<< file end
         """
-        with open(self.entity_type_file_path, 'w') as output_file:
-            print('ENFERMEDAD', file=output_file)
-
-
-prefix = f"{Dataset.social_dis_ner.name}_{DatasetSplit.valid.name}"
-valid_preproc = SocialDisNerPreprocessor(
-    raw_data_folder_path='socialdisner-data/train-valid-txt-files/validation',
-    entity_type_file_path=f'preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.valid,
-)
-valid_preproc.run()
-
-
-prefix = f"{Dataset.social_dis_ner.name}_{DatasetSplit.train.name}"
-train_preproc = SocialDisNerPreprocessor(
-    raw_data_folder_path='socialdisner-data/train-valid-txt-files/training',
-    entity_type_file_path=f'preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.train,
-)
-train_preproc.run()
+        return ['ENFERMEDAD']

@@ -13,13 +13,10 @@ from pathlib import Path
 from dataclasses import dataclass
 
 
-
-
-
 def get_experiment_name_from_user():
     all_experiment_file_paths = glob.glob('./experiments/*.py')
     all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
-    return get_user_input("Specify experiment name", all_experiment_names)
+    return util.get_user_input("Specify experiment name", all_experiment_names)
 
 
 @dataclass

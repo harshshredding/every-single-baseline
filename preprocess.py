@@ -38,6 +38,9 @@ class Preprocessor(ABC):
         self.entity_types_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_types.txt"
         self.samples = None
         self.annotators = annotators
+        self.dataset_split = dataset_split
+        self.preprocessor_type = preprocessor_type
+        self.dataset = dataset
 
     def run_annotation_pipeline(self, samples: List[Sample]):
         """
