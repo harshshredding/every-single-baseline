@@ -30,11 +30,16 @@ geometry: margin=2cm
 - Check out [Structured State Space Sequence Models][S4] that can model **very long range dependencies**.
 - Read the [Sentiment Neuron][sentiment-neuron] paper.
 - Query [ChatGPT][chatgpt] and use its responses as context.
+- Look at NeurIPS [Deep Bidirectional Language-Knowledge Graph Pretraining][dragon]
+  - They improve pre-training using Knowledge Graphs.
+- **Please read:** A [Frustratingly Easy Approach for Entity and Relation Extraction][pipeline]
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
 - Use names from WikiPedia.
 
+[pipeline]: https://arxiv.org/pdf/2010.12812.pdf
+[dragon]: https://arxiv.org/abs/2210.09338
 [chatgpt]: https://openai.com/blog/chatgpt/
 [S4]: https://arxiv.org/pdf/2111.00396.pdf
 [foundation_models]: https://crfm.stanford.edu/2021/08/26/mistral.html

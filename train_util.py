@@ -13,15 +13,7 @@ from pathlib import Path
 from dataclasses import dataclass
 
 
-def get_user_input(input_message: str, possible_values: List[str]):
-    options_string = ''
-    for option in possible_values:
-        options_string += f"- {option}\n"
-    user_input = input(f"{input_message}\n Choose from: \n{options_string}")
-    if len(possible_values):
-        while user_input not in possible_values:
-            user_input = input(f"incorrect input '{user_input}', please choose from the given possible values: \n")
-    return user_input
+
 
 
 def get_experiment_name_from_user():
