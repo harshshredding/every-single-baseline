@@ -1,5 +1,10 @@
 import openai
+from openai.error import RateLimitError
+import util
+import train_util
+from utils.config import get_dataset_config_by_name
 from preamble import *
+import time
 
 openai.api_key = "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"
 
@@ -61,3 +66,45 @@ def get_diseases_social_dis_ner_spanish_version(tweet_text) -> List[str]:
         temperature=0.6,
     )
     return response.choices[0].text.split(",")
+
+
+def get_socialdisner_valid_predictions_from_gpt3():
+    valid_samples = train_util.get_valid_samples(get_dataset_config_by_name('social_dis_ner'))
+    print("num valid samples", len(valid_samples))
+
+    gpt_completions = []
+    for sample in show_progress(valid_samples):
+        time.sleep(2.5)
+        try:
+            gpt_predictions = get_diseases_social_dis_ner(sample.text)
+        except RateLimitError:
+            print("rate limit error!")
+            print("waiting for  secs before trying again")
+            time.sleep(60)
+            gpt_predictions = get_diseases_social_dis_ner(sample.text)
+        gpt_completions.append((sample.id, gpt_predictions))
+
+    util.create_json_file('./social_dis_ner_openai_output_valid.json', gpt_completions)
+    # print(get_diseases_social_dis_ner(tweet))
+
+
+def get_socialdisner_train_predictions_from_gpt3():
+    train_samples = train_util.get_train_samples(get_dataset_config_by_name('social_dis_ner'))
+    assert len(train_samples) == 5000
+
+    gpt_completions = []
+    for i, sample in show_progress(enumerate(train_samples), total=len(train_samples)):
+        time.sleep(2.5)
+        try:
+            gpt_predictions = get_diseases_social_dis_ner(sample.text)
+        except RateLimitError:
+            print("rate limit error!")
+            print("waiting for 60 secs before trying again")
+            time.sleep(60)
+            gpt_predictions = get_diseases_social_dis_ner(sample.text)
+        gpt_completions.append((sample.id, gpt_predictions))
+        if (i % 100) == 0:
+            print("Storing intermediate results")
+            util.create_json_file('./social_dis_ner_openai_output_train.json', gpt_completions)
+
+    util.create_json_file('./social_dis_ner_openai_output_train.json', gpt_completions)

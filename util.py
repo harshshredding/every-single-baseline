@@ -11,11 +11,15 @@ import pandas as pd
 from collections import deque
 from spacy.tokens.span import Span
 from transformers.tokenization_utils_base import BatchEncoding
+from transformers import AutoTokenizer
 from utils.config import DatasetConfig
-from utils.easy_testing import get_bert_tokenizer
 import logging
 from pudb import set_trace
 import shutil
+
+
+def get_bert_tokenizer():
+    return AutoTokenizer.from_pretrained('bert-base-uncased')
 
 
 def get_user_input(input_message: str, possible_values: List[str]):
@@ -51,6 +55,12 @@ def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_confi
 def write_samples(samples: List[Sample], output_json_file_path: str):
     with open(output_json_file_path, 'w') as output_file:
         json.dump(samples, output_file, default=vars)
+
+
+def create_json_file(output_file_path: str, data):
+    assert output_file_path.endswith('.json')
+    with open(output_file_path, 'w') as output_file:
+        json.dump(data, output_file)
 
 
 def read_samples(input_json_file_path: str) -> List[Sample]:
@@ -523,6 +533,13 @@ def get_tokens_from_sample(sample: Sample) -> List[str]:
     return [token_anno.extraction for token_anno in token_annos]
 
 
+def get_tokens_from_batch(samples: List[Sample]) -> List[List[str]]:
+    ret = []
+    for sample in samples:
+        ret.append(get_tokens_from_sample(sample))
+    return ret
+
+
 def get_token_annos_from_sample(sample: Sample) -> List[Anno]:
     external_annos = sample.annos.external
     token_annos = [
@@ -749,6 +766,13 @@ def get_token_offsets(sample_data: List[TokenData]) -> List[tuple]:
 def get_token_offsets_from_sample(sample: Sample) -> List[tuple]:
     token_annos = get_token_annos_from_sample(sample)
     return [(token_anno.begin_offset, token_anno.end_offset) for token_anno in token_annos]
+
+
+def get_token_offsets_from_batch(batch: List[Sample]) -> List[List[tuple]]:
+    ret = []
+    for sample in batch:
+        ret.append(get_token_offsets_from_sample(sample))
+    return ret
 
 
 def get_umls_data(sample_data):

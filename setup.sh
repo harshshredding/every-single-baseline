@@ -17,8 +17,19 @@ sudo apt-get -y install pkg-config
 sudo apt-get -y install build-essential
 pip install allennlp
 
-echo "Setup project"
-pip install -r requirements.txt
+echo "Install requirements"
+pip install spacy
+pip install openai
+pip install pudb
+pip install colorama
+pip install gatenlp
+pip install pandas
+pip install transformers
+pip install allennlp
+pip install flair
+pip install dropbox
+pip install benepar
+
 git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"
 git config credential.helper store

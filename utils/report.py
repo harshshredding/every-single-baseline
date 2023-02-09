@@ -34,6 +34,6 @@ def generate_table_pdf(data: List[List[str]], column_names: List[str], pdf_path:
     ax.axis('off')
     ax.table(cellText=data,
              colLabels=column_names,
-             loc='center')
+             )
     fig.tight_layout()
     plt.savefig(pdf_path, bbox_inches='tight')

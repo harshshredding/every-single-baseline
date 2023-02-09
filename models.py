@@ -57,9 +57,9 @@ class PositionalEncoding(nn.Module):
         return x
 
 
-class SeqLabeler(torch.nn.Module):
+class SeqLabelerRim(torch.nn.Module):
     def __init__(self, dataset_config):
-        super(SeqLabeler, self).__init__()
+        super(SeqLabelerRim, self).__init__()
         self.num_mechanisms = 1
         self.top_k = 1
         self.hidden_size = 128
@@ -819,3 +819,55 @@ class SpanBertSpanWidthEmbedding(SpanBert):
             num_width_embeddings=512
         )
         self.classifier = nn.Linear((self.input_dim * 2) + 16, self.num_class)
+
+
+class SeqLabeler(torch.nn.Module):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super(SeqLabeler, self).__init__()
+        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+        self.input_dim = model_config.bert_model_output_dim
+        self.num_class = (dataset_config.num_types * 2) + 1
+        self.classifier = nn.Linear(self.input_dim, self.num_class)
+        label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
+        self.label_to_idx = label_to_idx
+        self.idx_to_label = idx_to_label
+        self.loss_function = nn.CrossEntropyLoss()
+        self.dataset_config = dataset_config
+        self.model_config = model_config
+
+    def forward(self,
+                samples: List[Sample]
+                ):
+        tokens_for_all_samples = util.get_tokens_from_batch(samples)
+        offsets_list = util.get_token_offsets_from_batch(samples)
+        bert_encoding = self.bert_tokenizer(tokens_for_all_samples, return_tensors="pt", is_split_into_words=True,
+                                            add_special_tokens=False, truncation=True, max_length=512).to(device)
+        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
+        bert_embeddings = bert_embeddings['last_hidden_state'][0]
+        predictions_logits = self.classifier(bert_embeddings)
+        expanded_labels = train_util.extract_expanded_labels(util.get_token_annos_from_sample(sample),
+                                                             bert_encoding,
+                                                             sample.annos.gold,
+                                                             self.model_config)
+        expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
+        expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
+        loss = self.loss_function(predictions_logits, expanded_labels_tensor)
+
+        predicted_label_indices_expanded = torch.argmax(predictions_logits, dim=1).cpu().detach().numpy()
+        predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
+        predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
+                                                                           self.model_config)
+        predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
+                                        predicted_spans_token_index]
+        predicted_annos = []
+        for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
+            predicted_annos.append(
+                Anno(
+                    span_char_offsets[0],
+                    span_char_offsets[1],
+                    span_char_offsets[2],
+                    " ".join(tokens_for_all_samples[span_token_idx[0]: span_token_idx[1] + 1])
+                )
+            )
+        return loss, predicted_annos
