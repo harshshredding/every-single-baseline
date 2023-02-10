@@ -951,7 +951,7 @@ def expand_labels_rich_batch(batch_encoding, labels: List[Label], batch_idx: int
         if encountered_padding:
             assert word_idx is None
         if word_idx is None:
-            assert token == '[PAD]'
+            assert (token == '[PAD]') or (token == '<pad>')
             encountered_padding = True
             new_labels.append(Label.get_outside_label())
             continue  # move on if we encountered padding
