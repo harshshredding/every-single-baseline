@@ -89,4 +89,4 @@ def get_dataset_config_by_name(dataset_name: str) -> DatasetConfig:
         dataset_config = read_dataset_config(config_file_path)
         if dataset_config.dataset_name == dataset_name:
             return dataset_config
-    die(f"Should have been able to find model config with name {dataset_name}")
+    die(f"Should have been able to find dataset config with name {dataset_name}")

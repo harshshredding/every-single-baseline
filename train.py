@@ -53,12 +53,14 @@ train_util.create_performance_file_header(performance_file_path)
 dataset_config: DatasetConfig
 model_config: ModelConfig
 
+# TODO: move this config to models
+BATCH_SIZE = 4
+
 for dataset_config, model_config in experiments:
     train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, IS_DRY_RUN, IS_TESTING)
     dataset_name = dataset_config.dataset_name
 
     # -------- READ DATA ---------
-    # TODO: read Samples instead of reading annos, text, tokens separately.
     logger.info("Starting to read data.")
     train_samples = train_util.get_train_samples(dataset_config)
     valid_samples = train_util.get_valid_samples(dataset_config)
@@ -101,9 +103,9 @@ for dataset_config, model_config in experiments:
         shuffle(train_samples)  # shuffle samples every epoch
 
         # Training Loop
-        for train_sample in train_samples:
+        for train_batch in train_util.get_batches(samples=train_samples, batch_size=BATCH_SIZE):
             optimizer.zero_grad()
-            loss, predicted_annos = model(train_sample)
+            loss, predicted_annos = model(train_batch)
             loss.backward()
             optimizer.step()
             epoch_loss.append(loss.cpu().detach().numpy())
@@ -144,6 +146,5 @@ for dataset_config, model_config in experiments:
                 epoch=epoch,
                 model_config_name=model_config.model_config_name
             )
-
 
 logger.info("Experiment Finished!!")

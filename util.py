@@ -336,7 +336,8 @@ def enumerate_spans(sentence: List,
     return spans
 
 
-def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding) -> List[tuple[int, int, str]]:
+def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding, batch_idx: int) \
+        -> List[tuple[int, int, str]]:
     span_list = []
     start = None
     start_label = None
@@ -360,8 +361,14 @@ def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding) -> L
             raise Exception(f'Illegal label {label}')
     if start is not None:
         span_list.append((start, len(predictions_sub) - 1, start_label))
-    span_list_word_idx = [(batch_encoding.token_to_word(span[0]), batch_encoding.token_to_word(span[1]), span[2])
-                          for span in span_list]
+    span_list_word_idx = [
+        (batch_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span[0]),
+         batch_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span[1]),
+         span[2])
+        for span in span_list
+    ]
+    # filter the invalid spans due to padding
+    span_list_word_idx = [span for span in span_list_word_idx if (span[0] is not None) and (span[1] is not None)]
     return span_list_word_idx
 
 
@@ -547,6 +554,13 @@ def get_token_annos_from_sample(sample: Sample) -> List[Anno]:
     assert len(
         token_annos), f"No token annotation exists in sample {sample.id}!"
     return token_annos
+
+
+def get_token_annos_from_batch(batch: List[Sample]) -> List[List[Anno]]:
+    return [
+        get_token_annos_from_sample(sample)
+        for sample in batch
+    ]
 
 
 def get_annos_dict(annos_file_path: str) -> Dict[SampleId, List[Anno]]:
@@ -916,7 +930,7 @@ def expand_labels(batch_encoding, labels):
     return new_labels
 
 
-def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
+def expand_labels_rich_batch(batch_encoding, labels: List[Label], batch_idx: int) -> List[Label]:
     """
     return a list of labels with each label in the list
     corresponding to each token in batch_encoding
@@ -924,8 +938,19 @@ def expand_labels_rich(batch_encoding, labels: List[Label]) -> List[Label]:
     new_labels = []
     prev_word_idx = None
     prev_label = None
-    for token_idx in range(len(batch_encoding.tokens())):
-        word_idx = batch_encoding.token_to_word(token_idx)
+    encountered_padding = False
+    for token_idx, token in enumerate(batch_encoding.tokens(batch_index=batch_idx)):
+        word_idx = batch_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=token_idx)
+
+        # Padding related logic
+        if encountered_padding:
+            assert word_idx is None
+        if word_idx is None:
+            assert token == '[PAD]'
+            encountered_padding = True
+            new_labels.append(Label.get_outside_label())
+            continue  # move on if we encountered padding
+
         label = labels[word_idx]
         if (label.bio_tag == BioTag.begin) and (prev_word_idx == word_idx):
             assert prev_label is not None

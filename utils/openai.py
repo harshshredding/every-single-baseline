@@ -1,5 +1,7 @@
+import json
+
 import openai
-from openai.error import RateLimitError
+from openai.error import RateLimitError, OpenAIError
 import util
 import train_util
 from utils.config import get_dataset_config_by_name
@@ -92,19 +94,24 @@ def get_socialdisner_train_predictions_from_gpt3():
     train_samples = train_util.get_train_samples(get_dataset_config_by_name('social_dis_ner'))
     assert len(train_samples) == 5000
 
-    gpt_completions = []
+    output_file_path = './social_dis_ner_openai_output_train.json'
+    with open(output_file_path, 'r') as output_file:
+        gpt_completions = json.load(output_file)
+    assert len(gpt_completions) == 1202, f"num completions found: {len(gpt_completions)}"
+    train_samples = train_samples[1200:]
+
     for i, sample in show_progress(enumerate(train_samples), total=len(train_samples)):
         time.sleep(2.5)
         try:
             gpt_predictions = get_diseases_social_dis_ner(sample.text)
-        except RateLimitError:
-            print("rate limit error!")
+        except OpenAIError:
+            print("An error occurred.")
             print("waiting for 60 secs before trying again")
             time.sleep(60)
-            gpt_predictions = get_diseases_social_dis_ner(sample.text)
+            gpt_predictions = ['ERROR']
         gpt_completions.append((sample.id, gpt_predictions))
         if (i % 100) == 0:
             print("Storing intermediate results")
             util.create_json_file('./social_dis_ner_openai_output_train.json', gpt_completions)
 
-    util.create_json_file('./social_dis_ner_openai_output_train.json', gpt_completions)
+    util.create_json_file(output_file_path, gpt_completions)

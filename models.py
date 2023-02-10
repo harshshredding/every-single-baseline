@@ -1,3 +1,4 @@
+import torch
 from transformers import AutoModel, AutoTokenizer
 from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 from mi_rim import *
@@ -508,18 +509,18 @@ class JustBert3Classes(torch.nn.Module):
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         predictions_logits = self.classifier(bert_embeddings)
-        expanded_labels = train_util.extract_expanded_labels(util.get_token_annos_from_sample(sample),
-                                                             bert_encoding,
-                                                             sample.annos.gold,
-                                                             self.model_config)
+        expanded_labels = train_util.get_bio_labels_from_annos(util.get_token_annos_from_sample(sample),
+                                                               bert_encoding,
+                                                               sample.annos.gold,
+                                                               self.model_config)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         loss = self.loss_function(predictions_logits, expanded_labels_tensor)
 
         predicted_label_indices_expanded = torch.argmax(predictions_logits, dim=1).cpu().detach().numpy()
         predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
-        predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
-                                                                           self.model_config)
+        predicted_spans_token_index = train_util.get_spans_from_bio_seq_labels(predicted_labels, bert_encoding,
+                                                                               self.model_config)
         predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
                                         predicted_spans_token_index]
         predicted_annos = []
@@ -578,8 +579,8 @@ class JustBert3ClassesCRF(torch.nn.Module):
         features = self.crf(features)
         # TODO: calculate length using tensor
 
-        expanded_labels = train_util.extract_expanded_labels(sample_token_data, bert_encoding, sample_annos,
-                                                             self.model_config)
+        expanded_labels = train_util.get_bio_labels_from_annos(sample_token_data, bert_encoding, sample_annos,
+                                                               self.model_config)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         lengths = torch.tensor([len(expanded_labels_tensor)], dtype=torch.long)
@@ -590,8 +591,8 @@ class JustBert3ClassesCRF(torch.nn.Module):
         predicted_label_indices_expanded = [self.flair_dictionary.get_idx_for_item(label_string) for label_string in
                                             predicted_label_strings]
         predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
-        predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
-                                                                           self.model_config)
+        predicted_spans_token_index = train_util.get_spans_from_bio_seq_labels(predicted_labels, bert_encoding,
+                                                                               self.model_config)
         predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
                                         predicted_spans_token_index]
         predicted_annos = []
@@ -821,9 +822,9 @@ class SpanBertSpanWidthEmbedding(SpanBert):
         self.classifier = nn.Linear((self.input_dim * 2) + 16, self.num_class)
 
 
-class SeqLabeler(torch.nn.Module):
+class SeqLabelerBatched(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
-        super(SeqLabeler, self).__init__()
+        super(SeqLabelerBatched, self).__init__()
         self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
         self.input_dim = model_config.bert_model_output_dim
@@ -839,35 +840,60 @@ class SeqLabeler(torch.nn.Module):
     def forward(self,
                 samples: List[Sample]
                 ):
-        tokens_for_all_samples = util.get_tokens_from_batch(samples)
-        offsets_list = util.get_token_offsets_from_batch(samples)
-        bert_encoding = self.bert_tokenizer(tokens_for_all_samples, return_tensors="pt", is_split_into_words=True,
-                                            add_special_tokens=False, truncation=True, max_length=512).to(device)
-        bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
-        bert_embeddings = bert_embeddings['last_hidden_state'][0]
-        predictions_logits = self.classifier(bert_embeddings)
-        expanded_labels = train_util.extract_expanded_labels(util.get_token_annos_from_sample(sample),
-                                                             bert_encoding,
-                                                             sample.annos.gold,
-                                                             self.model_config)
-        expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
-        expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
-        loss = self.loss_function(predictions_logits, expanded_labels_tensor)
+        assert isinstance(samples, list)
+        tokens_for_batch = util.get_tokens_from_batch(samples)
+        offsets_list_for_batch = util.get_token_offsets_from_batch(samples)
+        bert_encoding_for_batch = self.bert_tokenizer(tokens_for_batch, return_tensors="pt", is_split_into_words=True,
+                                                      add_special_tokens=False, truncation=True, padding=True,
+                                                      max_length=512) \
+            .to(device)
+        bert_embeddings_batch = self.bert_model(bert_encoding_for_batch['input_ids'], return_dict=True)
+        # SHAPE: (batch, seq, emb_dim)
+        bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+        predictions_logits_batch = self.classifier(bert_embeddings_batch)
+        expanded_labels_batch = train_util.get_bio_labels_from_annos_batch(
+            util.get_token_annos_from_batch(samples),
+            bert_encoding_for_batch,
+            [sample.annos.gold for sample in samples]
+        )
+        expanded_labels_indices_batch = [
+            [self.label_to_idx[label] for label in expanded_labels]
+            for expanded_labels in expanded_labels_batch
+        ]
+        expanded_labels_tensor_batch = torch.tensor(expanded_labels_indices_batch).to(device)
 
-        predicted_label_indices_expanded = torch.argmax(predictions_logits, dim=1).cpu().detach().numpy()
-        predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
-        predicted_spans_token_index = train_util.get_spans_from_seq_labels(predicted_labels, bert_encoding,
-                                                                           self.model_config)
-        predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
-                                        predicted_spans_token_index]
-        predicted_annos = []
-        for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
-            predicted_annos.append(
-                Anno(
-                    span_char_offsets[0],
-                    span_char_offsets[1],
-                    span_char_offsets[2],
-                    " ".join(tokens_for_all_samples[span_token_idx[0]: span_token_idx[1] + 1])
+        loss = self.loss_function(torch.permute(predictions_logits_batch, (0, 2, 1)), expanded_labels_tensor_batch)
+
+        predicted_label_indices_expanded_batch = torch.argmax(predictions_logits_batch, dim=2).cpu().detach().numpy()
+        predicted_labels_batch = [
+            [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
+            for predicted_label_indices_expanded in predicted_label_indices_expanded_batch
+        ]
+        predicted_spans_token_index_batch = [
+            train_util.get_spans_from_bio_seq_labels(predicted_labels, bert_encoding_for_batch, batch_idx=batch_idx)
+            for batch_idx, predicted_labels in enumerate(predicted_labels_batch)
+        ]
+        predicted_spans_char_offsets_batch = [
+            [(offsets_list_for_batch[batch_idx][span[0]][0], offsets_list_for_batch[batch_idx][span[1]][1], span[2])
+             for span in predicted_spans_token_index
+             ]
+            for batch_idx, predicted_spans_token_index in enumerate(predicted_spans_token_index_batch)
+        ]
+        predicted_annos_batch = []
+        assert len(predicted_spans_char_offsets_batch) == len(tokens_for_batch)
+        for predicted_spans_char_offsets, predicted_spans_token_index, tokens in zip(predicted_spans_char_offsets_batch,
+                                                                                     predicted_spans_token_index_batch,
+                                                                                     tokens_for_batch
+                                                                                     ):
+            predicted_annos = []
+            for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
+                predicted_annos.append(
+                    Anno(
+                        span_char_offsets[0],
+                        span_char_offsets[1],
+                        span_char_offsets[2],
+                        " ".join(tokens[span_token_idx[0]: span_token_idx[1] + 1])
+                    )
                 )
-            )
-        return loss, predicted_annos
+            predicted_annos_batch.append(predicted_annos)
+        return loss, predicted_annos_batch

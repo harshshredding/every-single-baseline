@@ -11,6 +11,7 @@ import argparse
 import glob
 from pathlib import Path
 from dataclasses import dataclass
+from pydoc import locate
 
 
 def get_experiment_name_from_user():
@@ -72,6 +73,13 @@ def check_label_types(train_samples: List[Sample], valid_samples: List[Sample], 
             assert anno.label_type in all_types, f"anno label type {anno.label_type} not expected"
 
 
+def get_batches(samples: List[Sample], batch_size: int) -> list[list[Sample]]:
+    return [
+        samples[batch_start_idx: batch_start_idx + batch_size]
+        for batch_start_idx in range(0, len(samples), batch_size)
+    ]
+
+
 def get_loss_function():
     return nn.CrossEntropyLoss()
 
@@ -91,15 +99,25 @@ def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]
     return util.get_annos_dict(dataset_config.valid_annos_file_path)
 
 
-def extract_expanded_labels(token_annos: List[Anno],
-                            batch_encoding,
-                            gold_annos: List[Anno],
-                            model_config: ModelConfig) -> List[Label]:
-    if '3Classes' in model_config.model_name:
-        labels = util.get_labels_bio(token_annos, gold_annos)
-        expanded_labels = util.expand_labels_rich(batch_encoding, labels)
-        return expanded_labels
-    raise Exception('Have to specify num of classes in model name ' + model_config.model_name)
+def get_bio_labels_from_annos(token_annos: List[Anno],
+                              batch_encoding,
+                              gold_annos: List[Anno]) -> List[Label]:
+    labels = util.get_labels_bio(token_annos, gold_annos)
+    expanded_labels = util.expand_labels_rich_batch(batch_encoding, labels, batch_idx=0)
+    return expanded_labels
+
+
+def get_bio_labels_from_annos_batch(
+        token_annos_batch: List[List[Anno]],
+        batch_encoding,
+        gold_annos_batch: List[List[Anno]]
+) -> List[List[Label]]:
+    labels_batch = [util.get_labels_bio(token_annos, gold_annos)
+                    for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
+    expanded_labels_batch = [util.expand_labels_rich_batch(batch_encoding=batch_encoding, labels=labels, batch_idx=i)
+                             for i, labels in enumerate(labels_batch)
+                             ]
+    return expanded_labels_batch
 
 
 # TODO: remove following method
@@ -155,13 +173,8 @@ def create_performance_file_header(performance_file_path):
 #     pos_to_index = get_key_to_index(pos_dict)
 
 
-def get_spans_from_seq_labels(predictions_sub, batch_encoding, model_config: ModelConfig):
-    if '3Classes' in model_config.model_name:
-        return util.get_spans_from_bio_labels(predictions_sub, batch_encoding)
-    elif '2Classes' in model_config.model_name:
-        return util.get_spans_from_seq_labels_2_classes(predictions_sub, batch_encoding)
-    else:
-        raise Exception(f"Have to specify num of classes in model name {model_config.model_name}")
+def get_spans_from_bio_seq_labels(bio_labels, batch_encoding, batch_idx: int):
+    return util.get_spans_from_bio_labels(bio_labels, batch_encoding, batch_idx=batch_idx)
 
 
 # TODO: remove following method
@@ -359,17 +372,8 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     # if dataset_config['model_name'] == 'OnlyRoberta3Classes':
     #     return OnlyRoberta3Classes().to(device)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
-    if model_config.model_name == 'JustBert3Classes':
-        return JustBert3Classes(all_types, model_config, dataset_config).to(device)
-    if model_config.model_name == 'SpanBert':
-        return SpanBert(all_types, model_config).to(device)
-    if model_config.model_name == 'JustBert3ClassesCRF':
-        return JustBert3ClassesCRF(all_types, model_config, dataset_config).to(device)
-    if model_config.model_name == 'SpanBertNounPhrase':
-        return SpanBertNounPhrase(all_types, model_config).to(device)
-    if model_config.model_name == 'SpanBertSpanWidthEmbedding':
-        return SpanBertSpanWidthEmbedding(all_types, model_config).to(device)
-    raise Exception(f"no code to prepare model {model_config.model_name}")
+    model_class = locate(f"models.{model_config.model_name}")
+    return model_class(all_types, model_config=model_config, dataset_config=dataset_config).to(device)
 
 
 # TODO: move to different module
@@ -487,7 +491,7 @@ def validate(
             num_FN_total = 0
             # Validation Loop
             for validation_sample in validation_samples:
-                loss, predicted_annos_valid = model(validation_sample)
+                loss, [predicted_annos_valid] = model([validation_sample])
                 gold_annos_set_valid = set(
                     [
                         (gold_anno.begin_offset, gold_anno.end_offset, gold_anno.label_type)
