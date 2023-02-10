@@ -4,13 +4,14 @@ Preprocessing for LivingNER dataset. https://temu.bsc.es/livingner/
 import os
 from typing import List, Dict
 import pandas as pd
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
+from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from preprocess import Preprocessor
 import util
 from annotators import Annotator
+import spacy
 
 
-class LivingNerPreprocessor(Preprocessor):
+class PreprocessLivingNER(Preprocessor):
     """
     The LivingNER dataset preprocessor.
     """
@@ -34,6 +35,7 @@ class LivingNerPreprocessor(Preprocessor):
                 self.raw_data_folder_path = './livingner_raw/training_valid_test_background_multilingual/valid'
             case _:
                 raise RuntimeError("Can only support train and valid")
+        self.nlp = spacy.load('en_core_web_sm')
 
     def __get_annos_dict(self) -> Dict[SampleId, List[Anno]]:
         """
@@ -75,8 +77,8 @@ class LivingNerPreprocessor(Preprocessor):
                         new_str = new_str + ' '
                 data = new_str
             sample_id = filename[:-4]
-            sample_annos = annos_dict.get(sample_id, [])
-            document_samples.append(Sample(data, sample_id, sample_annos))
+            gold_annos = annos_dict.get(sample_id, [])
+            document_samples.append(Sample(data, sample_id, AnnotationCollection(gold_annos, [])))
         sentence_samples = []
         for doc_sample in document_samples:
             sentence_samples.extend(util.make_sentence_samples(doc_sample, self.nlp))

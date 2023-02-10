@@ -445,7 +445,7 @@ def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
     spacy_doc = nlp(sample.text)
     assert spacy_doc.has_annotation("SENT_START")
     for i, sent in enumerate(spacy_doc.sents):
-        annos_contained_in_sent = [anno for anno in sample.annos if (
+        annos_contained_in_sent = [anno for anno in sample.annos.gold if (
                 sent.start_char <= anno.begin_offset and anno.end_offset <= sent.end_char)]
         sent_annos = []
         for contained_anno in annos_contained_in_sent:
@@ -455,7 +455,8 @@ def make_sentence_samples(sample: Sample, nlp) -> List[Sample]:
             sent_annos.append(
                 Anno(new_start, new_end, contained_anno.label_type, new_extraction))
         ret_sent_samples.append(
-            Sample(sent.text, f"{sample.id}_sent_{i}", sent_annos))
+            Sample(sent.text, f"{sample.id}_sent_{i}", AnnotationCollection(sent_annos, []))
+        )
     return ret_sent_samples
 
 
