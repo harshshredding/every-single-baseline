@@ -13,6 +13,7 @@ class DatasetConfig:
     types_file_path: str
     num_types: int
     dataset_name: str
+    dataset_config_name: str
 
 
 @dataclass
@@ -32,9 +33,9 @@ class ExperimentConfig(NamedTuple):
     model_config: ModelConfig
 
 
-def get_experiment_config(model_config_name: str, dataset_name: str) -> ExperimentConfig:
+def get_experiment_config(model_config_name: str, dataset_config_name: str) -> ExperimentConfig:
     return ExperimentConfig(
-        get_dataset_config_by_name(dataset_name),
+        get_dataset_config_by_name(dataset_config_name),
         get_model_config_by_name(model_config_name)
     )
 
@@ -49,6 +50,7 @@ def read_dataset_config(config_file_path: str) -> DatasetConfig:
             types_file_path=dataset_config_raw['types_file_path'],
             num_types=int(dataset_config_raw['num_types']),
             dataset_name=dataset_config_raw['dataset_name'],
+            dataset_config_name=dataset_config_raw['dataset_config_name']
         )
         assert isinstance(dataset_config.num_types, int)
         return dataset_config
@@ -83,10 +85,10 @@ def get_model_config_by_name(model_config_name: str) -> ModelConfig:
     die(f"Should have been able to find model config with name {model_config_name}")
 
 
-def get_dataset_config_by_name(dataset_name: str) -> DatasetConfig:
+def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:
     all_config_file_paths = glob.glob('configs/dataset_configs/*.yaml')
     for config_file_path in all_config_file_paths:
         dataset_config = read_dataset_config(config_file_path)
-        if dataset_config.dataset_name == dataset_name:
+        if dataset_config.dataset_config_name == dataset_config_name:
             return dataset_config
-    die(f"Should have been able to find dataset config with name {dataset_name}")
+    die(f"Should have been able to find dataset config with name {dataset_config_name}")
