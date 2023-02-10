@@ -38,7 +38,11 @@ def delete_preprocessed_data_folder():
     Use with CAUTION.
     Deletes the preprocessed data folder in the root directory.
     """
-    shutil.rmtree('./preprocessed_data')
+    permission_to_delete = get_user_input('proceed with deleting existing preprocessed data?', ['yes', 'no'])
+    if permission_to_delete == 'yes':
+        shutil.rmtree('./preprocessed_data')
+    else:
+        raise RuntimeError("Don't have permission to delete preprocessed data")
 
 
 def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_config: DatasetConfig):
