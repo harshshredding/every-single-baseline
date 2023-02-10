@@ -7,6 +7,7 @@ import pandas as pd
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset
 from preprocess import Preprocessor
 import util
+from annotators import Annotator
 
 
 class LivingNerPreprocessor(Preprocessor):
@@ -15,25 +16,24 @@ class LivingNerPreprocessor(Preprocessor):
     """
 
     def __init__(
-        self,
-        raw_data_folder_path: str,
-        entity_type_file_path: str,
-        annotations_file_path: str,
-        visualization_file_path: str,
-        tokens_file_path: str,
-        sample_text_file_path: str,
-        dataset_split: DatasetSplit,
+            self,
+            dataset_split: DatasetSplit,
+            preprocessor_type: str,
+            annotators: List[Annotator]
     ) -> None:
         super().__init__(
-            raw_data_folder_path,
-            entity_type_file_path,
-            annotations_file_path,
-            visualization_file_path,
-            tokens_file_path,
-            sample_text_file_path
+            dataset_split=dataset_split,
+            preprocessor_type=preprocessor_type,
+            dataset=Dataset.living_ner,
+            annotators=annotators
         )
-        self.dataset_split = dataset_split
-        assert dataset_split in (DatasetSplit.valid, DatasetSplit.train)
+        match dataset_split:
+            case DatasetSplit.train:
+                self.raw_data_folder_path = './livingner_raw/training_valid_test_background_multilingual/training'
+            case DatasetSplit.valid:
+                self.raw_data_folder_path = './livingner_raw/training_valid_test_background_multilingual/valid'
+            case _:
+                raise RuntimeError("Can only support train and valid")
 
     def __get_annos_dict(self) -> Dict[SampleId, List[Anno]]:
         """
@@ -81,59 +81,6 @@ class LivingNerPreprocessor(Preprocessor):
         for doc_sample in document_samples:
             sentence_samples.extend(util.make_sentence_samples(doc_sample, self.nlp))
         return sentence_samples
-        
-        
 
-    def create_entity_types_file(self) -> None:
-        """
-        Create a .txt file that lists all possible entity types -- one per line.
-
-        For eg. the below mock txt file lists entity types ORG, PER, and LOC.
-        <<< file start
-        ORG
-        PER
-        LOC
-        <<< file end
-        """
-        with open(self.entity_type_file_path, 'w') as output_file:
-            print('HUMAN', file=output_file)
-            print('SPECIES', file=output_file)
-
-
-prefix = f"{Dataset.living_ner.name}_{DatasetSplit.valid.name}"
-processor = LivingNerPreprocessor(
-    raw_data_folder_path='../livingner_raw/training_valid_test_background_multilingual/valid',
-    entity_type_file_path=f'../preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'../preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'../preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'../preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"../preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.valid,
-)
-processor.run()
-
-
-prefix = f"{Dataset.living_ner.name}_{DatasetSplit.train.name}"
-processor = LivingNerPreprocessor(
-    raw_data_folder_path='../livingner_raw/training_valid_test_background_multilingual/training',
-    entity_type_file_path=f'../preprocessed_data/{prefix}_types.txt',
-    annotations_file_path=f'../preprocessed_data/{prefix}_annos.tsv',
-    visualization_file_path=f'../preprocessed_data/{prefix}_visualization.bdocjs',
-    tokens_file_path=f'../preprocessed_data/{prefix}_tokens.json',
-    sample_text_file_path=f"../preprocessed_data/{prefix}_sample_text.json",
-    dataset_split=DatasetSplit.train,
-)
-processor.run()
-
-
-# prefix = f"{Dataset.social_dis_ner.name}_{DatasetSplit.train.name}"
-# train_preproc = SocialDisNerPreprocessor(
-#     raw_data_folder_path='../socialdisner-data/train-valid-txt-files/training',
-#     entity_type_file_path=f'../preprocessed_data/{prefix}_types.txt',
-#     annotations_file_path=f'../preprocessed_data/{prefix}_annos.tsv',
-#     visualization_file_path=f'../preprocessed_data/{prefix}_visualization.bdocjs',
-#     tokens_file_path=f'../preprocessed_data/{prefix}_tokens.json',
-#     sample_text_file_path=f"../preprocessed_data/{prefix}_sample_text.json",
-#     dataset_split=DatasetSplit.train,
-# )
-# train_preproc.run()
+    def get_entity_types(self) -> List[str]:
+        return ['HUMAN', 'SPECIES']

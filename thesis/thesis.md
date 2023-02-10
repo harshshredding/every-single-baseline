@@ -22,8 +22,8 @@ geometry: margin=2cm
     - Use special tags ?
 - Framed as a [Contrastive Learning problem][contrastive].
 - Experiment with [GPT3][gpt].
-- Understand natural language better (why not ?!)
-- Tokenization
+- Understand natural language better (why not ?!).
+- Try dropping custom tokenization.
 - Reinforcement learning for richer representation.
 - Check out [Foundation models][foundation_models].
 - Evaluate every dataset on [GPT][gpt].

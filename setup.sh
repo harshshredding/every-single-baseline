@@ -1,6 +1,6 @@
 #!/bin/sh
 
-apt-get -y install vim
+sudo apt-get -y install vim
 
 echo "Creating Anaconda environment"
 conda init bash
@@ -29,9 +29,12 @@ pip install allennlp
 pip install flair
 pip install dropbox
 pip install benepar
+pip install ipython
 
 git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"
 git config credential.helper store
 python download_preprocessed_data.py
 python unzip_data_files.py
+
+echo 'set -o vi' >> ~/.bashrc
