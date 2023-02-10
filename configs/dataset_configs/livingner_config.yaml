@@ -4,3 +4,4 @@ test_samples_file_path: change_this
 types_file_path: ./preprocessed_data/living_ner_train_vanilla_types.txt
 num_types: 2
 dataset_name: living_ner
+dataset_config_name: living_ner_vanilla

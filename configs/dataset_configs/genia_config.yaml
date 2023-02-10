@@ -4,3 +4,4 @@ test_samples_file_path: change_this
 types_file_path: ./preprocessed_data/genia_train_vanilla_types.txt
 num_types: 5
 dataset_name: genia
+dataset_config_name: genia_config_vanilla

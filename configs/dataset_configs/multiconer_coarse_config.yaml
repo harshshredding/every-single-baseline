@@ -12,3 +12,4 @@ dataset_name: multiconer_coarse
 test_tokens_file_path: change_this
 test_sample_text_data_file_path: change_this
 test_samples_file_path: change_this
+dataset_config_name: multiconer_coarse_vanilla

@@ -12,3 +12,4 @@ test_sample_text_data_file_path: ./preprocessed_data/medical_causal_test_sample_
 test_samples_file_path: ./preprocessed_data/medical_causal_test_samples.json
 num_types: 4
 dataset_name: medical_causal_claim
+dataset_config_name: medical_causal_claim_vanilla

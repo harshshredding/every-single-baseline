@@ -12,3 +12,4 @@ test_sample_text_data_file_path: ./preprocessed_data/multiconer_fine_test_sample
 test_samples_file_path: ./preprocessed_data/multiconer_fine_test_samples.json
 num_types: 33
 dataset_name: multiconer_fine
+dataset_config_name: multiconer_fine_vanilla
