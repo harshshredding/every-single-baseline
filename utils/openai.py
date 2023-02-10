@@ -97,7 +97,7 @@ def get_socialdisner_train_predictions_from_gpt3():
     output_file_path = './social_dis_ner_openai_output_train.json'
     with open(output_file_path, 'r') as output_file:
         gpt_completions = json.load(output_file)
-    assert len(gpt_completions) == 1202, f"num completions found: {len(gpt_completions)}"
+    assert len(gpt_completions) == 1203, f"num completions found: {len(gpt_completions)}"
     train_samples = train_samples[1200:]
 
     for i, sample in show_progress(enumerate(train_samples), total=len(train_samples)):

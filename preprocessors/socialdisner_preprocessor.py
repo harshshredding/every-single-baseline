@@ -8,6 +8,7 @@ from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCol
 from preprocess import Preprocessor
 from preamble import *
 from annotators import Annotator
+import json
 
 
 class PreprocessSocialDisNer(Preprocessor):
@@ -58,6 +59,9 @@ class PreprocessSocialDisNer(Preprocessor):
                 raw_data_folder_path = 'socialdisner-data/train-valid-txt-files/validation'
             case _:
                 raise RuntimeError('only train and valid are supported')
+
+        gpt_predictions_dict = self.get_gpt_predictions()
+
         ret = []
         data_files_list = os.listdir(raw_data_folder_path)
         tweet_to_annos = self.__get_tweet_annos_dict()
@@ -74,14 +78,45 @@ class PreprocessSocialDisNer(Preprocessor):
                 data = new_str
             twitter_id = filename[:-4]
             tweet_annos = tweet_to_annos.get(twitter_id, [])
+            sample_text_gpt_augmented = data + ". " + gpt_predictions_dict[twitter_id]
             ret.append(
                 Sample(
-                    text=data,
+                    text=sample_text_gpt_augmented,
                     id=twitter_id,
                     annos=AnnotationCollection(tweet_annos, [])
                 )
             )
         return ret
+
+    def get_gpt_predictions(self):
+        match self.dataset_split:
+            case DatasetSplit.valid:
+                gpt_predictions_file_path = './social_dis_ner_openai_output_valid.json'
+            case DatasetSplit.train:
+                gpt_predictions_file_path = './social_dis_ner_openai_output_train.json'
+            case __:
+                raise RuntimeError("Can only support train and valid")
+
+        with open(gpt_predictions_file_path, 'r') as gpt_predictions_file:
+            gpt_predictions = json.load(gpt_predictions_file)
+
+        print("Got predictions", len(gpt_predictions))
+
+        gpt_predictions_dict = {
+            sample_id: ','.join(diseases)
+            for sample_id, diseases in gpt_predictions
+        }
+
+        match self.dataset_split:
+            case DatasetSplit.valid:
+                assert len(gpt_predictions_dict) == 2500
+            case DatasetSplit.train:
+                assert len(gpt_predictions_dict) == 5000
+            case _:
+                raise RuntimeError("Can only support train and valid")
+
+        print("dict len", len(gpt_predictions_dict))
+        return gpt_predictions_dict
 
     def get_entity_types(self) -> List[str]:
         """

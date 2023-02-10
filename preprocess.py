@@ -136,18 +136,19 @@ class Preprocessor(ABC):
         print("Done Preprocessing!")
 
 
-def preprocess_train_and_valid_data(preprocessor_module_name: str, preprocessor_name: str):
+def preprocess_train_and_valid_data(preprocessor_module_name: str, preprocessor_name: str,
+                                    preprocessor_type: str = 'vanilla'):
     preprocessor_class = locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.valid,
-        preprocessor_type="vanilla",
+        preprocessor_type=preprocessor_type,
         annotators=[TokenAnnotator()]
     )
     preprocessor.run()
 
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.train,
-        preprocessor_type="vanilla",
+        preprocessor_type=preprocessor_type,
         annotators=[TokenAnnotator()]
     )
     preprocessor.run()
