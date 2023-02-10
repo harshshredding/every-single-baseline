@@ -34,6 +34,8 @@ geometry: margin=2cm
   - They improve pre-training using Knowledge Graphs.
 - **Please read:** A [Frustratingly Easy Approach for Entity and Relation Extraction][pipeline]
 - Current NER cost function doesn't take into account **how close your predicted span was** to the actual span.
+- Use convolutional neural networks to improve span representations.
+- Implement [SpanRel][spanrel]
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
@@ -49,4 +51,5 @@ geometry: margin=2cm
 [transformer_ext]: https://arxiv.org/abs/2209.03528
 [flert]: https://arxiv.org/abs/2011.06993
 [mi-rim]: https://ceur-ws.org/Vol-3202/livingner-paper7.pdf
+[spanrel]: https://aclanthology.org/2020.acl-main.192/
 [sentiment-neuron]: https://arxiv.org/abs/1704.01444
