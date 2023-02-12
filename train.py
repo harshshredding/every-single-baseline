@@ -94,6 +94,7 @@ for dataset_config, model_config in experiments:
 
         epoch_loss = []
         # Begin Training
+        logger.info("-"*20)
         logger.info(f"Train epoch {epoch}")
         train_start_time = time.time()
         model.train()
