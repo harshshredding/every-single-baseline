@@ -947,7 +947,7 @@ class SeqLabelerNoTokenization(torch.nn.Module):
                     Option(Anno(begin_offset=span.get_value().start, end_offset=span.get_value().end,
                                 label_type='BertTokenAnno', extraction=None))
                     if span.state == OptionState.Something else Option(None)
-                    for span in char_spans if span.state == OptionState.Something
+                    for span in char_spans
                 ]
             )
         return token_annos_batch
