@@ -1,4 +1,5 @@
 import torch
+import transformers
 from transformers import AutoModel, AutoTokenizer
 from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 from mi_rim import *
@@ -12,6 +13,7 @@ from flair.models.sequence_tagger_utils.crf import CRF
 from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecoder
 from flair.data import Dictionary
 from utils.config import DatasetConfig, ModelConfig
+from utils.universal import Option, OptionState
 from utils.config import get_experiment_config
 from pudb import set_trace
 
@@ -896,4 +898,100 @@ class SeqLabelerBatched(torch.nn.Module):
                     )
                 )
             predicted_annos_batch.append(predicted_annos)
+        return loss, predicted_annos_batch
+
+
+class SeqLabelerNoTokenization(torch.nn.Module):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super(SeqLabelerNoTokenization, self).__init__()
+        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+        self.input_dim = model_config.bert_model_output_dim
+        self.num_class = (dataset_config.num_types * 2) + 1
+        self.classifier = nn.Linear(self.input_dim, self.num_class)
+        label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
+        self.label_to_idx = label_to_idx
+        self.idx_to_label = idx_to_label
+        self.loss_function = nn.CrossEntropyLoss()
+        self.dataset_config = dataset_config
+        self.model_config = model_config
+
+    def get_bert_encoding_for_batch(self, samples: List[Sample]) -> transformers.BatchEncoding:
+        batch_of_sample_texts = [sample.text for sample in samples]
+        bert_encoding_for_batch = self.bert_tokenizer(batch_of_sample_texts, return_tensors="pt",
+                                                      is_split_into_words=False,
+                                                      add_special_tokens=True, truncation=True, padding=True,
+                                                      max_length=512).to(device)
+        return bert_encoding_for_batch
+
+    def get_bert_embeddings_for_batch(self, encoding: transformers.BatchEncoding):
+        bert_embeddings_batch = self.bert_model(encoding['input_ids'], return_dict=True)
+        # SHAPE: (batch, seq, emb_dim)
+        bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+        return bert_embeddings_batch
+
+    def get_token_annos_batch(self, bert_encoding, expected_batch_size) -> List[List[Option[Anno]]]:
+        token_ids_matrix = bert_encoding['input_ids']
+        batch_size = len(token_ids_matrix)
+        num_tokens = len(token_ids_matrix[0])
+        assert batch_size == expected_batch_size
+        token_annos_batch: List[List[Option[Anno]]] = []
+        for batch_idx in range(batch_size):
+            char_spans: List[Option[transformers.CharSpan]] = [
+                Option(bert_encoding.token_to_chars(batch_or_token_index=batch_idx, token_index=token_idx))
+                for token_idx in range(num_tokens)
+            ]
+
+            token_annos_batch.append(
+                [
+                    Option(Anno(begin_offset=span.get_value().start, end_offset=span.get_value().end,
+                                label_type='BertTokenAnno', extraction=None))
+                    if span.state == OptionState.Something else Option(None)
+                    for span in char_spans if span.state == OptionState.Something
+                ]
+            )
+        return token_annos_batch
+
+    def forward(self,
+                samples: List[Sample]
+                ):
+        assert isinstance(samples, list)
+        # encoding helps manage tokens created by bert
+        bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples)
+        # SHAPE (batch_size, seq_len, bert_emb_len)
+        bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
+        predictions_logits_batch = self.classifier(bert_embeddings_batch)
+
+        gold_labels_batch = train_util.get_bio_labels_for_bert_tokens_batch(
+            self.get_token_annos_batch(bert_encoding_for_batch, len(samples)),
+            [sample.annos.gold for sample in samples]
+        )
+        assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
+        assert len(gold_labels_batch[0]) == bert_embeddings_batch.shape[1]  # same num labels as tokens
+
+        gold_label_indices = [
+            [self.label_to_idx[label] for label in gold_labels]
+            for gold_labels in gold_labels_batch
+        ]
+        gold_label_indices = torch.tensor(gold_label_indices).to(device)
+
+        loss = self.loss_function(
+            torch.permute(predictions_logits_batch, (0, 2, 1)),
+            gold_label_indices
+        )
+
+        predicted_label_indices_batch = torch.argmax(predictions_logits_batch, dim=2).cpu().detach().numpy()
+        predicted_labels_batch = [
+            [self.idx_to_label[label_id] for label_id in predicted_label_indices]
+            for predicted_label_indices in predicted_label_indices_batch
+        ]
+        predicted_annos_batch: List[List[Anno]] = [
+            util.get_annos_from_bio_labels(
+                prediction_labels=predicted_labels,
+                batch_encoding=bert_encoding_for_batch,
+                batch_idx=batch_idx,
+                sample_text=samples[batch_idx].text
+            )
+            for batch_idx, predicted_labels in enumerate(predicted_labels_batch)
+        ]
         return loss, predicted_annos_batch

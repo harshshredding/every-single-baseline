@@ -16,6 +16,7 @@ from utils.config import DatasetConfig
 import logging
 from pudb import set_trace
 import shutil
+from preamble import *
 
 
 def get_bert_tokenizer():
@@ -340,8 +341,7 @@ def enumerate_spans(sentence: List,
     return spans
 
 
-def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding, batch_idx: int) \
-        -> List[tuple[int, int, str]]:
+def get_spans_from_bio_labels_token_indices(predictions_sub: List[Label]) -> List[tuple]:
     span_list = []
     start = None
     start_label = None
@@ -365,11 +365,40 @@ def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding, batc
             raise Exception(f'Illegal label {label}')
     if start is not None:
         span_list.append((start, len(predictions_sub) - 1, start_label))
+    return span_list
+
+
+def get_annos_from_bio_labels(
+        prediction_labels: List[Label],
+        batch_encoding,
+        batch_idx: int,
+        sample_text: str,
+) -> List[Anno]:
+    spans_token_idx = get_spans_from_bio_labels_token_indices(prediction_labels)
+    ret = []
+    for span in spans_token_idx:
+        start_char_span = batch_encoding.token_to_chars(batch_or_token_index=batch_idx, token_index=span[0])
+        end_char_span = batch_encoding.token_to_chars(batch_or_token_index=batch_idx, token_index=span[1])
+        if (start_char_span is not None) and (end_char_span is not None):
+            ret.append(
+                Anno(
+                    begin_offset=start_char_span.start,
+                    end_offset=end_char_span.end,
+                    label_type=span[2],
+                    extraction=sample_text[start_char_span.start: end_char_span.end]
+                )
+            )
+    return ret
+
+
+def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding, batch_idx: int) \
+        -> List[tuple[int, int, str]]:
+    spans_token_idx = get_spans_from_bio_labels_token_indices(predictions_sub)
     span_list_word_idx = [
         (batch_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span[0]),
          batch_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span[1]),
          span[2])
-        for span in span_list
+        for span in spans_token_idx
     ]
     # filter the invalid spans due to padding
     span_list_word_idx = [span for span in span_list_word_idx if (span[0] is not None) and (span[1] is not None)]
@@ -750,7 +779,7 @@ def assert_tokens_contain(token_data: List[TokenData], strings_to_check: List[st
 #     return new_labels
 
 
-def get_labels_bio(token_anno_list: List[Anno], gold_annos: List[Anno]) -> List[Label]:
+def get_labels_bio(token_anno_list: List[Option[Anno]], gold_annos: List[Anno]) -> List[Label]:
     """
     Takes all tokens and gold annotations for a sample
     and outputs a labels(one for each token) representing 
@@ -758,19 +787,22 @@ def get_labels_bio(token_anno_list: List[Anno], gold_annos: List[Anno]) -> List[
     """
     new_labels = []
     for token_anno in token_anno_list:
-        annos_that_surround = get_biggest_anno_surrounding_token(gold_annos, token_anno)
-        if not len(annos_that_surround):
+        if token_anno.state == OptionState.Nothing:
             new_labels.append(Label.get_outside_label())
         else:
-            assert len(annos_that_surround) == 1
-            annos_with_same_start = [
-                anno for anno in annos_that_surround if anno.begin_offset == token_anno.begin_offset]
-            if len(annos_with_same_start):
-                new_labels.append(
-                    Label(annos_with_same_start[0].label_type, BioTag.begin))
+            annos_that_surround = get_biggest_anno_surrounding_token(gold_annos, token_anno.get_value())
+            if not len(annos_that_surround):
+                new_labels.append(Label.get_outside_label())
             else:
-                new_labels.append(
-                    Label(annos_that_surround[0].label_type, BioTag.inside))
+                assert len(annos_that_surround) == 1
+                annos_with_same_start = [
+                    anno for anno in annos_that_surround if anno.begin_offset == token_anno.get_value().begin_offset]
+                if len(annos_with_same_start):
+                    new_labels.append(
+                        Label(annos_with_same_start[0].label_type, BioTag.begin))
+                else:
+                    new_labels.append(
+                        Label(annos_that_surround[0].label_type, BioTag.inside))
     return new_labels
 
 

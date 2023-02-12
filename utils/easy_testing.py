@@ -1,9 +1,16 @@
 from transformers import AutoModel
 from transformers import AutoTokenizer
 from typing import List
+from utils.config import get_dataset_config_by_name, ModelConfig
 import train_util
-from utils.config import get_dataset_config_by_name
 from structs import Sample
+
+
+def get_bert_tokenizer():
+    """
+    Get the bert tokenizer
+    """
+    return AutoTokenizer.from_pretrained('bert-base-cased')
 
 
 def get_bert_model():

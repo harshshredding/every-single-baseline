@@ -1,3 +1,3 @@
-from utils.openai import get_socialdisner_train_predictions_from_gpt3
+from utils.easy_testing import get_bert_tokenizer
 
-get_socialdisner_train_predictions_from_gpt3()
+tokenizer = get_bert_tokenizer()

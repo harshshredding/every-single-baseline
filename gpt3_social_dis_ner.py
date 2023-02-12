@@ -54,12 +54,10 @@ def main():
     with open('./social_dis_ner_openai_output_train.json', 'r') as gpt_predictions_file:
         gpt_predictions = json.load(gpt_predictions_file)
     print(len(gpt_predictions))
-    gpt_predictions_dict = {
-        sample_id: ','.join(diseases)
-        for sample_id, diseases in gpt_predictions
-    }
-    print("dict len", len(gpt_predictions_dict))
-    return gpt_predictions_dict
+
+    with open('gpt_train_predictions_pretty.txt', 'w') as gpt_pretty_file:
+        for sample_id, diseases in gpt_predictions:
+            print((sample_id, diseases), file=gpt_pretty_file)
 
 
 if __name__ == '__main__':

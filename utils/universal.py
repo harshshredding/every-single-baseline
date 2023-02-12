@@ -1,5 +1,6 @@
-
 from colorama import Fore, Style
+from enum import Enum
+from typing import Generic, TypeVar
 
 
 def print_dict(some_dict):
@@ -20,3 +21,24 @@ def print_green(some_string):
 def die(message):
     raise RuntimeError(message)
 
+
+class OptionState(Enum):
+    Something = 1
+    Nothing = 2
+
+
+T = TypeVar('T')
+
+
+class Option(Generic[T]):
+    def __init__(self, val: T):
+        if val is None:
+            self.state = OptionState.Nothing
+        else:
+            self.state = OptionState.Something
+            self.value = val
+
+    def get_value(self) -> T:
+        if self.state == OptionState.Nothing:
+            raise RuntimeError("Trying to access nothing")
+        return self.value

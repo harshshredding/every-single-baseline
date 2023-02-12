@@ -78,10 +78,13 @@ class PreprocessSocialDisNer(Preprocessor):
                 data = new_str
             twitter_id = filename[:-4]
             tweet_annos = tweet_to_annos.get(twitter_id, [])
-            sample_text_gpt_augmented = data + ". " + gpt_predictions_dict[twitter_id]
+            gpt_predictions_prefix = gpt_predictions_dict[twitter_id] + ' [SEP] '
+            for anno in tweet_annos:
+                anno.begin_offset = anno.begin_offset + len(gpt_predictions_prefix)
+                anno.end_offset = anno.end_offset + len(gpt_predictions_prefix)
             ret.append(
                 Sample(
-                    text=sample_text_gpt_augmented,
+                    text=gpt_predictions_prefix + data,
                     id=twitter_id,
                     annos=AnnotationCollection(tweet_annos, [])
                 )

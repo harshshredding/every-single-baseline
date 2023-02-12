@@ -23,7 +23,6 @@ geometry: margin=2cm
 - Framed as a [Contrastive Learning problem][contrastive].
 - Experiment with [GPT3][gpt].
 - Understand natural language better (why not ?!).
-- Try dropping custom tokenization.
 - Reinforcement learning for richer representation.
 - Check out [Foundation models][foundation_models].
 - Evaluate every dataset on [GPT][gpt].
@@ -36,11 +35,18 @@ geometry: margin=2cm
 - Current NER cost function doesn't take into account **how close your predicted span was** to the actual span.
 - Use convolutional neural networks to improve span representations.
 - Implement [SpanRel][spanrel]
+- **Please read:** [Super Natural Instructions][smallgpt]
+- Try dropping custom tokenization.
+  - Try using [Character Based Pretrained Model][canine]
+- Read [T5][t5] paper.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
 - Use names from WikiPedia.
 
+[t5]: https://paperswithcode.com/method/t5
+[canine]: https://arxiv.org/pdf/2103.06874.pdf
+[smallgpt]: https://aclanthology.org/2022.emnlp-main.340.pdf
 [pipeline]: https://arxiv.org/pdf/2010.12812.pdf
 [dragon]: https://arxiv.org/abs/2210.09338
 [chatgpt]: https://openai.com/blog/chatgpt/

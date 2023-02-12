@@ -121,6 +121,15 @@ def get_bio_labels_from_annos_batch(
     return expanded_labels_batch
 
 
+def get_bio_labels_for_bert_tokens_batch(
+        token_annos_batch: List[List[Option[Anno]]],
+        gold_annos_batch: List[List[Anno]]
+):
+    labels_batch = [util.get_labels_bio(token_annos, gold_annos)
+                    for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
+    return labels_batch
+
+
 # TODO: remove following method
 def read_pos_embeddings_file(dataset_config: DatasetConfig):
     return pd.read_pickle(dataset_config['pos_embeddings_path'])
