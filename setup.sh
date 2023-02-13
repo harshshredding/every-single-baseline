@@ -30,8 +30,6 @@ pip install flair
 pip install dropbox
 pip install benepar
 pip install ipython
-pip install gatenlp
-pip install pandas
 
 git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"

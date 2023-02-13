@@ -18,17 +18,18 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
                                                            char_index=gold_anno.begin_offset)
             end_token_idx = batch_encoding.char_to_token(batch_or_char_index=batch_idx,
                                                          char_index=(gold_anno.end_offset - 1))
-            assert start_token_idx is not None, f"start offset could not be mapped. anno: {gold_anno}, sample: {sample}"
-            assert end_token_idx is not None, f"end offset could not be mapped. anno: {gold_anno}, sample: {sample}"
-            token_level_annos_for_sample.append(
-                Anno(
-                    begin_offset=start_token_idx,
-                    end_offset=end_token_idx + 1,
-                    label_type=gold_anno.label_type,
-                    extraction=gold_anno.extraction,
-                    features=gold_anno.features
+            if (start_token_idx is not None) and (end_token_idx is not None):
+                token_level_annos_for_sample.append(
+                    Anno(
+                        begin_offset=start_token_idx,
+                        end_offset=end_token_idx + 1,
+                        label_type=gold_anno.label_type,
+                        extraction=gold_anno.extraction,
+                        features=gold_anno.features
+                    )
                 )
-            )
+            else:
+                print("WARN: Missed anno because couldn't map char_index to token_idx")
         ret.append(token_level_annos_for_sample)
     return ret
 
