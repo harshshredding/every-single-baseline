@@ -383,7 +383,7 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     # if dataset_config['model_name'] == 'OnlyRoberta3Classes':
     #     return OnlyRoberta3Classes().to(device)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
-    model_class = locate(f"models.{model_config.model_name}")
+    model_class = locate(f"all_models.{model_config.model_name}")
     if model_class is None:
         model_class = locate(f"models.span_batched_no_custom_tok.{model_config.model_name}")
     return model_class(all_types, model_config=model_config, dataset_config=dataset_config).to(device)
