@@ -16,6 +16,7 @@ from utils.config import DatasetConfig, ModelConfig
 from utils.universal import Option, OptionState
 from utils.config import get_experiment_config
 from pudb import set_trace
+from models.span_batched_no_custom_tok import SpanBertNoTokenizationBatched
 
 
 class Embedding(nn.Module):
@@ -995,3 +996,5 @@ class SeqLabelerNoTokenization(torch.nn.Module):
             for batch_idx, predicted_labels in enumerate(predicted_labels_batch)
         ]
         return loss, predicted_annos_batch
+
+

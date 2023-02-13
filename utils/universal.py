@@ -1,6 +1,7 @@
 from colorama import Fore, Style
 from enum import Enum
 from typing import Generic, TypeVar
+import torch
 
 
 def print_dict(some_dict):
@@ -42,3 +43,7 @@ class Option(Generic[T]):
         if self.state == OptionState.Nothing:
             raise RuntimeError("Trying to access nothing")
         return self.value
+
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("using device", device)
