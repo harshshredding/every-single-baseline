@@ -17,7 +17,11 @@ def get_experiment_results_dict(performance_csv_file_path):
     experiment_result_dict = {}
     with open(performance_csv_file_path, 'r') as perf_file:
         reader = csv.DictReader(perf_file)
+        row : dict
         for row in reader:
+            experiment_name = row.get('experiment_name', 'n/a')
+            model_name = row.get('model_name', 'n/a')
+            dataset_name = row.get('dataset_name', 'n/a')
             experiment = Experiment(row['experiment_name'], row['dataset_name'])
             curr_score = float(row['f1_score'])
             if experiment not in experiment_result_dict:

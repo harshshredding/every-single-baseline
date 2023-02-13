@@ -17,7 +17,16 @@ def download_all_performance_files():
         'performance_submit_span_width_embed_large.csv',
         'performance_seq_large_experiment.csv',
         'performance_submit_multiconer.csv',
-        'performance_large_legal_and_genia.csv'
+        'performance_large_legal_and_genia.csv',
+        'performance_multiconer_experiment_after_submission.csv',
+        'performance_gpt_experiment_large_special_token_span.csv',
+        'performance_gpt_experiment_base_special_span.csv',
+        'performance_social_dis_ner_no_custom_tokenization.csv',
+        'performance_gpt_experiment_large_special_token.csv',
+        'performance_gpt_experiment_base_special_token.csv',
+        'performance_gpt_experiment_large.csv',
+        'performance_gpt_experiment_base.csv',
+        'performance_batched_biomedical_base.csv'
     ]
     for performance_file in performance_files_to_download:
         dropbox_path = f'/{performance_file}'
@@ -59,7 +68,7 @@ def main():
                            if len(max_performance) > 4
                            else max_performance)
             else:
-                row.append(-1)
+                row.append('n/a')
         assert len(row) == 10
         table_data.append(row)
     with open('table.txt', 'w') as table_file:
