@@ -1,0 +1,8 @@
+model_config_name: SpanBatchedNoTokenizationLargeSpanBert
+bert_model_name: SpanBERT/spanbert-large-cased
+bert_model_output_dim: 1024
+num_epochs: 15
+save_models_dir: ./models
+model_name: SpanBertNoTokenizationBatched
+optimizer: Adam
+learning_rate: 1e-5

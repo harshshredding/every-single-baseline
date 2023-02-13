@@ -1,12 +1,8 @@
 import json
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from preprocess import Preprocessor
-from typing import List, Dict
-import util
-from enum import Enum
+from typing import Dict
 from collections import Counter
-import spacy
-from utils.universal import die
 import benepar
 from annotators import Annotator, GoogleSearch, TokenAnnotator
 from preamble import *
@@ -80,34 +76,21 @@ def read_raw_data_list(raw_file_path: str) -> List[tuple[SampleId, List[tuple]]]
 class PreprocessMulticoner(Preprocessor):
     def __init__(
             self,
-            name: str,
-            entity_type_file_path: str,
-            annotations_file_path: str,
-            visualization_file_path: str,
-            tokens_file_path: str,
-            sample_text_file_path: str,
-            samples_file_path: str,
             dataset_split: DatasetSplit,
-            granularity: Granularity,
-            annotators: List[Annotator],
-            thread_num: int
+            preprocessor_type: str,
+            annotators: List[Annotator] = []
     ) -> None:
         super().__init__(
-            name=name,
-            entity_type_file_path=entity_type_file_path,
-            annotations_file_path=annotations_file_path,
-            visualization_file_path=visualization_file_path,
-            tokens_file_path=tokens_file_path,
-            sample_text_file_path=sample_text_file_path,
-            samples_file_path=samples_file_path,
-            annotators=annotators
+            preprocessor_type=preprocessor_type,
+            dataset=Dataset.multiconer_fine,
+            annotators=annotators,
+            dataset_split=dataset_split
         )
-        self.thread_num = thread_num
         self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) \
                or (dataset_split == DatasetSplit.valid) \
                or (dataset_split == DatasetSplit.test)
-        self.granularity = granularity
+        self.granularity = Granularity.fine
         self.coarse_to_fine = {
             'Coarse_Location': ['Facility', 'OtherLOC', 'HumanSettlement', 'Station'],
             'Coarse_Creative_Work': ['VisualWork', 'MusicalWork', 'WrittenWork', 'ArtWork', 'Software', 'OtherCW'],
@@ -118,10 +101,6 @@ class PreprocessMulticoner(Preprocessor):
             'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease'],
             'O': ['O']
         }
-        # benepar constituency parsing spacy pipeline
-        nlp_benepar = spacy.load('en_core_web_md')
-        nlp_benepar.add_pipe("benepar", config={"model": "benepar_en3"})
-        self.nlp_benepar = nlp_benepar
 
     def __get_all_fine_grained_labels(self):
         ret = []
@@ -130,7 +109,7 @@ class PreprocessMulticoner(Preprocessor):
                 ret.append(fine_label)
         return ret
 
-    def create_entity_types_file(self) -> None:
+    def get_entity_types(self) -> List[str]:
         samples = self.__get_samples(f"multiconer-data-raw/public_data/EN-English/en_train.conll")
         train_labels_set = set()
         train_labels_occurences = []
@@ -149,9 +128,7 @@ class PreprocessMulticoner(Preprocessor):
         print("top level occurence count")
         print(json.dumps(label_occurence_count, indent=4))
         print("num fine labels", len(train_labels_set))
-        with util.open_make_dirs(self.entity_type_file_path, 'w') as types_file:
-            for fine_label in train_labels_set:
-                print(fine_label, file=types_file)
+        return list(train_labels_set)
 
     def get_samples(self) -> List[Sample]:
         if self.dataset_split == DatasetSplit.valid:
@@ -233,20 +210,7 @@ class PreprocessMulticoner(Preprocessor):
             sample_text = self.__get_text(tokens)
             sample_gold_annos = annos_dict.get(sample_id, [])
             ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, [])))
-
-        if 'en_test' in raw_file_path:
-            expected_num_samples = 247947
-            assert len(ret) == expected_num_samples
-            chunk = expected_num_samples // 10
-            assert chunk == 24794
-            if self.thread_num < 10:
-                return ret[self.thread_num * chunk: (self.thread_num + 1) * chunk]
-            elif self.thread_num == 10:
-                return ret[10 * chunk:]
-            else:
-                raise RuntimeError("Cannot support more than 11 threads")
-        else:
-            return ret
+        return ret
 
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"
@@ -362,24 +326,24 @@ class PreprocessMulticoner(Preprocessor):
 #     )
 #     valid_fine_preproc.run()
 
-
-def google_preprocess_test_fine(thread_num: int):
-    prefix = f"{thread_num}_google_{Dataset.multiconer_fine.name}_{DatasetSplit.test.name}"
-    annotators = [GoogleSearch(), TokenAnnotator()]
-    test_fine_preproc = PreprocessMulticoner(
-        name=f"Multi_Test_Fine_{thread_num}",
-        entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
-        annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
-        visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
-        tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
-        sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
-        samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
-        dataset_split=DatasetSplit.test,
-        granularity=Granularity.fine,
-        annotators=annotators,
-        thread_num=thread_num
-    )
-    test_fine_preproc.run()
+#
+# def google_preprocess_test_fine(thread_num: int):
+#     prefix = f"{thread_num}_google_{Dataset.multiconer_fine.name}_{DatasetSplit.test.name}"
+#     annotators = [GoogleSearch(), TokenAnnotator()]
+#     test_fine_preproc = PreprocessMulticoner(
+#         name=f"Multi_Test_Fine_{thread_num}",
+#         entity_type_file_path=f'./preprocessed_data/{prefix}_types.txt',
+#         annotations_file_path=f'./preprocessed_data/{prefix}_annos.tsv',
+#         visualization_file_path=f'./preprocessed_data/{prefix}_visualization.bdocjs',
+#         tokens_file_path=f'./preprocessed_data/{prefix}_tokens.json',
+#         sample_text_file_path=f"./preprocessed_data/{prefix}_sample_text.json",
+#         samples_file_path=f"./preprocessed_data/{prefix}_samples.json",
+#         dataset_split=DatasetSplit.test,
+#         granularity=Granularity.fine,
+#         annotators=annotators,
+#         thread_num=thread_num
+#     )
+#     test_fine_preproc.run()
 
 
 # def preprocess_valid_coarse():
@@ -422,8 +386,8 @@ def google_preprocess_test_fine(thread_num: int):
 
 # google_preprocess_train_fine()
 # google_preprocess_valid_fine()
-if __name__ == '__main__':
-    google_preprocess_test_fine(1)
+# if __name__ == '__main__':
+#     google_preprocess_test_fine(1)
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.valid.name}_{Granularity.fine.name}"
 # valid_fine_preproc = PreprocessMulticoner(

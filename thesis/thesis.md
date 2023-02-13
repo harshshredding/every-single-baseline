@@ -39,11 +39,14 @@ geometry: margin=2cm
 - Try dropping custom tokenization.
   - Try using [Character Based Pretrained Model][canine]
 - Read [T5][t5] paper.
+- Some annos' offsets cannot be mapped to token indices.
+- Search [You.com][you] instead.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
 - Use names from WikiPedia.
 
+[you]: https://you.com
 [t5]: https://paperswithcode.com/method/t5
 [canine]: https://arxiv.org/pdf/2103.06874.pdf
 [smallgpt]: https://aclanthology.org/2022.emnlp-main.340.pdf

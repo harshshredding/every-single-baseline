@@ -9,8 +9,6 @@ from pydoc import locate
 class Preprocessor(ABC):
     """
     An abstraction which standardizes the preprocessing
-    of all NER datasets. This standardization makes it **easy** to 
-    run new NER models on **all** NER dataset.
     """
 
     def __init__(
