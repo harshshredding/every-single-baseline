@@ -4,7 +4,7 @@ from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpa
 import util
 from structs import Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
-from utils.config import ModelConfig
+from utils.config import ModelConfig, DatasetConfig
 import torch.nn as nn
 from preamble import *
 
@@ -23,7 +23,7 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
             token_level_annos_for_sample.append(
                 Anno(
                     begin_offset=start_token_idx,
-                    end_offset=end_token_idx,
+                    end_offset=end_token_idx + 1,
                     label_type=gold_anno.label_type,
                     extraction=gold_anno.extraction,
                     features=gold_anno.features
@@ -34,7 +34,7 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
 
 
 class SpanBertNoTokenizationBatched(torch.nn.Module):
-    def __init__(self, all_types: List[str], model_config: ModelConfig):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(SpanBertNoTokenizationBatched, self).__init__()
         self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
@@ -151,12 +151,12 @@ class SpanBertNoTokenizationBatched(torch.nn.Module):
         all_possible_spans_labels = []
         for span in all_possible_spans_list:
             corresponding_anno_list = [anno for anno in sub_token_level_annos if
-                                       (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
+                                       (anno.begin_offset == span[0]) and (anno.end_offset == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
                     print("WARN: Didn't expect multiple annotations to match one span")
                 corresponding_anno = corresponding_anno_list[0]
-                all_possible_spans_labels.append(self.type_to_idx[corresponding_anno[2]])
+                all_possible_spans_labels.append(self.type_to_idx[corresponding_anno.label_type])
             else:
                 all_possible_spans_labels.append(self.type_to_idx["NO_TYPE"])
         assert len(all_possible_spans_labels) == len(all_possible_spans_list)

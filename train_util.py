@@ -1,10 +1,8 @@
 from structs import *
 import pandas as pd
-from models import *
 import csv
 import util
 from typing import Dict
-from colorama import Fore, Style
 from utils.config import ModelConfig, DatasetConfig
 import utils.dropbox as dropbox_util
 import argparse
@@ -12,6 +10,9 @@ import glob
 from pathlib import Path
 from dataclasses import dataclass
 from pydoc import locate
+from preamble import *
+from transformers import AutoTokenizer
+import torch.nn as nn
 
 
 def get_experiment_name_from_user():
@@ -383,6 +384,8 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     #     return OnlyRoberta3Classes().to(device)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
     model_class = locate(f"models.{model_config.model_name}")
+    if model_class is None:
+        model_class = locate(f"models.span_batched_no_custom_tok.{model_config.model_name}")
     return model_class(all_types, model_config=model_config, dataset_config=dataset_config).to(device)
 
 
@@ -494,7 +497,7 @@ def validate(
         #  --- GET FILES READY FOR WRITING ---
         predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
         mistakes_file_writer = csv.writer(mistakes_file, delimiter='\t')
-        train_util.prepare_file_headers(mistakes_file_writer, predictions_file_writer)
+        prepare_file_headers(mistakes_file_writer, predictions_file_writer)
         with torch.no_grad():
             num_TP_total = 0
             num_FP_total = 0
@@ -527,16 +530,16 @@ def validate(
                 num_FN_total += num_FN
 
                 # write sample predictions
-                train_util.store_predictions(validation_sample, predicted_annos_valid, predictions_file_writer)
+                store_predictions(validation_sample, predicted_annos_valid, predictions_file_writer)
                 # write sample mistakes
-                train_util.store_mistakes(validation_sample, false_positives_sample, false_negatives_sample,
-                                          mistakes_file_writer)
+                store_mistakes(validation_sample, false_positives_sample, false_negatives_sample,
+                               mistakes_file_writer)
     micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
     logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
     visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, validation_samples)
-    train_util.store_performance_result(performance_file_path, micro_f1, epoch, experiment_name=experiment_name,
-                                        dataset_name=dataset_name, model_config_name=model_config_name)
+    store_performance_result(performance_file_path, micro_f1, epoch, experiment_name=experiment_name,
+                             dataset_name=dataset_name, model_config_name=model_config_name)
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
@@ -565,14 +568,14 @@ def test(
     with open(predictions_file_path, 'w') as predictions_file:
         #  --- GET FILES READY FOR WRITING ---
         predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
-        train_util.prepare_predictions_file_header(predictions_file_writer)
+        prepare_predictions_file_header(predictions_file_writer)
 
         with torch.no_grad():
             # Test Loop
             for test_sample in test_samples:
                 loss, predicted_annos_valid = model(test_sample)
                 # write sample predictions
-                train_util.store_predictions(test_sample, predicted_annos_valid, predictions_file_writer)
+                store_predictions(test_sample, predicted_annos_valid, predictions_file_writer)
     # Upload predictions to dropbox
     dropbox_util.upload_file(predictions_file_path)
     logger.info(f"Done validating!\n\n\n")
