@@ -1,4 +1,4 @@
-model_config_name: SpanBatchedNoTokenizationLargeSpanBert
+model_config_name: SpanRepSpanBertLarge
 bert_model_name: SpanBERT/spanbert-large-cased
 bert_model_output_dim: 1024
 num_epochs: 15
