@@ -42,7 +42,8 @@ geometry: margin=2cm
 - Some annos' offsets cannot be mapped to token indices.
 - Search [You.com][you] instead for external features.
 - Read [Toolformer][toolformer] paper by Timo.
-- Add Span Information to Tokens somehow.
+- Add Span Information to Tokens somehow and use a span based model.
+- Pose text classification as text segmentation.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
