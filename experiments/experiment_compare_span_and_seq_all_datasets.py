@@ -11,16 +11,6 @@ def get_experiment_config_legal_eval_preamble(model_config_name: str, dataset_co
 
 
 experiments = [
-    # LegalEval Preamble
-    get_experiment_config_legal_eval_preamble(
-        model_config_name='SeqLabelBatchedNoTokenizationLarge',
-        dataset_config_name='legaleval_preamble_vanilla'
-    ),
-
-    get_experiment_config_legal_eval_preamble(
-        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
-        dataset_config_name='legaleval_preamble_vanilla'
-    ),
 
     # Living NER
     get_experiment_config(
@@ -31,6 +21,17 @@ experiments = [
     get_experiment_config(
         model_config_name='SpanBatchedNoTokenizationLargeSpanish',
         dataset_config_name='living_ner_vanilla'
+    ),
+
+    # LegalEval Preamble
+    get_experiment_config_legal_eval_preamble(
+        model_config_name='SeqLabelBatchedNoTokenizationLarge',
+        dataset_config_name='legaleval_preamble_vanilla'
+    ),
+
+    get_experiment_config_legal_eval_preamble(
+        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
+        dataset_config_name='legaleval_preamble_vanilla'
     ),
 
     # Multiconer
