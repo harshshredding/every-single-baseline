@@ -26,6 +26,7 @@ class ModelConfig:
     model_name: str
     optimizer: str
     learning_rate: float
+    batch_size: int
 
 
 class ExperimentConfig(NamedTuple):
@@ -68,7 +69,8 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
             save_models_dir=model_config_raw['save_models_dir'],
             model_name=model_config_raw['model_name'],
             optimizer=model_config_raw['optimizer'],
-            learning_rate=float(model_config_raw['learning_rate'])
+            learning_rate=float(model_config_raw['learning_rate']),
+            batch_size=int(model_config_raw['batch_size'])
         )
         assert isinstance(model_config.bert_model_output_dim, int)
         assert isinstance(model_config.num_epochs, int)

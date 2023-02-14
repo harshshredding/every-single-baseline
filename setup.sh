@@ -38,3 +38,5 @@ python download_preprocessed_data.py
 python unzip_data_files.py
 
 echo 'set -o vi' >> ~/.bashrc
+
+exec bash

@@ -1,6 +1,27 @@
 from utils.config import get_experiment_config
 
+
+def get_experiment_config_legal_eval_preamble(model_config_name: str, dataset_config_name: str):
+    experiment_config = get_experiment_config(
+        model_config_name=model_config_name,
+        dataset_config_name=dataset_config_name
+    )
+    experiment_config.model_config.batch_size = 2
+    return experiment_config
+
+
 experiments = [
+    # LegalEval Preamble
+    get_experiment_config_legal_eval_preamble(
+        model_config_name='SeqLabelBatchedNoTokenizationLarge',
+        dataset_config_name='legaleval_preamble_vanilla'
+    ),
+
+    get_experiment_config_legal_eval_preamble(
+        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
+        dataset_config_name='legaleval_preamble_vanilla'
+    ),
+
     # Living NER
     get_experiment_config(
         model_config_name='SeqLabelBatchedNoTokenizationLarge',
@@ -56,17 +77,6 @@ experiments = [
         dataset_config_name='social_dis_ner_gpt'
     ),
 
-    # LegalEval Preamble
-    get_experiment_config(
-        model_config_name='SeqLabelBatchedNoTokenizationLarge',
-        dataset_config_name='legaleval_preamble_vanilla'
-    ),
-
-    get_experiment_config(
-        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
-        dataset_config_name='legaleval_preamble_vanilla'
-    ),
-
     # LegalEval Judgement
     get_experiment_config(
         model_config_name='SeqLabelBatchedNoTokenizationLarge',
@@ -77,5 +87,4 @@ experiments = [
         model_config_name='SpanBatchedNoTokenizationLargeSpanish',
         dataset_config_name='legaleval_judgement_vanilla'
     ),
-
 ]

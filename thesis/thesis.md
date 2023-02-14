@@ -40,8 +40,9 @@ geometry: margin=2cm
   - Try using [Character Based Pretrained Model][canine]
 - Read [T5][t5] paper.
 - Some annos' offsets cannot be mapped to token indices.
-- Search [You.com][you] instead.
+- Search [You.com][you] instead for external features.
 - Read [Toolformer][toolformer] paper by Timo.
+- Add Span Information to Tokens somehow.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.

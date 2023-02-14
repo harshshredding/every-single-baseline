@@ -57,8 +57,6 @@ train_util.create_performance_file_header(performance_file_path)
 dataset_config: DatasetConfig
 model_config: ModelConfig
 
-# TODO: move this config to models
-BATCH_SIZE = 4
 
 for dataset_config, model_config in experiments:
     train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, IS_DRY_RUN, IS_TESTING)
@@ -116,7 +114,7 @@ for dataset_config, model_config in experiments:
         shuffle(train_samples)
 
         # Training Loop
-        for train_batch in train_util.get_batches(samples=train_samples, batch_size=BATCH_SIZE):
+        for train_batch in train_util.get_batches(samples=train_samples, batch_size=model_config.batch_size):
             optimizer.zero_grad()
             loss, predicted_annos = model(train_batch)
             loss.backward()
