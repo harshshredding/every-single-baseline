@@ -18,7 +18,8 @@ import torch.nn as nn
 def get_experiment_name_from_user():
     all_experiment_file_paths = glob.glob('./experiments/*.py')
     all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
-    return util.get_user_input("Specify experiment name", all_experiment_names)
+    assert all(experiment_name.startswith('experiment') for experiment_name in all_experiment_names)
+    return util.get_user_input("Specify experiment name", sorted(all_experiment_names))
 
 
 @dataclass
@@ -483,13 +484,13 @@ def validate(
         error_visualization_folder_path: str,
         performance_file_path: str,
         experiment_name: str,
-        dataset_name: str,
+        dataset_config_name: str,
         model_config_name: str,
         epoch: int,
 ):
     logger.info("Starting validation")
     model.eval()
-    output_file_prefix = f"{experiment_name}_{dataset_name}_{model_config_name}_epoch_{epoch}"
+    output_file_prefix = f"{experiment_name}_{dataset_config_name}_{model_config_name}_epoch_{epoch}"
     mistakes_file_path = f"{mistakes_folder_path}/{output_file_prefix}_mistakes.tsv"
     predictions_file_path = f"{predictions_folder_path}/{output_file_prefix}_predictions.tsv"
     with open(predictions_file_path, 'w') as predictions_file, \
@@ -539,7 +540,7 @@ def validate(
     visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, validation_samples)
     store_performance_result(performance_file_path, micro_f1, epoch, experiment_name=experiment_name,
-                             dataset_name=dataset_name, model_config_name=model_config_name)
+                             dataset_name=dataset_config_name, model_config_name=model_config_name)
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)

@@ -14,9 +14,29 @@ from transformers.tokenization_utils_base import BatchEncoding
 from transformers import AutoTokenizer
 from utils.config import DatasetConfig
 import logging
-from pudb import set_trace
 import shutil
 from preamble import *
+import glob
+
+
+def check_config_integrity():
+    """
+    Enforce config file name conventions so that it is easier to search for them.
+    """
+    all_experiment_file_paths = glob.glob('./experiments/*.py')
+    all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
+    assert all(experiment_name.startswith('experiment') for experiment_name in all_experiment_names),\
+        "experiment file names should start with 'experiment'"
+
+    all_dataset_config_file_paths = glob.glob('./configs/dataset_configs/*.yaml')
+    all_dataset_config_names = [Path(file_path).stem for file_path in all_dataset_config_file_paths]
+    assert all(dataset_config_name.startswith('dataset') for dataset_config_name in all_dataset_config_names),\
+        "dataset config file names should start with 'dataset'"
+
+    all_model_config_file_paths = glob.glob('./configs/model_configs/*.yaml')
+    all_model_config_names = [Path(file_path).stem for file_path in all_model_config_file_paths]
+    assert all(model_config_name.startswith('model') for model_config_name in all_model_config_names),\
+        "model config file names should start with 'model'"
 
 
 def get_bert_tokenizer():

@@ -10,6 +10,10 @@ from utils.config import DatasetConfig, ModelConfig
 from random import shuffle
 from preamble import *
 
+# Run some checks on our config files before starting
+util.check_config_integrity()
+
+# Get config for training
 training_args = train_util.parse_training_args()
 EXPERIMENT_NAME = training_args.experiment_name
 IS_DRY_RUN = training_args.is_dry_run_mode
@@ -27,7 +31,7 @@ logger.setLevel(logging.INFO)
 logging.getLogger('dropbox').setLevel(logging.WARN)
 transformers.logging.set_verbosity_error()
 
-# -------- CREATE IMPORTANT DIRECTORIES -------
+# Create directories where we will store training results
 logger.info("Create folders for training")
 
 training_results_folder_path = './training_results'
@@ -39,7 +43,6 @@ models_folder_path = f'{training_results_folder_path}/models'
 performance_folder_path = f'{training_results_folder_path}/performance'
 test_predictions_folder_path = f'{training_results_folder_path}/test_predictions'
 
-# Create training-results directories
 util.create_directory_structure(mistakes_folder_path)
 util.create_directory_structure(error_visualization_folder_path)
 util.create_directory_structure(predictions_folder_path)
@@ -50,6 +53,7 @@ util.create_directory_structure(test_predictions_folder_path)
 performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}.csv"
 train_util.create_performance_file_header(performance_file_path)
 
+# Start the experiment
 dataset_config: DatasetConfig
 model_config: ModelConfig
 
@@ -70,6 +74,13 @@ for dataset_config, model_config in experiments:
     logger.info(f"num valid samples: {len(valid_samples)}")
     if IS_TESTING:
         logger.info(f"num test samples: {len(test_samples)}")
+
+    if IS_DRY_RUN:  # during dry run, only work with the first 10 samples
+        train_samples = train_samples[:20]
+        valid_samples = valid_samples[:20]
+        if IS_TESTING:
+            test_samples = test_samples[:20]
+
     logger.info("finished reading data.")
 
     # Check samples
@@ -89,19 +100,20 @@ for dataset_config, model_config in experiments:
 
     for epoch in range(model_config.num_epochs):
         # Don't train for more than 2 epochs while testing
-        if IS_DRY_RUN and epoch > 4:
+        if IS_DRY_RUN and epoch >= 2:
             break
 
         epoch_loss = []
+
         # Begin Training
-        logger.info("-"*20)
+        logger.info("-" * 20)
         logger.info(f"Train epoch {epoch}")
         train_start_time = time.time()
-        model.train()
-        if IS_DRY_RUN:
-            train_samples = train_samples[:10]
 
-        shuffle(train_samples)  # shuffle samples every epoch
+        model.train()
+
+        # shuffle samples every epoch
+        shuffle(train_samples)
 
         # Training Loop
         for train_batch in train_util.get_batches(samples=train_samples, batch_size=BATCH_SIZE):
@@ -115,11 +127,6 @@ for dataset_config, model_config in experiments:
             f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training Time: {str(time.time() - train_start_time)} "
             f"seconds")
 
-        # Begin Validation
-        if IS_DRY_RUN:
-            valid_samples = valid_samples[:10]
-            if IS_TESTING:
-                test_samples = test_samples[:10]
         logger.info(f"Epoch {epoch} DONE!\n\n\n")
 
         train_util.validate(
@@ -132,7 +139,7 @@ for dataset_config, model_config in experiments:
             performance_file_path=performance_file_path,
             experiment_name=EXPERIMENT_NAME,
             model_config_name=model_config.model_config_name,
-            dataset_name=dataset_name,
+            dataset_config_name=dataset_config.dataset_config_name,
             epoch=epoch
         )
 

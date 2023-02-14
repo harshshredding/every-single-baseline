@@ -41,11 +41,13 @@ geometry: margin=2cm
 - Read [T5][t5] paper.
 - Some annos' offsets cannot be mapped to token indices.
 - Search [You.com][you] instead.
+- Read [Toolformer][toolformer] paper by Timo.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
 - Use names from WikiPedia.
 
+[toolformer]: https://arxiv.org/pdf/2302.04761.pdf
 [you]: https://you.com
 [t5]: https://paperswithcode.com/method/t5
 [canine]: https://arxiv.org/pdf/2103.06874.pdf

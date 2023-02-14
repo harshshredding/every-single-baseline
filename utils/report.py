@@ -5,39 +5,46 @@ import csv
 
 class Experiment(NamedTuple):
     experiment_name: str
+    model_name: str
     dataset_name: str
 
 
 class ExperimentResult(NamedTuple):
     experiment: Experiment
-    max_performance: float
+    score: float
 
 
-def get_experiment_results_dict(performance_csv_file_path):
-    experiment_result_dict = {}
+def get_experiment_results(performance_csv_file_path) -> List[ExperimentResult]:
+    performance_dict: dict[Experiment, float] = {}
     with open(performance_csv_file_path, 'r') as perf_file:
         reader = csv.DictReader(perf_file)
-        row : dict
+        row: dict
         for row in reader:
             experiment_name = row.get('experiment_name', 'n/a')
             model_name = row.get('model_name', 'n/a')
             dataset_name = row.get('dataset_name', 'n/a')
-            experiment = Experiment(row['experiment_name'], row['dataset_name'])
             curr_score = float(row['f1_score'])
-            if experiment not in experiment_result_dict:
-                experiment_result_dict[experiment] = curr_score
-            else:
-                max_perf = experiment_result_dict[experiment]
-                if curr_score > max_perf:
-                    experiment_result_dict[experiment] = curr_score
-    return experiment_result_dict
+            experiment = Experiment(
+                experiment_name=experiment_name,
+                model_name=model_name,
+                dataset_name=dataset_name
+            )
+            if (experiment not in performance_dict) or (performance_dict[experiment] < curr_score):
+                performance_dict[experiment] = curr_score
+
+    assert len(performance_dict)
+    ret = []
+    for experiment in performance_dict:
+        ret.append(ExperimentResult(experiment, performance_dict[experiment]))
+    return ret
 
 
 def generate_table_pdf(data: List[List[str]], column_names: List[str], pdf_path: str):
     fig, ax = plt.subplots()
     ax.axis('off')
-    ax.table(cellText=data,
-             colLabels=column_names,
-             )
+    ax.table(
+        cellText=data,
+        colLabels=column_names,
+    )
     fig.tight_layout()
     plt.savefig(pdf_path, bbox_inches='tight')
