@@ -2,13 +2,7 @@ from utils.config import get_experiment_config, get_experiment_config_with_small
 
 
 experiments = [
-
-    # Living NER
-    get_experiment_config_with_smaller_batch(
-        model_config_name='SeqLabelBatchedNoTokenizationLarge',
-        dataset_config_name='living_ner_vanilla'
-    ),
-
+    # Continue livingNER
     get_experiment_config_with_smaller_batch(
         model_config_name='SpanBatchedNoTokenizationLargeSpanish',
         dataset_config_name='living_ner_vanilla'

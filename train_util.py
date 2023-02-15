@@ -62,6 +62,7 @@ def print_experiment_info(
     print("Dataset:", dataset_config.dataset_name)
     print("Model Config Name:", model_config.model_config_name)
     print("Model Name:", model_config.model_name)
+    print("batch_size", model_config.batch_size)
     print("-----------CONFIG----------\n\n")
     print(Style.RESET_ALL)
 

@@ -94,3 +94,12 @@ def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:
         if dataset_config.dataset_config_name == dataset_config_name:
             return dataset_config
     die(f"Should have been able to find dataset config with name {dataset_config_name}")
+
+
+def get_experiment_config_with_smaller_batch(model_config_name: str, dataset_config_name: str):
+    experiment_config = get_experiment_config(
+        model_config_name=model_config_name,
+        dataset_config_name=dataset_config_name
+    )
+    experiment_config.model_config.batch_size = 2
+    return experiment_config

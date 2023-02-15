@@ -44,6 +44,7 @@ geometry: margin=2cm
 - Read [Toolformer][toolformer] paper by Timo.
 - Add Span Information to Tokens somehow and use a span based model.
 - Pose text classification as text segmentation.
+- Previously done normalization work.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
