@@ -1,6 +1,6 @@
 from utils.config import get_experiment_config, get_experiment_config_with_smaller_batch
 
-
+# ERROR: GPU Memory, created another experiment
 experiments = [
 
     # Living NER

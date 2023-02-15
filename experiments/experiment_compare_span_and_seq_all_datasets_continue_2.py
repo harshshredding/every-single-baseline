@@ -1,21 +1,14 @@
 from utils.config import get_experiment_config, get_experiment_config_with_smaller_batch
 
-# Optimization error: Not predicting anything on validation even though training loss went down.
 experiments = [
-    # Continue livingNER
-    get_experiment_config_with_smaller_batch(
-        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
-        dataset_config_name='living_ner_vanilla'
-    ),
-
     # LegalEval Preamble
     get_experiment_config_with_smaller_batch(
-        model_config_name='SeqLabelBatchedNoTokenizationLarge',
+        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
         dataset_config_name='legaleval_preamble_vanilla'
     ),
 
     get_experiment_config_with_smaller_batch(
-        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
+        model_config_name='SeqLabelBatchedNoTokenizationLarge',
         dataset_config_name='legaleval_preamble_vanilla'
     ),
 

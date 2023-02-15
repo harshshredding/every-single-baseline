@@ -44,12 +44,14 @@ geometry: margin=2cm
 - Read [Toolformer][toolformer] paper by Timo.
 - Add Span Information to Tokens somehow and use a span based model.
 - Pose text classification as text segmentation.
-- Previously done normalization work.
+- Previously done entity normalization work in thesis.
+- [SERP API][serp] to scrape google.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
 - Use names from WikiPedia.
 
+[serp]: https://www.scaleserp.com/ 
 [toolformer]: https://arxiv.org/pdf/2302.04761.pdf
 [you]: https://you.com
 [t5]: https://paperswithcode.com/method/t5
