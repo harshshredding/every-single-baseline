@@ -1,18 +1,7 @@
 from utils.config import get_experiment_config, get_experiment_config_with_smaller_batch
 
-# Cannot train legaleval preamble again
+
 experiments = [
-    # LegalEval Preamble
-    get_experiment_config_with_smaller_batch(
-        model_config_name='SpanBatchedNoTokenizationLargeSpanish',
-        dataset_config_name='legaleval_preamble_vanilla'
-    ),
-
-    get_experiment_config_with_smaller_batch(
-        model_config_name='SeqLabelBatchedNoTokenizationLarge',
-        dataset_config_name='legaleval_preamble_vanilla'
-    ),
-
     # Multiconer
     get_experiment_config(
         model_config_name='SeqLabelBatchedNoTokenizationLarge',

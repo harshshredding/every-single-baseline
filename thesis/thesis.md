@@ -46,6 +46,7 @@ geometry: margin=2cm
 - Pose text classification as text segmentation.
 - Previously done entity normalization work in thesis.
 - [SERP API][serp] to scrape google.
+- Bert ignores whitespace and newline.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
