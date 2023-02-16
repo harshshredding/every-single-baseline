@@ -40,9 +40,9 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
 class SpanBertNoTokenizationBatched(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(SpanBertNoTokenizationBatched, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
-        self.input_dim = model_config.bert_model_output_dim
+        self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
+        self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = len(all_types) + 1
         self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
         self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)

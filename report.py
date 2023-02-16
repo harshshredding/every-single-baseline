@@ -26,7 +26,8 @@ def download_all_performance_files():
         'performance_gpt_experiment_base_special_token.csv',
         'performance_gpt_experiment_large.csv',
         'performance_gpt_experiment_base.csv',
-        'performance_batched_biomedical_base.csv'
+        'performance_batched_biomedical_base.csv',
+        'performance_experiment_compare_span_and_seq_all_datasets_continue_3.csv',
     ]
     for performance_file in performance_files_to_download:
         dropbox_path = f'/{performance_file}'

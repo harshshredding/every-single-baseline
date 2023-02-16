@@ -86,7 +86,7 @@ for dataset_config, model_config in experiments:
 
     # ------ MODEL INITIALISATION --------
     logger.info("Starting model initialization.")
-    bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
+    bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
     model = train_util.prepare_model(model_config, dataset_config)
     optimizer = train_util.get_optimizer(model, model_config)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)

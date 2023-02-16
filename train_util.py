@@ -92,7 +92,7 @@ def get_bert_tokenizer(model_config: ModelConfig):
     """
     Get the bert tokenizer
     """
-    return AutoTokenizer.from_pretrained(model_config.bert_model_name)
+    return AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
 
 
 def get_train_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]:

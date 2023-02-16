@@ -490,9 +490,9 @@ class OnlyRoberta3Classes(torch.nn.Module):
 class JustBert3Classes(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(JustBert3Classes, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
-        self.input_dim = model_config.bert_model_output_dim
+        self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
+        self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = (dataset_config.num_types * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
         label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
@@ -542,9 +542,9 @@ class JustBert3Classes(torch.nn.Module):
 class JustBert3ClassesCRF(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(JustBert3ClassesCRF, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
-        self.input_dim = model_config.bert_model_output_dim
+        self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
+        self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = (dataset_config.num_types * 2) + 1
         label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
         self.label_to_idx = label_to_idx
@@ -627,9 +627,9 @@ def heuristic_decode(predicted_annos: List[Anno]):
 class SpanBert(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig):
         super(SpanBert, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
-        self.input_dim = model_config.bert_model_output_dim
+        self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
+        self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = len(all_types) + 1
         self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
         self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)
@@ -828,9 +828,9 @@ class SpanBertSpanWidthEmbedding(SpanBert):
 class SeqLabelerBatched(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(SeqLabelerBatched, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
-        self.input_dim = model_config.bert_model_output_dim
+        self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
+        self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = (dataset_config.num_types * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
         label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
@@ -905,9 +905,9 @@ class SeqLabelerBatched(torch.nn.Module):
 class SeqLabelerNoTokenization(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(SeqLabelerNoTokenization, self).__init__()
-        self.bert_model = AutoModel.from_pretrained(model_config.bert_model_name)
-        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.bert_model_name)
-        self.input_dim = model_config.bert_model_output_dim
+        self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
+        self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
+        self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = (dataset_config.num_types * 2) + 1
         self.classifier = nn.Linear(self.input_dim, self.num_class)
         label_to_idx, idx_to_label = util.get_bio_label_idx_dicts(all_types, dataset_config)
