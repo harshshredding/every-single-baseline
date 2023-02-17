@@ -16,7 +16,7 @@ from utils.config import DatasetConfig, ModelConfig
 from utils.universal import Option, OptionState
 from utils.config import get_experiment_config
 from pudb import set_trace
-from models.span_batched_no_custom_tok import SpanBertNoTokenizationBatched
+from models.span_batched_no_custom_tok import SpanNoTokenizationBatched
 
 
 class Embedding(nn.Module):

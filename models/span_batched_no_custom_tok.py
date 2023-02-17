@@ -37,9 +37,9 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
     return ret
 
 
-class SpanBertNoTokenizationBatched(torch.nn.Module):
+class SpanNoTokenizationBatched(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
-        super(SpanBertNoTokenizationBatched, self).__init__()
+        super(SpanNoTokenizationBatched, self).__init__()
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
         self.input_dim = model_config.pretrained_model_output_dim
@@ -52,6 +52,7 @@ class SpanBertNoTokenizationBatched(torch.nn.Module):
         self.type_to_idx['NO_TYPE'] = len(self.type_to_idx)
         self.idx_to_type = {i: type_name for type_name, i in self.type_to_idx.items()}
         assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
+        self.max_span_width = model_config.max_span_length
 
     def get_bert_encoding_for_batch(self, samples: List[Sample]) -> transformers.BatchEncoding:
         batch_of_sample_texts = [sample.text for sample in samples]
@@ -81,7 +82,7 @@ class SpanBertNoTokenizationBatched(torch.nn.Module):
         # enumerate all possible spans
         # spans are inclusive
         all_possible_spans_list_batch = [
-            util.enumerate_spans(batch_encoding.word_ids(batch_index=batch_idx))
+            util.enumerate_spans(batch_encoding.word_ids(batch_index=batch_idx), max_span_width=self.max_span_width)
             for batch_idx in range(len(samples))
         ]
         all_possible_spans_labels_batch = self.label_all_possible_spans_batch(

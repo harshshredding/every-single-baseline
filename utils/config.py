@@ -1,8 +1,9 @@
-from typing import NamedTuple
+from typing import NamedTuple, Optional
 from utils.universal import die
 import yaml
 import glob
 from dataclasses import dataclass
+import importlib
 
 
 @dataclass
@@ -26,6 +27,8 @@ class ModelConfig:
     optimizer: str
     learning_rate: float
     batch_size: int
+    # Span Rep Model specific
+    max_span_length: Optional[int] = None
 
 
 def get_large_model_config(
@@ -49,10 +52,10 @@ class ExperimentConfig(NamedTuple):
     model_config: ModelConfig
 
 
-def get_experiment_config(model_config_name: str, dataset_config_name: str) -> ExperimentConfig:
+def get_experiment_config(model_config_module_name: str, dataset_config_name: str) -> ExperimentConfig:
     return ExperimentConfig(
         get_dataset_config_by_name(dataset_config_name),
-        get_model_config_by_name(model_config_name)
+        get_model_config_from_module(model_config_module_name)
     )
 
 
@@ -92,13 +95,13 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
         return model_config
 
 
-def get_model_config_by_name(model_config_name: str) -> ModelConfig:
-    all_config_file_paths = glob.glob('configs/model_configs/*.yaml')
-    for config_file_path in all_config_file_paths:
-        model_config = read_model_config(config_file_path)
-        if model_config.model_config_name == model_config_name:
-            return model_config
-    die(f"Should have been able to find model config with name {model_config_name}")
+def get_model_config_from_module(model_config_module_path: str) -> ModelConfig:
+    """
+    param:
+        model_config_module_path(str): the path to the module in which the model config is defined
+    """
+    model_config_module = importlib.import_module(f'configs.model_configs.{model_config_module_path}')
+    return model_config_module.model_config
 
 
 def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:
@@ -110,9 +113,9 @@ def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:
     die(f"Should have been able to find dataset config with name {dataset_config_name}")
 
 
-def get_experiment_config_with_smaller_batch(model_config_name: str, dataset_config_name: str):
+def get_experiment_config_with_smaller_batch(model_config_module: str, dataset_config_name: str):
     experiment_config = get_experiment_config(
-        model_config_name=model_config_name,
+        model_config_module_name=model_config_module,
         dataset_config_name=dataset_config_name
     )
     experiment_config.model_config.batch_size = 2
