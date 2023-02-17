@@ -388,6 +388,7 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     model_class = locate(f"all_models.{model_config.model_name}")
     if model_class is None:
         model_class = locate(f"models.span_batched_no_custom_tok.{model_config.model_name}")
+    assert model_class is not None, f"model class name {model_config.model_name} could not be found"
     return model_class(all_types, model_config=model_config, dataset_config=dataset_config).to(device)
 
 
