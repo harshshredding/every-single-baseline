@@ -79,10 +79,10 @@ class PreprocessLivingNER(Preprocessor):
             sample_id = filename[:-4]
             gold_annos = annos_dict.get(sample_id, [])
             document_samples.append(Sample(data, sample_id, AnnotationCollection(gold_annos, [])))
-        sentence_samples = []
-        for doc_sample in document_samples:
-            sentence_samples.extend(util.make_sentence_samples(doc_sample, self.nlp))
-        return sentence_samples
+        # sentence_samples = []
+        # for doc_sample in document_samples:
+        #     sentence_samples.extend(util.make_sentence_samples(doc_sample, self.nlp))
+        return document_samples
 
     def get_entity_types(self) -> List[str]:
         return ['HUMAN', 'SPECIES']

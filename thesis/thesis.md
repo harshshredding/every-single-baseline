@@ -47,6 +47,7 @@ geometry: margin=2cm
 - Previously done entity normalization work in thesis.
 - [SERP API][serp] to scrape google.
 - Bert ignores whitespace and newline.
+- Cannot optimize larger models -- Living NER.
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
