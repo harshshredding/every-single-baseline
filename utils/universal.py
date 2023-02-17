@@ -19,6 +19,22 @@ def print_green(some_string):
     print(Style.RESET_ALL)
 
 
+def colorize_string(color: str, string) -> str:
+    return color + string + Style.RESET_ALL
+
+
+def red(obj_to_color) -> str:
+    return colorize_string(Fore.RED, str(obj_to_color))
+
+
+def green(obj_to_color) -> str:
+    return colorize_string(Fore.GREEN, str(obj_to_color))
+
+
+def blue(obj_to_color) -> str:
+    return colorize_string(Fore.BLUE, str(obj_to_color))
+
+
 def die(message):
     raise RuntimeError(message)
 

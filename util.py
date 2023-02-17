@@ -70,12 +70,9 @@ def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_confi
     bert_tokenizer = get_bert_tokenizer()
     num_truncated = 0
     for sample in samples:
-        tokens = get_tokens_from_sample(sample)
-        batch_encoding = bert_tokenizer(
-            tokens, is_split_into_words=True, truncation=True, return_tensors='pt', add_special_tokens=False
-        )
-        if batch_encoding['input_ids'].shape[1] == bert_tokenizer.model_max_length:
-            print(f"WARN: In dataset {dataset_config.dataset_name}, the sample {sample.id} is being truncated")
+        num_tokens = len(bert_tokenizer(sample.text, truncation=True)['input_ids'])
+        if num_tokens == bert_tokenizer.model_max_length:
+            print(f"WARN: In dataset {dataset_config.dataset_name}, the sample {sample.id} is being {red('Truncated')}")
             num_truncated += 1
     print(f"WARN: Total truncated samples : {num_truncated}")
 

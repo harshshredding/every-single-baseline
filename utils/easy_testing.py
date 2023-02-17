@@ -22,9 +22,9 @@ def get_bert_encoding(bert_tokenizer, tokens=List[str]):
                           add_special_tokens=False, truncation=True, max_length=512)
 
 
-def get_train_samples_by_dataset_name(dataset_name: str) -> List[Sample]:
-    return train_util.get_train_samples(get_dataset_config_by_name(dataset_name))
+def get_train_samples_by_dataset_name(dataset_config_name: str) -> List[Sample]:
+    return train_util.get_train_samples(get_dataset_config_by_name(dataset_config_name))
 
 
-def get_valid_samples_by_dataset_name(dataset_name: str) -> List[Sample]:
-    return train_util.get_valid_samples(get_dataset_config_by_name(dataset_name))
+def get_valid_samples_by_dataset_name(dataset_config_name: str) -> List[Sample]:
+    return train_util.get_valid_samples(get_dataset_config_by_name(dataset_config_name))

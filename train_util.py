@@ -53,18 +53,16 @@ def print_experiment_info(
         is_testing: bool,
 ) -> None:
     """Print the configurations of the current run"""
-    print(Fore.GREEN)
     print("\n\n------ DATASET CONFIG --------")
-    print(Fore.BLUE + "Experiment:" + Fore.GREEN, experiment_name)
-    print(Fore.BLUE + "DRY_RUN_MODE:" + Fore.GREEN, is_dry_run)
-    print(Fore.BLUE + "Is Testing:" + Fore.GREEN, is_testing)
-    print(Fore.BLUE + "Data Config Name:" + Fore.GREEN, dataset_config.dataset_config_name)
-    print(Fore.BLUE + "Dataset:" + Fore.GREEN, dataset_config.dataset_name)
-    print(Fore.BLUE + "Model Config Name:" + Fore.GREEN, model_config.model_config_name)
-    print(Fore.BLUE + "Model Name:" + Fore.GREEN, model_config.model_name)
-    print(Fore.BLUE + "Batch_size" + Fore.GREEN, model_config.batch_size)
+    print(blue("Experiment:"), green(experiment_name))
+    print(blue("DRY_RUN_MODE:"), green(is_dry_run))
+    print(blue("Is Testing:"), green(is_testing))
+    print(blue("Data Config Name:"), green(dataset_config.dataset_config_name))
+    print(blue("Dataset:"), green(dataset_config.dataset_name))
+    print(blue("Model Config Name:"), green(model_config.model_config_name))
+    print(blue("Model Name:"), green(model_config.model_name))
+    print(blue("Batch_size"), green(model_config.batch_size))
     print("-----------CONFIG----------\n\n")
-    print(Style.RESET_ALL)
 
 
 def check_label_types(train_samples: List[Sample], valid_samples: List[Sample], all_types: List[str]):
