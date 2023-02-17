@@ -47,6 +47,22 @@ def get_large_model_config(
     )
 
 
+def get_small_model_config(
+        model_config_name: str,
+        model_name: str,
+) -> ModelConfig:
+    return ModelConfig(
+        model_config_name=model_config_name,
+        model_name=model_name,
+        pretrained_model_name='xlm-roberta-base',
+        pretrained_model_output_dim=768,
+        num_epochs=15,
+        optimizer='Adam',
+        batch_size=4,
+        learning_rate=1e-5
+    )
+
+
 class ExperimentConfig(NamedTuple):
     dataset_config: DatasetConfig
     model_config: ModelConfig

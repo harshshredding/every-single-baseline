@@ -1,14 +1,14 @@
 from structs import *
 import util
 from abc import ABC, abstractmethod
-from annotators import Annotator, TokenAnnotator
+from annotators import Annotator, TokenAnnotator, SlidingWindowAnnotator
 from preamble import *
 from pydoc import locate
 
 
 class Preprocessor(ABC):
     """
-    An abstraction which standardizes the preprocessing
+    An abstraction for preprocessing a dataset.
     """
 
     def __init__(
@@ -40,17 +40,14 @@ class Preprocessor(ABC):
         self.preprocessor_type = preprocessor_type
         self.dataset = dataset
 
-    def run_annotation_pipeline(self, samples: List[Sample]):
+    def run_annotation_pipeline(self):
         """
         All samples are annotated by the given annotators in a
         defined sequence (some annotator depend on others).
-
-        Args:
-            samples: the samples we want to annotate.
         """
         assert self.samples is not None
         for annotator in self.annotators:
-            annotator.annotate(samples)
+            self.samples = annotator.annotate(self.samples)
 
     def get_samples_cached(self) -> List[Sample]:
         """
@@ -59,7 +56,7 @@ class Preprocessor(ABC):
         if self.samples is None:
             print("first time extracting samples")
             self.samples = self.get_samples()
-            self.run_annotation_pipeline(self.samples)
+            self.run_annotation_pipeline()
         else:
             print("using cache")
         return self.samples
@@ -69,7 +66,6 @@ class Preprocessor(ABC):
         """
         Extract samples from the given raw data file provided
         by the organizers.
-
         """
 
     @abstractmethod
@@ -148,5 +144,25 @@ def preprocess_train_and_valid_data(preprocessor_module_name: str, preprocessor_
         dataset_split=DatasetSplit.train,
         preprocessor_type=preprocessor_type,
         annotators=[TokenAnnotator()]
+    )
+    preprocessor.run()
+
+
+def preprocess_train_and_valid_with_window(
+        preprocessor_module_name: str,
+        preprocessor_name: str,
+        preprocessor_type: str = 'window'):
+    preprocessor_class = locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
+    preprocessor = preprocessor_class(
+        dataset_split=DatasetSplit.valid,
+        preprocessor_type=preprocessor_type,
+        annotators=[SlidingWindowAnnotator()]
+    )
+    preprocessor.run()
+
+    preprocessor = preprocessor_class(
+        dataset_split=DatasetSplit.train,
+        preprocessor_type=preprocessor_type,
+        annotators=[SlidingWindowAnnotator()]
     )
     preprocessor.run()

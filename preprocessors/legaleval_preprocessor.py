@@ -67,7 +67,7 @@ class PreprocessLegal(Preprocessor):
         ret = []
         with open(raw_file_path, 'r') as raw_file_handler:
             json_data = json.load(raw_file_handler)
-            print("num samples", len(json_data))
+            print("num samples ", len(json_data), raw_file_path)
             for raw_sample in json_data:
                 assert 'id' in raw_sample
                 sample_id = raw_sample['id']

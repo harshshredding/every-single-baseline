@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 import benepar
-from structs import Sample, Anno
+from structs import Sample, Anno, Span, AnnotationCollection
 import spacy
 import util
 from preamble import show_progress
@@ -18,7 +18,7 @@ class Annotator(ABC):
         super().__init__()
 
     @abstractmethod
-    def annotate(self, samples: List[Sample]):
+    def annotate(self, samples: List[Sample]) -> List[Sample]:
         """
         Annotate the given samples.
         """
@@ -35,7 +35,7 @@ class NounPhraseAnnotator(Annotator):
     Annotate all Noun Phrases in all samples.
     """
 
-    def annotate(self, samples: List[Sample]):
+    def annotate(self, samples: List[Sample]) -> List[Sample]:
         print("Annotator: Noun Phrases")
         for sample in show_progress(samples):
             try:
@@ -49,6 +49,7 @@ class NounPhraseAnnotator(Annotator):
                 for sent in spacy_doc.sents:
                     noun_phrase_annos = util.get_noun_phrase_annotations(sent)
                     sample.annos.external.extend(noun_phrase_annos)
+        return samples
 
 
 class TokenAnnotator(Annotator):
@@ -56,7 +57,7 @@ class TokenAnnotator(Annotator):
         super().__init__()
         self.nlp = spacy.load('en_core_web_sm')
 
-    def annotate(self, samples: List[Sample]):
+    def annotate(self, samples: List[Sample]) -> List[Sample]:
         """
         Annotate all tokens.
         """
@@ -71,6 +72,59 @@ class TokenAnnotator(Annotator):
                     Anno(start_offset, end_offset, "Token", str(token))
                 )
             sample.annos.external.extend(token_annos)
+        return samples
+
+
+class SlidingWindowAnnotator(Annotator):
+    def __init__(self, window_size=100) -> None:
+        super().__init__()
+        self.window_size = window_size
+
+    def get_subsamples(self, sample: Sample) -> List[Sample]:
+        assert not len(sample.annos.external)
+        ret = []
+        sample_text = sample.text
+        for i in range(0, len(sample_text), self.window_size):
+            head_span = Span(begin=max(i - self.window_size, 0),
+                             end=i)
+            focus_span = Span(begin=i,
+                              end=min(i + self.window_size, len(sample_text)))
+            tail_span = Span(begin=min(i + self.window_size, len(sample_text)),
+                             end=min(i + (self.window_size * 2), len(sample_text)))
+            annos_in_focus = [anno for anno in sample.annos.gold
+                              if (focus_span.begin <= anno.begin_offset) and (anno.end_offset <= focus_span.end)]
+            head_text = sample_text[head_span.begin:head_span.end] + ' [SEP] '
+            focus_text = sample_text[focus_span.begin:focus_span.end]
+            tail_text = ' [SEP] ' + sample_text[tail_span.begin:tail_span.end]
+            adjusted_annos_in_focus = [
+                Anno(
+                    begin_offset=(anno.begin_offset - focus_span.begin + len(head_text)),
+                    end_offset=(anno.end_offset - focus_span.begin + len(head_text)),
+                    label_type=anno.label_type,
+                    extraction=anno.extraction,
+                    features=anno.features
+                )
+                for anno in annos_in_focus
+            ]
+            ret.append(
+                Sample(
+                    text=(head_text + focus_text + tail_text),
+                    id=(sample.id + '_subsample_' + str(i)),
+                    annos=AnnotationCollection(gold=adjusted_annos_in_focus, external=[])
+                )
+            )
+        return ret
+
+    def annotate(self, samples: List[Sample]) -> List[Sample]:
+        """
+        For a given sample, generate sub-samples while sliding the
+        window over it.
+        """
+        print("Annotator Sliding Window")
+        ret = []
+        for sample in show_progress(samples):
+            ret.extend(self.get_subsamples(sample))
+        return ret
 
 
 def google_get(query_plain):

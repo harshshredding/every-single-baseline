@@ -1,8 +1,14 @@
 from enum import Enum
 from dataclasses import dataclass, field
-from typing import List, Dict
+from typing import List, Dict, NamedTuple
 
 OUTSIDE_LABEL_STRING = 'o'
+
+
+class Span(NamedTuple):
+    """A span"""
+    begin: int
+    end: int
 
 
 class BioTag(Enum):
