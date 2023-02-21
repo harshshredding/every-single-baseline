@@ -3,6 +3,11 @@ This framework allows you to:
 - quickly train your model on all the popular NER datasets.
 - quickly train all popular models on your dataset.
 
+# Supported GPUs
+- Titan 
+- TRX A5000
+- 
+
 # Steps to train on your data
 1. Create 3 files: 
     - `input.json`: 
