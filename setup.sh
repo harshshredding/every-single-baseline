@@ -1,4 +1,5 @@
 #!/bin/sh
+python check_cuda.py
 
 sudo apt-get -y install vim
 
