@@ -9,6 +9,8 @@ from tabulate import tabulate
 def download_all_performance_files():
     util.create_directory_structure('./downloaded_results')
     performance_files_to_download = [
+        'performance_experiment_rerun_failed_legaleval_preamble_window.csv',
+        'performance_experiment_rerun_failed_base.csv',
         'performance_span_noun_phrase_15_epochs.csv',
         'performance_seq_label_semeval.csv',
         'performance_semeval_spanner.csv',

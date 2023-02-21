@@ -1,0 +1,7 @@
+train_samples_file_path: ./preprocessed_data/living_ner_train_window_samples.json
+valid_samples_file_path: ./preprocessed_data/living_ner_valid_window_samples.json
+test_samples_file_path: change_this
+types_file_path: ./preprocessed_data/living_ner_train_window_types.txt
+num_types: 14
+dataset_name: living_ner
+dataset_config_name: living_ner_window

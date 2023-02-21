@@ -48,11 +48,13 @@ geometry: margin=2cm
 - [SERP API][serp] to scrape google.
 - Bert ignores whitespace and newline.
 - Cannot optimize larger models -- Living NER.
+- Take a look at [Biocreative 7: Track 3 - Automatic extraction of medication names in tweets][medication_names]
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
 - Use names from WikiPedia.
 
+[medication_names]: https://biocreative.bioinformatics.udel.edu/tasks/biocreative-vii/track-3/
 [serp]: https://www.scaleserp.com/ 
 [toolformer]: https://arxiv.org/pdf/2302.04761.pdf
 [you]: https://you.com
