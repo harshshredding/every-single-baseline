@@ -151,18 +151,19 @@ def preprocess_train_and_valid_data(preprocessor_module_name: str, preprocessor_
 def preprocess_train_and_valid_with_window(
         preprocessor_module_name: str,
         preprocessor_name: str,
-        preprocessor_type: str = 'window'):
+        preprocessor_type: str,
+):
     preprocessor_class = locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.valid,
         preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator()]
+        annotators=[SlidingWindowAnnotator(window_size=100, stride=50)]
     )
     preprocessor.run()
 
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.train,
         preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator()]
+        annotators=[SlidingWindowAnnotator(window_size=100, stride=50)]
     )
     preprocessor.run()

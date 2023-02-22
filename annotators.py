@@ -76,15 +76,17 @@ class TokenAnnotator(Annotator):
 
 
 class SlidingWindowAnnotator(Annotator):
-    def __init__(self, window_size=100) -> None:
+    def __init__(self, window_size: int, stride: int) -> None:
         super().__init__()
         self.window_size = window_size
+        self.stride = stride
+        assert stride <= window_size
 
     def get_subsamples(self, sample: Sample) -> List[Sample]:
         assert not len(sample.annos.external)
         ret = []
         sample_text = sample.text
-        for i in range(0, len(sample_text), self.window_size):
+        for i in range(0, len(sample_text), self.stride):
             head_span = Span(begin=max(i - self.window_size, 0),
                              end=i)
             focus_span = Span(begin=i,

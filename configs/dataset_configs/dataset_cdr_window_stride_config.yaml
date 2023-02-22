@@ -1,0 +1,7 @@
+train_samples_file_path: ./preprocessed_data/cdr_train_window_stride_samples.json
+valid_samples_file_path: ./preprocessed_data/cdr_valid_window_stride_samples.json
+test_samples_file_path: change_this
+types_file_path: ./preprocessed_data/cdr_train_window_stride_types.txt
+num_types: 2
+dataset_name: cdr
+dataset_config_name: cdr_window_stride
