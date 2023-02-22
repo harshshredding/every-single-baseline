@@ -26,6 +26,7 @@ class Dataset(Enum):
     multiconer_fine = 6
     legaleval_judgement = 7
     legaleval_preamble = 8
+    cdr = 9
 
 
 class DatasetSplit(Enum):
