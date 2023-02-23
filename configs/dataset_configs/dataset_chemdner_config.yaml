@@ -1,0 +1,7 @@
+train_samples_file_path: ./preprocessed_data/chem_drug_ner_train_window_stride_longer_production_samples.json
+valid_samples_file_path: ./preprocessed_data/chem_drug_ner_valid_window_stride_longer_production_samples.json
+test_samples_file_path: change_this
+types_file_path: ./preprocessed_data/chem_drug_ner_train_window_stride_longer_production_types.txt
+num_types: 8
+dataset_name: chemdner
+dataset_config_name: chem_drug_ner_window_stride_longer

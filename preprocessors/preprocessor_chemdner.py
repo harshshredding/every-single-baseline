@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from preamble import *
 from structs import Anno, Sample, AnnotationCollection, DatasetSplit, Dataset
-from preprocess import Preprocessor
+from preprocess import Preprocessor, PreprocessorRunType
 from annotators import Annotator
 
 
@@ -13,7 +13,7 @@ def get_sample_text_from_passage(passage_soup: BeautifulSoup) -> str:
 
 
 def get_annotation_type(anno_soup: BeautifulSoup) -> str:
-    type_info = [info for info in anno_soup.find_all('infon') if info['key'] == 'type'][0]
+    type_info = [info for info in anno_soup.find_all('infon') if info['key'] == 'class'][0]
     return type_info.text
 
 
@@ -63,32 +63,34 @@ def get_samples_from_bioc_file(bioc_xml_file_path: str) -> List[Sample]:
 def get_samples(dataset_split: DatasetSplit) -> List[Sample]:
     match dataset_split:
         case DatasetSplit.valid:
-            raw_data_file_path = 'CDR_Data/CDR.Corpus.v010516/CDR_DevelopmentSet.BioC.xml'
+            raw_data_file_path = 'chemdner_corpus/development.bioc.xml'
         case DatasetSplit.train:
-            raw_data_file_path = 'CDR_Data/CDR.Corpus.v010516/CDR_TrainingSet.BioC.xml'
+            raw_data_file_path = 'chemdner_corpus/training.bioc.xml'
         case _:
             raise RuntimeError("split not supported")
     return get_samples_from_bioc_file(raw_data_file_path)
 
 
-class PreprocessCDR(Preprocessor):
+class PreprocessChemD(Preprocessor):
     """
-    A preprocessor for the CDR dataset.
+    A preprocessor for the ChemD dataset.
     """
 
     def __init__(
             self,
-            preprocessor_type: str,
             dataset_split: DatasetSplit,
-            annotators: List[Annotator]
+            preprocessor_type: str,
+            dataset: Dataset,
+            annotators: List[Annotator] = [],
+            run_mode: PreprocessorRunType = PreprocessorRunType.production
     ) -> None:
         super().__init__(
             preprocessor_type=preprocessor_type,
-            dataset=Dataset.cdr,
+            dataset=dataset,
             annotators=annotators,
-            dataset_split=dataset_split
+            dataset_split=dataset_split,
+            run_mode=run_mode,
         )
-        self.dataset_split = dataset_split
 
     def get_samples(self) -> List[Sample]:
         return get_samples(self.dataset_split)
@@ -97,5 +99,5 @@ class PreprocessCDR(Preprocessor):
         all_types_set = set()
         for sample in self.get_samples():
             all_types_set.update([anno.label_type for anno in sample.annos.gold])
-        assert len(all_types_set) == 2
+        assert len(all_types_set) == 8, f"all_types: {all_types_set}"
         return list(all_types_set)

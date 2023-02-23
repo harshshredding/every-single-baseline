@@ -567,17 +567,18 @@ def create_visualization_file(
     document_text = ""
     ofsetted_annos = []
     for sample_id in sample_to_annos:
-        document_text += (sample_to_text[sample_id] + '\n')
+        document_text += (sample_to_text[sample_id] + '\n\n\n\n')
         ofsetted_annos.append(Anno(sample_offset, len(
             document_text), 'Sample', '', {"id": sample_id}))
         for anno in sample_to_annos[sample_id]:
             new_start_offset = anno.begin_offset + sample_offset
             new_end_offset = anno.end_offset + sample_offset
-            anno.features['orig_start_offset'] = anno.begin_offset
-            anno.features['orig_end_offset'] = anno.end_offset
+            gate_features = anno.features.copy()
+            gate_features['orig_start_offset'] = anno.begin_offset
+            gate_features['orig_end_offset'] = anno.end_offset
             ofsetted_annos.append(Anno(
-                new_start_offset, new_end_offset, anno.label_type, anno.extraction, anno.features))
-        sample_offset += (len(sample_to_text[sample_id]) + 1)
+                new_start_offset, new_end_offset, anno.label_type, anno.extraction, gate_features))
+        sample_offset += (len(sample_to_text[sample_id]) + 4)  # account for added new lines
     gate_document = Document(document_text)
     default_ann_set = gate_document.annset()
     for ofsetted_annotation in ofsetted_annos:

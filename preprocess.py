@@ -4,6 +4,13 @@ from abc import ABC, abstractmethod
 from annotators import Annotator, TokenAnnotator, SlidingWindowAnnotator
 from preamble import *
 from pydoc import locate
+from enum import Enum
+from typing import Type
+
+
+class PreprocessorRunType(Enum):
+    production = 0
+    dry_run = 1
 
 
 class Preprocessor(ABC):
@@ -16,7 +23,8 @@ class Preprocessor(ABC):
             dataset_split: DatasetSplit,
             preprocessor_type: str,
             dataset: Dataset,
-            annotators: List[Annotator] = []
+            annotators: List[Annotator] = [],
+            run_mode: PreprocessorRunType = PreprocessorRunType.production
     ) -> None:
         """
         Creates a preprocessor configured with some file paths
@@ -26,19 +34,30 @@ class Preprocessor(ABC):
             preprocessor_type: the type of preprocessor (mention details like annotators)
             dataset: the name of the dataset we are preprocessing
             annotators: the list of annotators we need to run on the dataset
+            run_mode: In production-mode, all samples are preprocessed, and in sample-mode only
+                the first 300 samples are preprocessed.
         """
         super().__init__()
         self.preprocessor_name = preprocessor_type
-        self.preprocessor_full_name = f"{dataset.name}_{dataset_split.name}_{preprocessor_type}"
+        self.preprocessor_full_name = f"{dataset.name}_{dataset_split.name}_{preprocessor_type}_{run_mode.name}"
         self.data_folder_path = f"./preprocessed_data"
         self.visualization_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_visualization.bdocjs"
         self.samples_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_samples.json"
         self.entity_types_file_path = f"{self.data_folder_path}/{self.preprocessor_full_name}_types.txt"
-        self.samples = None
+        self.samples: List[Sample] | None = None
         self.annotators = annotators
         self.dataset_split = dataset_split
         self.preprocessor_type = preprocessor_type
         self.dataset = dataset
+        self.run_mode = run_mode
+        self.print_info()
+
+    def print_info(self):
+        print("\n\n------ INFO --------")
+        print(blue("Preprocessor Name:"), green(self.preprocessor_full_name))
+        print(blue("Run Mode:"), green(self.run_mode.name))
+        print(blue("Dataset:"), green(self.dataset.name))
+        print("--------INFO----------\n\n")
 
     def run_annotation_pipeline(self):
         """
@@ -54,11 +73,14 @@ class Preprocessor(ABC):
         We cache `Samples` after extracting them from raw data.
         """
         if self.samples is None:
-            print("first time extracting samples")
+            print(red("Creating Cache of Samples"))
             self.samples = self.get_samples()
+            if self.run_mode == PreprocessorRunType.dry_run:
+                print(blue("Selecting first 300."))
+                self.samples = self.samples[:300]
             self.run_annotation_pipeline()
         else:
-            print("using cache")
+            print(green("using cache"))
         return self.samples
 
     @abstractmethod
@@ -130,8 +152,8 @@ class Preprocessor(ABC):
         print("Done Preprocessing!")
 
 
-def preprocess_train_and_valid_data(preprocessor_module_name: str, preprocessor_name: str,
-                                    preprocessor_type: str = 'vanilla'):
+def preprocess_train_and_valid_custom_tokens(preprocessor_module_name: str, preprocessor_name: str,
+                                             preprocessor_type='vanilla'):
     preprocessor_class = locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.valid,
@@ -144,6 +166,38 @@ def preprocess_train_and_valid_data(preprocessor_module_name: str, preprocessor_
         dataset_split=DatasetSplit.train,
         preprocessor_type=preprocessor_type,
         annotators=[TokenAnnotator()]
+    )
+    preprocessor.run()
+
+
+def get_preprocessor_class(preprocessor_module_name, preprocessor_name) -> Type[Preprocessor]:
+    return locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
+
+
+def preprocess_train_and_valid_vanilla(
+        preprocessor_module_name: str,
+        preprocessor_name: str,
+        preprocessor_type: str,
+        dataset: Dataset,
+        run_mode: PreprocessorRunType = PreprocessorRunType.production,
+):
+    preprocessor_class = get_preprocessor_class(preprocessor_module_name, preprocessor_name)
+
+    preprocessor = preprocessor_class(
+        dataset_split=DatasetSplit.valid,
+        preprocessor_type=preprocessor_type,
+        annotators=[],
+        run_mode=run_mode,
+        dataset=dataset
+    )
+    preprocessor.run()
+
+    preprocessor = preprocessor_class(
+        dataset_split=DatasetSplit.train,
+        preprocessor_type=preprocessor_type,
+        annotators=[],
+        run_mode=run_mode,
+        dataset=dataset
     )
     preprocessor.run()
 
@@ -152,18 +206,27 @@ def preprocess_train_and_valid_with_window(
         preprocessor_module_name: str,
         preprocessor_name: str,
         preprocessor_type: str,
+        dataset: Dataset,
+        run_mode: PreprocessorRunType = PreprocessorRunType.production,
+        window_size: int = 100,
+        stride_size: int = 50
 ):
-    preprocessor_class = locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
+    preprocessor_class = get_preprocessor_class(preprocessor_module_name, preprocessor_name)
+
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.valid,
         preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator(window_size=100, stride=50)]
+        annotators=[SlidingWindowAnnotator(window_size=window_size, stride=stride_size)],
+        run_mode=run_mode,
+        dataset=dataset
     )
     preprocessor.run()
 
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.train,
         preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator(window_size=100, stride=50)]
+        annotators=[SlidingWindowAnnotator(window_size=window_size, stride=stride_size)],
+        run_mode=run_mode,
+        dataset=dataset
     )
     preprocessor.run()
