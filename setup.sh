@@ -34,6 +34,7 @@ pip install ipython
 
 git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"
+# Store credentials after authentication to prevent typing password
 git config credential.helper store
 python download_preprocessed_data.py
 python unzip_data_files.py
@@ -41,3 +42,5 @@ python unzip_data_files.py
 echo 'set -o vi' >> ~/.bashrc
 
 exec bash
+. "/opt/conda/etc/profile.d/conda.sh"
+conda activate nlp

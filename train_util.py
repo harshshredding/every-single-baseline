@@ -151,6 +151,8 @@ def get_optimizer(model, model_config: ModelConfig):
 def store_performance_result(
         performance_file_path,
         f1_score,
+        precision_score,
+        recall_score,
         epoch: int,
         experiment_name: str,
         dataset_name: str,
@@ -158,7 +160,8 @@ def store_performance_result(
 ):
     with open(performance_file_path, 'a') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow([experiment_name, dataset_name, model_config_name, str(epoch), str(f1_score)])
+        mistakes_file_writer.writerow([experiment_name, dataset_name, model_config_name, str(epoch),
+                                       str((f1_score, precision_score, recall_score))])
 
 
 def create_performance_file_header(performance_file_path):
@@ -475,10 +478,68 @@ def store_mistakes(
         )
 
 
-def validate(
+def evaluate_validation_split(
         logger,
         model: torch.nn.Module,
         validation_samples: List[Sample],
+        mistakes_folder_path: str,
+        predictions_folder_path: str,
+        error_visualization_folder_path: str,
+        validation_performance_file_path: str,
+        experiment_name: str,
+        dataset_config_name: str,
+        model_config_name: str,
+        epoch: int,
+):
+    evaluate_dataset_split(
+        logger=logger,
+        model=model,
+        samples=validation_samples,
+        mistakes_folder_path=mistakes_folder_path,
+        predictions_folder_path=predictions_folder_path,
+        error_visualization_folder_path=error_visualization_folder_path,
+        performance_file_path=validation_performance_file_path,
+        experiment_name=experiment_name,
+        dataset_config_name=dataset_config_name,
+        model_config_name=model_config_name,
+        epoch=epoch,
+        dataset_split=DatasetSplit.valid
+    )
+
+
+def evaluate_test_split(
+        logger,
+        model: torch.nn.Module,
+        test_samples: List[Sample],
+        mistakes_folder_path: str,
+        predictions_folder_path: str,
+        error_visualization_folder_path: str,
+        test_performance_file_path: str,
+        experiment_name: str,
+        dataset_config_name: str,
+        model_config_name: str,
+        epoch: int,
+):
+    evaluate_dataset_split(
+        logger=logger,
+        model=model,
+        samples=test_samples,
+        mistakes_folder_path=mistakes_folder_path,
+        predictions_folder_path=predictions_folder_path,
+        error_visualization_folder_path=error_visualization_folder_path,
+        performance_file_path=test_performance_file_path,
+        experiment_name=experiment_name,
+        dataset_config_name=dataset_config_name,
+        model_config_name=model_config_name,
+        epoch=epoch,
+        dataset_split=DatasetSplit.test
+    )
+
+
+def evaluate_dataset_split(
+        logger,
+        model: torch.nn.Module,
+        samples: List[Sample],
         mistakes_folder_path: str,
         predictions_folder_path: str,
         error_visualization_folder_path: str,
@@ -487,10 +548,12 @@ def validate(
         dataset_config_name: str,
         model_config_name: str,
         epoch: int,
+        dataset_split: DatasetSplit,
 ):
-    logger.info("Starting validation")
+    logger.info(f"Evaluating {dataset_split.name} data")
     model.eval()
-    output_file_prefix = f"{experiment_name}_{dataset_config_name}_{model_config_name}_epoch_{epoch}"
+    output_file_prefix = f"{experiment_name}_{dataset_config_name}_{model_config_name}_{dataset_split.name}" \
+                         f"_epoch_{epoch}"
     mistakes_file_path = f"{mistakes_folder_path}/{output_file_prefix}_mistakes.tsv"
     predictions_file_path = f"{predictions_folder_path}/{output_file_prefix}_predictions.tsv"
     with open(predictions_file_path, 'w') as predictions_file, \
@@ -503,26 +566,26 @@ def validate(
             num_TP_total = 0
             num_FP_total = 0
             num_FN_total = 0
-            # Validation Loop
-            for validation_sample in validation_samples:
-                loss, [predicted_annos_valid] = model([validation_sample])
-                gold_annos_set_valid = set(
+            # Eval Loop
+            for sample in samples:
+                loss, [predicted_annos] = model([sample])
+                gold_annos_set = set(
                     [
                         (gold_anno.begin_offset, gold_anno.end_offset, gold_anno.label_type)
-                        for gold_anno in validation_sample.annos.gold
+                        for gold_anno in sample.annos.gold
                     ]
                 )
-                predicted_annos_set_valid = set(
+                predicted_annos_set = set(
                     [
                         (predicted_anno.begin_offset, predicted_anno.end_offset, predicted_anno.label_type)
-                        for predicted_anno in predicted_annos_valid
+                        for predicted_anno in predicted_annos
                     ]
                 )
 
                 # calculate true positives, false positives, and false negatives
-                true_positives_sample = gold_annos_set_valid.intersection(predicted_annos_set_valid)
-                false_positives_sample = predicted_annos_set_valid.difference(gold_annos_set_valid)
-                false_negatives_sample = gold_annos_set_valid.difference(predicted_annos_set_valid)
+                true_positives_sample = gold_annos_set.intersection(predicted_annos_set)
+                false_positives_sample = predicted_annos_set.difference(gold_annos_set)
+                false_negatives_sample = gold_annos_set.difference(predicted_annos_set)
                 num_TP = len(true_positives_sample)
                 num_TP_total += num_TP
                 num_FP = len(false_positives_sample)
@@ -531,16 +594,22 @@ def validate(
                 num_FN_total += num_FN
 
                 # write sample predictions
-                store_predictions(validation_sample, predicted_annos_valid, predictions_file_writer)
+                store_predictions(sample, predicted_annos, predictions_file_writer)
                 # write sample mistakes
-                store_mistakes(validation_sample, false_positives_sample, false_negatives_sample,
+                store_mistakes(sample, false_positives_sample, false_negatives_sample,
                                mistakes_file_writer)
     micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
-    logger.info(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}")
+    logger.info(blue(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}"))
     visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
-    util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, validation_samples)
-    store_performance_result(performance_file_path, micro_f1, epoch, experiment_name=experiment_name,
-                             dataset_name=dataset_config_name, model_config_name=model_config_name)
+    util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, samples)
+    store_performance_result(performance_file_path=performance_file_path,
+                             f1_score=micro_f1,
+                             precision_score=micro_precision,
+                             recall_score=micro_recall,
+                             epoch=epoch,
+                             experiment_name=experiment_name,
+                             dataset_name=dataset_config_name,
+                             model_config_name=model_config_name)
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
@@ -548,7 +617,7 @@ def validate(
     # dropbox_util.upload_file(mistakes_file_path)
     dropbox_util.upload_file(performance_file_path)
 
-    logger.info(f"Done validating!\n\n\n")
+    logger.info(green(f"Done evaluating {dataset_split.name} data.\n\n\n"))
 
 
 def test(

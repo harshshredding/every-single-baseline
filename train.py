@@ -120,21 +120,19 @@ for dataset_config, model_config in experiments:
             loss.backward()
             optimizer.step()
             epoch_loss.append(loss.cpu().detach().numpy())
-        logger.info(f"Done training epoch {epoch}")
         logger.info(
             f"Epoch {epoch} Loss : {np.array(epoch_loss).mean()}, Training Time: {str(time.time() - train_start_time)} "
             f"seconds")
+        logger.info(f"Done training epoch {epoch}")
 
-        logger.info(f"Epoch {epoch} DONE!\n\n\n")
-
-        train_util.validate(
+        train_util.evaluate_validation_split(
             logger=logger,
             model=model,
             validation_samples=valid_samples,
             mistakes_folder_path=mistakes_folder_path,
             predictions_folder_path=predictions_folder_path,
             error_visualization_folder_path=error_visualization_folder_path,
-            performance_file_path=performance_file_path,
+            validation_performance_file_path=performance_file_path,
             experiment_name=EXPERIMENT_NAME,
             model_config_name=model_config.model_config_name,
             dataset_config_name=dataset_config.dataset_config_name,
