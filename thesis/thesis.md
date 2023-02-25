@@ -49,6 +49,7 @@ geometry: margin=2cm
 - Bert ignores whitespace and newline.
 - Cannot optimize larger models -- Living NER.
 - Take a look at [Biocreative 7: Track 3 - Automatic extraction of medication names in tweets][medication_names]
+- Read!!! [Language-Knowledge Graph Pretraining][knowledge-graph-pretraining]
 
 # Experiments:
 - Classify Span Representations after enriching tokens with external knowledge.
@@ -73,3 +74,4 @@ geometry: margin=2cm
 [mi-rim]: https://ceur-ws.org/Vol-3202/livingner-paper7.pdf
 [spanrel]: https://aclanthology.org/2020.acl-main.192/
 [sentiment-neuron]: https://arxiv.org/abs/1704.01444
+[knowledge-graph-pretraining]: https://arxiv.org/pdf/2210.09338.pdf
