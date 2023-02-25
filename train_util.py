@@ -155,12 +155,12 @@ def store_performance_result(
         recall_score,
         epoch: int,
         experiment_name: str,
-        dataset_name: str,
+        dataset_config_name: str,
         model_config_name: str,
 ):
     with open(performance_file_path, 'a') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow([experiment_name, dataset_name, model_config_name, str(epoch),
+        mistakes_file_writer.writerow([experiment_name, dataset_config_name, model_config_name, str(epoch),
                                        str((f1_score, precision_score, recall_score))])
 
 
@@ -608,7 +608,7 @@ def evaluate_dataset_split(
                              recall_score=micro_recall,
                              epoch=epoch,
                              experiment_name=experiment_name,
-                             dataset_name=dataset_config_name,
+                             dataset_config_name=dataset_config_name,
                              model_config_name=model_config_name)
 
     # upload files to dropbox

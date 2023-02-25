@@ -8,6 +8,7 @@ import logging  # configured in args.py
 import importlib
 from utils.config import DatasetConfig, ModelConfig
 from random import shuffle
+from structs import DatasetSplit
 from preamble import *
 
 # Run some checks on our config files before starting
@@ -50,8 +51,10 @@ util.create_directory_structure(models_folder_path)
 util.create_directory_structure(performance_folder_path)
 util.create_directory_structure(test_predictions_folder_path)
 
-performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}.csv"
-train_util.create_performance_file_header(performance_file_path)
+validation_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}_{DatasetSplit.valid}.csv"
+test_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}_{DatasetSplit.test}.csv"
+train_util.create_performance_file_header(validation_performance_file_path)
+train_util.create_performance_file_header(test_performance_file_path)
 
 # Start the experiment
 dataset_config: DatasetConfig
@@ -132,7 +135,7 @@ for dataset_config, model_config in experiments:
             mistakes_folder_path=mistakes_folder_path,
             predictions_folder_path=predictions_folder_path,
             error_visualization_folder_path=error_visualization_folder_path,
-            validation_performance_file_path=performance_file_path,
+            validation_performance_file_path=validation_performance_file_path,
             experiment_name=EXPERIMENT_NAME,
             model_config_name=model_config.model_config_name,
             dataset_config_name=dataset_config.dataset_config_name,
@@ -140,15 +143,18 @@ for dataset_config, model_config in experiments:
         )
 
         if IS_TESTING:
-            train_util.test(
+            train_util.evaluate_test_split(
                 logger=logger,
                 model=model,
                 test_samples=test_samples,
-                test_predictions_folder_path=test_predictions_folder_path,
+                mistakes_folder_path=mistakes_folder_path,
+                predictions_folder_path=predictions_folder_path,
+                error_visualization_folder_path=error_visualization_folder_path,
+                test_performance_file_path=test_performance_file_path,
                 experiment_name=EXPERIMENT_NAME,
-                dataset_name=dataset_name,
-                epoch=epoch,
-                model_config_name=model_config.model_config_name
+                model_config_name=model_config.model_config_name,
+                dataset_config_name=dataset_config.dataset_config_name,
+                epoch=epoch
             )
 
-logger.info("Experiment Finished!!")
+logger.info(green("Experiment Finished!!"))
