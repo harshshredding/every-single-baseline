@@ -627,7 +627,7 @@ def heuristic_decode(predicted_annos: List[Anno]):
 
 
 class SpanBert(torch.nn.Module):
-    def __init__(self, all_types: List[str], model_config: ModelConfig):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(SpanBert, self).__init__()
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
@@ -641,6 +641,7 @@ class SpanBert(torch.nn.Module):
         self.type_to_idx['NO_TYPE'] = len(self.type_to_idx)
         self.idx_to_type = {i: type_name for type_name, i in self.type_to_idx.items()}
         assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
+        self.dataset_config = dataset_config
 
     def forward(
             self,
