@@ -103,7 +103,7 @@ def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]
     return util.get_annos_dict(dataset_config.valid_annos_file_path)
 
 
-def get_bio_labels_from_annos(token_annos: List[Anno],
+def get_bio_labels_from_annos(token_annos: List[Option[Anno]],
                               batch_encoding,
                               gold_annos: List[Anno]) -> List[Label]:
     labels = util.get_labels_bio(token_annos, gold_annos)
@@ -191,6 +191,8 @@ def create_performance_file_header(performance_file_path):
 
 def get_spans_from_bio_seq_labels(bio_labels, batch_encoding, batch_idx: int):
     return util.get_spans_from_bio_labels(bio_labels, batch_encoding, batch_idx=batch_idx)
+
+
 
 
 # TODO: remove following method

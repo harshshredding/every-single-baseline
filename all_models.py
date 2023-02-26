@@ -514,18 +514,18 @@ class JustBert3Classes(torch.nn.Module):
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         predictions_logits = self.classifier(bert_embeddings)
-        expanded_labels = train_util.get_bio_labels_from_annos(util.get_token_annos_from_sample(sample),
+        token_annos = util.get_token_annos_from_sample(sample)
+        token_annos = [Option(anno) for anno in token_annos]
+        expanded_labels = train_util.get_bio_labels_from_annos(token_annos,
                                                                bert_encoding,
-                                                               sample.annos.gold,
-                                                               self.model_config)
+                                                               sample.annos.gold)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         loss = self.loss_function(predictions_logits, expanded_labels_tensor)
 
         predicted_label_indices_expanded = torch.argmax(predictions_logits, dim=1).cpu().detach().numpy()
         predicted_labels = [self.idx_to_label[label_id] for label_id in predicted_label_indices_expanded]
-        predicted_spans_token_index = train_util.get_spans_from_bio_seq_labels(predicted_labels, bert_encoding,
-                                                                               self.model_config)
+        predicted_spans_token_index = util.get_spans_from_bio_seq_labels_old(predicted_labels, bert_encoding)
         predicted_spans_char_offsets = [(offsets_list[span[0]][0], offsets_list[span[1]][1], span[2]) for span in
                                         predicted_spans_token_index]
         predicted_annos = []
@@ -935,7 +935,8 @@ class SeqLabelerNoTokenization(torch.nn.Module):
         bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
         return bert_embeddings_batch
 
-    def get_token_annos_batch(self, bert_encoding, expected_batch_size) -> List[List[Option[Anno]]]:
+    @staticmethod
+    def get_token_annos_batch(bert_encoding, expected_batch_size) -> List[List[Option[Anno]]]:
         token_ids_matrix = bert_encoding['input_ids']
         batch_size = len(token_ids_matrix)
         num_tokens = len(token_ids_matrix[0])

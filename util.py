@@ -25,17 +25,17 @@ def check_config_integrity():
     """
     all_experiment_file_paths = glob.glob('./experiments/*.py')
     all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
-    assert all(experiment_name.startswith('experiment') for experiment_name in all_experiment_names),\
+    assert all(experiment_name.startswith('experiment') for experiment_name in all_experiment_names), \
         "experiment file names should start with 'experiment'"
 
     all_dataset_config_file_paths = glob.glob('./configs/dataset_configs/*.yaml')
     all_dataset_config_names = [Path(file_path).stem for file_path in all_dataset_config_file_paths]
-    assert all(dataset_config_name.startswith('dataset') for dataset_config_name in all_dataset_config_names),\
+    assert all(dataset_config_name.startswith('dataset') for dataset_config_name in all_dataset_config_names), \
         "dataset config file names should start with 'dataset'"
 
     all_model_config_file_paths = glob.glob('./configs/model_configs/*.yaml')
     all_model_config_names = [Path(file_path).stem for file_path in all_model_config_file_paths]
-    assert all(model_config_name.startswith('model') for model_config_name in all_model_config_names),\
+    assert all(model_config_name.startswith('model') for model_config_name in all_model_config_names), \
         "model config file names should start with 'model'"
 
 
@@ -64,6 +64,35 @@ def delete_preprocessed_data_folder():
         shutil.rmtree('./preprocessed_data')
     else:
         raise RuntimeError("Don't have permission to delete preprocessed data")
+
+
+def get_spans_from_bio_seq_labels_old(predictions_sub: List[Label], batch_encoding) -> List[tuple[int, int, str]]:
+    span_list = []
+    start = None
+    start_label = None
+    for i, label in enumerate(predictions_sub):
+        if label.bio_tag == BioTag.out:
+            if start is not None:
+                span_list.append((start, i - 1, start_label))
+                start = None
+                start_label = None
+        elif label.bio_tag == BioTag.begin:
+            if start is not None:
+                span_list.append((start, i - 1, start_label))
+            start = i
+            start_label = label.label_type
+        elif label.bio_tag == BioTag.inside:
+            if (start is not None) and (start_label != label.label_type):
+                span_list.append((start, i - 1, start_label))
+                start = None
+                start_label = None
+        else:
+            raise Exception(f'Illegal label {label}')
+    if start is not None:
+        span_list.append((start, len(predictions_sub) - 1, start_label))
+    span_list_word_idx = [(batch_encoding.token_to_word(span[0]), batch_encoding.token_to_word(span[1]), span[2])
+                          for span in span_list]
+    return span_list_word_idx
 
 
 def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_config: DatasetConfig):
