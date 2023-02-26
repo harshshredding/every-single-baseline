@@ -74,7 +74,8 @@ def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_confi
         if num_tokens == bert_tokenizer.model_max_length:
             print(f"WARN: In dataset {dataset_config.dataset_name}, the sample {sample.id} is being {red('Truncated')}")
             num_truncated += 1
-    print(f"WARN: Total truncated samples : {num_truncated}")
+    if num_truncated > 0:
+        print(blue(f"WARN: Total truncated samples : {num_truncated}"))
 
 
 def write_samples(samples: List[Sample], output_json_file_path: str):

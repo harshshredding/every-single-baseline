@@ -505,7 +505,7 @@ class JustBert3Classes(torch.nn.Module):
     def forward(self,
                 samples: List[Sample]
                 ):
-        assert len(samples) == 1
+        assert len(samples) == 1, "Can only deal with one sample :("
         sample = samples[0]
         tokens = util.get_tokens_from_sample(sample)
         offsets_list = util.get_token_offsets_from_sample(sample)

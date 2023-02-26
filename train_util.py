@@ -1,3 +1,5 @@
+import time
+
 from structs import *
 import pandas as pd
 import csv
@@ -551,6 +553,7 @@ def evaluate_dataset_split(
         dataset_split: DatasetSplit,
 ):
     logger.info(f"Evaluating {dataset_split.name} data")
+    evaluation_start_time = time.time()
     model.eval()
     output_file_prefix = f"{experiment_name}_{dataset_config_name}_{model_config_name}_{dataset_split.name}" \
                          f"_epoch_{epoch}"
@@ -617,7 +620,9 @@ def evaluate_dataset_split(
     # dropbox_util.upload_file(mistakes_file_path)
     dropbox_util.upload_file(performance_file_path)
 
-    logger.info(green(f"Done evaluating {dataset_split.name} data.\n\n\n"))
+    logger.info(green(f"Done evaluating {dataset_split.name} data.\n"
+                      f"Took {str(time.time() - evaluation_start_time)} secs."
+                      f"\n\n\n"))
 
 
 def test(

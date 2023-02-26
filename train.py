@@ -101,7 +101,7 @@ for dataset_config, model_config in experiments:
     train_util.check_label_types(train_samples, valid_samples, all_types)
 
     for epoch in range(model_config.num_epochs):
-        # Don't train for more than 2 epochs while testing
+        # Don't dry run for more than 2 epochs while testing
         if IS_DRY_RUN and epoch >= 2:
             break
 
@@ -144,18 +144,19 @@ for dataset_config, model_config in experiments:
         )
 
         if IS_TESTING:
-            train_util.evaluate_test_split(
-                logger=logger,
-                model=model,
-                test_samples=test_samples,
-                mistakes_folder_path=mistakes_folder_path,
-                predictions_folder_path=predictions_folder_path,
-                error_visualization_folder_path=error_visualization_folder_path,
-                test_performance_file_path=test_performance_file_path,
-                experiment_name=EXPERIMENT_NAME,
-                model_config_name=model_config.model_config_name,
-                dataset_config_name=dataset_config.dataset_config_name,
-                epoch=epoch
-            )
+            if (((epoch + 1) % 4) == 0) or IS_DRY_RUN:
+                train_util.evaluate_test_split(
+                    logger=logger,
+                    model=model,
+                    test_samples=test_samples,
+                    mistakes_folder_path=mistakes_folder_path,
+                    predictions_folder_path=predictions_folder_path,
+                    error_visualization_folder_path=error_visualization_folder_path,
+                    test_performance_file_path=test_performance_file_path,
+                    experiment_name=EXPERIMENT_NAME,
+                    model_config_name=model_config.model_config_name,
+                    dataset_config_name=dataset_config.dataset_config_name,
+                    epoch=epoch
+                )
 
 logger.info(green("Experiment Finished!!"))
