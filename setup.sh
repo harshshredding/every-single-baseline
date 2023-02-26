@@ -12,7 +12,7 @@ echo "Done creating anaconda environment"
 
 echo "Installing Pytorch"
 #conda install -y pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
-pip3 install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu117
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu117
 
 echo "Installing Allennlp"
 sudo apt-get -y install pkg-config
@@ -39,6 +39,7 @@ git config --global user.name "Harsh Verma"
 git config credential.helper store
 python download_preprocessed_data.py
 python unzip_data_files.py
+python gpu_test.py
 
 echo 'set -o vi' >> ~/.bashrc
 
