@@ -1,6 +1,6 @@
 import json
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
-from preprocess import Preprocessor, PreprocessorRunType
+from utils.preprocess import Preprocessor, PreprocessorRunType
 from typing import Dict
 from collections import Counter
 import benepar
@@ -79,7 +79,8 @@ class PreprocessMulticoner(Preprocessor):
             preprocessor_type: str,
             dataset: Dataset,
             annotators: List[Annotator],
-            run_mode: PreprocessorRunType
+            run_mode: PreprocessorRunType,
+            add_token_annos: bool
     ) -> None:
         assert Dataset.multiconer_fine == dataset
         super().__init__(
@@ -103,6 +104,7 @@ class PreprocessMulticoner(Preprocessor):
             'Coarse_Medical': ['Medication/Vaccine', 'MedicalProcedure', 'AnatomicalStructure', 'Symptom', 'Disease'],
             'O': ['O']
         }
+        self.add_token_annos = add_token_annos
 
     def __get_all_fine_grained_labels(self):
         ret = []
@@ -211,7 +213,11 @@ class PreprocessMulticoner(Preprocessor):
             tokens = sample_to_tokens[sample_id]
             sample_text = self.__get_text(tokens)
             sample_gold_annos = annos_dict.get(sample_id, [])
-            ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, [])))
+            if self.add_token_annos:
+                token_annos = self.__get_token_annos(tokens)
+                ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, token_annos)))
+            else:
+                ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, [])))
         return ret
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"

@@ -53,8 +53,8 @@ def upload_big_file_cleaner(local_file_path: str, remote_file_path: str):
     # get client
     dbx = get_dropbox_client()
     file_size = os.path.getsize(local_file_path)
-    # Upload 8 MB chunks at a time
-    CHUNK_SIZE = 8 * 1024 * 1024
+    # Upload 50 MB chunks at a time
+    CHUNK_SIZE = 50 * 1024 * 1024
     with open(local_file_path, 'rb') as local_file:
         uploaded_size = 0
         upload_session_start_result = dbx.files_upload_session_start(local_file.read(CHUNK_SIZE))
@@ -66,6 +66,7 @@ def upload_big_file_cleaner(local_file_path: str, remote_file_path: str):
             path=remote_file_path,
             mode=dropbox.files.WriteMode.overwrite
         )
+        assert local_file.tell() <= file_size, "file should be bigger than chunk"
         print("Starting Upload.")
         while local_file.tell() <= file_size: 
             if ((file_size - local_file.tell()) <= CHUNK_SIZE):

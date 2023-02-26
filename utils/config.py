@@ -31,6 +31,13 @@ class ModelConfig:
     max_span_length: Optional[int] = None
 
 
+@dataclass
+class PreprocessorConfig:
+    preprocessor_config_name: str
+    preprocessor_class_path: str
+    preprocessor_class_init_params: dict
+
+
 def get_large_model_config(
         model_config_name: str,
         model_name: str,
@@ -111,13 +118,18 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
         return model_config
 
 
-def get_model_config_from_module(model_config_module_path: str) -> ModelConfig:
+def get_model_config_from_module(model_config_module_name: str) -> ModelConfig:
     """
     param:
         model_config_module_path(str): the path to the module in which the model config is defined
     """
-    model_config_module = importlib.import_module(f'configs.model_configs.{model_config_module_path}')
+    model_config_module = importlib.import_module(f'configs.model_configs.{model_config_module_name}')
     return model_config_module.model_config
+
+
+def get_preprocessor_config(preprocessor_config_module_name: str) -> PreprocessorConfig:
+    preprocessor_config_module = importlib.import_module(f'configs.preprocessor_configs.{preprocessor_config_module_name}')
+    return preprocessor_config_module.preprocessor_config
 
 
 def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:

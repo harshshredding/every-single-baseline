@@ -6,6 +6,8 @@ from preamble import *
 from pydoc import locate
 from enum import Enum
 from typing import Type
+import yaml
+from utils.config import PreprocessorConfig
 
 
 class PreprocessorRunType(Enum):
@@ -172,6 +174,24 @@ def preprocess_train_and_valid_custom_tokens(preprocessor_module_name: str, prep
 
 def get_preprocessor_class(preprocessor_module_name, preprocessor_name) -> Type[Preprocessor]:
     return locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
+
+
+def get_preprocessor_class_from_path(preprocessor_class_path: str) -> Type:
+    return locate(preprocessor_class_path)
+
+
+def preprocess(
+        preprocessor_config: PreprocessorConfig,
+        run_mode: PreprocessorRunType,
+        dataset_splits: List[DatasetSplit]
+):
+    preprocessor_class = get_preprocessor_class_from_path(preprocessor_config.preprocessor_class_path)
+    for split in dataset_splits:
+        preprocessor_params = preprocessor_config.preprocessor_class_init_params.copy()
+        preprocessor_params['dataset_split'] = split
+        preprocessor_params['run_mode'] = run_mode
+        preprocessor = preprocessor_class(**preprocessor_params)
+        preprocessor.run()
 
 
 def preprocess_train_and_valid_vanilla(

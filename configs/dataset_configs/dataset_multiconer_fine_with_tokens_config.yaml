@@ -1,0 +1,7 @@
+train_samples_file_path: ./preprocessed_data/multiconer_fine_train_tokens_production_samples.json
+valid_samples_file_path: ./preprocessed_data/multiconer_fine_valid_tokens_production_samples.json
+test_samples_file_path: ./preprocessed_data/multiconer_fine_test_tokens_production_samples.json
+types_file_path: ./preprocessed_data/multiconer_fine_train_tokens_production_types.txt
+num_types: 33
+dataset_name: multiconer_fine
+dataset_config_name: multiconer_fine_tokens
