@@ -1,23 +1,30 @@
 import torch
 import torch.nn as nn
+import torch.optim as optim
 
-# Try putting a tensor on CPU
-device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-print("device", device.type)
-t2 = torch.randn(1, 2).to(device)
+EPOCHS = 20
+BATCH_SIZE = 4096
+LEARNING_RATE = 0.001
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(device)
 
 
-# Try putting a model on GPU
-class M(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.l1 = nn.Linear(1, 2)
+class Model(nn.Module):
+    def __init__(self, in_dims, out_dims):
+        super(Model, self).__init__()
+        self.layer1 = nn.Linear(in_dims, 128)
+        self.layer2 = nn.Linear(128, out_dims)
+
+        self.relu1 = nn.ReLU()
+        self.relu2 = nn.ReLU()
 
     def forward(self, x):
-        x = self.l1(x)
+        x = self.relu1(self.layer1(x))
+        x = self.relu2(self.layer2(x))
         return x
 
 
-model = M()  # not on cuda
-model.to(device)  # is on cuda (all parameters)
-assert next(model.parameters()).is_cuda, "model was not put on GPU :("
+model = Model(20, 1).to(device)
+criterion = nn.BCEWithLogitsLoss()
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)

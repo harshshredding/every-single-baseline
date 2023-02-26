@@ -1,6 +1,6 @@
 import json
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
-from preprocess import Preprocessor
+from preprocess import Preprocessor, PreprocessorRunType
 from typing import Dict
 from collections import Counter
 import benepar
@@ -16,16 +16,15 @@ class Granularity(Enum):
 
 
 def read_raw_data(raw_file_path: str) -> Dict[SampleId, List[tuple]]:
-    with open(raw_file_path, 'r') as dev_file:
+    with open(raw_file_path, 'r') as raw_file:
         samples_dict = {}
         curr_sample_id = None
-        for line in list(dev_file.readlines()):
+        for line in list(raw_file.readlines()):
             line = line.strip()
             if len(line):
                 if line.startswith('#'):
                     sample_info = line.split()
-                    assert (len(sample_info) == 4) \
-                           or (len(sample_info) == 3)  # test files don't have domain in info
+                    assert len(sample_info) >= 3, f"line: {line}"
                     sample_id = sample_info[2]
                     curr_sample_id = sample_id
                 else:
@@ -78,15 +77,18 @@ class PreprocessMulticoner(Preprocessor):
             self,
             dataset_split: DatasetSplit,
             preprocessor_type: str,
-            annotators: List[Annotator] = []
+            dataset: Dataset,
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
     ) -> None:
+        assert Dataset.multiconer_fine == dataset
         super().__init__(
             preprocessor_type=preprocessor_type,
-            dataset=Dataset.multiconer_fine,
+            dataset=dataset,
             annotators=annotators,
-            dataset_split=dataset_split
+            dataset_split=dataset_split,
+            run_mode=run_mode,
         )
-        self.dataset_split = dataset_split
         assert (dataset_split == DatasetSplit.train) \
                or (dataset_split == DatasetSplit.valid) \
                or (dataset_split == DatasetSplit.test)
@@ -132,11 +134,11 @@ class PreprocessMulticoner(Preprocessor):
 
     def get_samples(self) -> List[Sample]:
         if self.dataset_split == DatasetSplit.valid:
-            return self.__get_samples("multiconer-data-raw/public_data/EN-English/en_dev.conll")
+            return self.__get_samples("multiconer2023/EN-English/en_dev.conll")
         elif self.dataset_split == DatasetSplit.train:
-            return self.__get_samples("multiconer-data-raw/public_data/EN-English/en_train.conll")
+            return self.__get_samples("multiconer2023/EN-English/en_train.conll")
         elif self.dataset_split == DatasetSplit.test:
-            return self.__get_samples('multiconer-data-raw/public_data/EN-English/en_test.conll')
+            return self.__get_samples('multiconer2023/EN-English/en_test.conll')
         else:
             die("Cannot handle a dataset other than train or valid")
 
@@ -211,7 +213,6 @@ class PreprocessMulticoner(Preprocessor):
             sample_gold_annos = annos_dict.get(sample_id, [])
             ret.append(Sample(sample_text, sample_id, AnnotationCollection(sample_gold_annos, [])))
         return ret
-
 
 # prefix = f"{Dataset.multiconer.name}_{DatasetSplit.train.name}_{Granularity.coarse.name}"
 # train_coarse_preproc = PreprocessMulticoner(

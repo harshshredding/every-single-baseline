@@ -202,6 +202,27 @@ def preprocess_train_and_valid_vanilla(
     preprocessor.run()
 
 
+def preprocess_vanilla(
+        preprocessor_module_name: str,
+        preprocessor_name: str,
+        preprocessor_type: str,
+        dataset: Dataset,
+        run_mode: PreprocessorRunType,
+        dataset_splits: List[DatasetSplit],
+):
+    assert len(dataset_splits)
+    preprocessor_class = get_preprocessor_class(preprocessor_module_name, preprocessor_name)
+    for dataset_split in dataset_splits:
+        preprocessor = preprocessor_class(
+            dataset_split=dataset_split,
+            preprocessor_type=preprocessor_type,
+            annotators=[],
+            run_mode=run_mode,
+            dataset=dataset
+        )
+        preprocessor.run()
+
+
 def preprocess_train_and_valid_with_window(
         preprocessor_module_name: str,
         preprocessor_name: str,
