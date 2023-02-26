@@ -552,7 +552,7 @@ def evaluate_dataset_split(
         epoch: int,
         dataset_split: DatasetSplit,
 ):
-    logger.info(f"Evaluating {dataset_split.name} data")
+    logger.info(f"\n\nEvaluating {dataset_split.name} data")
     evaluation_start_time = time.time()
     model.eval()
     output_file_prefix = f"{experiment_name}_{dataset_config_name}_{model_config_name}_{dataset_split.name}" \
@@ -622,7 +622,7 @@ def evaluate_dataset_split(
 
     logger.info(green(f"Done evaluating {dataset_split.name} data.\n"
                       f"Took {str(time.time() - evaluation_start_time)} secs."
-                      f"\n\n\n"))
+                      f"\n\n"))
 
 
 def test(
