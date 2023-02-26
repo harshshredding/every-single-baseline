@@ -51,8 +51,9 @@ util.create_directory_structure(models_folder_path)
 util.create_directory_structure(performance_folder_path)
 util.create_directory_structure(test_predictions_folder_path)
 
-validation_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}_{DatasetSplit.valid}.csv"
-test_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}_{DatasetSplit.test}.csv"
+validation_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}" \
+                                   f"_{DatasetSplit.valid.name}.csv"
+test_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT_NAME}_{DatasetSplit.test.name}.csv"
 train_util.create_performance_file_header(validation_performance_file_path)
 train_util.create_performance_file_header(test_performance_file_path)
 

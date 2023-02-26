@@ -503,8 +503,10 @@ class JustBert3Classes(torch.nn.Module):
         self.model_config = model_config
 
     def forward(self,
-                sample: Sample
+                samples: List[Sample]
                 ):
+        assert len(samples) == 1
+        sample = samples[0]
         tokens = util.get_tokens_from_sample(sample)
         offsets_list = util.get_token_offsets_from_sample(sample)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
@@ -536,7 +538,7 @@ class JustBert3Classes(torch.nn.Module):
                     " ".join(tokens[span_token_idx[0]: span_token_idx[1] + 1])
                 )
             )
-        return loss, predicted_annos
+        return loss, [predicted_annos]
 
 
 class JustBert3ClassesCRF(torch.nn.Module):
@@ -642,8 +644,10 @@ class SpanBert(torch.nn.Module):
 
     def forward(
             self,
-            sample: Sample
+            samples: List[Sample]
     ):
+        assert len(samples) == 1, "Can only handle one sample at a time :("
+        sample = samples[0]
         tokens = util.get_tokens_from_sample(sample)
         token_annos = util.get_token_annos_from_sample(sample)
         gold_token_level_annos = util.get_token_level_spans(token_annos, sample.annos.gold)
@@ -675,7 +679,7 @@ class SpanBert(torch.nn.Module):
             token_annos
         )
         # predicted_annos = self.heuristic_decode(predicted_annos)
-        return loss, predicted_annos
+        return loss, [predicted_annos]
 
     def get_predicted_annos(
             self,

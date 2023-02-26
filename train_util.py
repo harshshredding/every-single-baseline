@@ -57,7 +57,7 @@ def print_experiment_info(
     print(blue("Experiment:"), green(experiment_name))
     print(blue("DRY_RUN_MODE:"), green(is_dry_run))
     print(blue("Is Testing:"), green(is_testing))
-    print(blue("Data Config Name:"), green(dataset_config.dataset_config_name))
+    print(blue("Dataset Config Name:"), green(dataset_config.dataset_config_name))
     print(blue("Dataset:"), green(dataset_config.dataset_name))
     print(blue("Model Config Name:"), green(model_config.model_config_name))
     print(blue("Model Name:"), green(model_config.model_name))
