@@ -1,6 +1,10 @@
-import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch
+
+print("torch version: ", torch.__version__)
+print("Supported architectures by cuda: ", torch.cuda.get_arch_list())
+assert 'sm_86' in torch.cuda.get_arch_list()
 
 EPOCHS = 20
 BATCH_SIZE = 4096

@@ -10,9 +10,6 @@ conda create -n nlp python=3.10 -y
 conda activate nlp
 echo "Done creating anaconda environment"
 
-echo "Installing Pytorch"
-#conda install -y pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
-pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu117
 
 echo "Installing Allennlp"
 sudo apt-get -y install pkg-config
@@ -37,12 +34,18 @@ git config --global user.email "harshshredding@gmail.com"
 git config --global user.name "Harsh Verma"
 # Store credentials after authentication to prevent typing password
 git config credential.helper store
+
+# Download preprocessed data
 python download_preprocessed_data.py
 python unzip_data_files.py
+
+
+echo "Installing Pytorch"
+# conda install -y pytorch torchvision torchaudio pytorch-cuda=11.6 -c pytorch -c nvidia
+pip install torch torchvision torchaudio --upgrade
+# test gpu
 python gpu_test.py
 
 echo 'set -o vi' >> ~/.bashrc
 
 exec bash
-. "/opt/conda/etc/profile.d/conda.sh"
-conda activate nlp
