@@ -30,17 +30,25 @@ def read_raw_data(raw_file_path: str) -> Dict[SampleId, List[tuple]]:
                 else:
                     assert curr_sample_id is not None
                     split_line = line.split("_ _")
-                    assert len(split_line) == 2
-                    token_string = split_line[0].strip()
-                    token_label = split_line[1].strip()
-                    if not len(token_label):
-                        token_label = 'O'
-                    tokens_list = samples_dict.get(curr_sample_id, [])
-                    tokens_list.append((token_string, token_label))
-                    samples_dict[curr_sample_id] = tokens_list
+                    assert (len(split_line) == 2) or (len(split_line) == 1)
+                    if len(split_line) == 2:
+                        token_string = split_line[0].strip()
+                        token_label = split_line[1].strip()
+                        if not len(token_label):
+                            token_label = 'O'
+                        tokens_list = samples_dict.get(curr_sample_id, [])
+                        tokens_list.append((token_string, token_label))
+                        samples_dict[curr_sample_id] = tokens_list
+                    else:  # Test submission file
+                        token_label = split_line[0]
+                        if not len(token_label):
+                            token_label = 'O'
+                        tokens_list = samples_dict.get(curr_sample_id, [])
+                        tokens_list.append((None, token_label))
+                        samples_dict[curr_sample_id] = tokens_list
         return samples_dict
 
-
+# Parse the given file with BIO labeled tokens.
 def read_raw_data_list(raw_file_path: str) -> List[tuple[SampleId, List[tuple]]]:
     ret = []
     with open(raw_file_path, 'r') as dev_file:

@@ -8,8 +8,8 @@ test_data_file_path = "./multiconer-data-raw/public_data/EN-English/en_test.conl
 
 
 def read_multiconer_predictions() -> dict[str, List[Anno]]:
-    predictions_file_path = './submission/predictions/' \
-                            'seq_large_experiment_multiconer_fine_test_results_epoch_11_predictions.tsv'
+    predictions_file_path = './submission/no_special_tokens_predictions/' \
+                            'experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_model_seq_base_default_test_epoch_7_predictions.tsv'
     df = pd.read_csv(predictions_file_path, sep='\t')
     sample_to_annos = {}
     for _, row in df.iterrows():
