@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::{error::Error, io, process};
 
+use csv::WriterBuilder;
 use serde_json::Value;
 use std::fs::File;
 use std::fs;
@@ -18,18 +19,17 @@ pub struct Prediction {
     sample_id: String,
     start: i32,
     end: i32,
+    entity_type: String, 
     extraction: String
 }
 
 
-pub fn get_token_offsets() -> HashMap<String, Vec<(i64, i64)>> {
-    let samples_file_path = "/home/harsh/every-single-baseline/preprocessed_data/multiconer_fine_valid_tokens_production_samples.json";
+pub fn get_token_offsets(samples_file_path: &str) -> HashMap<String, Vec<(i64, i64)>> {
     let samples_json_raw = fs::read_to_string(samples_file_path).unwrap();
     let all_samples: Vec<HashMap<String, Value>> = serde_json::from_str(&samples_json_raw)
         .expect("Cannot parse json into a vec of hashmap");
-    println!("{:?}", all_samples.get(0).expect("cannot get first sample"));
+    //println!("{:?}", all_samples.get(0).expect("cannot get first sample"));
     let first_samples_id = all_samples[0]["id"].as_str().expect("cannot get the id");
-    assert_eq!(first_samples_id, "5239d808-f300-46ea-aa3b-5093040213a3");
 
     let mut token_offsets_dict = HashMap::new();
     for sample in all_samples { 
@@ -56,11 +56,13 @@ pub fn read_tsv_file(predictions_file_path: &str) -> Vec<Prediction> {
             let sample_id = record.get(0).expect(format!("cannot get sample id out {:?}", record).as_str());
             let start = record.get(1).expect(format!("cannot get start out {:?}", record).as_str());
             let end = record.get(2).expect(format!("cannot get end out {:?}", record).as_str());
+            let entity_type = record.get(3).expect(format!("cannot get entity type out {:?}", record).as_str());
             let extraction = record.get(4).expect(&format!("cannot get extraction out {:?}", record));
             return Prediction {
                 sample_id: sample_id.into(),
                 start: start.parse().expect("could not parse start into int"),
                 end: end.parse().expect("could not parse end into int"),
+                entity_type: entity_type.to_string(),
                 extraction: extraction.to_string()
             }
         }).collect()
@@ -76,33 +78,77 @@ pub fn get_predictions_dict(predictions_file_path: &str) -> HashMap<String, Vec<
     return predictions_dict;
 }
 
-pub fn find_sub_token_predictions(predictions_file_path: &str) {
-        let token_offsets = get_token_offsets();
-        let predictions_dict = get_predictions_dict(predictions_file_path);
-        let mut num_subword_predictions = 0;
-        let mut num_predictions = 0;
-        let mut sub_word_predictions = vec![];
-        for (sample_id, predictions) in predictions_dict {
-            let sample_token_offsets = token_offsets.get(&sample_id)
-                                            .expect(&format!("failed to get token offsets for sample: {}", sample_id));
-            for prediction in predictions {
-                num_predictions += 1;
-                let token_matching_start = sample_token_offsets.iter()
-                    .find(|offset| {
-                        return offset.0 == (prediction.start as i64)
-                    });
-                let token_matching_end = sample_token_offsets.iter()
-                    .find(|offset| {
-                        return offset.1 == (prediction.end as i64)
-                    });
-                if token_matching_start.is_none() || token_matching_end.is_none() {
-                    num_subword_predictions += 1;
-                    sub_word_predictions.push(prediction)
-                }
+pub fn find_sub_token_predictions(predictions_file_path: &str, samples_file_path: &str, output_file_path: &str) {
+    let mut writer = WriterBuilder::new().delimiter(b'\t').from_path(output_file_path)
+                        .expect("unable to build writer");
+    writer.write_record(&["sample_id", "begin", "end", "type", "extraction"]).expect("couldn't write header.");
+    let token_offsets = get_token_offsets(samples_file_path);
+    let predictions_dict = get_predictions_dict(predictions_file_path);
+    let mut num_subword_predictions = 0;
+    let mut num_predictions = 0;
+    let mut sub_word_predictions = vec![];
+    for (sample_id, predictions) in predictions_dict {
+        let sample_token_offsets = token_offsets.get(&sample_id)
+                                        .expect(&format!("failed to get token offsets for sample: {}", sample_id));
+        for prediction in predictions {
+            num_predictions += 1;
+            let token_matching_start = sample_token_offsets.iter()
+                .find(|offset| {
+                    return offset.0 == (prediction.start as i64)
+                });
+            let token_matching_end = sample_token_offsets.iter()
+                .find(|offset| {
+                    return offset.1 == (prediction.end as i64)
+                });
+            if token_matching_start.is_none() || token_matching_end.is_none() {
+                num_subword_predictions += 1;
+                sub_word_predictions.push(prediction)
+            } else {
+                // write to file
+                writer.serialize((prediction.sample_id, prediction.start, prediction.end, prediction.entity_type, prediction.extraction))
+                    .expect("unable to write record to tsv file")
             }
         }
-        println!("num subword predictions {}", num_subword_predictions);
-        println!("num predictions {}", num_predictions); 
+        writer.flush().expect("unable to flush")
+    }
+    println!("num subword predictions {}", num_subword_predictions);
+    println!("num predictions {}", num_predictions); 
+}
+
+
+pub fn write_aligned_predictions(predictions_file_path: &str, samples_file_path: &str, output_file_path: &str) {
+    let mut writer = WriterBuilder::new().delimiter(b'\t').from_path(output_file_path)
+                        .expect("unable to build writer");
+    writer.write_record(&["sample_id", "begin", "end", "type", "extraction"]).expect("couldn't write header.");
+    let token_offsets = get_token_offsets(samples_file_path);
+    let predictions_dict = get_predictions_dict(predictions_file_path);
+    for (sample_id, predictions) in predictions_dict {
+        let sample_token_offsets = token_offsets.get(&sample_id)
+                                        .expect(&format!("failed to get token offsets for sample: {}", sample_id));
+        for prediction in predictions {
+            let token_surrounding_start = sample_token_offsets.iter()
+                .find(|token_span| {
+                    return (token_span.0 < (prediction.start as i64)) 
+                        && ((prediction.start as i64) < token_span.1)
+                });
+            let token_surrounding_end = sample_token_offsets.iter()
+                .find(|token_span| { 
+                    return (token_span.0 < (prediction.end as i64)) 
+                        && ((prediction.end as i64) < token_span.1)
+                });
+            let new_prediction_start = match token_surrounding_start {
+                Some(token_span) => token_span.0,
+                None => prediction.start as i64
+            }; 
+            let new_prediction_end = match token_surrounding_end {
+                Some(token_span) => token_span.1,
+                None => prediction.end as i64
+            };
+            writer.serialize((prediction.sample_id, new_prediction_start, new_prediction_end, prediction.entity_type, prediction.extraction))
+                    .expect("unable to write record to tsv file")
+        }
+        writer.flush().expect("unable to flush")
+    }
 }
 
 pub fn read_tokens() -> HashMap<String, Vec<(i32, i32)>> {
@@ -174,15 +220,71 @@ mod tests {
 
     #[test]
     fn test_get_token_offsets() {
-        let token_offsets = get_token_offsets();
+        let samples_file_path = "/home/harsh/every-single-baseline/preprocessed_data/multiconer_fine_valid_tokens_production_samples.json";
+        let token_offsets = get_token_offsets(samples_file_path);
         let tokens_for_sample = token_offsets.get("5239d808-f300-46ea-aa3b-5093040213a3").expect("id should have existed");
     }
 
     #[test]
-    fn test_find_sub_token_predictions() { 
+    fn test_find_sub_token_predictions_valid() { 
+        let samples_file_path = "/home/harsh/every-single-baseline/preprocessed_data/multiconer_fine_valid_tokens_production_samples.json";
         let seq_predictions_file_path = "/home/harsh/every-single-baseline/multiconer_paper_data/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_model_seq_large_default_valid_epoch_10_predictions.tsv";
-        find_sub_token_predictions(seq_predictions_file_path);
+        let seq_tsv_out_path = "./seq_without_boundary_errors_valid.tsv";
+        let span_tsv_out_path = "./span_without_boundary_errors_valid.tsv";
+        find_sub_token_predictions(seq_predictions_file_path, samples_file_path, seq_tsv_out_path);
         let span_predictions_file_path = "/home/harsh/every-single-baseline/multiconer_paper_data/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_span_large_default_valid_epoch_9_predictions.tsv";
-        find_sub_token_predictions(span_predictions_file_path);
+        find_sub_token_predictions(span_predictions_file_path, samples_file_path, span_tsv_out_path);
     }
+
+    #[test]
+    #[ignore]
+    fn test_find_sub_token_predictions_test_new() {
+        let span_predictions_file_path = "/home/harsh/every-single-baseline/submission/no_special_tokens_predictions/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_span_large_default_test_epoch_7_predictions.tsv";
+        let seq_predictions_file_path = "/home/harsh/every-single-baseline/submission/no_special_tokens_predictions/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_model_seq_large_default_test_epoch_7_predictions.tsv";
+        let samples_file_path = "/home/harsh/every-single-baseline/preprocessed_data/multiconer_fine_test_tokens_production_samples.json";
+        let seq_tsv_out_path = "./seq_without_boundary_errors_test.tsv";
+        let span_tsv_out_path = "./span_without_boundary_errors_test.tsv";
+        println!("TEST Seq");
+        find_sub_token_predictions(seq_predictions_file_path, samples_file_path, seq_tsv_out_path);
+        println!("TEST Span");
+        find_sub_token_predictions(span_predictions_file_path, samples_file_path, span_tsv_out_path);
+    }
+
+
+    #[test]
+    #[ignore]
+    fn test_find_sub_token_predictions_test_old() {
+        let seq_predictions_file_path = "/home/harsh/every-single-baseline/submission/old_predictions_test/experiment_multiconer_with_test_gold_labels_old_multiconer_fine_tokens_seq_large_custom_tokenization_no_batch_test_epoch_7_predictions.tsv";
+        let span_predictions_file_path = "/home/harsh/every-single-baseline/submission/old_predictions_test/experiment_multiconer_with_test_gold_labels_old_multiconer_fine_tokens_span_large_custom_tokenization_no_batch_test_epoch_7_predictions.tsv";
+        let samples_file_path = "/home/harsh/every-single-baseline/preprocessed_data/multiconer_fine_test_tokens_production_samples.json";
+        let seq_tsv_out = "./old_seq.tsv";
+        let span_tsv_out = "./old_span.tsv";
+        println!("TEST Seq");
+        find_sub_token_predictions(seq_predictions_file_path, samples_file_path, seq_tsv_out);
+        println!("TEST Span");
+        find_sub_token_predictions(span_predictions_file_path, samples_file_path, span_tsv_out);
+    }
+
+    #[test]
+    fn create_a_tsv_file() -> Result<(), Box<dyn Error>> {
+        println!("Hello!");
+        let mut writer = WriterBuilder::new().delimiter(b'\t').from_path("./test.tsv")?;
+        writer.write_record(&["sample_id", "begin", "end", "type", "extraction"])?;
+        Ok(())
+    }
+
+
+    #[test]
+    fn write_aligned_predictions_test() {
+        let span_predictions_file_path = "/home/harsh/every-single-baseline/submission/no_special_tokens_predictions/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_span_large_default_test_epoch_7_predictions.tsv";
+        let seq_predictions_file_path = "/home/harsh/every-single-baseline/submission/no_special_tokens_predictions/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_model_seq_large_default_test_epoch_7_predictions.tsv";
+        let samples_file_path = "/home/harsh/every-single-baseline/preprocessed_data/multiconer_fine_test_tokens_production_samples.json";
+        let seq_tsv_out_path = "./seq_errors_aligned.tsv";
+        let span_tsv_out_path = "./span_errors_aligned.tsv";
+        println!("TEST Seq Aligned");
+        write_aligned_predictions(seq_predictions_file_path, samples_file_path, seq_tsv_out_path);
+        println!("TEST Span Aligned");
+        write_aligned_predictions(span_predictions_file_path, samples_file_path, span_tsv_out_path);
+    }
+
 }
