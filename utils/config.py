@@ -27,8 +27,12 @@ class ModelConfig:
     optimizer: str
     learning_rate: float
     batch_size: int
+
     # Span Rep Model specific
     max_span_length: Optional[int] = None
+
+    # Tokenization specific options
+    use_special_bert_tokens: Optional[bool] = True
 
 
 @dataclass

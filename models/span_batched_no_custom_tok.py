@@ -1,3 +1,4 @@
+import torch
 import transformers
 from transformers import AutoModel, AutoTokenizer
 from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
@@ -5,6 +6,7 @@ import util
 from structs import Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import ModelConfig, DatasetConfig
+from utils.model import PredictionsBatch, ModelClaC
 import torch.nn as nn
 from preamble import *
 
@@ -37,9 +39,9 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
     return ret
 
 
-class SpanNoTokenizationBatched(torch.nn.Module):
+class SpanNoTokenizationBatched(ModelClaC):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
-        super(SpanNoTokenizationBatched, self).__init__()
+        super(SpanNoTokenizationBatched, self).__init__(model_config, dataset_config)
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
         self.input_dim = model_config.pretrained_model_output_dim
@@ -54,11 +56,15 @@ class SpanNoTokenizationBatched(torch.nn.Module):
         assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
         self.max_span_width = model_config.max_span_length
 
-    def get_bert_encoding_for_batch(self, samples: List[Sample]) -> transformers.BatchEncoding:
+    def get_bert_encoding_for_batch(self, samples: List[Sample], model_config: ModelConfig) \
+            -> transformers.BatchEncoding:
         batch_of_sample_texts = [sample.text for sample in samples]
-        bert_encoding_for_batch = self.bert_tokenizer(batch_of_sample_texts, return_tensors="pt",
+        bert_encoding_for_batch = self.bert_tokenizer(batch_of_sample_texts,
+                                                      return_tensors="pt",
                                                       is_split_into_words=False,
-                                                      add_special_tokens=True, truncation=True, padding=True,
+                                                      add_special_tokens=model_config.use_special_bert_tokens,
+                                                      truncation=True,
+                                                      padding=True,
                                                       max_length=512).to(device)
         return bert_encoding_for_batch
 
@@ -71,8 +77,8 @@ class SpanNoTokenizationBatched(torch.nn.Module):
     def forward(
             self,
             samples: List[Sample]
-    ):
-        batch_encoding = self.get_bert_encoding_for_batch(samples)
+    ) -> tuple[torch.Tensor, PredictionsBatch]:
+        batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
         gold_token_level_annos_batch = get_annos_token_level(
             samples=samples,
             batch_encoding=batch_encoding
@@ -97,8 +103,8 @@ class SpanNoTokenizationBatched(torch.nn.Module):
         span_embeddings = self.endpoint_span_extractor(bert_embeddings_batch, all_possible_spans_tensor_batch)
         # SHAPE: (batch_size, num_spans, num_classes)
         predicted_all_possible_spans_logits_batch = self.classifier(span_embeddings)
-        loss = self.loss_function(torch.permute(predicted_all_possible_spans_logits_batch, (0, 2, 1)),
-                                  all_possible_spans_labels_batch)
+        loss: torch.Tensor = self.loss_function(torch.permute(predicted_all_possible_spans_logits_batch, (0, 2, 1)),
+                                                all_possible_spans_labels_batch)
 
         predicted_annos = self.get_predicted_annos(
             predicted_all_possible_spans_logits_batch=predicted_all_possible_spans_logits_batch,
@@ -156,7 +162,8 @@ class SpanNoTokenizationBatched(torch.nn.Module):
         all_possible_spans_labels = []
         for span in all_possible_spans_list:
             corresponding_anno_list = [anno for anno in sub_token_level_annos if
-                                       (anno.begin_offset == span[0]) and (anno.end_offset == (span[1] + 1))]  # spans are inclusive
+                                       (anno.begin_offset == span[0]) and (
+                                                   anno.end_offset == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
                     print("WARN: Didn't expect multiple annotations to match one span")
