@@ -14,6 +14,7 @@ from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecod
 from flair.data import Dictionary
 from utils.config import DatasetConfig, ModelConfig
 from utils.universal import Option, OptionState
+from utils.model import ModelClaC, PredictionsBatch
 from utils.config import get_experiment_config
 from pudb import set_trace
 from models.span_batched_no_custom_tok import SpanNoTokenizationBatched
@@ -907,9 +908,9 @@ class SeqLabelerBatched(torch.nn.Module):
         return loss, predicted_annos_batch
 
 
-class SeqLabelerNoTokenization(torch.nn.Module):
+class SeqLabelerNoTokenization(ModelClaC):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
-        super(SeqLabelerNoTokenization, self).__init__()
+        super(SeqLabelerNoTokenization, self).__init__(model_config=model_config, dataset_config=dataset_config)
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
         self.input_dim = model_config.pretrained_model_output_dim
@@ -919,14 +920,16 @@ class SeqLabelerNoTokenization(torch.nn.Module):
         self.label_to_idx = label_to_idx
         self.idx_to_label = idx_to_label
         self.loss_function = nn.CrossEntropyLoss()
-        self.dataset_config = dataset_config
-        self.model_config = model_config
 
-    def get_bert_encoding_for_batch(self, samples: List[Sample]) -> transformers.BatchEncoding:
+    def get_bert_encoding_for_batch(self, samples: List[Sample],
+                                    model_config: ModelConfig) -> transformers.BatchEncoding:
         batch_of_sample_texts = [sample.text for sample in samples]
-        bert_encoding_for_batch = self.bert_tokenizer(batch_of_sample_texts, return_tensors="pt",
+        bert_encoding_for_batch = self.bert_tokenizer(batch_of_sample_texts,
+                                                      return_tensors="pt",
                                                       is_split_into_words=False,
-                                                      add_special_tokens=True, truncation=True, padding=True,
+                                                      add_special_tokens=model_config.use_special_bert_tokens,
+                                                      truncation=True,
+                                                      padding=True,
                                                       max_length=512).to(device)
         return bert_encoding_for_batch
 
@@ -959,12 +962,13 @@ class SeqLabelerNoTokenization(torch.nn.Module):
             )
         return token_annos_batch
 
-    def forward(self,
-                samples: List[Sample]
-                ):
+    def forward(
+            self,
+            samples: List[Sample]
+    ) -> tuple[torch.Tensor, PredictionsBatch]:
         assert isinstance(samples, list)
         # encoding helps manage tokens created by bert
-        bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples)
+        bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)
         # SHAPE (batch_size, seq_len, bert_emb_len)
         bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
         predictions_logits_batch = self.classifier(bert_embeddings_batch)
@@ -1002,5 +1006,3 @@ class SeqLabelerNoTokenization(torch.nn.Module):
             for batch_idx, predicted_labels in enumerate(predicted_labels_batch)
         ]
         return loss, predicted_annos_batch
-
-
