@@ -6,15 +6,15 @@ import train_util
 from structs import Sample
 
 
-def get_bert_tokenizer():
+def get_bert_tokenizer(model_name: str = 'bert-base-cased'):
     """
     Get the bert tokenizer
     """
-    return AutoTokenizer.from_pretrained('bert-base-cased')
+    return AutoTokenizer.from_pretrained(model_name)
 
 
 def get_bert_model():
-    return AutoModel.from_pretrained('bert-base-uncased')
+    return AutoModel.from_pretrained('bert-base-cased')
 
 
 def get_bert_encoding(bert_tokenizer, tokens=List[str]):
@@ -28,3 +28,7 @@ def get_train_samples_by_dataset_name(dataset_config_name: str) -> List[Sample]:
 
 def get_valid_samples_by_dataset_name(dataset_config_name: str) -> List[Sample]:
     return train_util.get_valid_samples(get_dataset_config_by_name(dataset_config_name))
+
+
+def get_test_samples_by_dataset_name(dataset_config_name: str) -> List[Sample]:
+    return train_util.get_test_samples(get_dataset_config_by_name(dataset_config_name))
