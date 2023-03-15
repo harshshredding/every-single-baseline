@@ -32,6 +32,7 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
                 )
             else:
                 print(f"WARN: No char_index to token_index mapping:")
+                print(f"DEBUG: SampleId: {sample.id}")
                 print(f"DEBUG: Anno: {gold_anno}")
                 # print(f"DEBUG: Sample id: {sample.id}")
                 # print(f"DEBUG: Sample text: {sample.text}")
