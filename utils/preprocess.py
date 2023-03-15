@@ -25,8 +25,8 @@ class Preprocessor(ABC):
             dataset_split: DatasetSplit,
             preprocessor_type: str,
             dataset: Dataset,
-            annotators: List[Annotator] = [],
-            run_mode: PreprocessorRunType = PreprocessorRunType.production
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
     ) -> None:
         """
         Creates a preprocessor configured with some file paths

@@ -5,13 +5,13 @@ import os
 from typing import List, Dict
 import pandas as pd
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
-from preprocess import Preprocessor
+from utils.preprocess import Preprocessor, PreprocessorRunType
 from preamble import *
 from annotators import Annotator
 import json
 
 
-class PreprocessSocialDisNer(Preprocessor):
+class PreprocessSocialDisNerGPT(Preprocessor):
     """
     The SocialDisNER dataset preprocessor.
     """
@@ -20,13 +20,15 @@ class PreprocessSocialDisNer(Preprocessor):
             self,
             preprocessor_type: str,
             dataset_split: DatasetSplit,
-            annotators: List[Annotator]
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
     ) -> None:
         super().__init__(
             preprocessor_type=preprocessor_type,
             dataset_split=dataset_split,
             dataset=Dataset.social_dis_ner,
-            annotators=annotators
+            annotators=annotators,
+            run_mode=run_mode
         )
         assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
 
@@ -133,3 +135,50 @@ class PreprocessSocialDisNer(Preprocessor):
         <<< file end
         """
         return ['ENFERMEDAD']
+
+
+class PreprocessSocialDisNerChatGPT(PreprocessSocialDisNerGPT):
+    def __init__(
+            self,
+            preprocessor_type: str,
+            dataset_split: DatasetSplit,
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
+    ) -> None:
+        super().__init__(
+            preprocessor_type=preprocessor_type,
+            dataset_split=dataset_split,
+            annotators=annotators,
+            run_mode=run_mode
+        )
+
+    def get_gpt_predictions(self):
+        match self.dataset_split:
+            case DatasetSplit.valid:
+                chatgpt_predictions_file_path = './chatgpt_social_dis_ner_valid.json'
+            case DatasetSplit.train:
+                chatgpt_predictions_file_path = './chatgpt_social_dis_ner_train.json'
+            case __:
+                raise RuntimeError("Can only support train and valid")
+
+        with open(chatgpt_predictions_file_path, 'r') as gpt_predictions_file:
+            chat_gpt_predictions = json.load(gpt_predictions_file)
+
+        print("Got predictions", len(chat_gpt_predictions))
+
+        gpt_predictions_dict = {
+            sample_id: diseases
+            for sample_id, diseases in chat_gpt_predictions
+        }
+
+        match self.dataset_split:
+            case DatasetSplit.valid:
+                assert len(gpt_predictions_dict) == 2500
+            case DatasetSplit.train:
+                assert len(gpt_predictions_dict) == 5000
+            case _:
+                raise RuntimeError("Can only support train and valid")
+
+        print("dict len", len(gpt_predictions_dict))
+        return gpt_predictions_dict
+

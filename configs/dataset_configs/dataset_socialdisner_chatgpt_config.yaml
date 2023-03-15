@@ -1,0 +1,7 @@
+train_samples_file_path: ./preprocessed_data/social_dis_ner_train_chat_gpt_production_samples.json
+valid_samples_file_path: ./preprocessed_data/social_dis_ner_valid_chat_gpt_production_samples.json
+test_samples_file_path: change_this
+types_file_path: ./preprocessed_data/social_dis_ner_train_chat_gpt_production_types.txt
+num_types: 1
+dataset_name: social_dis_ner
+dataset_config_name: social_dis_ner_chatgpt
