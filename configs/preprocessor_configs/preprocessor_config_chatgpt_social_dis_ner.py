@@ -1,4 +1,3 @@
-from structs import Dataset
 from utils.config import PreprocessorConfig
 
 
