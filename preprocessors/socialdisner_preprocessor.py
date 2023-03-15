@@ -30,7 +30,9 @@ class PreprocessSocialDisNer(Preprocessor):
             annotators=annotators,
             run_mode=run_mode
         )
-        assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
+        assert (dataset_split == DatasetSplit.train) \
+               or (dataset_split == DatasetSplit.valid) \
+               or (dataset_split == DatasetSplit.test)
 
     def __get_tweet_annos_dict(self) -> Dict[SampleId, List[Anno]]:
         """

@@ -5,6 +5,6 @@ from utils.config import get_preprocessor_config
 preprocessor_config = get_preprocessor_config('preprocessor_config_social_dis_ner')
 preprocess(
     preprocessor_config=preprocessor_config,
-    run_mode=PreprocessorRunType.dry_run,
+    run_mode=PreprocessorRunType.production,
     dataset_splits=[DatasetSplit.test, DatasetSplit.valid, DatasetSplit.train]
 )
