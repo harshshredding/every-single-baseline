@@ -40,15 +40,15 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
     return ret
 
 
-class SpanNoTokenizationBatched(ModelClaC):
+class SpanDefault(ModelClaC):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
-        super(SpanNoTokenizationBatched, self).__init__(model_config, dataset_config)
+        super(SpanDefault, self).__init__(model_config, dataset_config)
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
         self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = len(all_types) + 1
-        self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
-        self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)
+        self.classifier = self.get_classifier()
+        self.endpoint_span_extractor = self.get_endpoint_span_extractor()
         self.loss_function = nn.CrossEntropyLoss()
         self.type_to_idx = {type_name: i for i, type_name in enumerate(all_types)}
         # Add NO_TYPE type which represents "no annotation"
@@ -56,6 +56,12 @@ class SpanNoTokenizationBatched(ModelClaC):
         self.idx_to_type = {i: type_name for type_name, i in self.type_to_idx.items()}
         assert len(self.type_to_idx) == self.num_class, "Num of classes should be equal to num of types"
         self.max_span_width = model_config.max_span_length
+
+    def get_endpoint_span_extractor(self):
+        return EndpointSpanExtractor(self.input_dim)
+
+    def get_classifier(self):
+        return nn.Linear(self.input_dim * 2, self.num_class)
 
     def get_bert_encoding_for_batch(self, samples: List[Sample], model_config: ModelConfig) \
             -> transformers.BatchEncoding:
@@ -92,18 +98,15 @@ class SpanNoTokenizationBatched(ModelClaC):
             util.enumerate_spans(batch_encoding.word_ids(batch_index=batch_idx), max_span_width=self.max_span_width)
             for batch_idx in range(len(samples))
         ]
-        all_possible_spans_labels_batch = self.label_all_possible_spans_batch(
-            all_possible_spans_list_batch=all_possible_spans_list_batch,
-            sub_token_level_annos_batch=gold_token_level_annos_batch
-        )
         # SHAPE: (batch_size, num_spans)
-        all_possible_spans_labels_batch = torch.tensor(all_possible_spans_labels_batch, device=device)
+        all_possible_spans_labels_batch = self.label_all_possible_spans_batch(all_possible_spans_list_batch,
+                                                                              gold_token_level_annos_batch)
         # SHAPE: (batch_size, seq_len, 2)
         all_possible_spans_tensor_batch: torch.Tensor = torch.tensor(all_possible_spans_list_batch, device=device)
         # SHAPE: (batch_size, num_spans, endpoint_dim)
-        span_embeddings = self.endpoint_span_extractor(bert_embeddings_batch, all_possible_spans_tensor_batch)
+        all_possible_span_embeddings = self.get_span_embeddings(bert_embeddings_batch, all_possible_spans_tensor_batch)
         # SHAPE: (batch_size, num_spans, num_classes)
-        predicted_all_possible_spans_logits_batch = self.classifier(span_embeddings)
+        predicted_all_possible_spans_logits_batch = self.classifier(all_possible_span_embeddings)
         loss: torch.Tensor = self.loss_function(torch.permute(predicted_all_possible_spans_logits_batch, (0, 2, 1)),
                                                 all_possible_spans_labels_batch)
 
@@ -114,6 +117,18 @@ class SpanNoTokenizationBatched(ModelClaC):
             samples=samples
         )
         return loss, predicted_annos
+
+    def get_span_embeddings(self, bert_embeddings_batch, all_possible_spans_tensor_batch) -> torch.Tensor:
+        return self.endpoint_span_extractor(bert_embeddings_batch, all_possible_spans_tensor_batch)
+
+    def label_all_possible_spans_batch(self, all_possible_spans_list_batch, gold_token_level_annos_batch):
+        all_possible_spans_labels_batch = self._label_all_possible_spans_batch(
+            all_possible_spans_list_batch=all_possible_spans_list_batch,
+            sub_token_level_annos_batch=gold_token_level_annos_batch
+        )
+        # SHAPE: (batch_size, num_spans)
+        all_possible_spans_labels_batch = torch.tensor(all_possible_spans_labels_batch, device=device)
+        return all_possible_spans_labels_batch
 
     def get_predicted_annos(
             self,
@@ -159,12 +174,12 @@ class SpanNoTokenizationBatched(ModelClaC):
             ret.append(sample_annos)
         return ret
 
-    def label_all_possible_spans(self, all_possible_spans_list, sub_token_level_annos):
+    def _label_all_possible_spans(self, all_possible_spans_list, sub_token_level_annos):
         all_possible_spans_labels = []
         for span in all_possible_spans_list:
             corresponding_anno_list = [anno for anno in sub_token_level_annos if
                                        (anno.begin_offset == span[0]) and (
-                                                   anno.end_offset == (span[1] + 1))]  # spans are inclusive
+                                               anno.end_offset == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
                     print("WARN: Didn't expect multiple annotations to match one span")
@@ -175,7 +190,7 @@ class SpanNoTokenizationBatched(ModelClaC):
         assert len(all_possible_spans_labels) == len(all_possible_spans_list)
         return all_possible_spans_labels
 
-    def label_all_possible_spans_batch(
+    def _label_all_possible_spans_batch(
             self,
             all_possible_spans_list_batch: List[List[tuple]],
             sub_token_level_annos_batch: List[List[Anno]]
@@ -184,6 +199,17 @@ class SpanNoTokenizationBatched(ModelClaC):
         ret = []
         for all_possible_spans_list, sub_token_level_annos in zip(all_possible_spans_list_batch,
                                                                   sub_token_level_annos_batch):
-            ret.append(self.label_all_possible_spans(all_possible_spans_list, sub_token_level_annos))
+            ret.append(self._label_all_possible_spans(all_possible_spans_list, sub_token_level_annos))
         assert len(ret) == len(all_possible_spans_list_batch)
         return ret
+
+
+class SpanDefaultSpanAddition(SpanDefault):
+    def get_endpoint_span_extractor(self):
+        return EndpointSpanExtractor(self.input_dim, combination="x+y")
+
+    def get_classifier(self):
+        return nn.Linear(self.input_dim, self.num_class)
+
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
