@@ -2,7 +2,7 @@
 Preprocessing for SocialDisNER dataset.
 """
 import os
-from typing import List, Dict
+from typing import Dict
 import pandas as pd
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from utils.preprocess import Preprocessor, PreprocessorRunType
@@ -34,7 +34,7 @@ class PreprocessSocialDisNer(Preprocessor):
                or (dataset_split == DatasetSplit.valid) \
                or (dataset_split == DatasetSplit.test)
 
-    def __get_tweet_annos_dict(self) -> Dict[SampleId, List[Anno]]:
+    def get_tweet_annos_dict(self) -> Dict[SampleId, List[Anno]]:
         """
         Read annotations for each sample from the given file and return
         a dict from sample_ids to corresponding annotations.
@@ -55,7 +55,6 @@ class PreprocessSocialDisNer(Preprocessor):
         """
         Extract samples from the given raw data file provided
         by the organizers.
-
         """
         match self.dataset_split:
             case DatasetSplit.train:
@@ -69,7 +68,7 @@ class PreprocessSocialDisNer(Preprocessor):
 
         ret = []
         data_files_list = os.listdir(raw_data_folder_path)
-        tweet_to_annos = self.__get_tweet_annos_dict()
+        tweet_to_annos = self.get_tweet_annos_dict()
         for filename in data_files_list:
             data_file_path = os.path.join(raw_data_folder_path, filename)
             with open(data_file_path, 'r') as f:
@@ -106,7 +105,7 @@ class PreprocessSocialDisNer(Preprocessor):
         return ['ENFERMEDAD']
 
 
-class PreprocessSocialDisNerGPT(Preprocessor):
+class PreprocessSocialDisNerGPT(PreprocessSocialDisNer):
     """
     The SocialDisNER dataset preprocessor.
     """
@@ -121,47 +120,30 @@ class PreprocessSocialDisNerGPT(Preprocessor):
         super().__init__(
             preprocessor_type=preprocessor_type,
             dataset_split=dataset_split,
-            dataset=Dataset.social_dis_ner,
             annotators=annotators,
             run_mode=run_mode
         )
-        assert (dataset_split == DatasetSplit.train) or (dataset_split == DatasetSplit.valid)
-
-    @staticmethod
-    def __get_tweet_annos_dict() -> Dict[SampleId, List[Anno]]:
-        """
-        Read annotations for each sample from the given file and return
-        a dict from sample_ids to corresponding annotations.
-        """
-        annos_file_path = "socialdisner-data/mentions.tsv"
-        df = pd.read_csv(annos_file_path, sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['tweets_id']), [])
-            annos_list.append(
-                Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['tweets_id'])] = annos_list
-        return sample_to_annos
 
     def get_samples(self) -> List[Sample]:
         """
         Extract samples from the given raw data file provided
         by the organizers.
-
         """
         match self.dataset_split:
             case DatasetSplit.train:
                 raw_data_folder_path = 'socialdisner-data/train-valid-txt-files/training'
             case DatasetSplit.valid:
                 raw_data_folder_path = 'socialdisner-data/train-valid-txt-files/validation'
+            case DatasetSplit.test:
+                raw_data_folder_path = 'social_dis_ner_test_data/test-data/test-data-txt-files'
             case _:
-                raise RuntimeError('only train and valid are supported')
+                raise RuntimeError(f"Split {self.dataset_split.name} not supported yet")
 
         gpt_predictions_dict = self.get_gpt_predictions()
 
         ret = []
         data_files_list = os.listdir(raw_data_folder_path)
-        tweet_to_annos = self.__get_tweet_annos_dict()
+        tweet_to_annos = self.get_tweet_annos_dict()
         for filename in data_files_list:
             data_file_path = os.path.join(raw_data_folder_path, filename)
             with open(data_file_path, 'r') as f:
@@ -218,19 +200,6 @@ class PreprocessSocialDisNerGPT(Preprocessor):
         print("dict len", len(gpt_predictions_dict))
         return gpt_predictions_dict
 
-    def get_entity_types(self) -> List[str]:
-        """
-        Create a .txt file that lists all possible entity types -- one per line.
-
-        For eg. the below mock txt file lists entity types ORG, PER, and LOC.
-        <<< file start
-        ORG
-        PER
-        LOC
-        <<< file end
-        """
-        return ['ENFERMEDAD']
-
 
 class PreprocessSocialDisNerChatGPT(PreprocessSocialDisNerGPT):
     def __init__(
@@ -253,7 +222,9 @@ class PreprocessSocialDisNerChatGPT(PreprocessSocialDisNerGPT):
                 chatgpt_predictions_file_path = './chatgpt_social_dis_ner_valid.json'
             case DatasetSplit.train:
                 chatgpt_predictions_file_path = './chatgpt_social_dis_ner_train.json'
-            case __:
+            case DatasetSplit.test:
+                chatgpt_predictions_file_path = './chatgpt_social_dis_ner_test.json'
+            case _:
                 raise RuntimeError("Can only support train and valid")
 
         with open(chatgpt_predictions_file_path, 'r') as gpt_predictions_file:
@@ -271,6 +242,8 @@ class PreprocessSocialDisNerChatGPT(PreprocessSocialDisNerGPT):
                 assert len(gpt_predictions_dict) == 2500
             case DatasetSplit.train:
                 assert len(gpt_predictions_dict) == 5000
+            case DatasetSplit.test:
+                assert_equals(len(gpt_predictions_dict), 23430, "unexpected number of chatgpt predictions")
             case _:
                 raise RuntimeError("Can only support train and valid")
 

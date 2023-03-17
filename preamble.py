@@ -1,7 +1,12 @@
 import sys
 from IPython.core import ultratb
+
 sys.excepthook = ultratb.FormattedTB(color_scheme='Linux', call_pdb=False)
 from pudb import set_trace
 from tqdm import tqdm as show_progress
 from typing import List
 from utils.universal import *
+
+
+def assert_equals(lhs, rhs, message=""):
+    assert lhs == rhs, f"{message} \n LHS: {lhs} \n RHS: {rhs}"

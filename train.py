@@ -143,20 +143,19 @@ for dataset_config, model_config in experiments:
             epoch=epoch
         )
 
-        if IS_TESTING:
-            if (((epoch + 1) % 4) == 0) or IS_DRY_RUN:
-                train_util.evaluate_test_split(
-                    logger=logger,
-                    model=model,
-                    test_samples=test_samples,
-                    mistakes_folder_path=mistakes_folder_path,
-                    predictions_folder_path=predictions_folder_path,
-                    error_visualization_folder_path=error_visualization_folder_path,
-                    test_performance_file_path=test_performance_file_path,
-                    experiment_name=EXPERIMENT_NAME,
-                    model_config_name=model_config.model_config_name,
-                    dataset_config_name=dataset_config.dataset_config_name,
-                    epoch=epoch
-                )
+        if IS_DRY_RUN or IS_TESTING:
+            train_util.evaluate_test_split(
+                logger=logger,
+                model=model,
+                test_samples=test_samples,
+                mistakes_folder_path=mistakes_folder_path,
+                predictions_folder_path=predictions_folder_path,
+                error_visualization_folder_path=error_visualization_folder_path,
+                test_performance_file_path=test_performance_file_path,
+                experiment_name=EXPERIMENT_NAME,
+                model_config_name=model_config.model_config_name,
+                dataset_config_name=dataset_config.dataset_config_name,
+                epoch=epoch
+            )
 
 logger.info(green("Experiment Finished!!"))
