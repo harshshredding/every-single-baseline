@@ -1,5 +1,5 @@
-train_samples_file_path: ./preprocessed_data/social_dis_ner_train_vanilla_samples.json
-valid_samples_file_path: ./preprocessed_data/social_dis_ner_valid_vanilla_samples.json
+train_samples_file_path: ./preprocessed_data/social_dis_ner_train_default_production_samples.json
+valid_samples_file_path: ./preprocessed_data/social_dis_ner_valid_default_production_samples.json
 test_samples_file_path: ./preprocessed_data/social_dis_ner_test_default_production_samples.json
 types_file_path: ./preprocessed_data/social_dis_ner_train_vanilla_types.txt
 num_types: 1

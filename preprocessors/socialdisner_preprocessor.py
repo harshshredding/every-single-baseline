@@ -11,6 +11,26 @@ from annotators import Annotator
 import json
 
 
+
+def get_tweet_annos_dict(dataset_split: DatasetSplit) -> Dict[SampleId, List[Anno]]:
+    """
+    Read annotations for each sample from the given file and return
+    a dict from sample_ids to corresponding annotations.
+    """
+    if dataset_split == DatasetSplit.test:
+        return {}
+    annos_file_path = "socialdisner-data/mentions.tsv"
+    df = pd.read_csv(annos_file_path, sep='\t')
+    sample_to_annos = {}
+    for i, row in df.iterrows():
+        annos_list = sample_to_annos.get(str(row['tweets_id']), [])
+        annos_list.append(
+            Anno(row['begin'], row['end'], row['type'], row['extraction'])
+        )
+        sample_to_annos[str(row['tweets_id'])] = annos_list
+    return sample_to_annos
+
+
 class PreprocessSocialDisNer(Preprocessor):
     """
     The SocialDisNER dataset preprocessor.
@@ -34,22 +54,6 @@ class PreprocessSocialDisNer(Preprocessor):
                or (dataset_split == DatasetSplit.valid) \
                or (dataset_split == DatasetSplit.test)
 
-    def get_tweet_annos_dict(self) -> Dict[SampleId, List[Anno]]:
-        """
-        Read annotations for each sample from the given file and return
-        a dict from sample_ids to corresponding annotations.
-        """
-        if self.dataset_split == DatasetSplit.test:
-            return {}
-        annos_file_path = "socialdisner-data/mentions.tsv"
-        df = pd.read_csv(annos_file_path, sep='\t')
-        sample_to_annos = {}
-        for i, row in df.iterrows():
-            annos_list = sample_to_annos.get(str(row['tweets_id']), [])
-            annos_list.append(
-                Anno(row['begin'], row['end'], row['type'], row['extraction']))
-            sample_to_annos[str(row['tweets_id'])] = annos_list
-        return sample_to_annos
 
     def get_samples(self) -> List[Sample]:
         """
@@ -68,7 +72,7 @@ class PreprocessSocialDisNer(Preprocessor):
 
         ret = []
         data_files_list = os.listdir(raw_data_folder_path)
-        tweet_to_annos = self.get_tweet_annos_dict()
+        tweet_to_annos = get_tweet_annos_dict(self.dataset_split)
         for filename in data_files_list:
             data_file_path = os.path.join(raw_data_folder_path, filename)
             with open(data_file_path, 'r') as f:
@@ -143,7 +147,7 @@ class PreprocessSocialDisNerGPT(PreprocessSocialDisNer):
 
         ret = []
         data_files_list = os.listdir(raw_data_folder_path)
-        tweet_to_annos = self.get_tweet_annos_dict()
+        tweet_to_annos = get_tweet_annos_dict(self.dataset_split)
         for filename in data_files_list:
             data_file_path = os.path.join(raw_data_folder_path, filename)
             with open(data_file_path, 'r') as f:
