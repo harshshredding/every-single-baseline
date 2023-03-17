@@ -143,7 +143,7 @@ for dataset_config, model_config in experiments:
             epoch=epoch
         )
 
-        if IS_DRY_RUN or IS_TESTING:
+        if IS_TESTING:
             train_util.evaluate_test_split(
                 logger=logger,
                 model=model,
