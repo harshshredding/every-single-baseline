@@ -47,6 +47,7 @@ class SpanDefault(ModelClaC):
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
         self.input_dim = model_config.pretrained_model_output_dim
         self.num_class = len(all_types) + 1
+        print("types new\n:", sorted(all_types))
         self.classifier = self.get_classifier()
         self.endpoint_span_extractor = self.get_endpoint_span_extractor()
         self.loss_function = nn.CrossEntropyLoss()
@@ -175,6 +176,8 @@ class SpanDefault(ModelClaC):
                                 sample.text[span_start_char_offset:span_end_char_offset],
                             )
                         )
+                    else:
+                        raise RuntimeError("Not expecting a token that cannot be mapped to a Char Span")
             ret.append(sample_annos)
         return ret
 

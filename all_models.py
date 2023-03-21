@@ -640,6 +640,7 @@ class SpanBert(torch.nn.Module):
         self.classifier = nn.Linear(self.input_dim * 2, self.num_class)
         self.endpoint_span_extractor = EndpointSpanExtractor(self.input_dim)
         self.loss_function = nn.CrossEntropyLoss()
+        print("types old\n:", sorted(all_types))
         self.type_to_idx = {type_name: i for i, type_name in enumerate(all_types)}
         # Add NO_TYPE type which represents "no annotation"
         self.type_to_idx['NO_TYPE'] = len(self.type_to_idx)
@@ -702,12 +703,7 @@ class SpanBert(torch.nn.Module):
             .argmax(torch.squeeze(predicted_all_possible_spans_logits, 0), dim=1) \
             .cpu() \
             .detach().numpy()
-        # SHAPE: (num_spans)
-        pred_all_possible_spans_max_values = torch \
-            .max(torch.squeeze(predicted_all_possible_spans_logits, 0), dim=1) \
-            .values \
-            .cpu() \
-            .detach().numpy()
+        # SHAPE: (num_spans) 
 
         assert len(pred_all_possible_spans_type_indices_list.shape) == 1
         for i, span_type_idx in enumerate(pred_all_possible_spans_type_indices_list):
@@ -731,7 +727,6 @@ class SpanBert(torch.nn.Module):
                         span_end_char_offset,
                         self.idx_to_type[span_type_idx],
                         span_text,
-                        {"confidence_value": pred_all_possible_spans_max_values[i]}
                     )
                 )
         return ret
