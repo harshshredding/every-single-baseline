@@ -502,7 +502,8 @@ class JustBert3Classes(torch.nn.Module):
         self.model_config = model_config
 
     def forward(self,
-                samples: List[Sample]
+                samples: List[Sample],
+                collect: List
                 ):
         assert len(samples) == 1, "Can only deal with one sample :("
         sample = samples[0]
@@ -510,6 +511,8 @@ class JustBert3Classes(torch.nn.Module):
         offsets_list = util.get_token_offsets_from_sample(sample)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
+        #print("old bert encoding: ", bert_encoding)
+        collect.append(bert_encoding)
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         predictions_logits = self.classifier(bert_embeddings)
@@ -518,6 +521,8 @@ class JustBert3Classes(torch.nn.Module):
         expanded_labels = train_util.get_bio_labels_from_annos(token_annos,
                                                                bert_encoding,
                                                                sample.annos.gold)
+        #print("old bio tokens", expanded_labels)
+        collect.append(expanded_labels)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         loss = self.loss_function(predictions_logits, expanded_labels_tensor)
@@ -942,6 +947,8 @@ class SeqLabelerNoTokenization(ModelClaC):
         token_ids_matrix = bert_encoding['input_ids']
         batch_size = len(token_ids_matrix)
         num_tokens = len(token_ids_matrix[0])
+        for batch_idx in range(batch_size):
+            assert len(token_ids_matrix[batch_idx]) == num_tokens, "every sample should have the same number of tokens"
         assert batch_size == expected_batch_size
         token_annos_batch: List[List[Option[Anno]]] = []
         for batch_idx in range(batch_size):
@@ -962,11 +969,14 @@ class SeqLabelerNoTokenization(ModelClaC):
 
     def forward(
             self,
-            samples: List[Sample]
+            samples: List[Sample],
+            collect: List
     ) -> tuple[torch.Tensor, PredictionsBatch]:
         assert isinstance(samples, list)
         # encoding helps manage tokens created by bert
         bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)
+        #print("encoding new", bert_encoding_for_batch)
+        collect.append(bert_encoding_for_batch)
         # SHAPE (batch_size, seq_len, bert_emb_len)
         bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
         predictions_logits_batch = self.classifier(bert_embeddings_batch)
@@ -977,6 +987,8 @@ class SeqLabelerNoTokenization(ModelClaC):
         )
         assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
         assert len(gold_labels_batch[0]) == bert_embeddings_batch.shape[1]  # same num labels as tokens
+        #print("gold bio labels", gold_labels_batch[0])
+        collect.append(gold_labels_batch[0])
 
         gold_label_indices = [
             [self.label_to_idx[label] for label in gold_labels]
