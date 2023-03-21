@@ -10,3 +10,5 @@ model_config: ModelConfig = get_small_model_config(
 )
 
 model_config.use_special_bert_tokens = False
+
+model_config.batch_size = 1

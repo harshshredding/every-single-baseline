@@ -651,7 +651,7 @@ class SpanBert(torch.nn.Module):
     def forward(
         self,
         samples: List[Sample],
-        collect: List
+        # collect: List
     ):
         assert len(samples) == 1, "Can only handle one sample at a time :("
         sample = samples[0]
@@ -660,7 +660,7 @@ class SpanBert(torch.nn.Module):
         gold_token_level_annos = util.get_token_level_spans(token_annos, sample.annos.gold)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
-        collect.append(bert_encoding)
+        # collect.append(bert_encoding)
         gold_sub_token_level_annos = util.get_sub_token_level_spans(gold_token_level_annos, bert_encoding)
         bert_embeddings = self.bert_model(
             bert_encoding['input_ids'], return_dict=True)
@@ -670,7 +670,7 @@ class SpanBert(torch.nn.Module):
         bert_embeddings = torch.unsqueeze(bert_embeddings, 0)
         all_possible_spans_list = util.enumerate_spans(bert_encoding.word_ids())
         all_possible_spans_labels = self.label_all_possible_spans(all_possible_spans_list, gold_sub_token_level_annos)
-        collect.append(all_possible_spans_labels)
+        # collect.append(all_possible_spans_labels)
         # SHAPE: (batch_size, num_spans)
         all_possible_spans_labels = torch.tensor([all_possible_spans_labels], device=device)
         # SHAPE: (batch_size, seq_len, 2)

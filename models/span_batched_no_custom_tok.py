@@ -85,10 +85,10 @@ class SpanDefault(ModelClaC):
     def forward(
         self,
         samples: List[Sample],
-        collect: List
+        # collect: List
     ) -> tuple[torch.Tensor, PredictionsBatch]:
         batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
-        collect.append(batch_encoding)
+        # collect.append(batch_encoding)
 
         gold_token_level_annos_batch = get_annos_token_level(
             samples=samples,
@@ -105,7 +105,7 @@ class SpanDefault(ModelClaC):
         # SHAPE: (batch_size, num_spans)
         all_possible_spans_labels_batch = self.label_all_possible_spans_batch(all_possible_spans_list_batch,
                                                                               gold_token_level_annos_batch)
-        collect.append(all_possible_spans_labels_batch)
+        # collect.append(all_possible_spans_labels_batch)
         # SHAPE: (batch_size, seq_len, 2)
         all_possible_spans_tensor_batch: torch.Tensor = torch.tensor(all_possible_spans_list_batch, device=device)
         # SHAPE: (batch_size, num_spans, endpoint_dim)
