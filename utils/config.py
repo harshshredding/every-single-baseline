@@ -51,7 +51,7 @@ def get_large_model_config(
         model_name=model_name,
         pretrained_model_name='xlm-roberta-large',
         pretrained_model_output_dim=1024,
-        num_epochs=15,
+        num_epochs=10,
         optimizer='Adam',
         batch_size=4,
         learning_rate=1e-5
@@ -67,7 +67,7 @@ def get_small_model_config(
         model_name=model_name,
         pretrained_model_name='xlm-roberta-base',
         pretrained_model_output_dim=768,
-        num_epochs=15,
+        num_epochs=10,
         optimizer='Adam',
         batch_size=4,
         learning_rate=1e-5
