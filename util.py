@@ -25,6 +25,9 @@ def check_config_integrity():
     """
     all_experiment_file_paths = glob.glob('./experiments/*.py')
     all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
+    # ignore the init file
+    all_experiment_names.remove('__init__')
+    
     assert all(experiment_name.startswith('experiment') for experiment_name in all_experiment_names), \
         "experiment file names should start with 'experiment'"
 
