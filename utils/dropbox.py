@@ -103,9 +103,30 @@ def get_all_file_names_in_folder() -> List[str]:
     """
     Get all file names in the dropbox root folder.
     """
-    dropbox_client = get_dropbox_client()
-    file_entries = dropbox_client.files_list_folder('').entries
-    return [entry.name for entry in file_entries]
+    dbx = get_dropbox_client()
+
+    folder_path = '' # root folder
+    all_files = [] # collects all files here
+    has_more_files = True # because we haven't queried yet
+    cursor = None # because we haven't queried yet
+
+    while has_more_files:
+        if cursor is None: # if it is our first time querying
+            result = dbx.files_list_folder(folder_path)
+        else:
+            result = dbx.files_list_folder_continue(cursor)
+        all_files.extend(result.entries)
+        cursor = result.cursor
+        has_more_files = result.has_more
+        
+    print("DROPBOX: Number of total files listed: ", len(all_files))
+    return [entry.name for entry in all_files]
+
+
+def get_all_performance_files() -> List[str]:
+    all_file_names = get_all_file_names_in_folder()
+    all_performance_files = [file_name for file_name in all_file_names if ("performance" in file_name)]
+    return all_performance_files
 
 
 def upload_file(file_to_upload_path: str):
