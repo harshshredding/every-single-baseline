@@ -774,7 +774,7 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
         bert_embeddings = get_bert_embeddings_for_batch(bert_model=self.bert_model, encoding=bert_encoding)
 
         all_possible_spans_list = [
-            util.enumerate_spans(bert_encoding.word_ids(batch_index=batch_idx), max_span_width=self.max_span_width)
+            util.enumerate_spans(bert_encoding.word_ids(batch_index=batch_idx))
             for batch_idx in range(len(samples))
         ]
 
