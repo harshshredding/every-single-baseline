@@ -635,16 +635,16 @@ def get_tokens_from_batch(samples: List[Sample]) -> List[List[str]]:
     return ret
 
 
-def get_token_annos_from_sample(sample: Sample) -> List[Anno]:
+def get_token_annos_from_sample(sample: Sample) -> List[Option[Anno]]:
     external_annos = sample.annos.external
     token_annos = [
-        anno for anno in external_annos if anno.label_type == 'Token']
+        Option(anno) for anno in external_annos if anno.label_type == 'Token']
     assert len(
         token_annos), f"No token annotation exists in sample {sample.id}!"
     return token_annos
 
 
-def get_token_annos_from_batch(batch: List[Sample]) -> List[List[Anno]]:
+def get_token_annos_from_batch(batch: List[Sample]) -> List[List[Option[Anno]]]:
     return [
         get_token_annos_from_sample(sample)
         for sample in batch

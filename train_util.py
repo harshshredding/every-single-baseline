@@ -114,7 +114,7 @@ def get_bio_labels_from_annos(token_annos: List[Option[Anno]],
 
 
 def get_bio_labels_from_annos_batch(
-        token_annos_batch: List[List[Anno]],
+        token_annos_batch: List[List[Option[Anno]]],
         batch_encoding,
         gold_annos_batch: List[List[Anno]]
 ) -> List[List[Label]]:
