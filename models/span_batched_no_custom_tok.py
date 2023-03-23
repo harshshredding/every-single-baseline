@@ -11,6 +11,13 @@ import torch.nn as nn
 from preamble import *
 
 
+def get_bert_embeddings_for_batch(bert_model, encoding: transformers.BatchEncoding):
+    bert_embeddings_batch = bert_model(encoding['input_ids'], return_dict=True)
+    # SHAPE: (batch, seq, emb_dim)
+    bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+    return bert_embeddings_batch
+
+
 def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) -> List[List[Anno]]:
     ret = []
     for batch_idx, sample in enumerate(samples):
@@ -76,16 +83,10 @@ class SpanDefault(ModelClaC):
                                                       max_length=512).to(device)
         return bert_encoding_for_batch
 
-    def get_bert_embeddings_for_batch(self, encoding: transformers.BatchEncoding):
-        bert_embeddings_batch = self.bert_model(encoding['input_ids'], return_dict=True)
-        # SHAPE: (batch, seq, emb_dim)
-        bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
-        return bert_embeddings_batch
-
     def forward(
-        self,
-        samples: List[Sample],
-        # collect: List
+            self,
+            samples: List[Sample],
+            # collect: List
     ) -> tuple[torch.Tensor, PredictionsBatch]:
         batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
         # collect.append(batch_encoding)
@@ -95,7 +96,7 @@ class SpanDefault(ModelClaC):
             batch_encoding=batch_encoding
         )
         # SHAPE: (batch, seq, embed_dim)
-        bert_embeddings_batch = self.get_bert_embeddings_for_batch(batch_encoding)
+        bert_embeddings_batch = get_bert_embeddings_for_batch(bert_model=self.bert_model, encoding=batch_encoding)
         # enumerate all possible spans
         # spans are inclusive
         all_possible_spans_list_batch = [

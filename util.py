@@ -1075,20 +1075,48 @@ def get_token_level_spans(
     return ret
 
 
+def get_token_level_spans_batch(
+        token_annos_batch: List[List[Anno]],
+        annos_to_convert_batch: List[List[Anno]]
+) -> List[List[tuple]]:
+    ret = []
+    assert len(token_annos_batch) == len(annos_to_convert_batch)
+    for token_annos, annos_to_convert in zip(token_annos_batch, annos_to_convert_batch):
+        ret.append(get_token_level_spans(token_annos, annos_to_convert))
+    return ret
+
+
 def get_sub_token_level_spans(
         token_level_spans: List[tuple],
-        batch_encoding: BatchEncoding
+        batch_encoding: BatchEncoding,
+        batch_idx: int
 ) -> List[tuple]:
     """
     Convert token-level spans to sub-token-level spans.
     """
     ret = []
     for start_token_idx, end_token_idx, type_name in token_level_spans:
-        start_sub_token_span = batch_encoding.word_to_tokens(start_token_idx)
-        end_sub_token_span = batch_encoding.word_to_tokens(end_token_idx - 1)
+        start_sub_token_span = batch_encoding.word_to_tokens(batch_or_word_index=batch_idx,
+                                                             word_index=start_token_idx)
+        end_sub_token_span = batch_encoding.word_to_tokens(batch_or_word_index=batch_idx,
+                                                           word_index=(end_token_idx - 1))
         # TODO: Some span annotations aren't valid because bert doesn't have embeddings for them.
         if (start_sub_token_span is not None) and (end_sub_token_span is not None):
             start_sub_token_idx = start_sub_token_span.start
             end_sub_token_idx = end_sub_token_span.end
             ret.append((start_sub_token_idx, end_sub_token_idx, type_name))
+    return ret
+
+
+def get_sub_token_level_spans_batch(
+        token_level_spans_batch: List[List[tuple]],
+        batch_encoding: BatchEncoding,
+) -> List[List[tuple]]:
+    ret = []
+    for batch_idx, token_level_spans in enumerate(token_level_spans_batch):
+        ret.append(get_sub_token_level_spans(
+            token_level_spans=token_level_spans,
+            batch_encoding=batch_encoding,
+            batch_idx=batch_idx
+        ))
     return ret

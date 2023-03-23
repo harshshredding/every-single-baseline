@@ -17,6 +17,8 @@ from utils.universal import Option, OptionState
 from utils.model import ModelClaC, PredictionsBatch
 from utils.config import get_experiment_config
 from pudb import set_trace
+from models.span_batched_no_custom_tok import get_bert_embeddings_for_batch
+
 
 class Embedding(nn.Module):
     def __init__(self, emb_dim, vocab_size, initialize_emb, word_to_ix):
@@ -511,7 +513,7 @@ class JustBert3Classes(torch.nn.Module):
         offsets_list = util.get_token_offsets_from_sample(sample)
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
-        #print("old bert encoding: ", bert_encoding)
+        # print("old bert encoding: ", bert_encoding)
         collect.append(bert_encoding)
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
@@ -521,7 +523,7 @@ class JustBert3Classes(torch.nn.Module):
         expanded_labels = train_util.get_bio_labels_from_annos(token_annos,
                                                                bert_encoding,
                                                                sample.annos.gold)
-        #print("old bio tokens", expanded_labels)
+        # print("old bio tokens", expanded_labels)
         collect.append(expanded_labels)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
@@ -630,9 +632,9 @@ def heuristic_decode(predicted_annos: List[Anno]):
     return [anno for anno in predicted_annos if anno not in to_remove]
 
 
-class SpanBert(torch.nn.Module):
+class SpanBertCustomTokenizationNoBatch(torch.nn.Module):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
-        super(SpanBert, self).__init__()
+        super(SpanBertCustomTokenizationNoBatch, self).__init__()
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)
         self.bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
         self.input_dim = model_config.pretrained_model_output_dim
@@ -649,9 +651,9 @@ class SpanBert(torch.nn.Module):
         self.dataset_config = dataset_config
 
     def forward(
-        self,
-        samples: List[Sample],
-        # collect: List
+            self,
+            samples: List[Sample],
+            # collect: List
     ):
         assert len(samples) == 1, "Can only handle one sample at a time :("
         sample = samples[0]
@@ -695,7 +697,8 @@ class SpanBert(torch.nn.Module):
             predicted_all_possible_spans_logits,
             all_possible_spans_list,
             bert_encoding: BatchEncoding,
-            token_annos: List[Anno]
+            token_annos: List[Anno],
+            batch_idx
     ) -> List[Anno]:
         ret = []
         # SHAPE: (num_spans)
@@ -712,8 +715,8 @@ class SpanBert(torch.nn.Module):
                 span_start_subtoken_idx = all_possible_spans_list[i][0]
                 span_end_subtoken_idx = all_possible_spans_list[i][1]  # inclusive
                 # get token level spans
-                span_start_token_idx = bert_encoding.token_to_word(span_start_subtoken_idx)
-                span_end_token_idx = bert_encoding.token_to_word(span_end_subtoken_idx)
+                span_start_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_start_subtoken_idx)
+                span_end_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_end_subtoken_idx)
                 assert span_start_token_idx is not None
                 assert span_end_token_idx is not None
                 # get word char offsets
@@ -747,7 +750,143 @@ class SpanBert(torch.nn.Module):
         return all_possible_spans_labels
 
 
-class SpanBertNounPhrase(SpanBert):
+class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
+    def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
+
+    def forward(
+            self,
+            samples: List[Sample],
+            # collect: List
+    ):
+        tokens = util.get_tokens_from_batch(samples)
+        token_annos = util.get_token_annos_from_batch(samples)
+        gold_annos = [sample.annos.gold for sample in samples]
+        gold_token_level_annos = util.get_token_level_spans_batch(
+            token_annos,
+            gold_annos
+        )
+        bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
+                                            add_special_tokens=False, truncation=True, max_length=512,
+                                            padding=True
+                                            ).to(device)
+        # collect.append(bert_encoding)
+        gold_sub_token_level_annos = util.get_sub_token_level_spans_batch(gold_token_level_annos, bert_encoding)
+        # SHAPE: (batch_size, seq_len, embed_dim)
+        bert_embeddings = get_bert_embeddings_for_batch(bert_model=self.bert_model, encoding=bert_encoding)
+
+        all_possible_spans_list = [
+            util.enumerate_spans(bert_encoding.word_ids(batch_index=batch_idx), max_span_width=self.max_span_width)
+            for batch_idx in range(len(samples))
+        ]
+
+        all_possible_spans_labels = self.label_all_possible_spans_batch(
+            all_possible_spans_list,
+            gold_sub_token_level_annos
+        )
+        # collect.append(all_possible_spans_labels)
+
+        # SHAPE: (batch_size, num_spans)
+        all_possible_spans_labels = torch.tensor(all_possible_spans_labels, device=device)
+        # SHAPE: (batch_size, seq_len, 2)
+        all_possible_spans_tensor: torch.Tensor = torch.tensor(all_possible_spans_list, device=device)
+        # SHAPE: (batch_size, num_spans, endpoint_dim)
+        span_embeddings = self.endpoint_span_extractor(bert_embeddings, all_possible_spans_tensor)
+        # SHAPE: (batch_size, num_spans, num_classes)
+        predicted_all_possible_spans_logits = self.classifier(span_embeddings)
+        loss: torch.Tensor = self.loss_function(torch.permute(predicted_all_possible_spans_logits, (0, 2, 1)),
+                                                all_possible_spans_labels)
+        predicted_annos = self.get_predicted_annos(
+            predicted_all_possible_spans_logits,
+            all_possible_spans_list,
+            bert_encoding,
+            token_annos
+        )
+        # predicted_annos = self.heuristic_decode(predicted_annos)
+        return loss, predicted_annos
+
+    def label_all_possible_spans_batch(self, all_possible_spans_list_batch, sub_token_level_annos_batch) \
+            -> List[List[int]]:
+        assert len(all_possible_spans_list_batch) == len(sub_token_level_annos_batch)
+        ret = []
+        for all_possible_spans_list, sub_token_level_annos in zip(all_possible_spans_list_batch,
+                                                                  sub_token_level_annos_batch):
+            ret.append(
+                self.label_all_possible_spans(all_possible_spans_list=all_possible_spans_list,
+                                              sub_token_level_annos=sub_token_level_annos))
+        return ret
+
+    def get_predicted_annos(
+            self,
+            pred_all_possible_spans_type_indices_list,
+            all_possible_spans_list,
+            bert_encoding: BatchEncoding,
+            token_annos: List[Anno],
+            batch_idx
+    ) -> List[Anno]:
+        ret = []
+        for i, span_type_idx in enumerate(pred_all_possible_spans_type_indices_list):
+            if span_type_idx != self.type_to_idx['NO_TYPE']:
+                # get sub-token level spans
+                span_start_subtoken_idx = all_possible_spans_list[i][0]
+                span_end_subtoken_idx = all_possible_spans_list[i][1]  # inclusive
+                # get token level spans
+                span_start_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_start_subtoken_idx)
+                span_end_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_end_subtoken_idx)
+                assert span_start_token_idx is not None
+                assert span_end_token_idx is not None
+                # get word char offsets
+                span_start_char_offset = token_annos[span_start_token_idx].begin_offset
+                span_end_char_offset = token_annos[span_end_token_idx].end_offset
+                all_token_strings = [token_anno.extraction for token_anno in token_annos]
+                span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
+                ret.append(
+                    Anno(
+                        span_start_char_offset,
+                        span_end_char_offset,
+                        self.idx_to_type[span_type_idx],
+                        span_text,
+                    )
+                )
+        return ret
+
+    def get_predicted_annos_batch(
+            self,
+            predicted_all_possible_spans_logits_batch,
+            all_possible_spans_list_batch,
+            bert_encoding: BatchEncoding,
+            token_annos: List[List[Anno]],
+            samples
+    ) -> List[List[Anno]]:
+        pred_all_possible_spans_type_indices_list_batch = torch \
+            .argmax(predicted_all_possible_spans_logits_batch, dim=2) \
+            .cpu() \
+            .detach().numpy()
+
+        assert len(pred_all_possible_spans_type_indices_list_batch.shape) == 2
+        assert pred_all_possible_spans_type_indices_list_batch.shape[0] == len(samples)
+
+        assert 
+        ret = []
+        for batch_idx, (span_prediction_indices, all_possible_spans, token_annos) in \
+            enumerate(zip(
+                pred_all_possible_spans_type_indices_list_batch,
+                all_possible_spans_list_batch,
+                token_annos
+            )):
+            predicted_annos = self.get_predicted_annos(
+                pred_all_possible_spans_type_indices_list=span_prediction_indices,
+                all_possible_spans_list=all_possible_spans,
+                bert_encoding=bert_encoding,
+                token_annos=token_annos,
+                batch_idx=batch_idx
+            )
+            ret.append(predicted_annos)
+        return ret
+
+
+
+class SpanBertNounPhrase(SpanBertCustomTokenizationNoBatch):
     def __init__(self, all_types: List[str], model_config: ModelConfig):
         super().__init__(all_types, model_config)
         # Cannot use super's classifier because we are concatenating
@@ -821,7 +960,7 @@ class SpanBertNounPhrase(SpanBert):
         return noun_phrase_labels
 
 
-class SpanBertSpanWidthEmbedding(SpanBert):
+class SpanBertSpanWidthEmbedding(SpanBertCustomTokenizationNoBatch):
     def __init__(self, all_types: List[str], model_config: ModelConfig):
         super(SpanBertSpanWidthEmbedding, self).__init__(all_types=all_types, model_config=model_config)
         self.endpoint_span_extractor = EndpointSpanExtractor(
@@ -973,7 +1112,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         assert isinstance(samples, list)
         # encoding helps manage tokens created by bert
         bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)
-        #print("encoding new", bert_encoding_for_batch)
+        # print("encoding new", bert_encoding_for_batch)
         collect.append(bert_encoding_for_batch)
         # SHAPE (batch_size, seq_len, bert_emb_len)
         bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
@@ -985,7 +1124,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         )
         assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
         assert len(gold_labels_batch[0]) == bert_embeddings_batch.shape[1]  # same num labels as tokens
-        #print("gold bio labels", gold_labels_batch[0])
+        # print("gold bio labels", gold_labels_batch[0])
         collect.append(gold_labels_batch[0])
 
         gold_label_indices = [
