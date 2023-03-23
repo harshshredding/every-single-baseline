@@ -625,7 +625,7 @@ def create_visualization_file(
 
 def get_tokens_from_sample(sample: Sample) -> List[str]:
     token_annos = get_token_annos_from_sample(sample)
-    return [token_anno.extraction for token_anno in token_annos]
+    return [token_anno.get_value().extraction for token_anno in token_annos]
 
 
 def get_tokens_from_batch(samples: List[Sample]) -> List[List[str]]:
