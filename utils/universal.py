@@ -35,6 +35,10 @@ def blue(obj_to_color) -> str:
     return colorize_string(Fore.BLUE, str(obj_to_color))
 
 
+def magenta(obj_to_color) -> str:
+    return colorize_string(Fore.MAGENTA, str(obj_to_color))
+
+
 def die(message):
     raise RuntimeError(message)
 
