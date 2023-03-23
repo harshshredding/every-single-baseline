@@ -756,7 +756,6 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
     def forward(
             self,
             samples: List[Sample],
-            # collect: List
     ):
         tokens = util.get_tokens_from_batch(samples)
         token_annos = util.get_token_annos_from_batch(samples)
@@ -783,7 +782,6 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
             all_possible_spans_list,
             gold_sub_token_level_annos
         )
-        # collect.append(all_possible_spans_labels)
 
         # SHAPE: (batch_size, num_spans)
         all_possible_spans_labels = torch.tensor(all_possible_spans_labels, device=device)
