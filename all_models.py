@@ -833,21 +833,20 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
                                                                    token_index=span_start_subtoken_idx)
                 span_end_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx,
                                                                  token_index=span_end_subtoken_idx)
-                assert span_start_token_idx is not None
-                assert span_end_token_idx is not None
-                # get word char offsets
-                span_start_char_offset = token_annos[span_start_token_idx].begin_offset
-                span_end_char_offset = token_annos[span_end_token_idx].end_offset
-                all_token_strings = [token_anno.extraction for token_anno in token_annos]
-                span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
-                ret.append(
-                    Anno(
-                        span_start_char_offset,
-                        span_end_char_offset,
-                        self.idx_to_type[span_type_idx],
-                        span_text,
+                if (span_start_token_idx is not None) and (span_end_token_idx is not None):
+                    # get word char offsets
+                    span_start_char_offset = token_annos[span_start_token_idx].begin_offset
+                    span_end_char_offset = token_annos[span_end_token_idx].end_offset
+                    all_token_strings = [token_anno.extraction for token_anno in token_annos]
+                    span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
+                    ret.append(
+                        Anno(
+                            span_start_char_offset,
+                            span_end_char_offset,
+                            self.idx_to_type[span_type_idx],
+                            span_text,
+                        )
                     )
-                )
         return ret
 
     def get_predicted_annos_batch(
