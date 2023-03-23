@@ -698,7 +698,6 @@ class SpanBertCustomTokenizationNoBatch(torch.nn.Module):
             all_possible_spans_list,
             bert_encoding: BatchEncoding,
             token_annos: List[Anno],
-            batch_idx
     ) -> List[Anno]:
         ret = []
         # SHAPE: (num_spans)
@@ -715,8 +714,8 @@ class SpanBertCustomTokenizationNoBatch(torch.nn.Module):
                 span_start_subtoken_idx = all_possible_spans_list[i][0]
                 span_end_subtoken_idx = all_possible_spans_list[i][1]  # inclusive
                 # get token level spans
-                span_start_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_start_subtoken_idx)
-                span_end_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_end_subtoken_idx)
+                span_start_token_idx = bert_encoding.token_to_word(span_start_subtoken_idx)
+                span_end_token_idx = bert_encoding.token_to_word(span_end_subtoken_idx)
                 assert span_start_token_idx is not None
                 assert span_end_token_idx is not None
                 # get word char offsets
@@ -796,11 +795,12 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
         predicted_all_possible_spans_logits = self.classifier(span_embeddings)
         loss: torch.Tensor = self.loss_function(torch.permute(predicted_all_possible_spans_logits, (0, 2, 1)),
                                                 all_possible_spans_labels)
-        predicted_annos = self.get_predicted_annos(
+        predicted_annos = self.get_predicted_annos_batch(
             predicted_all_possible_spans_logits,
             all_possible_spans_list,
             bert_encoding,
-            token_annos
+            token_annos,
+            samples
         )
         # predicted_annos = self.heuristic_decode(predicted_annos)
         return loss, predicted_annos
@@ -816,7 +816,7 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
                                               sub_token_level_annos=sub_token_level_annos))
         return ret
 
-    def get_predicted_annos(
+    def get_predicted_annos_for_sample(
             self,
             pred_all_possible_spans_type_indices_list,
             all_possible_spans_list,
@@ -831,8 +831,10 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
                 span_start_subtoken_idx = all_possible_spans_list[i][0]
                 span_end_subtoken_idx = all_possible_spans_list[i][1]  # inclusive
                 # get token level spans
-                span_start_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_start_subtoken_idx)
-                span_end_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx, token_index=span_end_subtoken_idx)
+                span_start_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx,
+                                                                   token_index=span_start_subtoken_idx)
+                span_end_token_idx = bert_encoding.token_to_word(batch_or_token_index=batch_idx,
+                                                                 token_index=span_end_subtoken_idx)
                 assert span_start_token_idx is not None
                 assert span_end_token_idx is not None
                 # get word char offsets
@@ -865,16 +867,17 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
 
         assert len(pred_all_possible_spans_type_indices_list_batch.shape) == 2
         assert pred_all_possible_spans_type_indices_list_batch.shape[0] == len(samples)
-
-        assert 
+        assert len(token_annos) \
+               == len(all_possible_spans_list_batch) \
+               == len(pred_all_possible_spans_type_indices_list_batch)
         ret = []
         for batch_idx, (span_prediction_indices, all_possible_spans, token_annos) in \
-            enumerate(zip(
-                pred_all_possible_spans_type_indices_list_batch,
-                all_possible_spans_list_batch,
-                token_annos
-            )):
-            predicted_annos = self.get_predicted_annos(
+                enumerate(zip(
+                    pred_all_possible_spans_type_indices_list_batch,
+                    all_possible_spans_list_batch,
+                    token_annos
+                )):
+            predicted_annos = self.get_predicted_annos_for_sample(
                 pred_all_possible_spans_type_indices_list=span_prediction_indices,
                 all_possible_spans_list=all_possible_spans,
                 bert_encoding=bert_encoding,
@@ -883,7 +886,6 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
             )
             ret.append(predicted_annos)
         return ret
-
 
 
 class SpanBertNounPhrase(SpanBertCustomTokenizationNoBatch):
