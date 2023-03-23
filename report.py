@@ -1,19 +1,12 @@
 import util
 from utils.report import get_experiment_results, ExperimentResult
-from utils.dropbox import get_all_performance_files
+from utils.dropbox import list_all_performance_files
 from preamble import *
 import utils.dropbox as dropbox
 import glob
 from tabulate import tabulate
 
 
-def download_all_performance_files():
-    util.create_directory_structure('./downloaded_results')
-    performance_files_to_download =  
-    for performance_file in performance_files_to_download:
-        dropbox_path = f'/{performance_file}'
-        local_download_path = f'./downloaded_results/{performance_file}'
-        dropbox.download_file(dropbox_path, local_download_path)
 
 
 def find_experiment_result(

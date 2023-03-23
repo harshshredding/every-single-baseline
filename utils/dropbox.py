@@ -1,4 +1,5 @@
 import time
+import util
 import os
 import dropbox
 from pathlib import Path
@@ -123,10 +124,19 @@ def get_all_file_names_in_folder() -> List[str]:
     return [entry.name for entry in all_files]
 
 
-def get_all_performance_files() -> List[str]:
+def list_all_performance_files() -> List[str]:
     all_file_names = get_all_file_names_in_folder()
     all_performance_files = [file_name for file_name in all_file_names if ("performance" in file_name)]
     return all_performance_files
+
+
+def download_all_performance_files():
+    util.create_directory_structure('./performance_files')
+    performance_files_to_download = list_all_performance_files()
+    for performance_file in performance_files_to_download:
+        dropbox_path = f'/{performance_file}'
+        local_download_path = f'./performance_files/{performance_file}'
+        download_file(dropbox_path, local_download_path)
 
 
 def upload_file(file_to_upload_path: str):
