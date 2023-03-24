@@ -870,7 +870,7 @@ def get_token_offsets(sample_data: List[TokenData]) -> List[tuple]:
 
 def get_token_offsets_from_sample(sample: Sample) -> List[tuple]:
     token_annos = get_token_annos_from_sample(sample)
-    return [(token_anno.begin_offset, token_anno.end_offset) for token_anno in token_annos]
+    return [(token_anno.get_value().begin_offset, token_anno.get_value().end_offset) for token_anno in token_annos]
 
 
 def get_token_offsets_from_batch(batch: List[Sample]) -> List[List[tuple]]:

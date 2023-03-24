@@ -993,8 +993,7 @@ class SeqLabelerBatched(torch.nn.Module):
         offsets_list_for_batch = util.get_token_offsets_from_batch(samples)
         bert_encoding_for_batch = self.bert_tokenizer(tokens_for_batch, return_tensors="pt", is_split_into_words=True,
                                                       add_special_tokens=False, truncation=True, padding=True,
-                                                      max_length=512) \
-            .to(device)
+                                                      max_length=512).to(device)
         bert_embeddings_batch = self.bert_model(bert_encoding_for_batch['input_ids'], return_dict=True)
         # SHAPE: (batch, seq, emb_dim)
         bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
