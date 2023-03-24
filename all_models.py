@@ -819,7 +819,7 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
             pred_all_possible_spans_type_indices_list,
             all_possible_spans_list,
             bert_encoding: BatchEncoding,
-            token_annos: List[Anno],
+            token_annos: List[Option[Anno]],
             batch_idx
     ) -> List[Anno]:
         ret = []
@@ -835,9 +835,9 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
                                                                  token_index=span_end_subtoken_idx)
                 if (span_start_token_idx is not None) and (span_end_token_idx is not None):
                     # get word char offsets
-                    span_start_char_offset = token_annos[span_start_token_idx].begin_offset
-                    span_end_char_offset = token_annos[span_end_token_idx].end_offset
-                    all_token_strings = [token_anno.extraction for token_anno in token_annos]
+                    span_start_char_offset = token_annos[span_start_token_idx].get_value().begin_offset
+                    span_end_char_offset = token_annos[span_end_token_idx].get_value().end_offset
+                    all_token_strings = [token_anno.get_value().extraction for token_anno in token_annos]
                     span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
                     ret.append(
                         Anno(
@@ -854,7 +854,7 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
             predicted_all_possible_spans_logits_batch,
             all_possible_spans_list_batch,
             bert_encoding: BatchEncoding,
-            token_annos: List[List[Anno]],
+            token_annos: List[List[Option[Anno]]],
             samples
     ) -> List[List[Anno]]:
         pred_all_possible_spans_type_indices_list_batch = torch \

@@ -128,7 +128,7 @@ for dataset_config, model_config in experiments:
             epoch_loss.append(loss.cpu().detach().numpy())
         logger.info(
             f"Epoch {epoch} " +
-            magenta("Loss :") + f"{np.array(epoch_loss).mean()}," +
+            magenta("Loss: " + f"{np.array(epoch_loss).mean()},") +
             f"Training Time: {str(time.time() - train_start_time)} " +
             f"seconds")
         logger.info(f"Done training epoch {epoch}")
