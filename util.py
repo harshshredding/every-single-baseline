@@ -1055,7 +1055,7 @@ def expand_labels_rich_batch(batch_encoding, labels: List[Label], batch_idx: int
 
 
 def get_token_level_spans(
-        token_annos: List[Anno],
+        token_annos: List[Option[Anno]],
         annos_to_convert: List[Anno]) -> List[tuple]:
     """
     Convert char_offset spans to token-level spans
@@ -1063,10 +1063,10 @@ def get_token_level_spans(
     ret = []
     for curr_gold_anno in annos_to_convert:
         begin_token = [i for i, token_anno in enumerate(token_annos) if
-                       curr_gold_anno.begin_offset == token_anno.begin_offset]
+                       curr_gold_anno.begin_offset == token_anno.get_value().begin_offset]
 
         end_token = [i for i, token_anno in enumerate(token_annos) if
-                     curr_gold_anno.end_offset == token_anno.end_offset]
+                     curr_gold_anno.end_offset == token_anno.get_value().end_offset]
 
         if len(begin_token) and len(end_token):
             assert len(begin_token) == 1
@@ -1076,7 +1076,7 @@ def get_token_level_spans(
 
 
 def get_token_level_spans_batch(
-        token_annos_batch: List[List[Anno]],
+        token_annos_batch: List[List[Option[Anno]]],
         annos_to_convert_batch: List[List[Anno]]
 ) -> List[List[tuple]]:
     ret = []
