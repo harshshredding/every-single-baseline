@@ -12,6 +12,7 @@ seq_new_experiment = get_experiment_config(
 )
 
 new_seq_model = prepare_model(seq_new_experiment.model_config, seq_new_experiment.dataset_config)
+new_seq_model.eval()
 
 print(type(new_seq_model))
 
