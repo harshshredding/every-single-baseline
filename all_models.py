@@ -1077,7 +1077,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         return bert_embeddings_batch
 
 
-    def check_if_tokens_overlap(self, token_annos: List[Option[Anno]]):
+    def check_if_tokens_overlap(self, token_annos: List[Option[Anno]], sample_id: str):
         for idx_curr, curr_anno in enumerate(token_annos):
             for idx_other, other_anno in enumerate(token_annos):
                 if (idx_curr != idx_other) and (curr_anno.is_something() and other_anno.is_something()):
@@ -1087,7 +1087,10 @@ class SeqLabelerNoTokenization(ModelClaC):
                         assert ((curr_anno.get_value().end_offset - curr_anno.get_value().begin_offset) == 1) \
                                 or ((other_anno.get_value().end_offset - other_anno.get_value().begin_offset) == 1) \
                                 , f"one of the annos needs to be the roberta space character {curr_anno}, {other_anno}"
-                        raise RuntimeError(f"token annos should never overlap \n annos: {(curr_anno.get_value(), other_anno.get_value())}")
+                        raise RuntimeError(f"token annos should never overlap"
+                                           f"\n annos: {(curr_anno.get_value(), other_anno.get_value())}"
+                                           f"\n sampleId: {sample_id}"
+                                           )
     
 
     def remove_roberta_overlaps(self, tokens_batch: List[List[Option[Anno]]], model_config: ModelConfig) \
@@ -1115,7 +1118,8 @@ class SeqLabelerNoTokenization(ModelClaC):
 
 
 
-    def get_token_annos_batch(self, bert_encoding, expected_batch_size) -> List[List[Option[Anno]]]:
+    def get_token_annos_batch(self, bert_encoding, samples: List[Sample]) -> List[List[Option[Anno]]]:
+        expected_batch_size = len(samples)
         token_ids_matrix = bert_encoding['input_ids']
         batch_size = len(token_ids_matrix)
         num_tokens = len(token_ids_matrix[0])
@@ -1143,8 +1147,8 @@ class SeqLabelerNoTokenization(ModelClaC):
                                                          model_config=self.model_config)
 
         # check no token overlaps
-        for token_annos in token_annos_batch:
-            self.check_if_tokens_overlap(token_annos)
+        for token_annos, sample in zip(token_annos_batch, samples):
+            self.check_if_tokens_overlap(token_annos, sample.id)
 
         return token_annos_batch
 

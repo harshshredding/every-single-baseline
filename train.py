@@ -62,7 +62,7 @@ dataset_config: DatasetConfig
 model_config: ModelConfig
 
 # How frequently we will evaluate on test data
-test_evaluation_frequency = 4
+test_evaluation_frequency = 1
 
 for dataset_config, model_config in experiments:
     train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, IS_DRY_RUN, IS_TESTING)
