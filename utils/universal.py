@@ -64,6 +64,12 @@ class Option(Generic[T]):
             raise RuntimeError("Trying to access nothing")
         return self.value
 
+    def is_nothing(self) -> bool:
+        return self.state == OptionState.Nothing
+
+    def is_something(self) -> bool:
+        return self.state == OptionState.Something
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device", device)

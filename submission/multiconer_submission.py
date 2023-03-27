@@ -8,7 +8,7 @@ test_data_file_path = "./multiconer-data-raw/public_data/EN-English/en_test.conl
 
 
 def read_multiconer_predictions() -> dict[str, List[Anno]]:
-    predictions_file_path = "submission/no_token_predictions/experiment_multiconer_with_test_gold_labels_multiconer_fine_vanilla_model_seq_base_default_test_epoch_7_predictions.tsv"
+    predictions_file_path = "submission/custom/experiment_multiconer_custom_tokens_batched_multiconer_fine_tokens_span_base_custom_tokenization_test_epoch_7_predictions.tsv"
     df = pd.read_csv(predictions_file_path, sep='\t')
     sample_to_annos = {}
     for _, row in df.iterrows():
