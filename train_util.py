@@ -55,6 +55,7 @@ def print_experiment_info(
         experiment_name: str,
         is_dry_run: bool,
         is_testing: bool,
+        test_evaluation_frequency: int,
 ) -> None:
     """Print the configurations of the current run"""
     print("\n\n------ DATASET CONFIG --------")
@@ -66,6 +67,7 @@ def print_experiment_info(
     print(blue("Model Config Name:"), green(model_config.model_config_name))
     print(blue("Model Name:"), green(model_config.model_name))
     print(blue("Batch_size"), green(model_config.batch_size))
+    print(blue("Testing Frequency"), green(test_evaluation_frequency))
     print("-----------CONFIG----------\n\n")
 
 
