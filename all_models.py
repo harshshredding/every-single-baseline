@@ -1167,7 +1167,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         predictions_logits_batch = self.classifier(bert_embeddings_batch)
 
         gold_labels_batch = train_util.get_bio_labels_for_bert_tokens_batch(
-            self.get_token_annos_batch(bert_encoding_for_batch, len(samples)),
+            self.get_token_annos_batch(bert_encoding_for_batch, samples),
             [sample.annos.gold for sample in samples]
         )
         assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
