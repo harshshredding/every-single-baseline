@@ -1090,7 +1090,8 @@ class SeqLabelerNoTokenization(ModelClaC):
                         raise RuntimeError(f"token annos should never overlap \n annos: {(curr_anno.get_value(), other_anno.get_value())}")
     
 
-    def remove_roberta_overlaps(self, tokens_batch: List[List[Option[Anno]]], model_config: ModelConfig) -> List[List[Option[Anno]]]:
+    def remove_roberta_overlaps(self, tokens_batch: List[List[Option[Anno]]], model_config: ModelConfig) \
+        -> List[List[Option[Anno]]]:
         if 'roberta' in model_config.pretrained_model_name:
             tokens_batch_without_overlaps = []
             for tokens in tokens_batch:
@@ -1098,11 +1099,12 @@ class SeqLabelerNoTokenization(ModelClaC):
                 for curr_token_idx in range(len(tokens) - 1):
                     curr_token = tokens[curr_token_idx]
                     next_token = tokens[curr_token_idx + 1]
-                    if curr_token.get_value().begin_offset == next_token.get_value().begin_offset:
+                    if (curr_token.is_something() and next_token.is_something()) and \
+                       (curr_token.get_value().begin_offset == next_token.get_value().begin_offset):
                         assert (curr_token.get_value().end_offset - curr_token.get_value().begin_offset) == 1
                         tokens_without_overlap.append(Option(None))
                     else:
-                        tokens_without_overlap.append(Option(curr_token.get_value()))
+                        tokens_without_overlap.append(curr_token)
                 tokens_without_overlap.append(tokens[len(tokens) - 1])
                 assert len(tokens_without_overlap) == len(tokens)
                 tokens_batch_without_overlaps.append(tokens_without_overlap)
