@@ -12,6 +12,8 @@ def get_bert_tokenizer(model_name: str = 'bert-base-cased'):
     """
     return AutoTokenizer.from_pretrained(model_name)
 
+def get_roberta_tokenizer():
+    return AutoTokenizer.from_pretrained('xlm-roberta-base')
 
 def get_bert_model():
     return AutoModel.from_pretrained('bert-base-cased')

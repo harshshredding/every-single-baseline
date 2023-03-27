@@ -108,7 +108,7 @@ def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]
 def get_bio_labels_from_annos(token_annos: List[Option[Anno]],
                               batch_encoding,
                               gold_annos: List[Anno]) -> List[Label]:
-    labels = util.get_labels_bio(token_annos, gold_annos)
+    labels = util.get_labels_bio_old(token_annos, gold_annos)
     expanded_labels = util.expand_labels_rich_batch(batch_encoding, labels, batch_idx=0)
     return expanded_labels
 
@@ -118,7 +118,7 @@ def get_bio_labels_from_annos_batch(
         batch_encoding,
         gold_annos_batch: List[List[Anno]]
 ) -> List[List[Label]]:
-    labels_batch = [util.get_labels_bio(token_annos, gold_annos)
+    labels_batch = [util.get_labels_bio_old(token_annos, gold_annos)
                     for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
     expanded_labels_batch = [util.expand_labels_rich_batch(batch_encoding=batch_encoding, labels=labels, batch_idx=i)
                              for i, labels in enumerate(labels_batch)
@@ -130,7 +130,7 @@ def get_bio_labels_for_bert_tokens_batch(
         token_annos_batch: List[List[Option[Anno]]],
         gold_annos_batch: List[List[Anno]]
 ):
-    labels_batch = [util.get_labels_bio(token_annos, gold_annos)
+    labels_batch = [util.get_labels_bio_new(token_annos, gold_annos)
                     for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
     return labels_batch
 

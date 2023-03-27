@@ -505,7 +505,7 @@ class JustBert3Classes(torch.nn.Module):
 
     def forward(self,
                 samples: List[Sample],
-                collect: List
+                #collect: List
                 ):
         assert len(samples) == 1, "Can only deal with one sample :("
         sample = samples[0]
@@ -514,7 +514,7 @@ class JustBert3Classes(torch.nn.Module):
         bert_encoding = self.bert_tokenizer(tokens, return_tensors="pt", is_split_into_words=True,
                                             add_special_tokens=False, truncation=True, max_length=512).to(device)
         # print("old bert encoding: ", bert_encoding)
-        collect.append(bert_encoding)
+        #collect.append(bert_encoding)
         bert_embeddings = self.bert_model(bert_encoding['input_ids'], return_dict=True)
         bert_embeddings = bert_embeddings['last_hidden_state'][0]
         predictions_logits = self.classifier(bert_embeddings)
@@ -523,7 +523,7 @@ class JustBert3Classes(torch.nn.Module):
                                                                bert_encoding,
                                                                sample.annos.gold)
         # print("old bio tokens", expanded_labels)
-        collect.append(expanded_labels)
+        #collect.append(expanded_labels)
         expanded_labels_indices = [self.label_to_idx[label] for label in expanded_labels]
         expanded_labels_tensor = torch.tensor(expanded_labels_indices).to(device)
         loss = self.loss_function(predictions_logits, expanded_labels_tensor)
@@ -1142,26 +1142,18 @@ class SeqLabelerNoTokenization(ModelClaC):
                 ]
             )
 
-        # remove overlapping roberta tokens
-        token_annos_batch = self.remove_roberta_overlaps(tokens_batch=token_annos_batch,
-                                                         model_config=self.model_config)
-
-        # check no token overlaps
-        for token_annos, sample in zip(token_annos_batch, samples):
-            self.check_if_tokens_overlap(token_annos, sample.id)
-
         return token_annos_batch
 
     def forward(
             self,
             samples: List[Sample],
-            # collect: List
+            collect: List
     ) -> tuple[torch.Tensor, PredictionsBatch]:
         assert isinstance(samples, list)
         # encoding helps manage tokens created by bert
         bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)
         # print("encoding new", bert_encoding_for_batch)
-        # collect.append(bert_encoding_for_batch)
+        collect.append(bert_encoding_for_batch)
         # SHAPE (batch_size, seq_len, bert_emb_len)
         bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
         predictions_logits_batch = self.classifier(bert_embeddings_batch)
@@ -1173,7 +1165,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
         assert len(gold_labels_batch[0]) == bert_embeddings_batch.shape[1]  # same num labels as tokens
         # print("gold bio labels", gold_labels_batch[0])
-        # collect.append(gold_labels_batch[0])
+        collect.append(gold_labels_batch[0])
 
         gold_label_indices = [
             [self.label_to_idx[label] for label in gold_labels]
