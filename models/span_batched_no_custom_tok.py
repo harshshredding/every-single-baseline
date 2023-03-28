@@ -166,6 +166,7 @@ class SpanDefault(ModelClaC):
                                                                     token_index=span_start_token_idx)
                     end_char_span = batch_encoding.token_to_chars(batch_or_token_index=batch_idx,
                                                                   token_index=span_end_token_idx)
+                    # Ignore any prediction which has a boundary made of special tokens
                     if (start_char_span is not None) and (end_char_span is not None):
                         span_start_char_offset = start_char_span.start
                         span_end_char_offset = end_char_span.end
@@ -177,8 +178,6 @@ class SpanDefault(ModelClaC):
                                 sample.text[span_start_char_offset:span_end_char_offset],
                             )
                         )
-                    else:
-                        raise RuntimeError("Not expecting a token that cannot be mapped to a Char Span")
             ret.append(sample_annos)
         return ret
 

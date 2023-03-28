@@ -46,7 +46,11 @@ pip install torch torchvision torchaudio --upgrade
 # test gpu
 python gpu_test.py
 
+# create some useful aliases
 echo 'set -o vi' >> ~/.bashrc
 echo "alias debug='python -m pudb -c'" >> ~/.bashrc
+
+# configure pudb
+python setup.py
 
 exec bash
