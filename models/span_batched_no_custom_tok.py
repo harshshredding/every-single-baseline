@@ -227,7 +227,7 @@ class SpanDefaultTransformer(SpanDefault):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
         self.encoder_layer = nn.TransformerEncoderLayer(d_model=(self.input_dim * 2), nhead=8)
-        self.transformer_encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
+        self.transformer_encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=3)
 
 
     def forward(
