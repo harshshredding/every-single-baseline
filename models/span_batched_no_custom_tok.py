@@ -227,6 +227,49 @@ class SpanDefaultTransformer(SpanDefault):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
         self.encoder_layer = nn.TransformerEncoderLayer(d_model=(self.input_dim * 2), nhead=8)
-        self.encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
+        self.transformer_encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
+
+
+    def forward(
+            self,
+            samples: List[Sample],
+    ) -> tuple[torch.Tensor, PredictionsBatch]:
+        batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
+
+        gold_token_level_annos_batch = get_annos_token_level(
+            samples=samples,
+            batch_encoding=batch_encoding
+        )
+        # SHAPE: (batch, seq, embed_dim)
+        bert_embeddings_batch = get_bert_embeddings_for_batch(bert_model=self.bert_model, encoding=batch_encoding)
+        # enumerate all possible spans
+        # spans are inclusive
+        all_possible_spans_list_batch = [
+            util.enumerate_spans(batch_encoding.word_ids(batch_index=batch_idx), max_span_width=self.max_span_width)
+            for batch_idx in range(len(samples))
+        ]
+        # SHAPE: (batch_size, num_spans)
+        all_possible_spans_labels_batch = self.label_all_possible_spans_batch(all_possible_spans_list_batch,
+                                                                              gold_token_level_annos_batch)
+        # SHAPE: (batch_size, seq_len, 2)
+        all_possible_spans_tensor_batch: torch.Tensor = torch.tensor(all_possible_spans_list_batch, device=device)
+        # SHAPE: (batch_size, num_spans, endpoint_dim)
+        all_possible_span_embeddings = self.get_span_embeddings(bert_embeddings_batch, all_possible_spans_tensor_batch)
+
+        # Encode the span embeddings
+        all_possible_span_embeddings = self.transformer_encoder(all_possible_span_embeddings)
+
+        # SHAPE: (batch_size, num_spans, num_classes)
+        predicted_all_possible_spans_logits_batch = self.classifier(all_possible_span_embeddings)
+        loss: torch.Tensor = self.loss_function(torch.permute(predicted_all_possible_spans_logits_batch, (0, 2, 1)),
+                                                all_possible_spans_labels_batch)
+
+        predicted_annos = self.get_predicted_annos(
+            predicted_all_possible_spans_logits_batch=predicted_all_possible_spans_logits_batch,
+            all_possible_spans_list_batch=all_possible_spans_list_batch,
+            batch_encoding=batch_encoding,
+            samples=samples
+        )
+        return loss, predicted_annos
 
 
