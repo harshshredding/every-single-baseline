@@ -17,6 +17,7 @@ sudo apt-get -y install build-essential
 pip install allennlp
 
 echo "Install requirements"
+pip install pyfzf
 pip install spacy
 pip install openai
 pip install pudb
