@@ -16,6 +16,9 @@ sudo apt-get -y install pkg-config
 sudo apt-get -y install build-essential
 pip install allennlp
 
+echo "Install fzf"
+sudo apt-get -y install fzf
+
 echo "Install requirements"
 pip install pyfzf
 pip install spacy
