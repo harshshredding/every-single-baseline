@@ -15,15 +15,19 @@ from pydoc import locate
 from preamble import *
 from transformers import AutoTokenizer
 import torch.nn as nn
+from pyfzf.pyfzf import FzfPrompt
 
-
-def get_experiment_name_from_user():
+def get_experiment_name_from_user() -> str:
     all_experiment_file_paths = glob.glob('./experiments/*.py')
     all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
     # ignore the init file
     all_experiment_names.remove('__init__')
     assert all(experiment_name.startswith('experiment') for experiment_name in all_experiment_names)
-    return util.get_user_input("Specify experiment name", sorted(all_experiment_names))
+
+    # use fzf to select an experiment
+    fzf = FzfPrompt()
+    chosen_experiment = fzf.prompt(all_experiment_names)[0]
+    return chosen_experiment
 
 
 @dataclass

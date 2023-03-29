@@ -50,7 +50,8 @@ python gpu_test.py
 echo 'set -o vi' >> ~/.bashrc
 echo "alias debug='python -m pudb -c'" >> ~/.bashrc
 
-# configure pudb
-python setup.py
+# Configure pudb
+mkdir -p ~/.config/pudb
+cp ./pudb.cfg ~/.config/pudb
 
 exec bash
