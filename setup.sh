@@ -17,7 +17,8 @@ sudo apt-get -y install build-essential
 pip install allennlp
 
 echo "Install fzf"
-sudo apt-get -y install fzf
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+yes | ~/.fzf/install
 
 echo "Install requirements"
 pip install pyfzf
