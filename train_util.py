@@ -62,7 +62,7 @@ def print_experiment_info(
         test_evaluation_frequency: int,
 ) -> None:
     """Print the configurations of the current run"""
-    print("\n\n------ DATASET CONFIG --------")
+    print("\n\n------ EXPERIMENT OVERVIEW --------")
     print(blue("Experiment:"), green(experiment_name))
     print(blue("DRY_RUN_MODE:"), green(is_dry_run))
     print(blue("Is Testing:"), green(is_testing))
@@ -72,7 +72,13 @@ def print_experiment_info(
     print(blue("Model Name:"), green(model_config.model_name))
     print(blue("Batch_size"), green(model_config.batch_size))
     print(blue("Testing Frequency"), green(test_evaluation_frequency))
-    print("-----------CONFIG----------\n\n")
+    print("----------------------------\n\n")
+    print("Model Config:")
+    print(model_config)
+    print()
+    print("Dataset Config:")
+    print(dataset_config)
+    print()
 
 
 def check_label_types(train_samples: List[Sample], valid_samples: List[Sample], all_types: List[str]):
