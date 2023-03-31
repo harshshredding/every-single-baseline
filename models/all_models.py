@@ -14,10 +14,10 @@ from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecod
 from flair.data import Dictionary
 from utils.config import DatasetConfig, ModelConfig
 from utils.universal import Option, OptionState
-from utils.model import ModelClaC, PredictionsBatch
+from utils.model import ModelClaC, PredictionsBatch, get_bert_embeddings_for_batch
 from utils.config import get_experiment_config
 from pudb import set_trace
-from models.span_batched_no_custom_tok import get_bert_embeddings_for_batch
+
 
 
 class Embedding(nn.Module):

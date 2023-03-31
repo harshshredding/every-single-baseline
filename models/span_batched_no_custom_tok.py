@@ -12,11 +12,6 @@ from preamble import *
 from utils.model import PositionalEncodingBatch
 
 
-def get_bert_embeddings_for_batch(bert_model, encoding: transformers.BatchEncoding):
-    bert_embeddings_batch = bert_model(encoding['input_ids'], return_dict=True)
-    # SHAPE: (batch, seq, emb_dim)
-    bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
-    return bert_embeddings_batch
 
 
 def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) -> List[List[Anno]]:

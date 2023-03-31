@@ -2,6 +2,7 @@ import torch.nn as nn
 import torch
 import math
 from torch import Tensor
+from transformers.tokenization_utils_base import BatchEncoding
 
 from structs import Anno, Sample
 from typing import List
@@ -57,3 +58,10 @@ class PositionalEncodingBatch(nn.Module):
         x = self.dropout(x)
         x = torch.squeeze(x, dim=2)
         return x
+
+
+def get_bert_embeddings_for_batch(bert_model, encoding: BatchEncoding):
+    bert_embeddings_batch = bert_model(encoding['input_ids'], return_dict=True)
+    # SHAPE: (batch, seq, emb_dim)
+    bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+    return bert_embeddings_batch

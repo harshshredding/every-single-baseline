@@ -17,6 +17,13 @@ from transformers import AutoTokenizer
 import torch.nn as nn
 from pyfzf.pyfzf import FzfPrompt
 
+
+def get_all_model_modules():
+    all_module_paths = [file_path for file_path in glob.glob('./models/*.py') 
+                        if '__init__.py' not in file_path]
+    return [Path(module_path).stem for module_path in all_module_paths]
+
+
 def get_experiment_name_from_user() -> str:
     all_experiment_file_paths = glob.glob('./experiments/*.py')
     all_experiment_names = [Path(file_path).stem for file_path in all_experiment_file_paths]
@@ -361,6 +368,17 @@ def prepare_model_input(batch_encoding, sample_data: List[TokenData], model_conf
         raise Exception('Not implemented!')
     return model_input
 
+def get_model_class(model_config: ModelConfig) -> type:
+    model_class = None
+    for model_module_name in get_all_model_modules():
+        if model_class is None:
+            model_class = locate(f"models.{model_module_name}.{model_config.model_name}")
+        else:
+            assert locate(f"models.{model_module_name}.{model_config.model_name}") is None, \
+                f"Found duplicate model class :{model_config.model_name}"
+    assert model_class is not None, f"model class name {model_config.model_name} could not be found"
+    return model_class
+
 
 def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     # if dataset_config['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
@@ -404,10 +422,7 @@ def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
     # if dataset_config['model_name'] == 'OnlyRoberta3Classes':
     #     return OnlyRoberta3Classes().to(device)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
-    model_class = locate(f"all_models.{model_config.model_name}")
-    if model_class is None:
-        model_class = locate(f"models.span_batched_no_custom_tok.{model_config.model_name}")
-    assert model_class is not None, f"model class name {model_config.model_name} could not be found"
+    model_class = get_model_class(model_config=model_config)
     return model_class(all_types, model_config=model_config, dataset_config=dataset_config).to(device)
 
 
