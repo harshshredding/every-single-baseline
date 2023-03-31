@@ -8,6 +8,9 @@ import torch.nn as nn
 import torch
 import train_util
 from preamble import *
+import util
+from structs import Anno, Sample
+from utils.model import PredictionsBatch
 
 
 class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
