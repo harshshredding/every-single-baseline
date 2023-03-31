@@ -9,7 +9,7 @@ from utils.config import ModelConfig, DatasetConfig
 from utils.model import PredictionsBatch, ModelClaC
 import torch.nn as nn
 from preamble import *
-from utils.model import PositionalEncodingBatch
+from utils.model import PositionalEncodingBatch, get_bert_embeddings_for_batch
 
 
 
