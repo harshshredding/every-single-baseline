@@ -23,7 +23,6 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
         self.viterbi_decoder = ViterbiDecoder(self.flair_dictionary)
         self.linear = nn.Linear(self.input_dim, len(self.flair_dictionary))
 
-
     def get_flair_label_dictionary(self):
         flair_dictionary = Dictionary(add_unk=False)
         for i in range(len(self.idx_to_label)):
@@ -45,7 +44,6 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
             for predicted_label_indices_sample in predicted_label_indices
         ]
         return predicted_labels
-
 
     def forward(
             self,
@@ -74,7 +72,6 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
 
         assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
         assert len(gold_labels_batch[0]) == bert_embeddings_batch.shape[1]  # same num labels as tokens
-        # print("gold bio labels", gold_labels_batch[0])
 
         gold_label_indices = [
             [self.label_to_idx[label] for label in gold_labels]
