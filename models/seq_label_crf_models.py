@@ -73,11 +73,12 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
         assert len(gold_labels_batch) == len(samples)  # labels for each sample in batch
         assert len(gold_labels_batch[0]) == bert_embeddings_batch.shape[1]  # same num labels as tokens
 
-        gold_label_indices = [
-            [self.label_to_idx[label] for label in gold_labels]
-            for gold_labels in gold_labels_batch
-        ]
-        # SHAPE (batch, seq_len)
+        gold_label_indices = []
+        for gold_labels_sample in gold_labels_batch:
+            for label in gold_labels_sample:
+                gold_label_indices.append(self.label_to_idx[label])
+
+        # SHAPE (batch*seq_len)
         gold_label_indices = torch.tensor(gold_label_indices).to(device)
 
         loss = self.loss_function(features_tuple, gold_label_indices)
