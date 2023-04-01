@@ -59,4 +59,8 @@ echo "alias debug='python -m pudb -c'" >> ~/.bashrc
 mkdir -p ~/.config/pudb
 cp ./pudb.cfg ~/.config/pudb
 
+# Make python interpretor use vi mode
+touch ~/.inputrc
+echo "set editing-mode vi" >> ~/.inputrc
+
 exec bash
