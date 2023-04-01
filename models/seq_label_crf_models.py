@@ -81,6 +81,8 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
         # SHAPE (batch*seq_len)
         gold_label_indices = torch.tensor(gold_label_indices).to(device)
 
+        assert len(gold_label_indices.shape) == 1, "needs to be a tensor with one dimension"
+
         loss = self.loss_function(features_tuple, gold_label_indices)
 
         predictions, all_tags = self.viterbi_decoder.decode(features_tuple, False, None)
