@@ -128,7 +128,7 @@ def get_model_config_from_module(model_config_module_name: str) -> ModelConfig:
         model_config_module_path(str): the path to the module in which the model config is defined
     """
     model_config_module = importlib.import_module(f'configs.model_configs.{model_config_module_name}')
-    return model_config_module.create_model_config()
+    return model_config_module.create_model_config(model_config_module_name)
 
 
 def get_preprocessor_config(preprocessor_config_module_name: str) -> PreprocessorConfig:
