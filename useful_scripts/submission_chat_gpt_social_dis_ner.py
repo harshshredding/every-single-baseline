@@ -12,10 +12,10 @@ chat_gpt_response_dict = {
 }
 
     
-chat_gpt_tsv_file = './useful_scripts/experiment_chatgpt_span_social_dis_ner_transformer_big_social_dis_ner_chatgpt_span_large_default_test_epoch_19_predictions.tsv'
+chat_gpt_tsv_file = './useful_scripts/experiment_chatgpt_combo_span_social_dis_ner_transformer_big_social_dis_ner_chatgpt_combo_model_span_large_transformer_big_test_epoch_11_predictions.tsv'
 df = pd.read_csv(chat_gpt_tsv_file, sep='\t')
 
-with open('./useful_scripts/final_span_transformer_large.tsv', 'w') as output_tsv: 
+with open('./useful_scripts/submission_span_transformer_large_combo_early.tsv', 'w') as output_tsv: 
     writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
     writer.writerow(['tweets_id', 'begin', 'end', 'type', 'extraction'])
     for _, row in df.iterrows():

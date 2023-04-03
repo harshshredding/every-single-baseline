@@ -8,7 +8,7 @@ test_data_file_path = "./multiconer-data-raw/public_data/EN-English/en_test.conl
 
 
 def read_multiconer_predictions() -> dict[str, List[Anno]]:
-    predictions_file_path = "/Users/harshverma/every-single-baseline/submission/seq_crf/experiment_multiconer_seq_large_crf_default_multiconer_fine_vanilla_model_seq_large_default_crf_test_epoch_7_predictions.tsv"
+    predictions_file_path = "/Users/harshverma/every-single-baseline/submission/span_transformer_encoder_big/experiment_multiconer_span_transformer_big_multiconer_fine_vanilla_span_large_default_test_epoch_15_predictions.tsv"
     df = pd.read_csv(predictions_file_path, sep='\t')
     sample_to_annos = {}
     for _, row in df.iterrows():
