@@ -375,7 +375,7 @@ def get_model_class(model_config: ModelConfig) -> type:
             model_class = locate(f"models.{model_module_name}.{model_config.model_name}")
         else:
             if locate(f"models.{model_module_name}.{model_config.model_name}") is not None:
-                print(f"WARN: Found duplicate model class: {model_config.model_name}")
+                print(red(f"WARN: Found duplicate model class: {model_config.model_name}"))
     assert model_class is not None, f"model class name {model_config.model_name} could not be found"
     return model_class
 
