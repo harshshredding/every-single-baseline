@@ -14,3 +14,6 @@ experiments = [
         dataset_config_name='social_dis_ner_vanilla'
     ),
 ]
+
+for experiment in experiments:
+    experiment.model_config.num_epochs = 20
