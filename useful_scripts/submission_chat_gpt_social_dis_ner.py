@@ -2,6 +2,8 @@ import json
 import pandas as pd
 import csv
 import argparse
+from pathlib import Path
+import subprocess
 
 chatgpt_predictions_file_path = './chatgpt_social_dis_ner_test.json'
 with open(chatgpt_predictions_file_path, 'r') as chat_gpt_predictions_file:
@@ -13,8 +15,8 @@ chat_gpt_response_dict = {
 }
 
     
-predictions_tsv_file = '/Users/harshverma/every-single-baseline/useful_scripts/chat_gpt_seq_results/harshv_research_nlp/experiment_chatgpt_seq_default_social_dis_ner_chatgpt_model_seq_large_crf_test_epoch_19_predictions.tsv'
-output_file = './useful_scripts/submission_chatgpt_seq_crf_default.tsv'
+predictions_tsv_file = '/Users/harshverma/every-single-baseline/useful_scripts/no_chat_default/harshv_research_nlp/experiment_social_dis_ner_all_default_models_social_dis_ner_vanilla_model_seq_large_default_test_epoch_15_predictions.tsv'
+output_file = './useful_scripts/vanilla_social_seq.tsv'
 
 predictions_df = pd.read_csv(predictions_tsv_file, sep='\t')
 
@@ -44,6 +46,15 @@ def vanilla_submission():
             end = int(row['end'])
             writer.writerow([sample_id, str(begin), str(end), row['type'], row['extraction']]) 
 
+def zip_file(file_path):
+    file_path = Path(file_path)
+    file_stem = file_path.stem
+    file_folder = str(file_path.parent)
+
+    cmd_str = f"cd {file_folder} && zip {file_stem}.zip {file_stem}.tsv"
+    subprocess.run(cmd_str, shell=True)
+
+
 
 argsparser = argparse.ArgumentParser("social dis ner submission script")
 argsparser.add_argument("submission_type", help="the type of submission you want to make. Specify 'chatgpt' or 'vanilla':", type=str)
@@ -54,3 +65,4 @@ elif args.submission_type == 'vanilla':
     vanilla_submission()
 else:
     raise RuntimeError(f"Submission type '{args.submission_type}' is not supported")
+zip_file(output_file)
