@@ -5,10 +5,9 @@ import os
 from typing import List, Dict
 import pandas as pd
 from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
-from preprocess import Preprocessor
-import util
+from utils.preprocess import Preprocessor, PreprocessorRunType
 from annotators import Annotator
-import spacy
+
 
 
 class PreprocessLivingNER(Preprocessor):
@@ -20,32 +19,36 @@ class PreprocessLivingNER(Preprocessor):
             self,
             dataset_split: DatasetSplit,
             preprocessor_type: str,
-            annotators: List[Annotator]
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
     ) -> None:
         super().__init__(
             dataset_split=dataset_split,
             preprocessor_type=preprocessor_type,
             dataset=Dataset.living_ner,
-            annotators=annotators
+            annotators=annotators,
+            run_mode=run_mode
         )
         match dataset_split:
             case DatasetSplit.train:
-                self.raw_data_folder_path = './livingner_raw/training_valid_test_background_multilingual/training'
+                self.raw_data_folder_path = './livingner-bundle_training_valid_test_background_multilingual/training'
             case DatasetSplit.valid:
-                self.raw_data_folder_path = './livingner_raw/training_valid_test_background_multilingual/valid'
-            case _:
-                raise RuntimeError("Can only support train and valid")
-        self.nlp = spacy.load('en_core_web_sm')
+                self.raw_data_folder_path = './livingner-bundle_training_valid_test_background_multilingual/valid'
+            case DatasetSplit.test:
+                self.raw_data_folder_path = './livingner-bundle_training_valid_test_background_multilingual/test'
 
     def __get_annos_dict(self) -> Dict[SampleId, List[Anno]]:
         """
         Read annotations for each sample from the given file and return
         a dict from sample_ids to corresponding annotations.
         """
-        if self.dataset_split == DatasetSplit.valid:
-            annos_file_path = f"{self.raw_data_folder_path}/subtask1-NER/validation_entities_subtask1.tsv"
-        else:
-            annos_file_path = f"{self.raw_data_folder_path}/subtask1-NER/training_entities_subtask1.tsv"
+        match self.dataset_split:
+            case DatasetSplit.valid:
+                annos_file_path = f"{self.raw_data_folder_path}/subtask1-NER/validation_entities_subtask1.tsv"
+            case DatasetSplit.train:
+                annos_file_path = f"{self.raw_data_folder_path}/subtask1-NER/training_entities_subtask1.tsv"
+            case DatasetSplit.test:
+                annos_file_path = f"{self.raw_data_folder_path}/subtask1-NER/test_entities_subtask1.tsv"
         data_frame = pd.read_csv(annos_file_path, sep='\t')
         sample_to_annos = {}
         for _, row in data_frame.iterrows():
@@ -79,9 +82,6 @@ class PreprocessLivingNER(Preprocessor):
             sample_id = filename[:-4]
             gold_annos = annos_dict.get(sample_id, [])
             document_samples.append(Sample(data, sample_id, AnnotationCollection(gold_annos, [])))
-        # sentence_samples = []
-        # for doc_sample in document_samples:
-        #     sentence_samples.extend(util.make_sentence_samples(doc_sample, self.nlp))
         return document_samples
 
     def get_entity_types(self) -> List[str]:

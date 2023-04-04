@@ -133,7 +133,7 @@ def get_model_config_from_module(model_config_module_name: str) -> ModelConfig:
 
 def get_preprocessor_config(preprocessor_config_module_name: str) -> PreprocessorConfig:
     preprocessor_config_module = importlib.import_module(f'configs.preprocessor_configs.{preprocessor_config_module_name}')
-    return preprocessor_config_module.preprocessor_config
+    return preprocessor_config_module.get_preprocessor_config(preprocessor_config_module_name)
 
 
 def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:

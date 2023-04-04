@@ -77,10 +77,10 @@ class Preprocessor(ABC):
         if self.samples is None:
             print(red("Creating Cache of Samples"))
             self.samples = self.get_samples()
+            self.run_annotation_pipeline()
             if self.run_mode == PreprocessorRunType.dry_run:
                 print(blue("Selecting first 300."))
                 self.samples = self.samples[:300]
-            self.run_annotation_pipeline()
         else:
             print(green("using cache"))
         return self.samples
@@ -248,11 +248,20 @@ def preprocess_train_and_valid_with_window(
         preprocessor_name: str,
         preprocessor_type: str,
         dataset: Dataset,
-        run_mode: PreprocessorRunType = PreprocessorRunType.production,
+        run_mode: PreprocessorRunType = PreprocessorRunType.dry_run,
         window_size: int = 100,
         stride_size: int = 50
 ):
     preprocessor_class = get_preprocessor_class(preprocessor_module_name, preprocessor_name)
+
+    preprocessor = preprocessor_class(
+        dataset_split=DatasetSplit.test,
+        preprocessor_type=preprocessor_type,
+        annotators=[SlidingWindowAnnotator(window_size=window_size, stride=stride_size)],
+        run_mode=run_mode,
+        dataset=dataset
+    )
+    preprocessor.run()
 
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.valid,
