@@ -77,9 +77,10 @@ class Preprocessor(ABC):
         if self.samples is None:
             print(red("Creating Cache of Samples"))
             self.samples = self.get_samples()
+            if self.run_mode == PreprocessorRunType.dry_run:
+                self.samples = self.samples[:300]
             self.run_annotation_pipeline()
             if self.run_mode == PreprocessorRunType.dry_run:
-                print(blue("Selecting first 300."))
                 self.samples = self.samples[:300]
         else:
             print(green("using cache"))

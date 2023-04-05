@@ -34,6 +34,9 @@ class ModelConfig:
     # Tokenization specific options
     use_special_bert_tokens: Optional[bool] = True
 
+    # External Anno type 
+    external_feature_type: Optional[str] = None
+
 
 @dataclass
 class PreprocessorConfig:

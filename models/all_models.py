@@ -1091,7 +1091,7 @@ class SeqLabelerNoTokenization(ModelClaC):
                                                       max_length=512).to(device)
         return bert_encoding_for_batch
 
-    def get_bert_embeddings_for_batch(self, encoding: transformers.BatchEncoding):
+    def get_bert_embeddings_for_batch(self, encoding: transformers.BatchEncoding, samples: List[Sample]):
         bert_embeddings_batch = self.bert_model(encoding['input_ids'], return_dict=True)
         # SHAPE: (batch, seq, emb_dim)
         bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
@@ -1176,7 +1176,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         # print("encoding new", bert_encoding_for_batch)
         #collect.append(bert_encoding_for_batch)
         # SHAPE (batch_size, seq_len, bert_emb_len)
-        bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
+        bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch, samples=samples)
         predictions_logits_batch = self.classifier(bert_embeddings_batch)
 
         gold_labels_batch = train_util.get_bio_labels_for_bert_tokens_batch(

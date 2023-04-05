@@ -7,6 +7,7 @@ import util
 from preamble import show_progress
 import requests
 import bs4
+import json
 
 
 class Annotator(ABC):
@@ -14,19 +15,28 @@ class Annotator(ABC):
     Represents a piece of computation that annotates text in some way.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, name: str) -> None:
         super().__init__()
+        self.name = name
+
+    def annotate(self, samples: List[Sample]) -> List[Sample]:
+        """
+        Annotate the given samples.
+        """
+        print(f"Annotator : {self.name}")
+        return self.annotate_helper(samples)
 
     @abstractmethod
-    def annotate(self, samples: List[Sample]) -> List[Sample]:
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
         """
         Annotate the given samples.
         """
 
 
+
 class NounPhraseAnnotator(Annotator):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__("NounPhraseAnnotator")
         benepar.download('benepar_en3')
         self.nlp = spacy.load('en_core_web_md')
         self.nlp.add_pipe('benepar', config={'model': 'benepar_en3'})
@@ -34,9 +44,7 @@ class NounPhraseAnnotator(Annotator):
     """
     Annotate all Noun Phrases in all samples.
     """
-
-    def annotate(self, samples: List[Sample]) -> List[Sample]:
-        print("Annotator: Noun Phrases")
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
         for sample in show_progress(samples):
             try:
                 spacy_doc = self.nlp(sample.text)
@@ -54,14 +62,13 @@ class NounPhraseAnnotator(Annotator):
 
 class TokenAnnotator(Annotator):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__("Token Annotator")
         self.nlp = spacy.load('en_core_web_sm')
 
-    def annotate(self, samples: List[Sample]) -> List[Sample]:
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
         """
         Annotate all tokens.
         """
-        print("Annotator: Tokenizer")
         for sample in show_progress(samples):
             tokenized_doc = self.nlp(sample.text, disable=['parser', 'tagger', 'ner'])
             token_annos = []
@@ -77,7 +84,7 @@ class TokenAnnotator(Annotator):
 
 class SlidingWindowAnnotator(Annotator):
     def __init__(self, window_size: int, stride: int) -> None:
-        super().__init__()
+        super().__init__("SlidingWindowAnnotator")
         self.window_size = window_size
         self.stride = stride
         assert stride <= window_size
@@ -117,7 +124,7 @@ class SlidingWindowAnnotator(Annotator):
             )
         return ret
 
-    def annotate(self, samples: List[Sample]) -> List[Sample]:
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
         """
         For a given sample, generate sub-samples while sliding the
         window over it.
@@ -151,9 +158,9 @@ def get_google_search_headings(query_string_plain: str) -> List[str]:
 
 class GoogleSearch(Annotator):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__("Google Search")
 
-    def annotate(self, samples: List[Sample]):
+    def annotate_helper(self, samples: List[Sample]):
         print("Annotator: Google Search")
         for sample in show_progress(samples):
             sample.annos.external.append(Anno(0, len(sample.text), 'OriginalSample', 'N/A'))
@@ -163,34 +170,96 @@ class GoogleSearch(Annotator):
 
 
 
-class ChatGptDiseaseAnnotator(Annotator):
-    def __init__(self) -> None:
-        super().__init__()
-        raise NotImplementedError()
+def remove_period(string: str):
+    if string.endswith('.'):
+        return string[:-1]
+    else:
+        return string
 
-    @staticmethod
-    def get_matches(dictionary: set, sentence: str) -> list[Anno]:
-        matches = []
-        for entry in dictionary:
-            for i in range(len(sentence)):
-                if sentence[i:].startswith(entry):
-                    matches.append(
-                        Anno(
-                            begin_offset=i, 
-                            end_offset=(i + len(entry)),
-                            label_type='type',
-                            extraction=entry,
-                        )
+def get_chatgpt_dictionary() -> set[str]:
+    all_preds = []
+    with open('./chatgpt_social_dis_ner_test.json', 'r') as preds_train, \
+         open('./chatgpt_social_dis_ner_train.json', 'r') as preds_test, \
+         open('./chatgpt_social_dis_ner_valid.json', 'r') as preds_valid:
+        all_preds = json.load(preds_train) + json.load(preds_test) + json.load(preds_valid)
+    print("num total preds", len(all_preds))
+
+    all_diseases: list[str] = []
+    for _, disease_list_string in all_preds:
+        all_diseases.extend(disease_list_string.split(','))
+    all_diseases = [disease.strip() for disease in all_diseases]
+    all_diseases = [remove_period(disease) for disease in all_diseases]
+    return set(all_diseases)
+
+def get_matches(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno]:
+    matches = []
+    for entry in dictionary:
+        for i in range(len(sentence)):
+            if sentence[i:].startswith(entry):
+                matches.append(
+                    Anno(
+                        begin_offset=i, 
+                        end_offset=(i + len(entry)),
+                        label_type=knowlege_type,
+                        extraction=entry,
                     )
-        return matches
+                )
+    return matches
 
-    def annotate(self, samples: List[Sample]) -> List[Sample]:
+def get_matches_faster(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno]:
+    matches = []
+    for entry in dictionary:
+        for i in range(len(sentence)):
+            if sentence.find(entry, i) == i:
+                matches.append(
+                    Anno(
+                        begin_offset=i, 
+                        end_offset=(i + len(entry)),
+                        label_type=knowlege_type,
+                        extraction=entry,
+                    )
+                )
+    return matches
+
+
+def get_matches_faster_2(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno]:
+    matches = []
+    for i in range(len(sentence)):
+        for j in range(i+1, len(sentence)):
+            substring = sentence[i:j]
+            if substring in dictionary:
+                matches.append(
+                    Anno(
+                        begin_offset=i, 
+                        end_offset=j,
+                        label_type=knowlege_type,
+                        extraction=substring,
+                    )
+                )
+    return matches
+
+
+class ExternalKnowledgeAnnotator(Annotator):
+    def __init__(self, dictionary: set, knowlege_type: str) -> None:
+        super().__init__("ExternalKnowledgeAnnotator")
+        self.dictionary = dictionary
+        self.knowlege_type = knowlege_type
+
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
         """
         Annotate all tokens.
         """
-        print("Annotator: Tokenizer")
         for sample in show_progress(samples):
-            disease_annos = []
-            sample.annos.external.extend(disease_annos)
-        raise NotImplementedError()
+            external_knowledge_annos = get_matches_faster_2(
+                                            self.dictionary,
+                                            sample.text,
+                                            self.knowlege_type
+                                            )
+            sample.annos.external.extend(external_knowledge_annos)
         return samples
+
+def get_chatgpt_disease_annotator() -> ExternalKnowledgeAnnotator:
+    chatgpt_disease_dictionary = get_chatgpt_dictionary()
+    knowlege_type = 'ChatGptDisease'
+    return ExternalKnowledgeAnnotator(dictionary=chatgpt_disease_dictionary, knowlege_type=knowlege_type)
+
