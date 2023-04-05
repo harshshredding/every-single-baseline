@@ -1,5 +1,8 @@
 from utils.config import get_experiment_config
 
+# In the hope that reducing max-span-width will
+# stabilize training.
+
 experiments = [
     get_experiment_config(
         model_config_module_name='model_span_large_default',
