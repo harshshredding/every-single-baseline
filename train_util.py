@@ -17,6 +17,13 @@ from transformers import AutoTokenizer
 import torch.nn as nn
 from pyfzf.pyfzf import FzfPrompt
 
+def check_external_features(samples: list[Sample], external_feature_type: str):
+    for sample in samples:
+        for anno in sample.annos.external:
+            if anno.label_type == external_feature_type:
+                return True
+    raise RuntimeError(f"External Feature {external_feature_type} not found in data")
+
 
 def get_all_model_modules():
     all_module_paths = [file_path for file_path in glob.glob('./models/*.py') 

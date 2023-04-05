@@ -72,6 +72,13 @@ for dataset_config, model_config in experiments:
     logger.info("Starting to read data.")
     train_samples = train_util.get_train_samples(dataset_config)
     valid_samples = train_util.get_valid_samples(dataset_config)
+
+    # Do some important checks on the data
+    if model_config.external_feature_type is not None:
+        train_util.check_external_features(
+                train_samples,
+                model_config.external_feature_type)
+
     if IS_TESTING:
         test_samples = train_util.get_test_samples(dataset_config)
     logger.info(f"num train samples: {len(train_samples)}")
