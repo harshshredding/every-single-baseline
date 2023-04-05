@@ -4,9 +4,7 @@ This framework allows you to:
 - quickly train all popular models on your dataset.
 
 # Supported GPUs
-- Titan 
-- TRX A5000
-- 
+Almost all of them :) :) 
 
 # Steps to train on your data
 1. Create 3 files: 

@@ -160,3 +160,37 @@ class GoogleSearch(Annotator):
             google_search_results = get_google_search_headings(sample.text)
             search_result_string = ".".join(google_search_results)
             sample.text = ".".join([sample.text, search_result_string])
+
+
+
+class ChatGptDiseaseAnnotator(Annotator):
+    def __init__(self) -> None:
+        super().__init__()
+        raise NotImplementedError()
+
+    @staticmethod
+    def get_matches(dictionary: set, sentence: str) -> list[Anno]:
+        matches = []
+        for entry in dictionary:
+            for i in range(len(sentence)):
+                if sentence[i:].startswith(entry):
+                    matches.append(
+                        Anno(
+                            begin_offset=i, 
+                            end_offset=(i + len(entry)),
+                            label_type='type',
+                            extraction=entry,
+                        )
+                    )
+        return matches
+
+    def annotate(self, samples: List[Sample]) -> List[Sample]:
+        """
+        Annotate all tokens.
+        """
+        print("Annotator: Tokenizer")
+        for sample in show_progress(samples):
+            disease_annos = []
+            sample.annos.external.extend(disease_annos)
+        raise NotImplementedError()
+        return samples
