@@ -9,6 +9,11 @@ import requests
 import bs4
 import json
 
+from utils.easy_testing import\
+  get_test_samples_by_dataset_name,\
+  get_train_samples_by_dataset_name,\
+  get_valid_samples_by_dataset_name
+
 
 class Annotator(ABC):
     """
@@ -176,6 +181,13 @@ def remove_period(string: str):
     else:
         return string
 
+def get_disease_dictionary_for_sample(disease_string: str):
+    all_diseases = disease_string.split(',')
+    all_diseases = [disease.strip() for disease in all_diseases]
+    all_diseases = [remove_period(disease) for disease in all_diseases]
+    return set(all_diseases)
+
+
 def get_chatgpt_dictionary() -> set[str]:
     all_preds = []
     with open('./chatgpt_social_dis_ner_test.json', 'r') as preds_train, \
@@ -258,8 +270,76 @@ class ExternalKnowledgeAnnotator(Annotator):
             sample.annos.external.extend(external_knowledge_annos)
         return samples
 
+
+def get_chatgpt_disease_list_from_string(disease_string: str) -> set[str]:
+    all_diseases = disease_string.split(',')
+    all_diseases = [disease.strip() for disease in all_diseases]
+    all_diseases = [remove_period(disease) for disease in all_diseases]
+    return set(all_diseases)
+
+
+def get_chatgpt_preds_dict() -> dict[str, set[str]]:
+    all_preds = []
+    with open('./chatgpt_social_dis_ner_test.json', 'r') as preds_train, \
+         open('./chatgpt_social_dis_ner_train.json', 'r') as preds_test, \
+         open('./chatgpt_social_dis_ner_valid.json', 'r') as preds_valid:
+        all_preds = json.load(preds_train) + json.load(preds_test) + json.load(preds_valid)
+    
+    preds_dict = {}
+    for sample_id, pred in all_preds:
+        if sample_id in preds_dict:
+            preds_dict[sample_id] = ','.join((preds_dict[sample_id], pred))
+        else:
+            preds_dict[sample_id] = pred
+
+    all_samples = get_test_samples_by_dataset_name('social_dis_ner_vanilla') + \
+                  get_valid_samples_by_dataset_name('social_dis_ner_vanilla') + \
+                  get_train_samples_by_dataset_name('social_dis_ner_vanilla')
+
+    for sample in all_samples:
+        assert sample.id in preds_dict
+    
+    preds_dict = {sample_id: get_chatgpt_disease_list_from_string(disease_string) 
+                  for sample_id, disease_string in preds_dict.items()}
+
+    return preds_dict
+
+class ExternalKnowledgePerSampleAnnotator(Annotator):
+    def __init__(
+            self,
+            sample_predictions_dict: dict[str, set[str]],
+            knowlege_type: str):
+        super().__init__("ExternalKnowledgePerSampleAnnotator")
+        self.sample_predictions_dict = sample_predictions_dict
+        self.knowlege_type = knowlege_type
+
+
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+        """
+        Annotate all tokens.
+        """
+        for sample in show_progress(samples):
+            external_knowledge_annos = get_matches_faster_2(
+                                            self.sample_predictions_dict[sample.id],
+                                            sample.text,
+                                            self.knowlege_type
+                                            )
+            sample.annos.external.extend(external_knowledge_annos)
+        return samples
+
+
+
 def get_chatgpt_disease_annotator() -> ExternalKnowledgeAnnotator:
     chatgpt_disease_dictionary = get_chatgpt_dictionary()
     knowlege_type = 'ChatGptDisease'
     return ExternalKnowledgeAnnotator(dictionary=chatgpt_disease_dictionary, knowlege_type=knowlege_type)
+
+
+def get_chatgpt_per_sample_disease_annotator() -> ExternalKnowledgePerSampleAnnotator:
+    chatgpt_disease_dictionary = get_chatgpt_preds_dict()
+    knowlege_type = 'ChatGptDiseasePerSample'
+    return ExternalKnowledgePerSampleAnnotator(
+            sample_predictions_dict=chatgpt_disease_dictionary,
+            knowlege_type=knowlege_type
+            )
 
