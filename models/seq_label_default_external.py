@@ -5,6 +5,7 @@ from structs import Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import torch
 from preamble import *
+from utils.model import PositionalEncodingBatch
 
 def get_external_annos_of_type(sample: Sample, anno_type: str):
     return [anno for anno in sample.annos.external if anno.label_type == anno_type]
@@ -75,4 +76,47 @@ class SeqLabelDefaultExternal(SeqLabelerNoTokenization):
         enriched_embeddings = self.transformer(enriched_embeddings)
 
         return enriched_embeddings
+
+
+
+class SeqLabelDefaultExternalPos(SeqLabelDefaultExternal):
+    def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
+        self.pos_encoder = PositionalEncodingBatch(d_model=(self.input_dim + 2))
+
+
+    def get_bert_embeddings_for_batch(self, encoding: BatchEncoding, samples: list[Sample]):
+        bert_embeddings_batch = self.bert_model(encoding['input_ids'], return_dict=True)
+        # SHAPE: (batch, seq, emb_dim)
+        bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+
+        one_hot_labels = []
+        for batch_idx, sample in enumerate(samples):
+            one_hot_labels.append(
+                    get_gazetteer_match_labels(
+                        batch_encoding=encoding, 
+                        gazetteer_annos=get_external_annos_of_type(sample=sample, anno_type=self.external_feature_type),
+                        batch_idx=batch_idx
+                    )
+            )
+
+        one_hot_labels_tensor = torch.tensor(one_hot_labels, device=device)
+        assert len(one_hot_labels_tensor.shape) == 3
+        assert one_hot_labels_tensor.shape[0] == len(samples)
+        assert one_hot_labels_tensor.shape[1] == len(encoding.tokens())
+        assert one_hot_labels_tensor.shape[2] == 2
+
+        enriched_embeddings = torch.cat((bert_embeddings_batch, one_hot_labels_tensor), dim=2)
+        assert len(enriched_embeddings.shape) == 3
+        assert enriched_embeddings.shape[0] == len(samples)
+        assert enriched_embeddings.shape[1] == len(encoding.tokens())
+        assert enriched_embeddings.shape[2] == self.input_dim + 2
+
+        enriched_embeddings = self.pos_encoder(enriched_embeddings)
+
+        enriched_embeddings = self.transformer(enriched_embeddings)
+
+        return enriched_embeddings
+
+
 
