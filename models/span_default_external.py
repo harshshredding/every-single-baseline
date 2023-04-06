@@ -19,7 +19,7 @@ class SpanDefaultExternal(SpanDefault):
         self.transformer = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
         assert model_config.external_feature_type is not None
         self.external_feature_type = model_config.external_feature_type
-        self.classifier = nn.Linear(self.input_dim + 2, self.num_class)
+        self.classifier = nn.Linear(2*(self.input_dim + 2), self.num_class)
 
 
     def get_endpoint_span_extractor(self):
