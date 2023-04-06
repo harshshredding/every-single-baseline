@@ -42,6 +42,7 @@ class SeqLabelDefaultExternal(SeqLabelerNoTokenization):
         self.transformer = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
         assert model_config.external_feature_type is not None
         self.external_feature_type = model_config.external_feature_type
+        self.classifier = nn.Linear(self.input_dim + 2, self.num_class)
 
     
     def get_bert_embeddings_for_batch(self, encoding: BatchEncoding, samples: list[Sample]):
