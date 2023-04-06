@@ -79,6 +79,13 @@ class SpanDefault(ModelClaC):
                                                       max_length=512).to(device)
         return bert_encoding_for_batch
 
+
+    def get_bert_embeddings_for_batch(self, encoding: BatchEncoding, samples: list[Sample] ):
+        bert_embeddings_batch = self.bert_model(encoding['input_ids'], return_dict=True)
+        # SHAPE: (batch, seq, emb_dim)
+        bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+        return bert_embeddings_batch
+
     def forward(
             self,
             samples: List[Sample],
@@ -92,7 +99,7 @@ class SpanDefault(ModelClaC):
             batch_encoding=batch_encoding
         )
         # SHAPE: (batch, seq, embed_dim)
-        bert_embeddings_batch = get_bert_embeddings_for_batch(bert_model=self.bert_model, encoding=batch_encoding)
+        bert_embeddings_batch = self.get_bert_embeddings_for_batch(encoding=batch_encoding, samples=samples)
         # enumerate all possible spans
         # spans are inclusive
         all_possible_spans_list_batch = [
