@@ -38,8 +38,8 @@ def get_gazetteer_match_labels(batch_encoding: BatchEncoding, gazetteer_annos: l
 class SeqLabelDefaultExternal(SeqLabelerNoTokenization):
     def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
-        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.input_dim, nhead=10)
-        self.transformer_encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=self.input_dim, nhead=8)
+        self.transformer = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
         assert model_config.external_feature_type is not None
         self.external_feature_type = model_config.external_feature_type
 
@@ -71,6 +71,8 @@ class SeqLabelDefaultExternal(SeqLabelerNoTokenization):
         assert enriched_embeddings.shape[0] == len(samples)
         assert enriched_embeddings.shape[1] == len(encoding.tokens())
         assert enriched_embeddings.shape[2] == self.input_dim + 2
+
+        enriched_embeddings = self.transformer(enriched_embeddings)
 
         return enriched_embeddings
 
