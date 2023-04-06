@@ -27,7 +27,6 @@ class SpanDefaultExternal(SpanDefault):
 
 
     def get_bert_embeddings_for_batch(self, encoding: BatchEncoding, samples: list[Sample]):
-        print("TEMPORARY: calling new function")
         return get_bert_embeddings_with_external_knowledge_for_batch(
                 bert_model=self.bert_model,
                 encoding=encoding,
