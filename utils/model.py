@@ -342,8 +342,8 @@ class EndpointSpanExtractor(SpanExtractorWithSpanWidthEmbedding):
                     f"Dimension mismatch expected ({sequence_tensor.size(-1)}) "
                     f"received ({self._input_dim})."
                 )
-            start_embeddings = util.batched_index_select(sequence_tensor, span_starts)
-            end_embeddings = util.batched_index_select(sequence_tensor, span_ends)
+            start_embeddings = batched_index_select(sequence_tensor, span_starts)
+            end_embeddings = batched_index_select(sequence_tensor, span_ends)
 
         else:
             # We want `exclusive` span starts, so we remove 1 from the forward span starts
@@ -362,8 +362,8 @@ class EndpointSpanExtractor(SpanExtractorWithSpanWidthEmbedding):
                     f"but found: exclusive_span_starts: {exclusive_span_starts}."
                 )
 
-            start_embeddings = util.batched_index_select(sequence_tensor, exclusive_span_starts)
-            end_embeddings = util.batched_index_select(sequence_tensor, span_ends)
+            start_embeddings = batched_index_select(sequence_tensor, exclusive_span_starts)
+            end_embeddings = batched_index_select(sequence_tensor, span_ends)
 
             # We're using sentinels, so we need to replace all the elements which were
             # outside the dimensions of the sequence_tensor with the start sentinel.
