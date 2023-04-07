@@ -77,6 +77,10 @@ def get_bert_embeddings_with_external_knowledge_for_batch(
 
 
 
+
+
+
+
 class SeqLabelDefaultExternal(SeqLabelerNoTokenization):
     def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
@@ -118,6 +122,12 @@ class SeqLabelDefaultExternal(SeqLabelerNoTokenization):
 
         return enriched_embeddings
 
+
+class SeqLabelDefaultExternalTinyTransformer(SeqLabelDefaultExternal):
+    def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
+        self.encoder_layer = nn.TransformerEncoderLayer(d_model=(self.input_dim + 2), nhead=2)
+        self.transformer = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=1)
 
 
 class SeqLabelDefaultExternalPos(SeqLabelDefaultExternal):
