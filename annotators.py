@@ -271,6 +271,46 @@ class ExternalKnowledgeAnnotatorExact(Annotator):
         return samples
 
 
+class ExternalKnowledgeAnnotatorLoweredExact(Annotator):
+    def __init__(self, dictionary: set, knowlege_type: str) -> None:
+        super().__init__("ExternalKnowledgeAnnotator")
+        self.lowered_dictionary = set([el.lower() for el in dictionary])
+        self.knowlege_type = knowlege_type
+
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+        """
+        Annotate all tokens.
+        """
+        for sample in show_progress(samples):
+            external_knowledge_annos = get_matches_faster_2(
+                                            self.lowered_dictionary,
+                                            sample.text.lower(),
+                                            self.knowlege_type
+                                            )
+            sample.annos.external.extend(external_knowledge_annos)
+        return samples
+
+
+class ExternalKnowledgeAnnotatorLoweredExactWordBoundary(Annotator):
+    def __init__(self, dictionary: set, knowlege_type: str) -> None:
+        super().__init__("ExternalKnowledgeAnnotator")
+        self.lowered_dictionary = set([el.lower() for el in dictionary])
+        self.knowlege_type = knowlege_type
+
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+        """
+        Annotate all tokens.
+        """
+        for sample in show_progress(samples):
+            external_knowledge_annos = get_matches_word_boundary(
+                                            self.lowered_dictionary,
+                                            sample.text.lower(),
+                                            self.knowlege_type
+                                            )
+            sample.annos.external.extend(external_knowledge_annos)
+        return samples
+
+
 def get_chatgpt_disease_list_from_string(disease_string: str) -> set[str]:
     all_diseases = disease_string.split(',')
     all_diseases = [disease.strip() for disease in all_diseases]
@@ -343,8 +383,20 @@ def read_umls_disease_gazetteer_dict():
     list_without_extra_info = [remove_extra_info(disease_string) for disease_string in disease_list]
     return set(list_without_extra_info)
 
+def has_word_boundaries(anno: Anno, sentence: str) -> bool:
+    assert anno.begin_offset < anno.end_offset
+    if anno.begin_offset > 0:
+        if sentence[anno.begin_offset - 1].isalpha():
+            return False
+    if anno.end_offset < len(sentence):
+        if sentence[anno.end_offset].isalpha():
+            return False
+    return True
 
-
+def get_matches_word_boundary(dictionary: set, sentence: str, knowlege_type: str):
+    matches = get_matches_faster_2(dictionary, sentence, knowlege_type)
+    matches_with_word_boundaries = [match for match in matches if has_word_boundaries(match, sentence)]
+    return matches_with_word_boundaries
 
 def get_chatgpt_disease_annotator() -> ExternalKnowledgeAnnotatorExact:
     chatgpt_disease_dictionary = get_chatgpt_dictionary()
@@ -360,10 +412,29 @@ def get_chatgpt_per_sample_disease_annotator() -> ExternalKnowledgePerSampleAnno
             knowlege_type=knowlege_type
             )
 
+
 def get_umls_disease_annotator_exact():
     umls_disease_dictionary = read_umls_disease_gazetteer_dict()
     knowlege_type = 'UmlsExact'
     return ExternalKnowledgeAnnotatorExact(
+        dictionary=umls_disease_dictionary,
+        knowlege_type=knowlege_type
+    )
+
+
+def get_umls_disease_annotator_lowered_exact():
+    umls_disease_dictionary = read_umls_disease_gazetteer_dict()
+    knowlege_type = 'UmlsExactLowered'
+    return ExternalKnowledgeAnnotatorLoweredExact(
+        dictionary=umls_disease_dictionary,
+        knowlege_type=knowlege_type
+    )
+
+
+def get_umls_disease_annotator_lowered_exact_word_boundaries():
+    umls_disease_dictionary = read_umls_disease_gazetteer_dict()
+    knowlege_type = 'UmlsExactLoweredWordBoundary'
+    return ExternalKnowledgeAnnotatorLoweredExactWordBoundary(
         dictionary=umls_disease_dictionary,
         knowlege_type=knowlege_type
     )
