@@ -207,8 +207,6 @@ class SeqLabelDefaultExternalPos(SeqLabelDefaultExternal):
         assert enriched_embeddings.shape[1] == len(encoding.tokens())
         assert enriched_embeddings.shape[2] == self.input_dim + 2
 
-        set_trace()
-
         enriched_embeddings = self.pos_encoder(enriched_embeddings.permute(1,0,2))
 
         enriched_embeddings = self.transformer(enriched_embeddings)
