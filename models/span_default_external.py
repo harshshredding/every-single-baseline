@@ -7,10 +7,9 @@ from structs import Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import torch
 from preamble import *
-from utils.model import PositionalEncodingOriginal
+from utils.model import PositionalEncodingOriginal, EndpointSpanExtractor
 from models.seq_label_default_external import get_bert_embeddings_with_external_knowledge_for_batch,\
         get_bert_embeddings_with_external_knowledge_pos_for_batch
-from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 
 
 class SpanDefaultExternal(SpanDefault):
