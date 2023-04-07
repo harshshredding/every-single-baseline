@@ -5,52 +5,10 @@ from structs import Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import torch
 from preamble import *
-from utils.model import PositionalEncodingBatch
+from utils.model import PositionalEncodingOriginal
 import math
 
 
-# Temporarily leave PositionalEncoding module here. Will be moved somewhere else.
-class PositionalEncodingOriginal(nn.Module):
-    r"""Inject some information about the relative or absolute position of the tokens in the sequence.
-        The positional encodings have the same dimension as the embeddings, so that the two can be summed.
-        Here, we use sine and cosine functions of different frequencies.
-    .. math:
-        \text{PosEncoder}(pos, 2i) = sin(pos/10000^(2i/d_model))
-        \text{PosEncoder}(pos, 2i+1) = cos(pos/10000^(2i/d_model))
-        \text{where pos is the word position and i is the embed idx)
-    Args:
-        d_model: the embed dim (required).
-        dropout: the dropout value (default=0.1).
-        max_len: the max. length of the incoming sequence (default=5000).
-    Examples:
-        >>> pos_encoder = PositionalEncoding(d_model)
-    """
-
-    def __init__(self, d_model, dropout=0.1, max_len=5000):
-        super(PositionalEncodingOriginal, self).__init__()
-        self.dropout = nn.Dropout(p=dropout)
-
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        pe = pe.unsqueeze(0).transpose(0, 1)
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        r"""Inputs of forward function
-        Args:
-            x: the sequence fed to the positional encoder model (required).
-        Shape:
-            x: [sequence length, batch size, embed dim]
-            output: [sequence length, batch size, embed dim]
-        Examples:
-            >>> output = pos_encoder(x)
-        """
-
-        x = x + self.pe[:x.size(0), :]
-        return self.dropout(x)
 
 
 def get_external_annos_of_type(sample: Sample, anno_type: str):
@@ -121,6 +79,46 @@ def get_bert_embeddings_with_external_knowledge_for_batch(
 
 
 
+def get_bert_embeddings_with_external_knowledge_pos_for_batch(
+        bert_model,
+        encoding: BatchEncoding,
+        samples: list[Sample],
+        external_feature_type,
+        input_dim,
+        transformer,
+        pos_encoder
+    ):
+    bert_embeddings_batch = bert_model(encoding['input_ids'], return_dict=True)
+    # SHAPE: (batch, seq, emb_dim)
+    bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
+
+    one_hot_labels = []
+    for batch_idx, sample in enumerate(samples):
+        one_hot_labels.append(
+                get_gazetteer_match_labels(
+                    batch_encoding=encoding, 
+                    gazetteer_annos=get_external_annos_of_type(sample=sample, anno_type=external_feature_type),
+                    batch_idx=batch_idx
+                )
+        )
+
+    one_hot_labels_tensor = torch.tensor(one_hot_labels, device=device)
+    assert len(one_hot_labels_tensor.shape) == 3
+    assert one_hot_labels_tensor.shape[0] == len(samples)
+    assert one_hot_labels_tensor.shape[1] == len(encoding.tokens())
+    assert one_hot_labels_tensor.shape[2] == 2
+
+    enriched_embeddings = torch.cat((bert_embeddings_batch, one_hot_labels_tensor), dim=2)
+    assert len(enriched_embeddings.shape) == 3
+    assert enriched_embeddings.shape[0] == len(samples)
+    assert enriched_embeddings.shape[1] == len(encoding.tokens())
+    assert enriched_embeddings.shape[2] == input_dim + 2
+
+    enriched_embeddings = pos_encoder(enriched_embeddings.permute(1,0,2))
+
+    enriched_embeddings = transformer(enriched_embeddings)
+
+    return enriched_embeddings.permute(1,0,2)
 
 
 
