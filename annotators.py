@@ -251,7 +251,7 @@ def get_matches_faster_2(dictionary: set, sentence: str, knowlege_type: str) -> 
     return matches
 
 
-class ExternalKnowledgeAnnotator(Annotator):
+class ExternalKnowledgeAnnotatorExact(Annotator):
     def __init__(self, dictionary: set, knowlege_type: str) -> None:
         super().__init__("ExternalKnowledgeAnnotator")
         self.dictionary = dictionary
@@ -329,10 +329,27 @@ class ExternalKnowledgePerSampleAnnotator(Annotator):
 
 
 
-def get_chatgpt_disease_annotator() -> ExternalKnowledgeAnnotator:
+def remove_extra_info(disease_string: str):
+    if ';' in disease_string:
+        return disease_string[:disease_string.find(';')]
+    else:
+        return disease_string
+
+def read_umls_disease_gazetteer_dict():
+    disease_list = []
+    with open('./umls_disease_gazetteer_new.lst', 'r') as umls_file:
+        for line in umls_file:
+            disease_list.append(line.strip())
+    list_without_extra_info = [remove_extra_info(disease_string) for disease_string in disease_list]
+    return set(list_without_extra_info)
+
+
+
+
+def get_chatgpt_disease_annotator() -> ExternalKnowledgeAnnotatorExact:
     chatgpt_disease_dictionary = get_chatgpt_dictionary()
     knowlege_type = 'ChatGptDisease'
-    return ExternalKnowledgeAnnotator(dictionary=chatgpt_disease_dictionary, knowlege_type=knowlege_type)
+    return ExternalKnowledgeAnnotatorExact(dictionary=chatgpt_disease_dictionary, knowlege_type=knowlege_type)
 
 
 def get_chatgpt_per_sample_disease_annotator() -> ExternalKnowledgePerSampleAnnotator:
@@ -342,4 +359,13 @@ def get_chatgpt_per_sample_disease_annotator() -> ExternalKnowledgePerSampleAnno
             sample_predictions_dict=chatgpt_disease_dictionary,
             knowlege_type=knowlege_type
             )
+
+def get_umls_disease_annotator_exact():
+    umls_disease_dictionary = read_umls_disease_gazetteer_dict()
+    knowlege_type = 'UmlsExact'
+    return ExternalKnowledgeAnnotatorExact(
+        dictionary=umls_disease_dictionary,
+        knowlege_type=knowlege_type
+    )
+
 
