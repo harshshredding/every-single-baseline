@@ -57,7 +57,6 @@ test_performance_file_path = f"{performance_folder_path}/performance_{EXPERIMENT
 train_util.create_performance_file_header(validation_performance_file_path)
 train_util.create_performance_file_header(test_performance_file_path)
 
-# Start the experiment
 dataset_config: DatasetConfig
 model_config: ModelConfig
 

@@ -141,11 +141,14 @@ def get_preprocessor_config(preprocessor_config_module_name: str) -> Preprocesso
 
 def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:
     all_config_file_paths = glob.glob('configs/dataset_configs/*.yaml')
+    found_dataset_config = None
     for config_file_path in all_config_file_paths:
         dataset_config = read_dataset_config(config_file_path)
         if dataset_config.dataset_config_name == dataset_config_name:
-            return dataset_config
-    die(f"Should have been able to find dataset config with name {dataset_config_name}")
+            assert found_dataset_config is None, f"Duplicate dataset config {dataset_config}"
+            found_dataset_config = dataset_config
+    assert found_dataset_config is not None, f"Should have been able to find dataset config with name {dataset_config_name}"
+    return found_dataset_config
 
 
 def get_experiment_config_with_smaller_batch(model_config_module: str, dataset_config_name: str):
