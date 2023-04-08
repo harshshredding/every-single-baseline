@@ -877,7 +877,7 @@ def get_labels_bio_new(token_anno_list: List[Option[Anno]], gold_annos: List[Ann
                 new_labels[i] = Label(gold_anno.label_type, BioTag.begin)
                 break
         if not found_start:
-            print("WARN: could not generate BIO tags for anno")
+            print(f"WARN: could not generate BIO tags for gold anno: {gold_anno}")
         else:
             assert start_idx is not None
             for i in range(start_idx + 1, len(token_anno_list)):
