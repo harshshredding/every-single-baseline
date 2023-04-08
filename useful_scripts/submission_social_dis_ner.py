@@ -15,8 +15,8 @@ chat_gpt_response_dict = {
 }
 
     
-predictions_tsv_file = '/Users/harshverma/every-single-baseline/useful_scripts/external_per_sample/experiment_social_dis_ner_per_sample_new_pos_chatgpt_social_dis_ner_per_sample_chatgpt_model_seq_large_external_pos_test_epoch_19_predictions.tsv'
-output_file = './useful_scripts/seq_per_sample_new_pos.tsv'
+predictions_tsv_file = '/Users/harshverma/every-single-baseline/useful_scripts/umls_boundary/experiment_social_dis_ner_umls_boundary_external_social_dis_ner_umls_external_word_boundaries_model_span_large_external_pos_test_epoch_19_predictions.tsv'
+output_file = './useful_scripts/span_umls_pos.tsv'
 
 predictions_df = pd.read_csv(predictions_tsv_file, sep='\t')
 

@@ -61,6 +61,7 @@ class PositionalEncodingBatch(nn.Module):
         pe[:, 0, 0::2] = torch.sin(position * div_term)
         pe[:, 0, 1::2] = torch.cos(position * div_term)
         self.register_buffer('pe', pe)
+        raise RuntimeError("Do not use this!!!!")
 
     def forward(self, x: Tensor) -> Tensor:
         assert len(x.shape) == 3

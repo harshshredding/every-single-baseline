@@ -54,7 +54,7 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
         bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)
         # print("encoding new", bert_encoding_for_batch)
         # SHAPE (batch_size, seq_len, bert_emb_len)
-        bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch)
+        bert_embeddings_batch = self.get_bert_embeddings_for_batch(bert_encoding_for_batch, samples=samples)
         # SHAPE (batch_size, seq_len, num_types)
         linear_logits = self.linear(bert_embeddings_batch)
         crf_logits = self.crf(linear_logits)
