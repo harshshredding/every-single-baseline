@@ -1,12 +1,12 @@
 import json
 
-train_samples_file_path = './preprocessed_data/living_ner_train_window_production_samples.json'
-valid_samples_file_path = './preprocessed_data/living_ner_valid_window_production_samples.json'
-test_samples_file_path = './preprocessed_data/living_ner_test_window_production_samples.json'
+train_samples_file_path = './preprocessed_data/social_dis_ner_train_config_socialdisner_umls_lowered_exact_word_boundaries_production_samples.json'
+valid_samples_file_path = './preprocessed_data/social_dis_ner_valid_config_socialdisner_umls_lowered_exact_word_boundaries_production_samples.json'
+test_samples_file_path = './preprocessed_data/social_dis_ner_test_config_socialdisner_umls_lowered_exact_word_boundaries_production_samples.json'
 
-new_train_samples_file_path = './preprocessed_data/living_ner_train_window_combo_production_samples.json'
-new_valid_samples_file_path = './preprocessed_data/living_ner_valid_window_combo_production_samples.json'
-new_test_samples_file_path = './preprocessed_data/living_ner_test_window_combo_production_samples.json'
+new_train_samples_file_path = './preprocessed_data/social_dis_ner_train_config_socialdisner_umls_lowered_exact_word_boundaries_combo_production_samples.json'
+new_valid_samples_file_path = './preprocessed_data/social_dis_ner_valid_config_socialdisner_umls_lowered_exact_word_boundaries_combo_production_samples.json'
+new_test_samples_file_path = './preprocessed_data/social_dis_ner_test_config_socialdisner_umls_lowered_exact_word_boundaries_combo_production_samples.json'
 
 with open(train_samples_file_path, 'r') as train_file:
     train_sample_list_raw = json.load(train_file)
