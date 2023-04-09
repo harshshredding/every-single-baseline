@@ -76,16 +76,18 @@ def get_small_model_config(
         learning_rate=1e-5
     )
 
-
-class ExperimentConfig(NamedTuple):
+@dataclass
+class ExperimentConfig:
     dataset_config: DatasetConfig
     model_config: ModelConfig
+    testing_frequency: int
 
 
 def get_experiment_config(model_config_module_name: str, dataset_config_name: str) -> ExperimentConfig:
     return ExperimentConfig(
         get_dataset_config_by_name(dataset_config_name),
-        get_model_config_from_module(model_config_module_name)
+        get_model_config_from_module(model_config_module_name),
+        testing_frequency=4
     )
 
 

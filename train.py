@@ -6,7 +6,7 @@ import time
 import numpy as np
 import logging  # configured in args.py
 import importlib
-from utils.config import DatasetConfig, ModelConfig
+from utils.config import DatasetConfig, ModelConfig, ExperimentConfig
 from random import shuffle
 from structs import DatasetSplit
 from preamble import *
@@ -21,7 +21,7 @@ IS_DRY_RUN = training_args.is_dry_run_mode
 IS_TESTING = training_args.is_testing
 
 experiments_module = importlib.import_module(f"experiments.{EXPERIMENT_NAME}")
-experiments = experiments_module.experiments
+experiments: list[ExperimentConfig] = experiments_module.experiments
 
 # Setup logging
 root_logger = logging.getLogger()
@@ -61,9 +61,12 @@ dataset_config: DatasetConfig
 model_config: ModelConfig
 
 # How frequently we will evaluate on test data
-test_evaluation_frequency = 4
 
-for dataset_config, model_config in experiments:
+for experiment in experiments:
+    dataset_config = experiment.dataset_config
+    model_config = experiment.model_config
+    test_evaluation_frequency = experiment.testing_frequency
+
     train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, IS_DRY_RUN, IS_TESTING, test_evaluation_frequency)
     dataset_name = dataset_config.dataset_name
 
