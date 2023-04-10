@@ -74,4 +74,14 @@ def config_chem_drug_window_longer() -> PreprocessorConfig:
         }
     )
 
+def config_genia() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.genia_preprocessor.PreprocessGenia',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': []
+        }
+    )
 

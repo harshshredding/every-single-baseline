@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from preprocess import Preprocessor
+from utils.preprocess import Preprocessor, PreprocessorRunType
 from structs import Anno, Sample, DatasetSplit, Dataset, AnnotationCollection
 from annotators import Annotator
 from bs4 import BeautifulSoup
@@ -118,15 +118,16 @@ class PreprocessGenia(Preprocessor):
             self,
             preprocessor_type: str,
             dataset_split: DatasetSplit,
-            annotators: List[Annotator]
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
     ) -> None:
         super().__init__(
             preprocessor_type=preprocessor_type,
             dataset=Dataset.genia,
             annotators=annotators,
-            dataset_split=dataset_split
+            dataset_split=dataset_split,
+            run_mode=run_mode,
         )
-        self.dataset_split = dataset_split
 
     def get_samples(self) -> List[Sample]:
         return get_samples(self.dataset_split)
