@@ -421,7 +421,6 @@ def get_umls_disease_annotator_exact():
         knowlege_type=knowlege_type
     )
 
-
 def get_umls_disease_annotator_lowered_exact():
     umls_disease_dictionary = read_umls_disease_gazetteer_dict()
     knowlege_type = 'UmlsExactLowered'
@@ -430,7 +429,6 @@ def get_umls_disease_annotator_lowered_exact():
         knowlege_type=knowlege_type
     )
 
-
 def get_umls_disease_annotator_lowered_exact_word_boundaries():
     umls_disease_dictionary = read_umls_disease_gazetteer_dict()
     knowlege_type = 'UmlsExactLoweredWordBoundary'
@@ -438,5 +436,8 @@ def get_umls_disease_annotator_lowered_exact_word_boundaries():
         dictionary=umls_disease_dictionary,
         knowlege_type=knowlege_type
     )
+
+def get_bigger_sliding_window_annotator():
+    return SlidingWindowAnnotator(window_size=200, stride=100)
 
 

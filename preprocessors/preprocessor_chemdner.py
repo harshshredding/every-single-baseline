@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from preamble import *
 from structs import Anno, Sample, AnnotationCollection, DatasetSplit, Dataset
-from preprocess import Preprocessor, PreprocessorRunType
+from utils.preprocess import Preprocessor, PreprocessorRunType
 from annotators import Annotator
 
 
@@ -66,8 +66,8 @@ def get_samples(dataset_split: DatasetSplit) -> List[Sample]:
             raw_data_file_path = 'chemdner_corpus/development.bioc.xml'
         case DatasetSplit.train:
             raw_data_file_path = 'chemdner_corpus/training.bioc.xml'
-        case _:
-            raise RuntimeError("split not supported")
+        case DatasetSplit.test:
+            raw_data_file_path = 'chemdner_corpus/evaluation.bioc.xml'
     return get_samples_from_bioc_file(raw_data_file_path)
 
 
@@ -78,15 +78,14 @@ class PreprocessChemD(Preprocessor):
 
     def __init__(
             self,
-            dataset_split: DatasetSplit,
             preprocessor_type: str,
-            dataset: Dataset,
-            annotators: List[Annotator] = [],
-            run_mode: PreprocessorRunType = PreprocessorRunType.production
+            dataset_split: DatasetSplit,
+            annotators: List[Annotator],
+            run_mode: PreprocessorRunType
     ) -> None:
         super().__init__(
             preprocessor_type=preprocessor_type,
-            dataset=dataset,
+            dataset=Dataset.chem_drug_ner,
             annotators=annotators,
             dataset_split=dataset_split,
             run_mode=run_mode,
