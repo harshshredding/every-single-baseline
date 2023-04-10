@@ -14,6 +14,7 @@ experiments = [
     ),
 ]
 
-experiments[0].model_config.num_epochs = 20
-experiments[0].testing_frequency = 1
-experiments[0].model_config.batch_size = 8
+for experiment in experiments:
+    experiment.model_config.num_epochs = 20
+    experiment.testing_frequency = 1
+    experiment.model_config.batch_size = 8
