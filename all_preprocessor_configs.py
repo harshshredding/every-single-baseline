@@ -85,3 +85,14 @@ def config_genia() -> PreprocessorConfig:
         }
     )
 
+# preprocessors.livingner_preprocessor.PreprocessLivingNER
+def config_living_ner_vanilla() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.livingner_preprocessor.PreprocessLivingNER',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': []
+        }
+    )

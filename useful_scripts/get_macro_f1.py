@@ -1,0 +1,8 @@
+from utils.evaluation import get_macro_f1
+from utils.easy_testing import get_valid_samples_by_dataset_name
+
+samples = get_valid_samples_by_dataset_name('multiconer_fine_tokens')
+
+multiconer_predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/multiconer_old_valid/harshv_research_nlp/experiment_multiconer_with_test_gold_labels_old_multiconer_fine_tokens_span_large_custom_tokenization_no_batch_valid_epoch_6_predictions.tsv'
+
+print(get_macro_f1(predictions_file_path=multiconer_predictions_file_path, samples=samples))

@@ -13,3 +13,6 @@ test_tokens_file_path: change_this
 test_sample_text_data_file_path: change_this
 test_samples_file_path: change_this
 dataset_config_name: multiconer_coarse_vanilla
+expected_number_of_train_samples: nothing
+expected_number_of_valid_samples: nothing
+expected_number_of_test_samples: nothing

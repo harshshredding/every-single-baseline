@@ -5,3 +5,6 @@ types_file_path: ./preprocessed_data/legaleval_preamble_train_vanilla_types.txt
 num_types: 14
 dataset_name: legaleval_preamble
 dataset_config_name: legaleval_preamble_vanilla
+expected_number_of_train_samples: nothing
+expected_number_of_valid_samples: nothing
+expected_number_of_test_samples: nothing

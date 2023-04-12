@@ -72,8 +72,13 @@ for experiment in experiments:
 
     # -------- READ DATA ---------
     logger.info("Starting to read data.")
+
+    
     train_samples = train_util.get_train_samples(dataset_config)
+    assert len(train_samples) == experiment.dataset_config.expected_number_of_train_samples
+
     valid_samples = train_util.get_valid_samples(dataset_config)
+    assert len(valid_samples) == experiment.dataset_config.expected_number_of_valid_samples
 
     # Do some important checks on the data
     if model_config.external_feature_type is not None:
@@ -83,6 +88,8 @@ for experiment in experiments:
 
     if IS_TESTING:
         test_samples = train_util.get_test_samples(dataset_config)
+        assert len(test_samples) == experiment.dataset_config.expected_number_of_test_samples
+
     logger.info(f"num train samples: {len(train_samples)}")
     logger.info(f"num valid samples: {len(valid_samples)}")
     if IS_TESTING:

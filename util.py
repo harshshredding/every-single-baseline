@@ -458,6 +458,30 @@ def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding, batc
     return span_list_word_idx
 
 
+def read_predictions_file(predictions_file_path) -> dict[str, list[Anno]]:
+    df = pd.read_csv(predictions_file_path, sep='\t')
+    sample_to_annos = {}
+    for _, row in df.iterrows():
+        annos_list = sample_to_annos.get(str(row['sample_id']), [])
+        annos_list.append(
+            Anno(
+                begin_offset=int(row['begin']),
+                end_offset=int(row['end']),
+                label_type=str(row['type']),
+                extraction=str(row['extraction']),
+            )
+        )
+        sample_to_annos[str(row['sample_id'])] = annos_list
+    return sample_to_annos
+
+
+def get_f1_score(gold_set: set, predicted_set: set):
+    true_positives = len(gold_set.intersection(predicted_set))
+    false_positives = len(predicted_set.difference(gold_set))
+    false_negatives = len(gold_set.difference(predicted_set))
+    return f1(TP=true_positives, FP=false_positives, FN=false_negatives)
+
+
 def f1(TP, FP, FN) -> tuple[float, float, float]:
     if (TP + FP) == 0:
         precision = None

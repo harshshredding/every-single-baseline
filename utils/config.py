@@ -15,6 +15,9 @@ class DatasetConfig:
     num_types: int
     dataset_name: str
     dataset_config_name: str
+    expected_number_of_train_samples: int
+    expected_number_of_valid_samples: int
+    expected_number_of_test_samples: int
 
 
 @dataclass
@@ -92,6 +95,7 @@ def get_experiment_config(model_config_module_name: str, dataset_config_name: st
 
 
 def read_dataset_config(config_file_path: str) -> DatasetConfig:
+    print(f"reading config {config_file_path}")
     with open(config_file_path, 'r') as yaml_file:
         dataset_config_raw = yaml.safe_load(yaml_file)
         dataset_config = DatasetConfig(
@@ -101,9 +105,16 @@ def read_dataset_config(config_file_path: str) -> DatasetConfig:
             types_file_path=dataset_config_raw['types_file_path'],
             num_types=int(dataset_config_raw['num_types']),
             dataset_name=dataset_config_raw['dataset_name'],
-            dataset_config_name=dataset_config_raw['dataset_config_name']
+            dataset_config_name=dataset_config_raw['dataset_config_name'],
+            expected_number_of_train_samples=dataset_config_raw['expected_number_of_train_samples'],
+            expected_number_of_valid_samples=dataset_config_raw['expected_number_of_valid_samples'],
+            expected_number_of_test_samples=dataset_config_raw['expected_number_of_test_samples']
         )
         assert isinstance(dataset_config.num_types, int)
+        assert ('test' in dataset_config.test_samples_file_path) \
+                or ('change_this' == dataset_config.test_samples_file_path)
+        assert 'train' in dataset_config.train_samples_file_path
+        assert 'valid' in dataset_config.valid_samples_file_path
         return dataset_config
 
 

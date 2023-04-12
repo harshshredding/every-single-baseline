@@ -5,3 +5,6 @@ types_file_path: ./preprocessed_data/chem_drug_ner_train_window_stride_longer_pr
 num_types: 8
 dataset_name: chemdner
 dataset_config_name: chem_drug_ner_window_stride_longer
+expected_number_of_train_samples: nothing
+expected_number_of_valid_samples: nothing
+expected_number_of_test_samples: nothing

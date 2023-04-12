@@ -5,3 +5,6 @@ types_file_path: ./preprocessed_data/multiconer_fine_train_tokens_production_typ
 num_types: 33
 dataset_name: multiconer_fine
 dataset_config_name: multiconer_fine_tokens
+expected_number_of_train_samples: nothing
+expected_number_of_valid_samples: nothing
+expected_number_of_test_samples: nothing

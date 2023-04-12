@@ -80,7 +80,7 @@ class SpanDefault(ModelClaC):
         return bert_encoding_for_batch
 
 
-    def get_bert_embeddings_for_batch(self, encoding: BatchEncoding, samples: list[Sample] ):
+    def get_bert_embeddings_for_batch(self, encoding: BatchEncoding, samples: list[Sample]):
         bert_embeddings_batch = self.bert_model(encoding['input_ids'], return_dict=True)
         # SHAPE: (batch, seq, emb_dim)
         bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
