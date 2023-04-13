@@ -75,20 +75,26 @@ for experiment in experiments:
 
     
     train_samples = train_util.get_train_samples(dataset_config)
-    assert len(train_samples) == experiment.dataset_config.expected_number_of_train_samples
+    assert len(train_samples) == experiment.dataset_config.expected_number_of_train_samples,\
+            f"expected num train samples: {experiment.dataset_config.expected_number_of_train_samples}"\
+            f"but got {len(train_samples)}"
 
     valid_samples = train_util.get_valid_samples(dataset_config)
-    assert len(valid_samples) == experiment.dataset_config.expected_number_of_valid_samples
+    assert len(valid_samples) == experiment.dataset_config.expected_number_of_valid_samples,\
+            f"expected num valid samples: {experiment.dataset_config.expected_number_of_valid_samples}"\
+            f"but got {len(valid_samples)}"
 
+    if IS_TESTING:
+        test_samples = train_util.get_test_samples(dataset_config)
+        assert len(test_samples) == experiment.dataset_config.expected_number_of_test_samples,\
+                f"expected num test samples: {experiment.dataset_config.expected_number_of_test_samples}"\
+                f"but got {len(test_samples)}"
+ 
     # Do some important checks on the data
     if model_config.external_feature_type is not None:
         train_util.check_external_features(
                 train_samples,
                 model_config.external_feature_type)
-
-    if IS_TESTING:
-        test_samples = train_util.get_test_samples(dataset_config)
-        assert len(test_samples) == experiment.dataset_config.expected_number_of_test_samples
 
     logger.info(f"num train samples: {len(train_samples)}")
     logger.info(f"num valid samples: {len(valid_samples)}")

@@ -117,7 +117,7 @@ def make_sample_from_article(article_soup: BeautifulSoup) -> Sample:
     article_sample_text = ''
     article_gold_annos = []
     for sentence_sample in sentence_samples:
-        article_sample_text = article_sample_text + "  " + sentence_sample.text
+        article_sample_text = article_sample_text + sentence_sample.text + "  "
         adjusted_annos = [
             Anno(
                 begin_offset=anno.begin_offset + sentence_offset,
