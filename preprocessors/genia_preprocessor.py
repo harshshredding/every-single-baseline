@@ -90,6 +90,72 @@ def get_split_range(split: DatasetSplit) -> Tuple:
     raise Exception("should not reach here")
 
 
+def get_sentence_samples_from_article(
+        article_soup: BeautifulSoup
+    ) -> list[Sample]:
+    article_id = article_soup.find('bibliomisc').string
+    assert article_id is not None
+    ret = []
+    for sent_tag in article_soup.find_all('sentence'):
+        sample_text = get_text(sent_tag)
+        sample_annos = get_parent_annos(get_annos(sent_tag))
+        ret.append(
+            Sample(
+                text=sample_text,
+                id=article_id,
+                annos=AnnotationCollection(sample_annos, [])
+            )
+        )
+    return ret
+
+def make_sample_from_article(article_soup: BeautifulSoup) -> Sample:
+    article_id = article_soup.find('bibliomisc').string
+    assert article_id is not None
+    sentence_samples = get_sentence_samples_from_article(article_soup)
+    assert len(sentence_samples)
+    sentence_offset = 0
+    article_sample_text = ''
+    article_gold_annos = []
+    for sentence_sample in sentence_samples:
+        article_sample_text = article_sample_text + "  " + sentence_sample.text
+        adjusted_annos = [
+            Anno(
+                begin_offset=anno.begin_offset + sentence_offset,
+                end_offset=anno.end_offset + sentence_offset,
+                label_type=anno.label_type,
+                extraction=anno.extraction
+            )
+            for anno in sentence_sample.annos.gold
+        ]
+        article_gold_annos.extend(adjusted_annos)
+        sentence_offset = len(article_sample_text)
+    return Sample(
+            text=article_sample_text,
+            id=article_id,
+            annos=AnnotationCollection(gold=article_gold_annos, external=[])
+    )
+
+def get_split_range_article(split: DatasetSplit) -> tuple[int,int]:
+    if split == DatasetSplit.train:
+        return 0, 1000
+    if split == DatasetSplit.valid:
+        return 1000, 1500
+    if split == DatasetSplit.test:
+        return 1500, 2000
+    raise Exception("should not reach here")
+
+def get_samples_article_level(split: DatasetSplit) -> list[Sample]:
+    ret: list[Sample] = []
+    split_range = get_split_range_article(split)
+    with open('GENIA_term_3.02/GENIAcorpus3.02.xml', 'r') as genia_file:
+        genia_soup = BeautifulSoup(genia_file, 'xml')
+        all_article_soups = list(genia_soup.find_all('article'))
+        assert len(all_article_soups) == 2000
+        all_article_soups = all_article_soups[split_range[0]: split_range[1]]
+        for article_soup in all_article_soups:
+            ret.append(make_sample_from_article(article_soup))
+    return ret
+
 def get_samples(split: DatasetSplit) -> List[Sample]:
     split_range = get_split_range(split)
     with open('GENIA_term_3.02/GENIAcorpus3.02.xml', 'r') as genia_file:
@@ -138,3 +204,28 @@ class PreprocessGenia(Preprocessor):
             all_types_set.update([anno.label_type for anno in sample.annos.gold])
         assert len(all_types_set) == 5
         return list(all_types_set)
+
+
+class PreprocessGeniaArticleLevel(PreprocessGenia):
+    """
+    Every sample is one entire annotated article.
+    """
+
+    def __init__(
+        self,
+        preprocessor_type: str,
+        dataset_split: DatasetSplit,
+        annotators: List[Annotator],
+        run_mode: PreprocessorRunType
+    ) -> None:
+        super().__init__(
+            preprocessor_type=preprocessor_type,
+            dataset_split=dataset_split,
+            annotators=annotators,
+            run_mode=run_mode
+        )
+
+
+    def get_samples(self) -> List[Sample]:
+        return get_samples_article_level(self.dataset_split)
+

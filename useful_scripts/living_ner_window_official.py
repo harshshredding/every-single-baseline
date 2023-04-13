@@ -74,7 +74,7 @@ def get_gold_annos_set(samples: list[Sample]) -> set[tuple[str, str, int, int]]:
     return set(gold_annos)
 
 
-predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/living_ner_official_test/experiment_living_ner_combo_window_span_fixed_width_more_testing_bigger_batch_living_ner_window_combo_model_span_large_default_test_epoch_4_predictions.tsv'
+predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/living_ner_official_test/experiment_living_ner_combo_seq_more_testing_bigger_batch_living_ner_window_combo_model_seq_large_default_test_epoch_5_predictions.tsv'
 
 predictions_dict = read_predictions_file(predictions_file_path=predictions_file_path)
 original_predictions_dict = get_original_gold_annos_from_window_annos(predictions_dict)
