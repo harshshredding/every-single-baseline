@@ -101,13 +101,47 @@ class ExperimentConfig:
     model_config: ModelConfig
     testing_frequency: int
 
+class ExperimentModifier:
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        # modify the experiment config and return in
+        raise NotImplementedError("Need to implement the modify method")
 
-def get_experiment_config(model_config_module_name: str, dataset_config_name: str) -> ExperimentConfig:
-    return ExperimentConfig(
+class BiggerBatchModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.model_config.batch_size = 8
+        return experiment_config
+
+class SmallerSpanWidthModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.model_config.max_span_length = 32
+        return experiment_config
+
+class TestEveryEpochModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.testing_frequency = 1
+        return experiment_config
+
+class Epochs20Modifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.model_config.num_epochs = 20
+        return experiment_config
+
+def get_experiment_config(
+        model_config_module_name: str,
+        dataset_config_name: str,
+        modifiers: list[ExperimentModifier] = []
+    ) -> ExperimentConfig:
+    experiment_config = ExperimentConfig(
         get_dataset_config_by_name(dataset_config_name),
         get_model_config_from_module(model_config_module_name),
         testing_frequency=4
     )
+
+    if len(modifiers):
+        for modifier in modifiers:
+            experiment_config = modifier.modify(experiment_config)
+
+    return experiment_config
 
 
 def read_dataset_config(config_file_path: str) -> DatasetConfig:
