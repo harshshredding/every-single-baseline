@@ -1,4 +1,4 @@
-from models.span_batched_no_custom_tok import SpanDefault
+from models.span_default_models import SpanDefault
 
 from models.all_models import SeqLabelerNoTokenization
 from utils.config import ModelConfig, DatasetConfig

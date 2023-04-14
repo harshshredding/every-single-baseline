@@ -188,11 +188,10 @@ class SpanDefault(ModelClaC):
         all_possible_spans_labels = []
         for span in all_possible_spans_list:
             corresponding_anno_list = [anno for anno in sub_token_level_annos if
-                                       (anno.begin_offset == span[0]) and (
-                                               anno.end_offset == (span[1] + 1))]  # spans are inclusive
+                                       (anno.begin_offset == span[0]) and (anno.end_offset == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
-                    print("WARN: Didn't expect multiple annotations to match one span")
+                    print(f"WARN: Didn't expect multiple annotations to match one span: {corresponding_anno_list}")
                 corresponding_anno = corresponding_anno_list[0]
                 all_possible_spans_labels.append(self.type_to_idx[corresponding_anno.label_type])
             else:

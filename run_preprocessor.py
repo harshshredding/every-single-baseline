@@ -1,8 +1,8 @@
 from utils.preprocess import PreprocessorRunType, preprocess
 from structs import DatasetSplit
-from all_preprocessor_configs import config_genia_article_window_longer
+from all_preprocessor_configs import config_ncbi_disease_window_longer
 
-preprocessor_config = config_genia_article_window_longer()
+preprocessor_config = config_ncbi_disease_window_longer()
 preprocess(
     preprocessor_config=preprocessor_config,
     run_mode=PreprocessorRunType.production,

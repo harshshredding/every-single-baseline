@@ -120,3 +120,27 @@ def config_living_ner_vanilla() -> PreprocessorConfig:
             'annotators': []
         }
     )
+
+def config_ncbi_disease_vanilla() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiDisease',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': []
+        }
+    )
+
+
+def config_ncbi_disease_window_longer() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiDisease',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': [get_bigger_sliding_window_annotator()]
+        }
+    )
+

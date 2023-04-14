@@ -28,6 +28,7 @@ class Dataset(Enum):
     legaleval_preamble = 8
     cdr = 9
     chem_drug_ner = 10
+    ncbi_disease = 11
 
 
 class DatasetSplit(Enum):

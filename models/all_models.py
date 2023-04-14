@@ -760,7 +760,7 @@ class SpanBertCustomTokenizationNoBatch(torch.nn.Module):
                                        (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
-                    print("WARN: Didn't expect multiple annotations to match one span")
+                    print(f"WARN: Didn't expect multiple annotations to match one span: {corresponding_anno_list}")
                 corresponding_anno = corresponding_anno_list[0]
                 all_possible_spans_labels.append(self.type_to_idx[corresponding_anno[2]])
             else:
@@ -971,7 +971,7 @@ class SpanBertNounPhrase(SpanBertCustomTokenizationNoBatch):
                                        if (anno[0] == span[0]) and (anno[1] == (span[1] + 1))]  # spans are inclusive
             if len(corresponding_anno_list):
                 if len(corresponding_anno_list) > 1:
-                    print("WARN: Didn't expect multiple annotations to match one span")
+                    print(f"WARN: Didn't expect multiple annotations to match one span: {corresponding_anno_list}")
                 noun_phrase_labels.append(1)
             else:
                 noun_phrase_labels.append(0)
