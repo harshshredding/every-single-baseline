@@ -3,7 +3,7 @@ from utils.config import get_experiment_config
 
 experiments = [
     get_experiment_config(
-        model_config_module_name='model_seq_large_default',
+        model_config_module_name='model_seq_large_bio',
         dataset_config_name='ncbi_disease_window_longer'
     ),
 ]
