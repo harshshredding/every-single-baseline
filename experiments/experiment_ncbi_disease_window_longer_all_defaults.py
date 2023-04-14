@@ -20,7 +20,9 @@ experiments = [
     ),
 ]
 
-experiments[0].model_config.num_epochs = 20
+for experiment in experiments:
+    experiment.model_config.num_epochs = 15
+
 experiments[0].model_config.max_span_length = 32
 experiments[0].testing_frequency = 1
 experiments[0].model_config.batch_size = 8
