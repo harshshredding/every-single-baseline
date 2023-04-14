@@ -181,7 +181,13 @@ def get_optimizer(model, experiment_config: ExperimentConfig):
     elif experiment_config.optimizer == 'AdamW':
         return torch.optim.AdamW(model.parameters(), experiment_config.model_config.learning_rate)
     elif experiment_config.optimizer == 'Adafactor':
-        return transformers.Adafactor(params=model.parameters(), lr=experiment_config.model_config.learning_rate)
+        return transformers.Adafactor(
+            model.parameters(),
+            lr=experiment_config.model_config.learning_rate,
+            relative_step=False,
+            scale_parameter=False,
+            warmup_init=False,
+        )
     else:
         raise Exception(f"optimizer not found: {experiment_config.optimizer}")
 
