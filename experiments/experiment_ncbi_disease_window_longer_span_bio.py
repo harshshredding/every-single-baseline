@@ -10,6 +10,14 @@ experiments = [
         model_config_module_name='model_span_large_bio_default',
         dataset_config_name='ncbi_disease_window_longer'
     ),
+    get_experiment_config(
+        model_config_module_name='model_span_large_bio_default',
+        dataset_config_name='genia_article_window_longer'
+    ),
+    get_experiment_config(
+        model_config_module_name='model_span_large_bio_default',
+        dataset_config_name='genia_article_window_longer'
+    ),
 ]
 
 for experiment in experiments:
@@ -19,3 +27,4 @@ for experiment in experiments:
 
 
 experiments[1].model_config.batch_size = 8
+experiments[3].model_config.batch_size = 8
