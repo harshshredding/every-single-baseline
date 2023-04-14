@@ -95,7 +95,6 @@ def get_experiment_config(model_config_module_name: str, dataset_config_name: st
 
 
 def read_dataset_config(config_file_path: str) -> DatasetConfig:
-    print(f"reading config {config_file_path}")
     with open(config_file_path, 'r') as yaml_file:
         dataset_config_raw = yaml.safe_load(yaml_file)
         dataset_config = DatasetConfig(
