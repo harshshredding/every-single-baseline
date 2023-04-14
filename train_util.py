@@ -4,6 +4,7 @@ from structs import *
 import pandas as pd
 import csv
 import util
+from utils.config import ExperimentConfig
 from typing import Dict
 from utils.config import ModelConfig, DatasetConfig
 import utils.dropbox as dropbox_util
@@ -14,6 +15,7 @@ from dataclasses import dataclass
 from pydoc import locate
 from preamble import *
 from transformers import AutoTokenizer
+import transformers
 import torch.nn as nn
 from pyfzf.pyfzf import FzfPrompt
 
@@ -68,6 +70,7 @@ def parse_training_args() -> TrainingArgs:
 
 
 def print_experiment_info(
+        experiment_config: ExperimentConfig,
         dataset_config: DatasetConfig,
         model_config: ModelConfig,
         experiment_name: str,
@@ -87,6 +90,9 @@ def print_experiment_info(
     print(blue("Batch_size"), green(model_config.batch_size))
     print(blue("Testing Frequency"), green(test_evaluation_frequency))
     print("----------------------------\n\n")
+    print("Experiment Config")
+    print(experiment_config)
+    print()
     print("Model Config:")
     print(model_config)
     print()
@@ -166,16 +172,18 @@ def read_pos_embeddings_file(dataset_config: DatasetConfig):
     return pd.read_pickle(dataset_config['pos_embeddings_path'])
 
 
-def get_optimizer(model, model_config: ModelConfig):
-    if model_config.optimizer == 'Ranger':
+def get_optimizer(model, experiment_config: ExperimentConfig):
+    if experiment_config.optimizer == 'Ranger':
         # return torch_optimizer.Ranger(model.parameters(), dataset_config['learning_rate'])
         raise Exception("no ranger optimizer")
-    elif model_config.optimizer == 'Adam':
-        return torch.optim.Adam(model.parameters(), model_config.learning_rate)
-    elif model_config.optimizer == 'AdamW':
-        return torch.optim.AdamW(model.parameters(), model_config.learning_rate)
+    elif experiment_config.optimizer == 'Adam':
+        return torch.optim.Adam(model.parameters(), experiment_config.model_config.learning_rate)
+    elif experiment_config.optimizer == 'AdamW':
+        return torch.optim.AdamW(model.parameters(), experiment_config.model_config.learning_rate)
+    elif experiment_config.optimizer == 'Adafactor':
+        return transformers.Adafactor(params=model.parameters(), lr=experiment_config.model_config.learning_rate)
     else:
-        raise Exception(f"optimizer not found: {model_config.optimizer}")
+        raise Exception(f"optimizer not found: {experiment_config.optimizer}")
 
 
 def store_performance_result(

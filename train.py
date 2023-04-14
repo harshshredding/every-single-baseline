@@ -62,12 +62,21 @@ model_config: ModelConfig
 
 # How frequently we will evaluate on test data
 
-for experiment in experiments:
-    dataset_config = experiment.dataset_config
-    model_config = experiment.model_config
-    test_evaluation_frequency = experiment.testing_frequency
+for experiment_config in experiments:
+    dataset_config = experiment_config.dataset_config
+    model_config = experiment_config.model_config
+    test_evaluation_frequency = experiment_config.testing_frequency
 
-    train_util.print_experiment_info(dataset_config, model_config, EXPERIMENT_NAME, IS_DRY_RUN, IS_TESTING, test_evaluation_frequency)
+    train_util.print_experiment_info(
+        experiment_config=experiment_config,
+        dataset_config=dataset_config,
+        model_config=model_config,
+        experiment_name=EXPERIMENT_NAME,
+        is_dry_run=IS_DRY_RUN,
+        is_testing=IS_TESTING,
+        test_evaluation_frequency=test_evaluation_frequency
+    )
+
     dataset_name = dataset_config.dataset_name
 
     # -------- READ DATA ---------
@@ -75,19 +84,19 @@ for experiment in experiments:
 
     
     train_samples = train_util.get_train_samples(dataset_config)
-    assert len(train_samples) == experiment.dataset_config.expected_number_of_train_samples,\
-            f"expected num train samples: {experiment.dataset_config.expected_number_of_train_samples}"\
+    assert len(train_samples) == experiment_config.dataset_config.expected_number_of_train_samples,\
+            f"expected num train samples: {experiment_config.dataset_config.expected_number_of_train_samples}"\
             f"but got {len(train_samples)}"
 
     valid_samples = train_util.get_valid_samples(dataset_config)
-    assert len(valid_samples) == experiment.dataset_config.expected_number_of_valid_samples,\
-            f"expected num valid samples: {experiment.dataset_config.expected_number_of_valid_samples}"\
+    assert len(valid_samples) == experiment_config.dataset_config.expected_number_of_valid_samples,\
+            f"expected num valid samples: {experiment_config.dataset_config.expected_number_of_valid_samples}"\
             f"but got {len(valid_samples)}"
 
     if IS_TESTING:
         test_samples = train_util.get_test_samples(dataset_config)
-        assert len(test_samples) == experiment.dataset_config.expected_number_of_test_samples,\
-                f"expected num test samples: {experiment.dataset_config.expected_number_of_test_samples}"\
+        assert len(test_samples) == experiment_config.dataset_config.expected_number_of_test_samples,\
+                f"expected num test samples: {experiment_config.dataset_config.expected_number_of_test_samples}"\
                 f"but got {len(test_samples)}"
  
     # Do some important checks on the data
@@ -116,7 +125,7 @@ for experiment in experiments:
     logger.info("Starting model initialization.")
     bert_tokenizer = AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
     model = train_util.prepare_model(model_config, dataset_config)
-    optimizer = train_util.get_optimizer(model, model_config)
+    optimizer = train_util.get_optimizer(model, experiment_config)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
     logger.debug(f"all types\n {util.p_string(list(all_types))}")
     logger.info("Finished model initialization.")
@@ -124,7 +133,7 @@ for experiment in experiments:
     # verify that all label types in annotations are valid types
     train_util.check_label_types(train_samples, valid_samples, all_types)
 
-    for epoch in range(model_config.num_epochs):
+    for epoch in range(experiment_config.num_epochs):
         # Don't dry run for more than 2 epochs while testing
         if IS_DRY_RUN and epoch >= 2:
             break

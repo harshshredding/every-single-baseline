@@ -25,9 +25,7 @@ class ModelConfig:
     model_config_name: str
     pretrained_model_name: str
     pretrained_model_output_dim: int
-    num_epochs: int
     model_name: str
-    optimizer: str
     learning_rate: float
     batch_size: int
 
@@ -57,8 +55,6 @@ def get_large_model_config(
         model_name=model_name,
         pretrained_model_name='xlm-roberta-large',
         pretrained_model_output_dim=1024,
-        num_epochs=10,
-        optimizer='Adam',
         batch_size=4,
         learning_rate=1e-5
     )
@@ -73,8 +69,6 @@ def get_large_model_config_bio(
         model_name=model_name,
         pretrained_model_name='michiyasunaga/BioLinkBERT-large',
         pretrained_model_output_dim=1024,
-        num_epochs=10,
-        optimizer='Adam',
         batch_size=4,
         learning_rate=1e-5
     )
@@ -89,8 +83,6 @@ def get_small_model_config(
         model_name=model_name,
         pretrained_model_name='xlm-roberta-base',
         pretrained_model_output_dim=768,
-        num_epochs=10,
-        optimizer='Adam',
         batch_size=4,
         learning_rate=1e-5
     )
@@ -100,6 +92,8 @@ class ExperimentConfig:
     dataset_config: DatasetConfig
     model_config: ModelConfig
     testing_frequency: int
+    optimizer: str = 'Adam'
+    num_epochs: int = 20
 
 class ExperimentModifier:
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
@@ -123,7 +117,7 @@ class TestEveryEpochModifier(ExperimentModifier):
 
 class Epochs20Modifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
-        experiment_config.model_config.num_epochs = 20
+        experiment_config.num_epochs = 20
         return experiment_config
 
 def get_experiment_config(
@@ -175,14 +169,11 @@ def read_model_config(model_config_file_path: str) -> ModelConfig:
             model_config_name=model_config_raw['model_config_name'],
             pretrained_model_name=model_config_raw['bert_model_name'],
             pretrained_model_output_dim=int(model_config_raw['bert_model_output_dim']),
-            num_epochs=int(model_config_raw['num_epochs']),
             model_name=model_config_raw['model_name'],
-            optimizer=model_config_raw['optimizer'],
             learning_rate=float(model_config_raw['learning_rate']),
             batch_size=int(model_config_raw['batch_size'])
         )
         assert isinstance(model_config.pretrained_model_output_dim, int)
-        assert isinstance(model_config.num_epochs, int)
         assert isinstance(model_config.learning_rate, float)
         return model_config
 
