@@ -193,25 +193,27 @@ def get_optimizer(model, experiment_config: ExperimentConfig):
 
 
 def store_performance_result(
-        performance_file_path,
-        f1_score,
-        precision_score,
-        recall_score,
-        epoch: int,
-        experiment_name: str,
-        dataset_config_name: str,
-        model_config_name: str,
+    performance_file_path,
+    f1_score,
+    precision_score,
+    recall_score,
+    epoch: int,
+    experiment_name: str,
+    dataset_config_name: str,
+    model_config_name: str,
+    dataset_split: DatasetSplit
 ):
     with open(performance_file_path, 'a') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow([experiment_name, dataset_config_name, model_config_name, str(epoch),
+        mistakes_file_writer.writerow([experiment_name, dataset_config_name, dataset_split.name,
+                                       model_config_name, str(epoch),
                                        str((f1_score, precision_score, recall_score))])
 
 
 def create_performance_file_header(performance_file_path):
     with open(performance_file_path, 'w') as performance_file:
         mistakes_file_writer = csv.writer(performance_file)
-        mistakes_file_writer.writerow(['experiment_name', 'dataset_name', 'model_name', 'epoch', 'f1_score'])
+        mistakes_file_writer.writerow(['experiment_name', 'dataset_config_name', 'dataset_split', 'model_name', 'epoch', 'f1_score'])
 
 
 # if dataset_config['model_name'] != 'base':
@@ -657,14 +659,17 @@ def evaluate_dataset_split(
     logger.info(blue(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}"))
     visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, samples)
-    store_performance_result(performance_file_path=performance_file_path,
-                             f1_score=micro_f1,
-                             precision_score=micro_precision,
-                             recall_score=micro_recall,
-                             epoch=epoch,
-                             experiment_name=experiment_name,
-                             dataset_config_name=dataset_config_name,
-                             model_config_name=model_config_name)
+    store_performance_result(
+            performance_file_path=performance_file_path,
+            f1_score=micro_f1,
+            precision_score=micro_precision,
+            recall_score=micro_recall,
+            epoch=epoch,
+            experiment_name=experiment_name,
+            dataset_config_name=dataset_config_name,
+            model_config_name=model_config_name,
+            dataset_split=dataset_split
+    )
 
     # upload files to dropbox
     dropbox_util.upload_file(visualize_errors_file_path)
