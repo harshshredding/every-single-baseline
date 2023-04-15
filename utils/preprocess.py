@@ -187,6 +187,7 @@ def preprocess(
         dataset_splits: List[DatasetSplit]
 ):
     preprocessor_class = get_preprocessor_class_from_path(preprocessor_config.preprocessor_class_path)
+    assert preprocessor_class is not None, f"Could not get preprocessor class {preprocessor_config.preprocessor_class_path}"
     for split in dataset_splits:
         preprocessor_params = preprocessor_config.preprocessor_class_init_params.copy()
         preprocessor_params['dataset_split'] = split

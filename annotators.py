@@ -8,6 +8,8 @@ from preamble import show_progress
 import requests
 import bs4
 import json
+from collections import Counter
+import nltk
 
 from utils.easy_testing import\
   get_test_samples_by_dataset_name,\
@@ -369,6 +371,46 @@ class ExternalKnowledgePerSampleAnnotator(Annotator):
 
 
 
+def get_stop_words():
+    english_stop_words_string = "0,1,2,3,4,5,6,7,8,9,a,A,about,above,across,after,again,against,all,almost,alone,along,already,also,although,always,am,among,an,and,another,any,anyone,anything,anywhere,are,aren't,around,as,at,b,B,back,be,became,because,become,becomes,been,before,behind,being,below,between,both,but,by,c,C,can,cannot,can't,could,couldn't,d,D,did,didn't,do,does,doesn't,doing,done,don't,down,during,e,E,each,either,enough,even,ever,every,everyone,everything,everywhere,f,F,few,find,first,for,four,from,full,further,g,G,get,give,go,h,H,had,hadn't,has,hasn't,have,haven't,having,he,he'd,he'll,her,here,here's,hers,herself,he's,him,himself,his,how,however,how's,i,I,i'd,if,i'll,i'm,in,interest,into,is,isn't,it,it's,its,itself,i've,j,J,k,K,keep,l,L,last,least,less,let's,m,M,made,many,may,me,might,more,most,mostly,much,must,mustn't,my,myself,n,N,never,next,no,nobody,noone,nor,not,nothing,now,nowhere,o,O,of,off,often,on,once,one,only,or,other,others,ought,our,ours,ourselves,out,over,own,p,P,part,per,perhaps,put,q,Q,r,R,rather,s,S,same,see,seem,seemed,seeming,seems,several,shan't,she,she'd,she'll,she's,should,shouldn't,show,side,since,so,some,someone,something,somewhere,still,such,t,T,take,than,that,that's,the,their,theirs,them,themselves,then,there,therefore,there's,these,they,they'd,they'll,they're,they've,this,those,though,three,through,thus,to,together,too,toward,two,u,U,under,until,up,upon,us,v,V,very,w,W,was,wasn't,we,we'd,we'll,well,we're,were,weren't,we've,what,what's,when,when's,where,where's,whether,which,while,who,whole,whom,who's,whose,why,why's,will,with,within,without,won't,would,wouldn't,x,X,y,Y,yet,you,you'd,you'll,your,you're,yours,yourself,yourselves,you've,z,Z"
+    english_stop_words_set = set([stop_word.lower() for stop_word in english_stop_words_string.split(',')])
+    nltk_english = set(nltk.corpus.stopwords.words('english'))
+    nltk_spanish = set(nltk.corpus.stopwords.words('spanish'))
+    return set(list(english_stop_words_set) + list(nltk_english) + list(nltk_spanish))
+
+
+def split_umls_entry_into_tokens(umls_string: str):
+    # remove some punctuations
+    umls_string = umls_string.replace(';', ' ')
+    umls_string = umls_string.replace(',', ' ')
+    umls_string = umls_string.replace('(', ' ')
+    umls_string = umls_string.replace(')', ' ')
+    umls_string = umls_string.lower()
+    return umls_string.split()
+
+
+def get_umls_disease_set_smart() -> set[str]:
+    diseases_list = []
+    stop_words = get_stop_words()
+    with open('./umls_disease_gazetteer_new.lst', 'r') as umls_file:
+        for line in umls_file:
+            disease_string = line.strip()
+            diseases_list.extend(split_umls_entry_into_tokens(disease_string))
+    diseases_counter = Counter(diseases_list)
+    diseases_counter = {disease: count
+                        for disease, count in diseases_counter.items()
+                        if len(disease) > 1}
+    diseases_counter = {disease: count
+                        for disease, count in diseases_counter.items()
+                        if disease not in stop_words}
+    counts_list = [(count, disease) 
+                           for disease, count in diseases_counter.items()]
+    sorted_counts_list =  sorted(counts_list, reverse=True)
+    disease_set =  set([disease for _, disease in sorted_counts_list])
+    assert len(disease_set) == 88215
+    return disease_set
+
+
 def remove_extra_info(disease_string: str):
     if ';' in disease_string:
         return disease_string[:disease_string.find(';')]
@@ -432,6 +474,14 @@ def get_umls_disease_annotator_lowered_exact():
 def get_umls_disease_annotator_lowered_exact_word_boundaries():
     umls_disease_dictionary = read_umls_disease_gazetteer_dict()
     knowlege_type = 'UmlsExactLoweredWordBoundary'
+    return ExternalKnowledgeAnnotatorLoweredExactWordBoundary(
+        dictionary=umls_disease_dictionary,
+        knowlege_type=knowlege_type
+    )
+
+def get_umls_disease_smart_exact_word_boundaries_annotator():
+    umls_disease_dictionary = get_umls_disease_set_smart()
+    knowlege_type = 'UmlsDiseaseSmart'
     return ExternalKnowledgeAnnotatorLoweredExactWordBoundary(
         dictionary=umls_disease_dictionary,
         knowlege_type=knowlege_type
