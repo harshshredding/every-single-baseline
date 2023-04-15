@@ -491,6 +491,8 @@ def get_umls_disease_set_smart() -> set[str]:
 def remove_extra_info(disease_string: str):
     if ';' in disease_string:
         return disease_string[:disease_string.find(';')]
+    elif ',' in disease_string:
+        return disease_string[:disease_string.find(',')]
     else:
         return disease_string
 

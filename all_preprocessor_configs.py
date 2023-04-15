@@ -177,6 +177,21 @@ def config_ncbi_disease_sentence() -> PreprocessorConfig:
     )
 
 
+def config_ncbi_disease_sentence_umls() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiDisease',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': [
+                get_sentence_annotator(),
+                get_umls_disease_annotator_lowered_exact_word_boundaries()
+            ]
+        }
+    )
+
+
 def config_ncbi_disease_window_longer_umls_smart_exact_word_boundaries() -> PreprocessorConfig:
     name_of_this_function = sys._getframe().f_code.co_name
     return PreprocessorConfig(
