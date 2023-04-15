@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 import benepar
 from structs import Sample, Anno, Span, AnnotationCollection
+from spacy.tokens.span import Span as SpacySpan
 import spacy
 import util
 from preamble import show_progress
@@ -10,6 +11,9 @@ import bs4
 import json
 from collections import Counter
 import nltk
+from utils.spans import contained_in
+from preamble import *
+
 
 from utils.easy_testing import\
   get_test_samples_by_dataset_name,\
@@ -65,6 +69,79 @@ class NounPhraseAnnotator(Annotator):
                     noun_phrase_annos = util.get_noun_phrase_annotations(sent)
                     sample.annos.external.extend(noun_phrase_annos)
         return samples
+
+
+
+def get_sentence_sample(sentence: SpacySpan, sentence_idx: int, sample: Sample) -> Sample:
+    gold_annos = sample.annos.gold
+    gold_annos_accross_boundary = [
+        anno 
+        for anno in gold_annos
+        if (not contained_in(
+                    outside=(sentence.start_char, sentence.end_char), 
+                    inside=(anno.begin_offset, anno.end_offset))
+            )
+            and
+            (
+                (sentence.start_char <= anno.begin_offset <= sentence.end_char)
+                or
+                (sentence.start_char <= anno.end_offset <= sentence.end_char)
+            )  
+    ]
+    if len(gold_annos_accross_boundary):
+        print(red(f"WARN : Gold Annos accross sentence boundary \n annos: {gold_annos_accross_boundary} \n sample: {sample}"))
+
+    gold_annos_in_sentence = [
+        anno 
+        for anno in gold_annos
+        if contained_in(
+            outside=(sentence.start_char, sentence.end_char), 
+            inside=(anno.begin_offset, anno.end_offset)
+        )
+    ]
+
+    annos_with_corrected_offsets = [
+        Anno(
+            begin_offset=(anno.begin_offset - sentence.start_char),
+            end_offset=(anno.end_offset - sentence.start_char),
+            label_type=anno.label_type,
+            extraction=anno.extraction
+            )
+        for anno in gold_annos_in_sentence
+    ]
+
+    for anno in annos_with_corrected_offsets:
+        if sentence.text[anno.begin_offset:anno.end_offset] != anno.extraction:
+            print(f"WARN: anno sentence text does not match extraction :\n"
+                  f"anno text: {sentence.text[anno.begin_offset: anno.end_offset]}\n"
+                  f"extraction: {anno.extraction}\n"
+                  f"sample: {sample}")
+
+    return Sample(
+        text=sentence.text,
+        id=sample.id + str(sentence_idx),
+        annos=AnnotationCollection(gold=annos_with_corrected_offsets, external=[])
+    ) 
+
+
+class SentenceAnnotator(Annotator):
+    def __init__(self) -> None:
+        super().__init__("SentenceAnnotator")
+        self.nlp = spacy.load('en_core_web_md')
+
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+        sentence_samples = []
+        for sample in show_progress(samples):
+            spacy_doc = self.nlp(sample.text)
+            for sent_idx, spacy_sentence in enumerate(spacy_doc.sents):
+                sentence_samples.append(
+                    get_sentence_sample(
+                        sentence=spacy_sentence,
+                        sentence_idx=sent_idx,
+                        sample=sample
+                    )
+                )
+        return sentence_samples
 
 
 class TokenAnnotator(Annotator):
@@ -490,4 +567,5 @@ def get_umls_disease_smart_exact_word_boundaries_annotator():
 def get_bigger_sliding_window_annotator():
     return SlidingWindowAnnotator(window_size=200, stride=100)
 
-
+def get_sentence_annotator():
+    return SentenceAnnotator()
