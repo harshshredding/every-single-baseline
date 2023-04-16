@@ -19,6 +19,13 @@ import transformers
 import torch.nn as nn
 from pyfzf.pyfzf import FzfPrompt
 
+
+def has_external_features(samples: list[Sample]) -> bool:
+    for sample in samples:
+        if len(sample.annos.external):
+            return True
+    return False
+
 def check_external_features(samples: list[Sample], external_feature_type: str):
     for sample in samples:
         for anno in sample.annos.external:

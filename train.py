@@ -100,10 +100,13 @@ for experiment_config in experiments:
                 f"but got {len(test_samples)}"
  
     # Do some important checks on the data
-    if model_config.external_feature_type is not None:
+    if train_util.has_external_features(train_samples):
+        assert model_config.external_feature_type is not None
         train_util.check_external_features(
                 train_samples,
                 model_config.external_feature_type)
+
+    
 
     logger.info(f"num train samples: {len(train_samples)}")
     logger.info(f"num valid samples: {len(valid_samples)}")

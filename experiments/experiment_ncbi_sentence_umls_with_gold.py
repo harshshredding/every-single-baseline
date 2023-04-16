@@ -42,4 +42,5 @@ experiments = [
 
 for experiment_config in experiments:
     experiment_config.optimizer = 'Adafactor'
+    experiment_config.model_config.external_feature_type = 'UmlsDiseaseGold'
 
