@@ -3,7 +3,7 @@ from utils.config import get_experiment_config, Epochs20Modifier, BiggerBatchMod
 
 experiments = [
     get_experiment_config(
-        model_config_module_name='model_seq_large_bio',
+        model_config_module_name='model_seq_large_external_pos_bio',
         dataset_config_name='ncbi_disease_sentence_umls_with_gold',
         modifiers=[
             Epochs20Modifier(),
@@ -11,7 +11,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_seq_large_bio',
+        model_config_module_name='model_seq_large_external_pos_bio',
         dataset_config_name='ncbi_disease_sentence_umls_with_gold',
         modifiers=[
             Epochs20Modifier(),
@@ -20,7 +20,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_span_large_bio_default',
+        model_config_module_name='model_span_large_external_pos_bio',
         dataset_config_name='ncbi_disease_sentence_umls_with_gold',
         modifiers=[
             Epochs20Modifier(),
@@ -29,7 +29,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_span_large_bio_default',
+        model_config_module_name='model_span_large_external_pos_bio',
         dataset_config_name='ncbi_disease_sentence_umls_with_gold',
         modifiers=[
             Epochs20Modifier(),
