@@ -101,7 +101,8 @@ for experiment_config in experiments:
  
     # Do some important checks on the data
     if train_util.has_external_features(train_samples):
-        assert model_config.external_feature_type is not None
+        assert model_config.external_feature_type is not None, \
+                f"model is not expecting external features \n{model_config}"
         train_util.check_external_features(
                 train_samples,
                 model_config.external_feature_type)
