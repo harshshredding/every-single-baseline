@@ -74,6 +74,20 @@ def get_large_model_config_bio(
     )
 
 
+def get_large_model_config_bio_bert_cased(
+        model_config_name: str,
+        model_name: str,
+) -> ModelConfig:
+    return ModelConfig(
+        model_config_name=model_config_name,
+        model_name=model_name,
+        pretrained_model_name='dmis-lab/biobert-large-cased-v1.1',
+        pretrained_model_output_dim=1024,
+        batch_size=4,
+        learning_rate=1e-5
+    )
+
+
 def get_small_model_config(
         model_config_name: str,
         model_name: str,

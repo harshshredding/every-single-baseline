@@ -166,6 +166,72 @@ class TokenAnnotator(Annotator):
         return samples
 
 
+
+def get_focus_subsample(
+        sample: Sample,
+        head_span: Span,
+        focus_span: Span,
+        tail_span: Span,
+        new_sample_id: str
+    ) -> Sample:
+    assert not len(sample.annos.external)
+    sample_text = sample.text
+    annos_in_focus = [anno for anno in sample.annos.gold
+                      if (focus_span.begin <= anno.begin_offset) and (anno.end_offset <= focus_span.end)]
+    head_text = sample_text[head_span.begin:head_span.end] + ' [SEP] '
+    focus_text = sample_text[focus_span.begin:focus_span.end]
+    tail_text = ' [SEP] ' + sample_text[tail_span.begin:tail_span.end]
+    adjusted_annos_in_focus = [
+        Anno(
+            begin_offset=(anno.begin_offset - focus_span.begin + len(head_text)),
+            end_offset=(anno.end_offset - focus_span.begin + len(head_text)),
+            label_type=anno.label_type,
+            extraction=anno.extraction,
+            features=anno.features
+        )
+        for anno in annos_in_focus
+    ]
+    return Sample(
+        text=(head_text + focus_text + tail_text),
+        id=new_sample_id,
+        annos=AnnotationCollection(gold=adjusted_annos_in_focus, external=[])
+    )
+
+
+class SlidingSentenceAnnotator(Annotator):
+    def __init__(self, window_size=100) -> None:
+        super().__init__("SlidingSentenceAnnotator")
+        self.nlp = spacy.load('en_core_web_md')
+        self.window_size = window_size
+
+    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+        sentence_samples = []
+        for sample in show_progress(samples):
+            spacy_doc = self.nlp(sample.text)
+            for sent_idx, spacy_sentence in enumerate(spacy_doc.sents):
+                sentence_start = spacy_sentence.start_char
+                sentence_end = spacy_sentence.end_char
+                head_span = Span(begin=max(sentence_start - self.window_size, 0),
+                                 end=sentence_start)
+                focus_span = Span(begin=sentence_start,
+                                  end=sentence_end)
+                tail_span = Span(begin=min(sentence_end, len(sample.text)),
+                                 end=min(sentence_end + self.window_size, len(sample.text)))
+                sentence_samples.append(
+                    get_focus_subsample(
+                        sample=sample,
+                        head_span=head_span,
+                        focus_span=focus_span,
+                        tail_span=tail_span,
+                        new_sample_id=f"{sample.id}_sentence_{sent_idx}"
+                    )
+                )
+        return sentence_samples
+
+
+
+
+
 class SlidingWindowAnnotator(Annotator):
     def __init__(self, window_size: int, stride: int) -> None:
         super().__init__("SlidingWindowAnnotator")
@@ -571,3 +637,6 @@ def get_bigger_sliding_window_annotator():
 
 def get_sentence_annotator():
     return SentenceAnnotator()
+
+def get_sliding_sentence_annotator():
+    return SlidingSentenceAnnotator()
