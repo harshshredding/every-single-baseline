@@ -1,14 +1,13 @@
 from structs import *
 import util
 from abc import ABC, abstractmethod
-from annotators import Annotator, TokenAnnotator, SlidingWindowAnnotator
 from preamble import *
 from pydoc import locate
 from enum import Enum
 from typing import Type
 import yaml
 from utils.config import PreprocessorConfig
-
+from annotators import Annotator
 
 class PreprocessorRunType(Enum):
     production = 0
@@ -25,7 +24,7 @@ class Preprocessor(ABC):
             dataset_split: DatasetSplit,
             preprocessor_type: str,
             dataset: Dataset,
-            annotators: List[Annotator],
+            annotators: list[Annotator],
             run_mode: PreprocessorRunType
     ) -> None:
         """
@@ -68,7 +67,7 @@ class Preprocessor(ABC):
         """
         assert self.samples is not None
         for annotator in self.annotators:
-            self.samples = annotator.annotate(self.samples)
+            self.samples = annotator.annotate(self.samples, self.dataset_split)
 
     def get_samples_cached(self) -> List[Sample]:
         """
@@ -155,20 +154,24 @@ class Preprocessor(ABC):
         print("Done Preprocessing!")
 
 
+
+
+
+
 def preprocess_train_and_valid_custom_tokens(preprocessor_module_name: str, preprocessor_name: str,
                                              preprocessor_type='vanilla'):
     preprocessor_class = locate(f"preprocessors.{preprocessor_module_name}.{preprocessor_name}")
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.valid,
         preprocessor_type=preprocessor_type,
-        annotators=[TokenAnnotator()]
+        annotators=[annotators.TokenAnnotator()]
     )
     preprocessor.run()
 
     preprocessor = preprocessor_class(
         dataset_split=DatasetSplit.train,
         preprocessor_type=preprocessor_type,
-        annotators=[TokenAnnotator()]
+        annotators=[annotators.TokenAnnotator()]
     )
     preprocessor.run()
 
@@ -245,40 +248,3 @@ def preprocess_vanilla(
         preprocessor.run()
 
 
-def preprocess_train_and_valid_with_window(
-        preprocessor_module_name: str,
-        preprocessor_name: str,
-        preprocessor_type: str,
-        dataset: Dataset,
-        run_mode: PreprocessorRunType = PreprocessorRunType.dry_run,
-        window_size: int = 100,
-        stride_size: int = 50
-):
-    preprocessor_class = get_preprocessor_class(preprocessor_module_name, preprocessor_name)
-
-    preprocessor = preprocessor_class(
-        dataset_split=DatasetSplit.test,
-        preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator(window_size=window_size, stride=stride_size)],
-        run_mode=run_mode,
-        dataset=dataset
-    )
-    preprocessor.run()
-
-    preprocessor = preprocessor_class(
-        dataset_split=DatasetSplit.valid,
-        preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator(window_size=window_size, stride=stride_size)],
-        run_mode=run_mode,
-        dataset=dataset
-    )
-    preprocessor.run()
-
-    preprocessor = preprocessor_class(
-        dataset_split=DatasetSplit.train,
-        preprocessor_type=preprocessor_type,
-        annotators=[SlidingWindowAnnotator(window_size=window_size, stride=stride_size)],
-        run_mode=run_mode,
-        dataset=dataset
-    )
-    preprocessor.run()

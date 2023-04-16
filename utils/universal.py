@@ -38,7 +38,8 @@ def blue(obj_to_color) -> str:
 def magenta(obj_to_color) -> str:
     return colorize_string(Fore.MAGENTA, str(obj_to_color))
 
-
+def unsupported_type_error(x):
+    return RuntimeError("Unhandled type: {}".format(type(x).__name__))
 
 def die(message):
     raise RuntimeError(message)

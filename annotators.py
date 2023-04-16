@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 import benepar
-from structs import Sample, Anno, Span, AnnotationCollection
+from structs import Dataset, Sample, Anno, Span, AnnotationCollection, DatasetSplit
 from spacy.tokens.span import Span as SpacySpan
 import spacy
 import util
@@ -13,7 +13,6 @@ from collections import Counter
 import nltk
 from utils.spans import contained_in
 from preamble import *
-
 
 from utils.easy_testing import\
   get_test_samples_by_dataset_name,\
@@ -30,20 +29,18 @@ class Annotator(ABC):
         super().__init__()
         self.name = name
 
-    def annotate(self, samples: List[Sample]) -> List[Sample]:
+    def annotate(self, samples: List[Sample], dataset_split: DatasetSplit) -> List[Sample]:
         """
         Annotate the given samples.
         """
         print(f"Annotator : {self.name}")
-        return self.annotate_helper(samples)
+        return self.annotate_helper(samples, dataset_split=dataset_split)
 
     @abstractmethod
-    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+    def annotate_helper(self, samples: List[Sample], dataset_split: DatasetSplit) -> List[Sample]:
         """
         Annotate the given samples.
         """
-
-
 
 class NounPhraseAnnotator(Annotator):
     def __init__(self) -> None:
@@ -129,7 +126,7 @@ class SentenceAnnotator(Annotator):
         super().__init__("SentenceAnnotator")
         self.nlp = spacy.load('en_core_web_md')
 
-    def annotate_helper(self, samples: List[Sample]) -> List[Sample]:
+    def annotate_helper(self, samples: List[Sample], dataset_split: DatasetSplit) -> List[Sample]:
         sentence_samples = []
         for sample in show_progress(samples):
             spacy_doc = self.nlp(sample.text)
@@ -456,6 +453,87 @@ class ExternalKnowledgeAnnotatorLoweredExactWordBoundary(Annotator):
         return samples
 
 
+def lower_dict(dict_to_lower: set):
+    return set([el.lower() for el in dict_to_lower])
+
+
+def get_annos_set(
+        vanilla_dataset_config_name: str,
+        dataset_split: DatasetSplit):
+    annos_set: set[str] = set()
+    match dataset_split:
+        case DatasetSplit.train:
+            samples = get_train_samples_by_dataset_name(dataset_config_name=vanilla_dataset_config_name)
+        case DatasetSplit.valid:
+            samples = get_valid_samples_by_dataset_name(dataset_config_name=vanilla_dataset_config_name)
+        case DatasetSplit.test:
+            samples = get_test_samples_by_dataset_name(dataset_config_name=vanilla_dataset_config_name)
+        case _:
+            raise unsupported_type_error(dataset_split)
+    for sample in samples:
+        gold_annos = sample.annos.gold
+        for gold_anno in gold_annos:
+            annos_set.add(gold_anno.extraction)
+    return annos_set
+
+
+class UmlsDiseaseExternalKnowledgeWithGold(Annotator):
+    def __init__(self, vanilla_dataset_config_name: str) -> None:
+        super().__init__("ExternalKnowledgeAnnotator")
+        self.umls_dict = read_umls_disease_gazetteer_dict()
+        self.umls_dict = lower_dict(self.umls_dict)
+
+
+        self.train_annos_dict = get_annos_set(
+                                    vanilla_dataset_config_name,
+                                    dataset_split=DatasetSplit.train)
+        self.train_annos_dict = lower_dict(self.train_annos_dict)
+        print("len train annos set", len(self.train_annos_dict))
+
+
+        self.valid_annos_dict = get_annos_set(
+                                    vanilla_dataset_config_name,
+                                    dataset_split=DatasetSplit.valid)
+        self.valid_annos_dict = lower_dict(self.valid_annos_dict)
+        print("len valid annos set", len(self.valid_annos_dict))
+
+        
+        self.umls_with_train = self.umls_dict.union(self.train_annos_dict)
+        self.umls_with_train_and_valid = self.umls_dict.union(self.train_annos_dict).union(self.valid_annos_dict)
+
+        assert len(self.valid_annos_dict) < len(self.train_annos_dict)
+        assert len(self.umls_dict) < len(self.umls_with_train) < len(self.umls_with_train_and_valid)
+
+        self.knowlege_type = 'UmlsDiseaseGold'
+
+
+    def annotate_helper(self, samples: List[Sample], dataset_split: DatasetSplit) -> List[Sample]:
+        """
+        Annotate all tokens.
+        """
+        match dataset_split:
+            case DatasetSplit.train:
+                lowered_dictionary = self.umls_dict
+            case DatasetSplit.valid:
+                lowered_dictionary = self.umls_with_train
+            case DatasetSplit.test:
+                lowered_dictionary = self.umls_with_train_and_valid
+            case _:
+                raise unsupported_type_error(dataset_split) 
+
+        for term in lowered_dictionary:
+            assert term.islower() or term.isnumeric()
+                
+        for sample in show_progress(samples):
+            external_knowledge_annos = get_matches_word_boundary(
+                                            lowered_dictionary,
+                                            sample.text.lower(),
+                                            self.knowlege_type
+                                            )
+            sample.annos.external.extend(external_knowledge_annos)
+        return samples
+
+
 def get_chatgpt_disease_list_from_string(disease_string: str) -> set[str]:
     all_diseases = disease_string.split(',')
     all_diseases = [disease.strip() for disease in all_diseases]
@@ -640,3 +718,6 @@ def get_sentence_annotator():
 
 def get_sliding_sentence_annotator():
     return SlidingSentenceAnnotator()
+
+def get_umls_with_gold_annotator(vanilla_dataset_config_name):
+    return UmlsDiseaseExternalKnowledgeWithGold(vanilla_dataset_config_name=vanilla_dataset_config_name)
