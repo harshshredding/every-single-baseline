@@ -553,6 +553,7 @@ def evaluate_validation_split(
         dataset_config_name: str,
         model_config_name: str,
         epoch: int,
+        experiment_idx: int
 ):
     evaluate_dataset_split(
         logger=logger,
@@ -566,7 +567,8 @@ def evaluate_validation_split(
         dataset_config_name=dataset_config_name,
         model_config_name=model_config_name,
         epoch=epoch,
-        dataset_split=DatasetSplit.valid
+        dataset_split=DatasetSplit.valid,
+        experiment_idx=experiment_idx
     )
 
 
@@ -582,6 +584,7 @@ def evaluate_test_split(
         dataset_config_name: str,
         model_config_name: str,
         epoch: int,
+        experiment_idx: int
 ):
     evaluate_dataset_split(
         logger=logger,
@@ -595,7 +598,8 @@ def evaluate_test_split(
         dataset_config_name=dataset_config_name,
         model_config_name=model_config_name,
         epoch=epoch,
-        dataset_split=DatasetSplit.test
+        dataset_split=DatasetSplit.test,
+        experiment_idx=experiment_idx
     )
 
 
@@ -612,11 +616,12 @@ def evaluate_dataset_split(
         model_config_name: str,
         epoch: int,
         dataset_split: DatasetSplit,
+        experiment_idx: int
 ):
     logger.info(f"\n\nEvaluating {dataset_split.name} data")
     evaluation_start_time = time.time()
     model.eval()
-    output_file_prefix = f"{experiment_name}_{dataset_config_name}_{model_config_name}_{dataset_split.name}" \
+    output_file_prefix = f"{experiment_name}_{experiment_idx}_{dataset_config_name}_{model_config_name}_{dataset_split.name}" \
                          f"_epoch_{epoch}"
     mistakes_file_path = f"{mistakes_folder_path}/{output_file_prefix}_mistakes.tsv"
     predictions_file_path = f"{predictions_folder_path}/{output_file_prefix}_predictions.tsv"

@@ -62,7 +62,7 @@ model_config: ModelConfig
 
 # How frequently we will evaluate on test data
 
-for experiment_config in experiments:
+for experiment_idx, experiment_config in enumerate(experiments):
     dataset_config = experiment_config.dataset_config
     model_config = experiment_config.model_config
     test_evaluation_frequency = experiment_config.testing_frequency
@@ -179,7 +179,8 @@ for experiment_config in experiments:
             experiment_name=EXPERIMENT_NAME,
             model_config_name=model_config.model_config_name,
             dataset_config_name=dataset_config.dataset_config_name,
-            epoch=epoch
+            epoch=epoch,
+            experiment_idx=experiment_idx
         )
 
         if IS_TESTING:
@@ -196,7 +197,8 @@ for experiment_config in experiments:
                     experiment_name=EXPERIMENT_NAME,
                     model_config_name=model_config.model_config_name,
                     dataset_config_name=dataset_config.dataset_config_name,
-                    epoch=epoch
+                    epoch=epoch,
+                    experiment_idx=experiment_idx
                 )
 
 logger.info(green("Experiment Finished!!"))
