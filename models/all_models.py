@@ -14,7 +14,7 @@ from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecod
 from flair.data import Dictionary
 from utils.config import DatasetConfig, ModelConfig
 from utils.universal import Option, OptionState
-from utils.model import ModelClaC, PredictionsBatch, get_bert_embeddings_for_batch
+from utils.model import ModelClaC, SeqLabelPredictions, get_bert_embeddings_for_batch
 from utils.config import get_experiment_config
 from pudb import set_trace
 
@@ -1169,7 +1169,7 @@ class SeqLabelerNoTokenization(ModelClaC):
             self,
             samples: List[Sample],
             #collect: List
-    ) -> tuple[torch.Tensor, PredictionsBatch]:
+    ) -> tuple[torch.Tensor, SeqLabelPredictions]:
         assert isinstance(samples, list)
         # encoding helps manage tokens created by bert
         bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)

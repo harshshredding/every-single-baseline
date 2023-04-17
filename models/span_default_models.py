@@ -6,7 +6,7 @@ import util
 from structs import Anno, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import ModelConfig, DatasetConfig
-from utils.model import PredictionsBatch, ModelClaC
+from utils.model import SeqLabelPredictions, ModelClaC
 import torch.nn as nn
 from preamble import *
 from utils.model import PositionalEncodingBatch, get_bert_embeddings_for_batch
@@ -86,11 +86,12 @@ class SpanDefault(ModelClaC):
         bert_embeddings_batch = bert_embeddings_batch['last_hidden_state']
         return bert_embeddings_batch
 
+
     def forward(
             self,
             samples: List[Sample],
             # collect: List
-    ) -> tuple[torch.Tensor, PredictionsBatch]:
+    ) -> tuple[torch.Tensor, SeqLabelPredictions]:
         batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
         # collect.append(batch_encoding)
 
@@ -234,7 +235,7 @@ class SpanDefaultTransformerSmall(SpanDefault):
     def forward(
             self,
             samples: List[Sample],
-    ) -> tuple[torch.Tensor, PredictionsBatch]:
+    ) -> tuple[torch.Tensor, SeqLabelPredictions]:
         batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
 
         gold_token_level_annos_batch = get_annos_token_level(
@@ -296,7 +297,7 @@ class SpanDefaultTransformerBiggerPosition(SpanDefaultTransformerBigger):
     def forward(
             self,
             samples: List[Sample],
-    ) -> tuple[torch.Tensor, PredictionsBatch]:
+    ) -> tuple[torch.Tensor, SeqLabelPredictions]:
         batch_encoding = self.get_bert_encoding_for_batch(samples, self.model_config)
 
         gold_token_level_annos_batch = get_annos_token_level(

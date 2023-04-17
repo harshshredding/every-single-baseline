@@ -10,7 +10,7 @@ import train_util
 from preamble import *
 import util
 from structs import Anno, Sample
-from utils.model import PredictionsBatch
+from utils.model import SeqLabelPredictions
 
 
 class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
@@ -48,7 +48,7 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
     def forward(
             self,
             samples: List[Sample],
-    ) -> tuple[torch.Tensor, PredictionsBatch]:
+    ) -> tuple[torch.Tensor, SeqLabelPredictions]:
         assert isinstance(samples, list)
         # encoding helps manage tokens created by bert
         bert_encoding_for_batch = self.get_bert_encoding_for_batch(samples, self.model_config)
