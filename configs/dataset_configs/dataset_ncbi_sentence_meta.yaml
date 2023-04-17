@@ -1,5 +1,5 @@
 train_samples_file_path: ./preprocessed_data/ncbi_disease_train_config_ncbi_meta_production_samples.json
-valid_samples_file_path: ./preprocessed_data/ncbi_disease_vaid_config_ncbi_meta_production_samples.json
+valid_samples_file_path: ./preprocessed_data/ncbi_disease_valid_config_ncbi_meta_production_samples.json
 test_samples_file_path: ./preprocessed_data/ncbi_disease_test_config_ncbi_meta_production_samples.json
 types_file_path: ./preprocessed_data/ncbi_disease_train_config_ncbi_meta_production_types.txt
 num_types: 2
