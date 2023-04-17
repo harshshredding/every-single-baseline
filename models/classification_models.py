@@ -62,7 +62,7 @@ class MetaDefault(ModelClaC):
                 ) 
         assert len(gold_labels) == len(samples)
         gold_labels = torch.tensor(gold_labels).to(device)
-        assert tensor_shape(gold_labels) == [2]
+        assert tensor_shape(gold_labels) == [len(samples)]
  
         loss = self.loss_function(
             predictions_logits,
