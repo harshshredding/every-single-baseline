@@ -21,7 +21,8 @@ from allennlp.nn import util
 from allennlp.common.checks import ConfigurationError
 from preamble import *
 
-PredictionsBatch = List[List[Anno]]
+SeqLabelPredictions = List[List[Anno]]
+ClassificationPredictions = List[str]
 
 
 class ModelClaC(ABC, torch.nn.Module):
@@ -43,7 +44,7 @@ class ModelClaC(ABC, torch.nn.Module):
     def forward(
             self,
             samples: List[Sample]
-    ) -> tuple[torch.Tensor, PredictionsBatch]:
+    ) -> tuple[torch.Tensor, SeqLabelPredictions|ClassificationPredictions]:
         """
         Forward pass.
         :param samples: batch of samples

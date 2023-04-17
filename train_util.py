@@ -1,3 +1,4 @@
+from re import L
 import time
 
 from structs import *
@@ -5,6 +6,7 @@ import pandas as pd
 import csv
 import util
 from utils.config import ExperimentConfig
+from utils.evaluation import EvaluationType
 from typing import Dict
 from utils.config import ModelConfig, DatasetConfig
 import utils.dropbox as dropbox_util
@@ -215,6 +217,22 @@ def store_performance_result(
         mistakes_file_writer.writerow([experiment_name, dataset_config_name, dataset_split.name,
                                        model_config_name, str(epoch),
                                        str((f1_score, precision_score, recall_score))])
+
+
+def store_performance_result_accuracy(
+    performance_file_path,
+    accuracy,
+    epoch: int,
+    experiment_name: str,
+    dataset_config_name: str,
+    model_config_name: str,
+    dataset_split: DatasetSplit
+):
+    with open(performance_file_path, 'a') as performance_file:
+        mistakes_file_writer = csv.writer(performance_file)
+        mistakes_file_writer.writerow([experiment_name, dataset_config_name, dataset_split.name,
+                                       model_config_name, str(epoch),
+                                       str(accuracy)])
 
 
 def create_performance_file_header(performance_file_path):
@@ -493,6 +511,13 @@ def get_test_samples(dataset_config: DatasetConfig) -> List[Sample]:
     return util.read_samples(dataset_config.test_samples_file_path)
 
 
+def prepare_file_headers_accuracy(mistakes_file_writer, predictions_file_writer):
+    predictions_file_header = ['sample_id', 'label']
+    predictions_file_writer.writerow(predictions_file_header)
+
+    mistakes_file_header = ['sample_id', 'label']
+    mistakes_file_writer.writerow(mistakes_file_header)
+
 def prepare_file_headers(mistakes_file_writer, predictions_file_writer):
     prepare_predictions_file_header(predictions_file_writer)
 
@@ -515,6 +540,17 @@ def store_predictions(
         predictions_file_writer.writerow(
             [sample.id, str(anno.begin_offset), str(anno.end_offset), anno.label_type, anno.extraction]
         )
+
+
+def store_prediction_accuracy(
+        sample: Sample,
+        predicted_anno: str,
+        predictions_file_writer
+):
+    # write predictions
+    predictions_file_writer.writerow(
+        [sample.id, predicted_anno]
+    )
 
 
 def store_mistakes(
@@ -553,7 +589,8 @@ def evaluate_validation_split(
         dataset_config_name: str,
         model_config_name: str,
         epoch: int,
-        experiment_idx: int
+        experiment_idx: int,
+        evaluation_type: EvaluationType
 ):
     evaluate_dataset_split(
         logger=logger,
@@ -568,7 +605,8 @@ def evaluate_validation_split(
         model_config_name=model_config_name,
         epoch=epoch,
         dataset_split=DatasetSplit.valid,
-        experiment_idx=experiment_idx
+        experiment_idx=experiment_idx,
+        evaluation_type=evaluation_type
     )
 
 
@@ -584,7 +622,8 @@ def evaluate_test_split(
         dataset_config_name: str,
         model_config_name: str,
         epoch: int,
-        experiment_idx: int
+        experiment_idx: int,
+        evaluation_type: EvaluationType
 ):
     evaluate_dataset_split(
         logger=logger,
@@ -599,7 +638,8 @@ def evaluate_test_split(
         model_config_name=model_config_name,
         epoch=epoch,
         dataset_split=DatasetSplit.test,
-        experiment_idx=experiment_idx
+        experiment_idx=experiment_idx,
+        evaluation_type=evaluation_type
     )
 
 
@@ -616,15 +656,129 @@ def evaluate_dataset_split(
         model_config_name: str,
         epoch: int,
         dataset_split: DatasetSplit,
-        experiment_idx: int
+        experiment_idx: int,
+        evaluation_type: EvaluationType
 ):
     logger.info(f"\n\nEvaluating {dataset_split.name} data")
-    evaluation_start_time = time.time()
     model.eval()
     output_file_prefix = f"{experiment_name}_{experiment_idx}_{dataset_config_name}_{model_config_name}_{dataset_split.name}" \
                          f"_epoch_{epoch}"
     mistakes_file_path = f"{mistakes_folder_path}/{output_file_prefix}_mistakes.tsv"
     predictions_file_path = f"{predictions_folder_path}/{output_file_prefix}_predictions.tsv"
+
+    if evaluation_type == EvaluationType.f1:
+        evaluate_with_f1(
+                predictions_file_path=predictions_file_path,
+                mistakes_file_path=mistakes_file_path,
+                samples=samples,
+                model=model,
+                logger=logger,
+                performance_file_path=performance_file_path,
+                error_visualization_folder_path=error_visualization_folder_path,
+                output_file_prefix=output_file_prefix,
+                epoch=epoch,
+                experiment_name=experiment_name,
+                dataset_config_name=dataset_config_name,
+                model_config_name=model_config_name,
+                dataset_split=dataset_split
+                )
+    elif evaluation_type == EvaluationType.accuracy:
+        evaluate_with_accuracy(
+                predictions_file_path=predictions_file_path,
+                mistakes_file_path=mistakes_file_path,
+                samples=samples,
+                model=model,
+                logger=logger,
+                performance_file_path=performance_file_path,
+                error_visualization_folder_path=error_visualization_folder_path,
+                output_file_prefix=output_file_prefix,
+                epoch=epoch,
+                experiment_name=experiment_name,
+                dataset_config_name=dataset_config_name,
+                model_config_name=model_config_name,
+                dataset_split=dataset_split
+                )
+        
+
+
+
+def evaluate_with_accuracy(
+        predictions_file_path: str,
+        mistakes_file_path: str,
+        samples: list[Sample],
+        model,
+        logger,
+        performance_file_path: str,
+        error_visualization_folder_path: str,
+        output_file_prefix: str,
+        epoch: int,
+        experiment_name: str,
+        dataset_config_name: str,
+        model_config_name: str,
+        dataset_split: DatasetSplit):
+
+    evaluation_start_time = time.time()
+
+    total_num_samples = len(samples)
+    num_correct_labels = 0
+
+    with open(predictions_file_path, 'w') as predictions_file, \
+            open(mistakes_file_path, 'w') as mistakes_file:
+        #  --- GET FILES READY FOR WRITING ---
+        predictions_file_writer = csv.writer(predictions_file, delimiter='\t')
+        mistakes_file_writer = csv.writer(mistakes_file, delimiter='\t')
+        prepare_file_headers_accuracy(mistakes_file_writer, predictions_file_writer)
+        with torch.no_grad():
+            # Eval Loop
+            for sample in samples:
+                loss, [predicted_anno] = model([sample])
+                assert len(sample.annos.gold) == 1
+                gold_anno = sample.annos.gold[0].label_type
+                assert gold_anno in ['correct', 'incorrect']
+                assert predicted_anno in ['correct', 'incorrect']
+                if gold_anno == predicted_anno:
+                    num_correct_labels += 1
+                # write sample predictions
+                store_prediction_accuracy(sample, predicted_anno, predictions_file_writer)
+    accuracy = num_correct_labels/total_num_samples
+    logger.info(blue(f"Accuracy: {accuracy}"))
+    visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
+    store_performance_result_accuracy(
+            performance_file_path=performance_file_path,
+            epoch=epoch,
+            experiment_name=experiment_name,
+            dataset_config_name=dataset_config_name,
+            model_config_name=model_config_name,
+            dataset_split=dataset_split,
+            accuracy=accuracy
+    )
+    # upload files to dropbox
+    dropbox_util.upload_file(predictions_file_path)
+    # dropbox_util.upload_file(mistakes_file_path)
+    dropbox_util.upload_file(performance_file_path)
+
+    logger.info(green(f"Done evaluating {dataset_split.name} data.\n"
+                      f"Took {str(time.time() - evaluation_start_time)} secs."
+                      f"\n\n"))
+
+
+def evaluate_with_f1(
+        predictions_file_path: str,
+        mistakes_file_path: str,
+        samples: list[Sample],
+        model,
+        logger,
+        performance_file_path: str,
+        error_visualization_folder_path: str,
+        output_file_prefix: str,
+        epoch: int,
+        experiment_name: str,
+        dataset_config_name: str,
+        model_config_name: str,
+        dataset_split: DatasetSplit):
+
+    evaluation_start_time = time.time()
+
     with open(predictions_file_path, 'w') as predictions_file, \
             open(mistakes_file_path, 'w') as mistakes_file:
         #  --- GET FILES READY FOR WRITING ---
@@ -692,6 +846,7 @@ def evaluate_dataset_split(
     logger.info(green(f"Done evaluating {dataset_split.name} data.\n"
                       f"Took {str(time.time() - evaluation_start_time)} secs."
                       f"\n\n"))
+
 
 
 def test(

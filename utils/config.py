@@ -1,4 +1,5 @@
 from typing import NamedTuple, Optional
+from utils.evaluation import EvaluationType
 from utils.universal import die
 import yaml
 import glob
@@ -108,6 +109,7 @@ class ExperimentConfig:
     testing_frequency: int
     optimizer: str = 'Adam'
     num_epochs: int = 20
+    evaluation_type: EvaluationType = EvaluationType.f1
 
 class ExperimentModifier:
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:

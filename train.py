@@ -180,7 +180,8 @@ for experiment_idx, experiment_config in enumerate(experiments):
             model_config_name=model_config.model_config_name,
             dataset_config_name=dataset_config.dataset_config_name,
             epoch=epoch,
-            experiment_idx=experiment_idx
+            experiment_idx=experiment_idx,
+            evaluation_type=experiment_config.evaluation_type
         )
 
         if IS_TESTING:
@@ -198,7 +199,8 @@ for experiment_idx, experiment_config in enumerate(experiments):
                     model_config_name=model_config.model_config_name,
                     dataset_config_name=dataset_config.dataset_config_name,
                     epoch=epoch,
-                    experiment_idx=experiment_idx
+                    experiment_idx=experiment_idx,
+                    evaluation_type=experiment_config.evaluation_type
                 )
 
 logger.info(green("Experiment Finished!!"))

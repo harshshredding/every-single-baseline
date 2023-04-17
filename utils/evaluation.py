@@ -1,6 +1,12 @@
 from structs import Sample
 from util import read_predictions_file, get_f1_score
 import statistics
+from enum import Enum
+
+class EvaluationType(Enum):
+    f1 = 0
+    accuracy = 1
+
 
 def get_all_entity_types_set(samples: list[Sample]) -> set[str]:
     all_entity_types = set()

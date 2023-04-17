@@ -44,6 +44,8 @@ def unsupported_type_error(x):
 def die(message):
     raise RuntimeError(message)
 
+def tensor_shape(tensor: torch.Tensor):
+    return list(tensor.shape)
 
 class OptionState(Enum):
     Something = 1
