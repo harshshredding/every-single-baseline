@@ -2,7 +2,9 @@ from utils.preprocess import Preprocessor, DatasetSplit, PreprocessorRunType
 from annotators import Annotator
 from structs import Dataset, Sample, AnnotationCollection, Anno
 from preamble import *
-
+from random import shuffle
+from utils.easy_testing import get_valid_samples_by_dataset_name, get_test_samples_by_dataset_name
+from util import read_predictions_file
 
 def get_ncbi_sample(sample_raw: list) -> Sample:
     title_sample_id, title_tag, title_text = sample_raw[0].split('|')
@@ -101,3 +103,131 @@ class PreprocessNcbiDisease(Preprocessor):
 
     def get_entity_types(self) -> list[str]:
         return ['Disease']
+
+
+def create_meta_sample(sample: Sample, span: tuple[int, int], label_type: str):
+    extraction = sample.text[span[0]: span[1]]
+    return Sample(
+            text= extraction + ' [SEP] ' + sample.text,
+            id=f"{sample.id}@@@{span[0]}@@@{span[1]}",
+            annos=AnnotationCollection(
+                gold=[Anno(
+                    begin_offset=0,
+                    end_offset=len(sample.text),
+                    label_type=label_type,
+                    extraction=extraction
+                )],
+                external=[]
+            )
+        )
+
+
+
+def get_training_and_valid_set_for_ncbi_disease_meta():
+    seq_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_12_predictions.tsv'
+    span_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_17_predictions.tsv'
+    seq_predictions = read_predictions_file(seq_predictions_file_path)
+    span_predictions = read_predictions_file(span_predictions_file_path)
+    gold_samples = get_valid_samples_by_dataset_name('ncbi_disease_sentence')
+    print(len(gold_samples))
+    gold_samples = {sample.id: sample for sample in gold_samples}
+    for sample_id in seq_predictions:
+        assert sample_id in gold_samples
+    for sample_id in span_predictions:
+        assert sample_id in gold_samples
+
+    samples: list[Sample] = []
+    for sample_id in gold_samples:
+        sample = gold_samples[sample_id]
+        gold_spans = set([(anno.begin_offset, anno.end_offset) for anno in sample.annos.gold])
+        seq_prediction_spans = set()
+        span_prediction_spans = set()
+        if sample_id in seq_predictions:
+            seq_prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in seq_predictions[sample_id]])
+        if sample_id in span_predictions:
+            span_prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in span_predictions[sample_id]])
+        all_prediction_spans = seq_prediction_spans.union(span_prediction_spans)
+        incorrect_prediction_spans = all_prediction_spans.difference(gold_spans)
+        correct_prediction_spans = gold_spans
+        assert len(incorrect_prediction_spans.intersection(correct_prediction_spans)) ==  0
+        for correct_span in correct_prediction_spans:
+            samples.append(
+                    create_meta_sample(sample=sample, span=correct_span, label_type='correct')
+            )
+        for incorrect_span in incorrect_prediction_spans:
+            samples.append(
+                    create_meta_sample(sample=sample, span=incorrect_span, label_type='incorrect')
+            )
+
+    shuffle(samples)
+    percent_85 = int(len(samples)*0.85)
+    train_samples = samples[:percent_85]
+    valid_samples = samples[percent_85:]
+    assert len(train_samples) + len(valid_samples) == len(samples)
+    return train_samples, valid_samples
+
+
+def get_test_set_for_ncbi_disease_meta():
+    seq_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_test_epoch_10_predictions.tsv'
+    span_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_test_epoch_15_predictions.tsv'
+    seq_predictions = read_predictions_file(seq_predictions_file_path)
+    span_predictions = read_predictions_file(span_predictions_file_path)
+    samples = get_test_samples_by_dataset_name('ncbi_disease_sentence')
+
+    gold_samples = {sample.id: sample for sample in samples}
+    for sample_id in seq_predictions:
+        assert sample_id in gold_samples
+    for sample_id in span_predictions:
+        assert sample_id in gold_samples
+
+    samples: list[Sample] = []
+    for sample_id in gold_samples:
+        sample = gold_samples[sample_id]
+        seq_prediction_spans = set()
+        span_prediction_spans = set()
+        if sample_id in seq_predictions:
+            seq_prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in seq_predictions[sample_id]])
+        if sample_id in span_predictions:
+            span_prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in span_predictions[sample_id]])
+        all_prediction_spans = seq_prediction_spans.union(span_prediction_spans)
+        for prediction_span in all_prediction_spans:
+            samples.append(
+                    create_meta_sample(sample=sample, span=prediction_span, label_type='correct')
+            )
+    shuffle(samples)
+    return samples
+
+
+
+class PreprocessNcbiDiseaseMeta(Preprocessor):
+    def __init__(
+            self,
+            preprocessor_type: str,
+            dataset_split: DatasetSplit,
+            annotators: list[Annotator],
+            run_mode: PreprocessorRunType
+    ) -> None:
+        super().__init__(
+            preprocessor_type=preprocessor_type,
+            dataset=Dataset.ncbi_disease,
+            annotators=annotators,
+            dataset_split=dataset_split,
+            run_mode=run_mode,
+        )
+
+    def get_samples(self) -> list[Sample]:
+        test = get_test_set_for_ncbi_disease_meta()
+        train, valid = get_training_and_valid_set_for_ncbi_disease_meta()
+        match self.dataset_split:
+            case DatasetSplit.train:
+                samples = train
+            case DatasetSplit.valid:
+                samples = valid
+            case DatasetSplit.test:
+                samples = test
+        return samples
+
+    def get_entity_types(self) -> list[str]:
+        return ['correct', 'incorrect']
+
+

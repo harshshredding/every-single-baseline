@@ -1,5 +1,5 @@
 from structs import Sample
-from util import read_predictions_file, get_f1_score
+from util import *
 import statistics
 from enum import Enum
 
