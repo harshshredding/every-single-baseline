@@ -7,4 +7,4 @@ dataset_name: ncbi_disease
 dataset_config_name: ncbi_sentence_meta
 expected_number_of_train_samples: 791
 expected_number_of_valid_samples: 140
-expected_number_of_test_samples: 945
+expected_number_of_test_samples: 1044
