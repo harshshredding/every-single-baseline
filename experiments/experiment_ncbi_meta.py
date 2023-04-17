@@ -1,4 +1,4 @@
-from utils.config import get_experiment_config, Epochs30Modifier, BiggerBatchModifier, TestEveryEpochModifier, AdafactorModifier, AdamModifier
+from utils.config import get_experiment_config, Epochs30Modifier, AccuracyEvaluationModifier, TestEveryEpochModifier, AdafactorModifier, AdamModifier
 
 
 experiments = [
@@ -8,7 +8,8 @@ experiments = [
         modifiers=[
             Epochs30Modifier(),
             TestEveryEpochModifier(),
-            AdafactorModifier()
+            AdafactorModifier(),
+            AccuracyEvaluationModifier()
         ]
     ),
 ]

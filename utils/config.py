@@ -142,6 +142,10 @@ class Epochs30Modifier(ExperimentModifier):
         experiment_config.num_epochs = 30
         return experiment_config
 
+class AccuracyEvaluationModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.evaluation_type = EvaluationType.accuracy
+        return experiment_config
 
 class AdamModifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:  
