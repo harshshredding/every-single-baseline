@@ -19,6 +19,7 @@ from allennlp.modules.span_extractors.span_extractor_with_span_width_embedding i
 )
 from allennlp.nn import util
 from allennlp.common.checks import ConfigurationError
+from preamble import *
 
 PredictionsBatch = List[List[Anno]]
 
@@ -377,3 +378,19 @@ class EndpointSpanExtractor(SpanExtractorWithSpanWidthEmbedding):
         )
 
         return combined_tensors
+
+
+
+
+def get_bert_encoding_for_batch(samples: List[Sample],
+                                model_config: ModelConfig,
+                                bert_tokenizer) -> BatchEncoding:
+    batch_of_sample_texts = [sample.text for sample in samples]
+    bert_encoding_for_batch = bert_tokenizer(batch_of_sample_texts,
+                                             return_tensors="pt",
+                                             is_split_into_words=False,
+                                             add_special_tokens=model_config.use_special_bert_tokens,
+                                             truncation=True,
+                                             padding=True,
+                                             max_length=512).to(device)
+    return bert_encoding_for_batch

@@ -12,11 +12,21 @@ def get_bert_tokenizer(model_name: str = 'bert-base-cased'):
     """
     return AutoTokenizer.from_pretrained(model_name)
 
+
 def get_roberta_tokenizer():
     return AutoTokenizer.from_pretrained('xlm-roberta-base')
 
+
+def get_bio_link_bert_tokenizer():
+    return AutoTokenizer.from_pretrained('michiyasunaga/BioLinkBERT-base')
+
+
 def get_bert_model():
     return AutoModel.from_pretrained('bert-base-cased')
+
+
+def get_bio_link_bert_model():
+    return AutoModel.from_pretrained('michiyasunaga/BioLinkBERT-base')
 
 
 def get_bert_encoding(bert_tokenizer, tokens=List[str]):

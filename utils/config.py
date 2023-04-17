@@ -134,6 +134,25 @@ class Epochs20Modifier(ExperimentModifier):
         experiment_config.num_epochs = 20
         return experiment_config
 
+
+class Epochs30Modifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.num_epochs = 30
+        return experiment_config
+
+
+class AdamModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:  
+        experiment_config.optimizer = 'Adam'
+        return experiment_config
+
+
+class AdafactorModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:  
+        experiment_config.optimizer = 'Adafactor'
+        return experiment_config
+
+
 def get_experiment_config(
         model_config_module_name: str,
         dataset_config_name: str,
