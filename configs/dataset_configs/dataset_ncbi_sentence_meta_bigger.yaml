@@ -6,5 +6,5 @@ num_types: 2
 dataset_name: ncbi_disease
 dataset_config_name: ncbi_sentence_meta_bigger
 expected_number_of_train_samples: 851
-expected_number_of_valid_samples: 140
+expected_number_of_valid_samples: 151
 expected_number_of_test_samples: 1044
