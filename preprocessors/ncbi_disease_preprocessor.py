@@ -304,6 +304,23 @@ class PreprocessNcbiDiseaseMetaBiggerValid(Preprocessor):
             dataset_split=dataset_split,
             run_mode=run_mode,
         )
+        self.valid_prediction_file_paths = [
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_8_predictions.tsv',
+
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_9_predictions.tsv',
+
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_10_predictions.tsv',
+
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_11_predictions.tsv',
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_12_predictions.tsv',
+
+
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_15_predictions.tsv',
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_16_predictions.tsv',
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_17_predictions.tsv',
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_18_predictions.tsv',
+            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_19_predictions.tsv',
+        ]
 
 
     def create_meta_sample(self, sample: Sample, span: tuple[int, int], label_type: str):
@@ -353,26 +370,16 @@ class PreprocessNcbiDiseaseMetaBiggerValid(Preprocessor):
         shuffle(samples)
         return samples
 
+
+
+
+
+
+
+
     def get_training_and_valid_set_for_ncbi_disease_meta_large(self):
-        prediction_file_paths = [
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_8_predictions.tsv',
-
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_9_predictions.tsv',
-
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_10_predictions.tsv',
-
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_11_predictions.tsv',
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_12_predictions.tsv',
-
-
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_15_predictions.tsv',
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_16_predictions.tsv',
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_17_predictions.tsv',
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_18_predictions.tsv',
-            '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_19_predictions.tsv',
-        ]
         all_predictions_dict = defaultdict(list)
-        for prediction_file_path in prediction_file_paths:
+        for prediction_file_path in self.valid_prediction_file_paths:
             predictions = read_predictions_file(prediction_file_path)
             for sample_id, annos in predictions.items():
                 all_predictions_dict[sample_id].extend(annos)
@@ -410,7 +417,10 @@ class PreprocessNcbiDiseaseMetaBiggerValid(Preprocessor):
 
     def get_samples(self) -> list[Sample]:
         test = self.get_test_set_for_ncbi_disease_meta()
+        print("test size", len(test))
         train, valid = self.get_training_and_valid_set_for_ncbi_disease_meta_large()
+        print("train size", len(train))
+        print("valid size", len(valid))
         match self.dataset_split:
             case DatasetSplit.train:
                 samples = train
@@ -465,3 +475,29 @@ class PreprocessNcbiDiseaseMetaSpecialTokens(PreprocessNcbiDiseaseMetaBiggerVali
                 )
             )
 
+
+class PreprocessNcbiSpecialWithSuperTraining(PreprocessNcbiDiseaseMetaSpecialTokens):
+    def __init__(
+            self,
+            preprocessor_type: str,
+            dataset_split: DatasetSplit,
+            annotators: list[Annotator],
+            run_mode: PreprocessorRunType
+    ) -> None:
+        super().__init__(
+            preprocessor_type=preprocessor_type,
+            annotators=annotators,
+            dataset_split=dataset_split,
+            run_mode=run_mode,
+        )
+        self.valid_prediction_file_paths = [
+            f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_valid_epoch_{i}_predictions.tsv'
+            for i in range(8,20)
+        ]
+        self.valid_prediction_file_paths.extend(
+                [
+                    f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/valid/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_valid_epoch_{i}_predictions.tsv'
+                    for i in range(7, 20)
+                ]
+        )
+        assert len(self.valid_prediction_file_paths) == 25

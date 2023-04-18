@@ -270,3 +270,15 @@ def config_meta_special_tokens_bigger_training() -> PreprocessorConfig:
             'annotators': []
         }
     )
+
+
+def config_meta_special_tokens_super_training() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiSpecialWithSuperTraining',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': []
+        }
+    )
