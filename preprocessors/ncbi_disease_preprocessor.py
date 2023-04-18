@@ -574,3 +574,59 @@ class PreprocessNcbiSpecialWithSuperGoldTraining(PreprocessNcbiSpecialWithSuperT
 
 
         return train_samples, valid_samples
+
+
+
+
+class PreprocessNcbiSpecialWithSuperGoldTestBehaviour(PreprocessNcbiSpecialWithSuperGoldTraining):
+    def __init__(
+            self,
+            preprocessor_type: str,
+            dataset_split: DatasetSplit,
+            annotators: list[Annotator],
+            run_mode: PreprocessorRunType
+    ) -> None:
+        super().__init__(
+            preprocessor_type=preprocessor_type,
+            annotators=annotators,
+            dataset_split=dataset_split,
+            run_mode=run_mode,
+        )
+        self.test_prediction_file_paths = []
+        for i in range(10, 14):
+            self.test_prediction_file_paths.append(
+                    f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_test_epoch_{i}_predictions.tsv'
+                    )
+
+        for i in range(15, 19):
+            self.test_prediction_file_paths.append(
+                    f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_test_epoch_{i}_predictions.tsv'
+                    )
+        assert len(self.test_prediction_file_paths) == 8
+
+
+    @overrides
+    def get_test_set_for_ncbi_disease_meta(self):
+        all_predictions_dict = defaultdict(list)
+        for prediction_file_path in self.test_prediction_file_paths:
+            predictions = read_predictions_file(prediction_file_path)
+            for sample_id, annos in predictions.items():
+                all_predictions_dict[sample_id].extend(annos)
+        samples = get_test_samples_by_dataset_name('ncbi_disease_sentence')
+
+        gold_samples = {sample.id: sample for sample in samples}
+        for sample_id in all_predictions_dict:
+            assert sample_id in gold_samples
+
+        samples: list[Sample] = []
+        for sample_id in gold_samples:
+            sample = gold_samples[sample_id]
+            all_prediction_spans = set()
+            if sample_id in all_predictions_dict:
+                all_prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in all_predictions_dict[sample_id]])
+            for prediction_span in all_prediction_spans:
+                samples.append(
+                    self.create_meta_sample(sample=sample, span=prediction_span, label_type='correct')
+                )
+        shuffle(samples)
+        return samples

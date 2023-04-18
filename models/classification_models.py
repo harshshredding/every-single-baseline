@@ -112,3 +112,20 @@ class MetaDefaultSpecialTokens(MetaDefault):
             assert self.beginning_marker_token_idx in batch_input_ids
             assert self.ending_marker_token_idx in batch_input_ids
         return bert_encoding
+
+
+class MetaSpecialWeightedLoss(MetaDefaultSpecialTokens):
+    def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super().__init__(
+                all_types=all_types,
+                model_config=model_config,
+                dataset_config=dataset_config)
+        self.class_weights = [0, 0]
+        self.class_weights[self.type_to_idx['correct']] = 9
+        self.class_weights[self.type_to_idx['incorrect']] = 1
+        assert 9 in self.class_weights
+        assert 1 in self.class_weights
+        self.class_weights_tensor = torch.tensor(self.class_weights, device=device)
+        self.loss_function = nn.CrossEntropyLoss(weight=self.class_weights_tensor)
+
+

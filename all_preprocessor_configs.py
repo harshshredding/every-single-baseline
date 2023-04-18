@@ -294,3 +294,14 @@ def config_meta_special_tokens_super_gold_training() -> PreprocessorConfig:
             'annotators': []
         }
     )
+
+def config_meta_special_tokens_super_gold_test_behaviour_training() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiSpecialWithSuperGoldTestBehaviour',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': []
+        }
+    )

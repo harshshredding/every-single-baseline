@@ -20,7 +20,7 @@ def read_meta_predictions_file(predictions_file_path) -> set:
 
 def meta_f1():
     for i in range(30):
-        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/special_super_adam/Apps/harshv_research_nlp/experiment_ncbi_meta_special_super_1_ncbi_sentence_meta_super_special_tokens_model_meta_special_tokens_bio_test_epoch_{i}_predictions.tsv'
+        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/super_gold_adafactor_batch_4/harshv_research_nlp/experiment_ncbi_meta_special_super_gold_1_ncbi_sentence_meta_super_special_gold_model_meta_special_tokens_bio_test_epoch_{i}_predictions.tsv'
         meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path)
         gold_predictions = set()
 
