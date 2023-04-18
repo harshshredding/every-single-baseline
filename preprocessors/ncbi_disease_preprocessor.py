@@ -3,7 +3,7 @@ from annotators import Annotator
 from structs import Dataset, Sample, AnnotationCollection, Anno
 from preamble import *
 from random import shuffle
-from utils.easy_testing import get_valid_samples_by_dataset_name, get_test_samples_by_dataset_name
+from utils.easy_testing import get_train_samples_by_dataset_name, get_valid_samples_by_dataset_name, get_test_samples_by_dataset_name
 from util import read_predictions_file
 from collections import defaultdict
 from overrides import overrides
@@ -501,3 +501,62 @@ class PreprocessNcbiSpecialWithSuperTraining(PreprocessNcbiDiseaseMetaSpecialTok
                 ]
         )
         assert len(self.valid_prediction_file_paths) == 25
+
+
+class PreprocessNcbiSpecialWithSuperGoldTraining(PreprocessNcbiSpecialWithSuperTraining):
+    def __init__(
+            self,
+            preprocessor_type: str,
+            dataset_split: DatasetSplit,
+            annotators: list[Annotator],
+            run_mode: PreprocessorRunType
+    ) -> None:
+        super().__init__(
+            preprocessor_type=preprocessor_type,
+            annotators=annotators,
+            dataset_split=dataset_split,
+            run_mode=run_mode,
+        )
+
+
+    @overrides
+    def get_training_and_valid_set_for_ncbi_disease_meta_large(self):
+        all_predictions_dict = defaultdict(list)
+        for prediction_file_path in self.valid_prediction_file_paths:
+            predictions = read_predictions_file(prediction_file_path)
+            for sample_id, annos in predictions.items():
+                all_predictions_dict[sample_id].extend(annos)
+
+        valid_samples = get_valid_samples_by_dataset_name('ncbi_disease_sentence')
+        original_train_samples = get_train_samples_by_dataset_name('ncbi_disease_sentence')
+        gold_samples = valid_samples + original_train_samples
+        print("num correct samples", len(gold_samples))
+        gold_samples = {sample.id: sample for sample in gold_samples}
+        for sample_id in all_predictions_dict:
+            assert sample_id in gold_samples
+
+        meta_samples: list[Sample] = []
+        for sample_id in gold_samples:
+            sample = gold_samples[sample_id]
+            gold_spans = set([(anno.begin_offset, anno.end_offset) for anno in sample.annos.gold])
+            prediction_spans = set()
+            if sample_id in all_predictions_dict:
+                prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in all_predictions_dict[sample_id]])
+            incorrect_prediction_spans = prediction_spans.difference(gold_spans)
+            correct_prediction_spans = gold_spans
+            assert len(incorrect_prediction_spans.intersection(correct_prediction_spans)) ==  0
+            for correct_span in correct_prediction_spans:
+                meta_samples.append(
+                        self.create_meta_sample(sample=sample, span=correct_span, label_type='correct')
+                )
+            for incorrect_span in incorrect_prediction_spans:
+                meta_samples.append(
+                        self.create_meta_sample(sample=sample, span=incorrect_span, label_type='incorrect')
+                )
+
+        shuffle(meta_samples)
+        percent_85 = int(len(meta_samples)*0.85)
+        train_samples = meta_samples[:percent_85]
+        valid_samples = meta_samples[percent_85:]
+        assert len(train_samples) + len(valid_samples) == len(meta_samples)
+        return train_samples, valid_samples
