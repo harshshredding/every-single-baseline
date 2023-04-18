@@ -529,11 +529,15 @@ class PreprocessNcbiSpecialWithSuperGoldTraining(PreprocessNcbiSpecialWithSuperT
 
         valid_samples = get_valid_samples_by_dataset_name('ncbi_disease_sentence')
         original_train_samples = get_train_samples_by_dataset_name('ncbi_disease_sentence')
+        original_train_samples = original_train_samples[:int(len(original_train_samples)/2)]
         gold_samples = valid_samples + original_train_samples
         print("num correct samples", len(gold_samples))
         gold_samples = {sample.id: sample for sample in gold_samples}
         for sample_id in all_predictions_dict:
             assert sample_id in gold_samples
+        
+        num_incorrect = 0
+        num_correct = 0
 
         meta_samples: list[Sample] = []
         for sample_id in gold_samples:
@@ -542,8 +546,12 @@ class PreprocessNcbiSpecialWithSuperGoldTraining(PreprocessNcbiSpecialWithSuperT
             prediction_spans = set()
             if sample_id in all_predictions_dict:
                 prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in all_predictions_dict[sample_id]])
+
             incorrect_prediction_spans = prediction_spans.difference(gold_spans)
             correct_prediction_spans = gold_spans
+            num_incorrect += len(incorrect_prediction_spans)
+            num_correct += len(correct_prediction_spans)
+
             assert len(incorrect_prediction_spans.intersection(correct_prediction_spans)) ==  0
             for correct_span in correct_prediction_spans:
                 meta_samples.append(
@@ -559,4 +567,10 @@ class PreprocessNcbiSpecialWithSuperGoldTraining(PreprocessNcbiSpecialWithSuperT
         train_samples = meta_samples[:percent_85]
         valid_samples = meta_samples[percent_85:]
         assert len(train_samples) + len(valid_samples) == len(meta_samples)
+
+        print("correct", num_correct)
+        print("incorrect", num_incorrect)
+        print("ratio", num_incorrect/(num_correct + num_incorrect))
+
+
         return train_samples, valid_samples

@@ -4,7 +4,7 @@ from utils.config import get_experiment_config, Epochs30Modifier, AccuracyEvalua
 experiments = [
     get_experiment_config(
         model_config_module_name='model_meta_special_tokens_bio',
-        dataset_config_name='ncbi_sentence_meta_super_special_gold',
+        dataset_config_name='ncbi_sentence_meta_super_special_tokens',
         modifiers=[
             Epochs30Modifier(),
             TestEveryEpochModifier(),
@@ -14,7 +14,7 @@ experiments = [
     ),
     get_experiment_config(
         model_config_module_name='model_meta_special_tokens_bio',
-        dataset_config_name='ncbi_sentence_meta_super_special_gold',
+        dataset_config_name='ncbi_sentence_meta_super_special_tokens',
         modifiers=[
             Epochs30Modifier(),
             TestEveryEpochModifier(),
