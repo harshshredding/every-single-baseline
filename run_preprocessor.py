@@ -5,6 +5,6 @@ from all_preprocessor_configs import config_meta_special_tokens_super_gold_test_
 preprocessor_config = config_meta_special_tokens_super_gold_test_behaviour_training()
 preprocess(
     preprocessor_config=preprocessor_config,
-    run_mode=PreprocessorRunType.dry_run,
+    run_mode=PreprocessorRunType.production,
     dataset_splits=[DatasetSplit.test, DatasetSplit.valid, DatasetSplit.train]
 )
