@@ -54,6 +54,7 @@ python gpu_test.py
 # create some useful aliases
 echo 'set -o vi' >> ~/.bashrc
 echo "alias debug='python -m pudb -c'" >> ~/.bashrc
+echo "alias p='git pull'" >> ~/.bashrc
 
 # Configure pudb
 mkdir -p ~/.config/pudb
