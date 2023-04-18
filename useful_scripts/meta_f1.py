@@ -19,19 +19,20 @@ def read_meta_predictions_file(predictions_file_path) -> set:
     return ret
 
 def meta_f1():
-    predictions_file_path = f''
-    meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path)
-    gold_predictions = set()
+    for i in range(30):
+        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/bigger_adafactor/Apps/harshv_research_nlp/experiment_ncbi_meta_bigger_0_ncbi_sentence_meta_bigger_model_meta_bio_test_epoch_{i}_predictions.tsv'
+        meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path)
+        gold_predictions = set()
 
-    gold_samples = get_test_samples_by_dataset_name('ncbi_disease_sentence')
-    gold_samples_dict = {sample.id: sample for sample in gold_samples}
-    for meta_prediction in meta_predictions:
-        assert meta_prediction[0] in gold_samples_dict
+        gold_samples = get_test_samples_by_dataset_name('ncbi_disease_sentence')
+        gold_samples_dict = {sample.id: sample for sample in gold_samples}
+        for meta_prediction in meta_predictions:
+            assert meta_prediction[0] in gold_samples_dict
 
-    for gold_sample in gold_samples:
-        for gold_anno in gold_sample.annos.gold:
-            gold_predictions.add((str(gold_sample.id), int(gold_anno.begin_offset), int(gold_anno.end_offset), 'Disease'))
+        for gold_sample in gold_samples:
+            for gold_anno in gold_sample.annos.gold:
+                gold_predictions.add((str(gold_sample.id), int(gold_anno.begin_offset), int(gold_anno.end_offset), 'Disease'))
 
-    assert len(gold_predictions) and len(meta_predictions)
-    
-    print(get_f1_score(gold_predictions, meta_predictions))
+        assert len(gold_predictions) and len(meta_predictions)
+        
+        print(i, get_f1_score(gold_predictions, meta_predictions))

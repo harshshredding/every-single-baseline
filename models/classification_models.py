@@ -6,6 +6,8 @@ import torch
 import torch.nn as nn
 from structs import Sample
 from preamble import *
+from overrides import override
+
 
 def check_samples_for_meta_labels(samples: list[Sample]):
     for sample in samples:
@@ -30,6 +32,13 @@ class MetaDefault(ModelClaC):
         self.idx_to_type = {i: type_name for type_name, i in self.type_to_idx.items()}
         assert len(self.type_to_idx) == 2
 
+    def get_bert_encoding(self, samples: list[Sample]):
+        return get_bert_encoding_for_batch(
+                samples=samples,
+                bert_tokenizer=self.bert_tokenizer,
+                model_config=self.model_config
+        )
+
 
     def forward(
         self,
@@ -42,11 +51,7 @@ class MetaDefault(ModelClaC):
         """
         check_samples_for_meta_labels(samples=samples)
 
-        bert_encoding = get_bert_encoding_for_batch(
-                samples=samples,
-                bert_tokenizer=self.bert_tokenizer,
-                model_config=self.model_config
-        )
+        bert_encoding = self.get_bert_encoding(samples=samples)
 
         bert_embeddings = self.bert_model(bert_encoding.input_ids, return_dict=True)
 
@@ -80,3 +85,30 @@ class MetaDefault(ModelClaC):
 
 
 
+class MetaDefaultSpecialTokens(MetaDefault):
+    def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
+        super(MetaDefaultSpecialTokens, self).__init__(
+                all_types=all_types,
+                model_config=model_config,
+                dataset_config=dataset_config)
+
+        self.initial_tokenizer_length = len(self.bert_tokenizer)
+        result = self.bert_tokenizer.add_tokens(['<e>', '</e>'], special_tokens=True)
+        assert result == 2
+        assert len(self.bert_tokenizer) == self.initial_tokenizer_length + 2
+        self.beginning_marker_token_idx = len(self.bert_tokenizer) - 2
+        self.ending_marker_token_idx = len(self.bert_tokenizer) - 1
+
+        self.bert_model.resize_token_embeddings(len(self.bert_tokenizer))
+
+    @override
+    def get_bert_encoding(self, samples: list[Sample]):
+        bert_encoding =  get_bert_encoding_for_batch(
+                samples=samples,
+                bert_tokenizer=self.bert_tokenizer,
+                model_config=self.model_config
+        )
+        for batch_input_ids in bert_encoding.input_ids:
+            assert self.beginning_marker_token_idx in batch_input_ids
+            assert self.ending_marker_token_idx in batch_input_ids
+        return bert_encoding
