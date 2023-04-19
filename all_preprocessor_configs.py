@@ -4,7 +4,7 @@ from annotators import get_chatgpt_disease_annotator, get_chatgpt_per_sample_dis
         get_umls_disease_annotator_lowered_exact_word_boundaries, get_bigger_sliding_window_annotator,\
         get_umls_disease_smart_exact_word_boundaries_annotator,\
         get_sentence_annotator,\
-        get_sliding_sentence_annotator, get_umls_with_gold_annotator
+        get_sliding_sentence_annotator, get_umls_with_gold_annotator, get_multiple_sentence_annotator
         
 import sys
 
@@ -303,5 +303,19 @@ def config_meta_special_tokens_super_gold_test_behaviour_training() -> Preproces
         preprocessor_class_init_params={
             'preprocessor_type': name_of_this_function,
             'annotators': []
+        }
+    )
+
+
+def config_ncbi_multiple_sentence() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiDisease',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': [
+                get_multiple_sentence_annotator(),
+            ]
         }
     )

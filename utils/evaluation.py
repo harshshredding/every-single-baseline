@@ -1,12 +1,32 @@
 from structs import Sample
-from util import *
 import statistics
 from enum import Enum
+from utils.general import read_predictions_file
 
 class EvaluationType(Enum):
     f1 = 0
     accuracy = 1
 
+def f1(TP, FP, FN) -> tuple[float, float, float]:
+    if (TP + FP) == 0:
+        precision = None
+    else:
+        precision = TP / (TP + FP)
+    if (FN + TP) == 0:
+        recall = None
+    else:
+        recall = TP / (FN + TP)
+    if (precision is None) or (recall is None) or ((precision + recall) == 0):
+        return 0, 0, 0
+    else:
+        f1_score = 2 * (precision * recall) / (precision + recall)
+        return f1_score, precision, recall
+
+def get_f1_score(gold_set: set, predicted_set: set):
+    true_positives = len(gold_set.intersection(predicted_set))
+    false_positives = len(predicted_set.difference(gold_set))
+    false_negatives = len(gold_set.difference(predicted_set))
+    return f1(TP=true_positives, FP=false_positives, FN=false_negatives)
 
 def get_all_entity_types_set(samples: list[Sample]) -> set[str]:
     all_entity_types = set()

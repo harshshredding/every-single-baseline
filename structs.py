@@ -103,6 +103,7 @@ class Sample:
     text: str
     id: str
     annos: AnnotationCollection
+    features: dict = field(default_factory=dict)
 
 
 SampleAnnotations = Dict[str, List[Anno]]

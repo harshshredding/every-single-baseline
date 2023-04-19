@@ -1,8 +1,8 @@
 from utils.preprocess import PreprocessorRunType, preprocess
 from structs import DatasetSplit
-from all_preprocessor_configs import config_meta_special_tokens_super_gold_test_behaviour_training
+from all_preprocessor_configs import config_ncbi_multiple_sentence
 
-preprocessor_config = config_meta_special_tokens_super_gold_test_behaviour_training()
+preprocessor_config = config_ncbi_multiple_sentence()
 preprocess(
     preprocessor_config=preprocessor_config,
     run_mode=PreprocessorRunType.production,

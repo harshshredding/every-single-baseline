@@ -13,6 +13,7 @@ from collections import Counter
 import nltk
 from utils.spans import contained_in
 from preamble import *
+from overrides import overrides
 
 from utils.easy_testing import\
   get_test_samples_by_dataset_name,\
@@ -227,6 +228,48 @@ class SlidingSentenceAnnotator(Annotator):
 
 
 
+class MultipleSentenceAnnotator(Annotator):
+    def __init__(self) -> None:
+        super().__init__("MultipleSentenceAnnotator")
+        self.nlp = spacy.load('en_core_web_md')
+
+    @overrides
+    def annotate_helper(self, samples: List[Sample], dataset_split: DatasetSplit) -> List[Sample]:
+        sentence_samples = []
+        for sample in show_progress(samples):
+            spacy_doc = self.nlp(sample.text)
+            all_spacy_sentences = list(spacy_doc.sents)
+            for sent_idx, _ in enumerate(all_spacy_sentences):
+                sentence_group = all_spacy_sentences[sent_idx: min(sent_idx + 3, len(all_spacy_sentences))]
+                assert len(sentence_group)
+                assert len(sentence_group) <= 3
+                sample_start_char_idx = sentence_group[0].start_char
+                sample_end_char_idx = sentence_group[-1].end_char
+                sentence_sample_text = sample.text[sample_start_char_idx: sample_end_char_idx]
+                sentence_sample_annos = [
+                    Anno(
+                        begin_offset=gold_anno.begin_offset - sample_start_char_idx,
+                        end_offset=gold_anno.end_offset - sample_start_char_idx,
+                        label_type=gold_anno.label_type,
+                        extraction=gold_anno.extraction
+                    )
+                    for gold_anno in sample.annos.gold
+                    if contained_in(
+                        outside=(sample_start_char_idx, sample_end_char_idx),
+                        inside=(gold_anno.begin_offset, gold_anno.end_offset)
+                    )
+                ]
+                sentence_samples.append(
+                    Sample(
+                        text=sentence_sample_text,
+                        id=f"{sample.id}_{sent_idx}",
+                        annos=AnnotationCollection(gold=sentence_sample_annos, external=[]),
+                        features={
+                            "original_sample_start_offset": sample_start_char_idx
+                        }
+                    )
+                )
+        return sentence_samples
 
 
 class SlidingWindowAnnotator(Annotator):
@@ -718,6 +761,9 @@ def get_sentence_annotator():
 
 def get_sliding_sentence_annotator():
     return SlidingSentenceAnnotator()
+
+def get_multiple_sentence_annotator():
+    return MultipleSentenceAnnotator()
 
 def get_umls_with_gold_annotator(vanilla_dataset_config_name):
     return UmlsDiseaseExternalKnowledgeWithGold(vanilla_dataset_config_name=vanilla_dataset_config_name)

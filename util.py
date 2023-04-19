@@ -475,12 +475,6 @@ def read_predictions_file(predictions_file_path) -> dict[str, list[Anno]]:
     return sample_to_annos
 
 
-def get_f1_score(gold_set: set, predicted_set: set):
-    true_positives = len(gold_set.intersection(predicted_set))
-    false_positives = len(predicted_set.difference(gold_set))
-    false_negatives = len(gold_set.difference(predicted_set))
-    return f1(TP=true_positives, FP=false_positives, FN=false_negatives)
-
 
 def f1(TP, FP, FN) -> tuple[float, float, float]:
     if (TP + FP) == 0:
