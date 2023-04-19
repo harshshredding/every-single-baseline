@@ -4,6 +4,9 @@ from typing import List, Dict, NamedTuple
 
 OUTSIDE_LABEL_STRING = 'o'
 
+class EvaluationType(Enum):
+    f1 = 0
+    accuracy = 1
 
 class Span(NamedTuple):
     """A span"""
@@ -81,6 +84,13 @@ class Anno:
     label_type: str
     extraction: str
     features: dict = field(default_factory=dict)
+
+
+class SampleAnno(NamedTuple):
+    sample_id: str
+    type_string: str
+    begin_offset: int
+    end_offset: int
 
 
 @dataclass
