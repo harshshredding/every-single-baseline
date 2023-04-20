@@ -121,6 +121,12 @@ class BiggerBatchModifier(ExperimentModifier):
         experiment_config.model_config.batch_size = 8
         return experiment_config
 
+
+class EvenBiggerBatchModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.model_config.batch_size = 16
+        return experiment_config
+
 class SmallerBatchModifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
         experiment_config.model_config.batch_size = 1

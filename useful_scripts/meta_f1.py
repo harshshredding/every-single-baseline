@@ -1,5 +1,5 @@
 from utils.easy_testing import get_test_samples_by_dataset_name
-from utils.evaluation import get_f1_score
+from utils.evaluation import get_f1_score_from_sets
 import pandas as pd
 
 def read_meta_predictions_file(predictions_file_path) -> set:
@@ -18,9 +18,10 @@ def read_meta_predictions_file(predictions_file_path) -> set:
     print(f"removed {num_removed} predictions")
     return ret
 
+
 def meta_f1():
     for i in range(30):
-        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/weighted_adam/harshv_research_nlp/experiment_ncbi_meta_special_weighted_super_gold_2_ncbi_sentence_meta_super_special_gold_model_meta_special_weighted_bio_test_epoch_{i}_predictions.tsv'
+        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/all_mistakes_all_gold_adafactor/Apps/harshv_research_nlp/experiment_ncbi_meta_weighted_all_mistakes_all_gold_1_ncbi_sentence_all_mistakes_all_gold_model_meta_special_weighted_bio_test_epoch_{i}_predictions.tsv'
         meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path)
         gold_predictions = set()
 
@@ -35,4 +36,4 @@ def meta_f1():
 
         assert len(gold_predictions) and len(meta_predictions)
         
-        print(i, get_f1_score(gold_predictions, meta_predictions))
+        print(i, get_f1_score_from_sets(gold_predictions, meta_predictions))

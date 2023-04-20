@@ -77,15 +77,24 @@ def get_predicted_annos_for_entity_type(predictions_file_path: str, entity_type:
         )
     return set(predicted_annos)
 
-def get_predicted_annos_set(predictions_file_path: str) -> set[tuple[str, str, int, int]]:
+
+def get_predicted_annos_set(predictions_file_path: str) -> set[SampleAnno]:
     predictions_dict = read_predictions_file(predictions_file_path=predictions_file_path)
     predicted_annos = []
     for sample_id, annos in predictions_dict.items():
         predicted_annos.extend(
-                [(sample_id, anno.label_type, anno.begin_offset, anno.end_offset)
+                [SampleAnno(sample_id, anno.label_type, anno.begin_offset, anno.end_offset)
                  for anno in annos]
         )
     return set(predicted_annos)
+
+
+def evaluate_predictions(predictions_file_path: str, gold_dataset_config: str, dataset_split: DatasetSplit):
+    gold_annos = get_gold_annos_set(dataset_config_name=gold_dataset_config, split=dataset_split)
+    predicted_annos = get_predicted_annos_set(predictions_file_path=predictions_file_path)
+    print(get_f1_score_from_sets(gold_set=gold_annos, predicted_set=predicted_annos))
+
+
 
 def get_macro_f1(predictions_file_path: str, samples: list[Sample]):
     all_entity_types = get_all_entity_types_set(samples)
