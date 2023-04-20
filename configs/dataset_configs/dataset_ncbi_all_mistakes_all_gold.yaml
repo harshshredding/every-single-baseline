@@ -6,5 +6,5 @@ num_types: 2
 dataset_name: ncbi_disease
 dataset_config_name: ncbi_sentence_all_mistakes_all_gold
 expected_number_of_train_samples: 5548
-expected_number_of_valid_samples: 540
+expected_number_of_valid_samples: 980
 expected_number_of_test_samples: 1044
