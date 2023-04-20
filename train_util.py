@@ -6,7 +6,7 @@ import pandas as pd
 import csv
 import util
 from utils.config import ExperimentConfig
-from utils.evaluation import EvaluationType
+from structs import EvaluationType
 from typing import Dict
 from utils.config import ModelConfig, DatasetConfig
 import utils.dropbox as dropbox_util

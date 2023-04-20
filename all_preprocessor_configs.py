@@ -319,3 +319,17 @@ def config_ncbi_multiple_sentence() -> PreprocessorConfig:
             ]
         }
     )
+
+
+def config_ncbi_meta_all_mistakes_all_gold() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.ncbi_disease_preprocessor.PreprocessNcbiMetaAllGoldAllMistakes',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': []
+        }
+    )
+
+

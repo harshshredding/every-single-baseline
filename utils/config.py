@@ -1,5 +1,5 @@
 from typing import NamedTuple, Optional
-from utils.evaluation import EvaluationType
+from structs import EvaluationType
 from utils.universal import die
 import yaml
 import glob
