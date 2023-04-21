@@ -47,7 +47,7 @@ experiments = [
 
     # CRF
     get_experiment_config(
-        model_config_module_name='model_seq_large_default_crf',
+        model_config_module_name='model_seq_large_crf',
         dataset_config_name='social_dis_ner_vanilla',
         modifiers=[
             EpochsCustomModifier(num_epochs=25),
@@ -56,7 +56,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_seq_large_default_crf',
+        model_config_module_name='model_seq_large_crf',
         dataset_config_name='social_dis_ner_vanilla',
         modifiers=[
             EpochsCustomModifier(num_epochs=25),
