@@ -155,6 +155,16 @@ class Epochs20Modifier(ExperimentModifier):
         return experiment_config
 
 
+class EpochsCustomModifier(ExperimentModifier):
+    def __init__(self, num_epochs: int):
+        super().__init__()
+        self.num_epochs = num_epochs
+
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.num_epochs = self.num_epochs
+        return experiment_config
+
+
 class Epochs30Modifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
         experiment_config.num_epochs = 30

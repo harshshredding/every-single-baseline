@@ -20,7 +20,7 @@ from transformers import AutoTokenizer
 import transformers
 import torch.nn as nn
 from pyfzf.pyfzf import FzfPrompt
-from utils.evaluation import f1
+from utils.evaluation_general import f1
 
 
 def has_external_features(samples: list[Sample]) -> bool:
