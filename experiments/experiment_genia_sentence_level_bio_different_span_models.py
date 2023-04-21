@@ -1,4 +1,4 @@
-from utils.config import AdafactorModifier, AdamModifier, get_experiment_config, Epochs20Modifier, BiggerBatchModifier, TestEveryEpochModifier, SmallerSpanWidthModifier
+from utils.config import AdafactorModifier, AdamModifier, TinySpanWidthModifier, get_experiment_config, Epochs20Modifier, BiggerBatchModifier, TestEveryEpochModifier, SmallerSpanWidthModifier
 
 
 experiments = [
@@ -18,7 +18,7 @@ experiments = [
         modifiers=[
             Epochs20Modifier(),
             TestEveryEpochModifier(),
-            SmallerSpanWidthModifier(),
+            TinySpanWidthModifier(),
             BiggerBatchModifier(),
             AdafactorModifier()
         ]
@@ -39,7 +39,7 @@ experiments = [
         modifiers=[
             Epochs20Modifier(),
             TestEveryEpochModifier(),
-            SmallerSpanWidthModifier(),
+            TinySpanWidthModifier(),
             BiggerBatchModifier(),
             AdafactorModifier()
         ]
@@ -62,7 +62,7 @@ experiments = [
         modifiers=[
             Epochs20Modifier(),
             TestEveryEpochModifier(),
-            SmallerSpanWidthModifier(),
+            TinySpanWidthModifier(),
             BiggerBatchModifier(),
             AdamModifier()
         ]
@@ -83,7 +83,7 @@ experiments = [
         modifiers=[
             Epochs20Modifier(),
             TestEveryEpochModifier(),
-            SmallerSpanWidthModifier(),
+            TinySpanWidthModifier(),
             BiggerBatchModifier(),
             AdamModifier()
         ]

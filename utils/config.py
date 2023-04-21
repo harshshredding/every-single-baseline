@@ -137,6 +137,13 @@ class SmallerSpanWidthModifier(ExperimentModifier):
         experiment_config.model_config.max_span_length = 32
         return experiment_config
 
+
+class TinySpanWidthModifier(ExperimentModifier):
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.model_config.max_span_length = 16
+        return experiment_config
+
+
 class TestEveryEpochModifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
         experiment_config.testing_frequency = 1

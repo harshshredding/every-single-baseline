@@ -299,7 +299,6 @@ class SpanDefaultTransformerBiggerPosition(SpanDefaultTransformerBigger):
         self.pos_encoder = PositionalEncodingOriginal(d_model=(self.input_dim*2))
 
     def enumerate_spans_sorted(self, token_ids: List) -> List[tuple[int,int]]:
-        assert self.max_span_width == 32
         spans_list = util.enumerate_spans(token_ids, max_span_width=self.max_span_width)
         sorted_spans_list = sorted(spans_list, key=lambda span: (span[1] - span[0], span[0]))
         return sorted_spans_list
