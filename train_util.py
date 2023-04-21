@@ -20,6 +20,7 @@ from transformers import AutoTokenizer
 import transformers
 import torch.nn as nn
 from pyfzf.pyfzf import FzfPrompt
+from utils.evaluation import f1
 
 
 def has_external_features(samples: list[Sample]) -> bool:
@@ -821,7 +822,7 @@ def evaluate_with_f1(
                 # write sample mistakes
                 store_mistakes(sample, false_positives_sample, false_negatives_sample,
                                mistakes_file_writer)
-    micro_f1, micro_precision, micro_recall = util.f1(num_TP_total, num_FP_total, num_FN_total)
+    micro_f1, micro_precision, micro_recall = f1(num_TP_total, num_FP_total, num_FN_total)
     logger.info(blue(f"Micro f1 {micro_f1}, prec {micro_precision}, recall {micro_recall}"))
     visualize_errors_file_path = f"{error_visualization_folder_path}/{output_file_prefix}_visualize_errors.bdocjs"
     util.create_mistakes_visualization(mistakes_file_path, visualize_errors_file_path, samples)
