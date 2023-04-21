@@ -1,4 +1,4 @@
-from utils.config import BiggerBatchModifier, EvenBiggerBatchModifier, get_experiment_config, Epochs30Modifier, AccuracyEvaluationModifier, TestEveryEpochModifier, AdafactorModifier, AdamModifier
+from utils.config import BiggerBatchModifier, EvenBiggerBatchModifier, get_experiment_config, Epochs30Modifier, AccuracyEvaluationModifier, TestEveryEpochModifier, AdamModifier
 
 
 experiments = [

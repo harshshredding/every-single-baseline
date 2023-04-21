@@ -21,21 +21,4 @@ experiments = [
             BiggerBatchModifier()
         ]
     ),
-    get_experiment_config(
-        model_config_module_name='model_seq_large_bio',
-        dataset_config_name='genia_config_vanilla',
-        modifiers=[
-            Epochs20Modifier(),
-            TestEveryEpochModifier(),
-        ]
-    ),
-    get_experiment_config(
-        model_config_module_name='model_seq_large_bio',
-        dataset_config_name='genia_config_vanilla',
-        modifiers=[
-            Epochs20Modifier(),
-            TestEveryEpochModifier(),
-            BiggerBatchModifier()
-        ]
-    ),
 ]

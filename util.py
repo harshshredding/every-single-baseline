@@ -458,39 +458,6 @@ def get_spans_from_bio_labels(predictions_sub: List[Label], batch_encoding, batc
     return span_list_word_idx
 
 
-def read_predictions_file(predictions_file_path) -> dict[str, list[Anno]]:
-    df = pd.read_csv(predictions_file_path, sep='\t')
-    sample_to_annos = {}
-    for _, row in df.iterrows():
-        annos_list = sample_to_annos.get(str(row['sample_id']), [])
-        annos_list.append(
-            Anno(
-                begin_offset=int(row['begin']),
-                end_offset=int(row['end']),
-                label_type=str(row['type']),
-                extraction=str(row['extraction']),
-            )
-        )
-        sample_to_annos[str(row['sample_id'])] = annos_list
-    return sample_to_annos
-
-
-
-def f1(TP, FP, FN) -> tuple[float, float, float]:
-    if (TP + FP) == 0:
-        precision = None
-    else:
-        precision = TP / (TP + FP)
-    if (FN + TP) == 0:
-        recall = None
-    else:
-        recall = TP / (FN + TP)
-    if (precision is None) or (recall is None) or ((precision + recall) == 0):
-        return 0, 0, 0
-    else:
-        f1_score = 2 * (precision * recall) / (precision + recall)
-        return f1_score, precision, recall
-
 
 def get_tweet_data(folder_path):
     id_to_data = {}

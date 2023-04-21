@@ -2,7 +2,7 @@ from util import read_predictions_file
 from collections import defaultdict
 from structs import Anno, Sample
 from utils.easy_testing import get_test_samples_by_dataset_name
-from utils.evaluation import get_f1_score
+from utils.evaluation import get_f1_score_from_sets
 
 
 def get_original_id_info_from_window_id(sample_id: str) -> tuple:
@@ -87,4 +87,4 @@ predicted_annos_set = get_annos_set(original_predictions_dict_no_duplicates)
 test_gold_samples = get_test_samples_by_dataset_name('living_ner_vanilla')
 gold_annos_set = get_gold_annos_set(test_gold_samples)
 
-print(get_f1_score(gold_set=gold_annos_set, predicted_set=predicted_annos_set))
+print(get_f1_score_from_sets(gold_set=gold_annos_set, predicted_set=predicted_annos_set))

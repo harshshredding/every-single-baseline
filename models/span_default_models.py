@@ -9,7 +9,7 @@ from utils.config import ModelConfig, DatasetConfig
 from utils.model import SeqLabelPredictions, ModelClaC
 import torch.nn as nn
 from preamble import *
-from utils.model import PositionalEncodingBatch, get_bert_embeddings_for_batch
+from utils.model import PositionalEncodingOriginal, get_bert_embeddings_for_batch
 
 
 
@@ -282,11 +282,21 @@ class SpanDefaultTransformerBigger(SpanDefaultTransformerSmall):
         self.transformer_encoder = nn.TransformerEncoder(encoder_layer=self.encoder_layer, num_layers=6)
 
 
+def encode_with_transformer(
+        sequence: torch.Tensor,
+        pos_encoder: PositionalEncodingOriginal,
+        transformer):
+    sequence = pos_encoder(sequence.permute(1,0,2))
+
+    sequence = transformer(sequence)
+
+    return sequence.permute(1,0,2)
+
+
 class SpanDefaultTransformerBiggerPosition(SpanDefaultTransformerBigger):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super().__init__(all_types=all_types, model_config=model_config, dataset_config=dataset_config)
-        self.pos_encoder = PositionalEncodingBatch(d_model=(self.input_dim*2))
-
+        self.pos_encoder = PositionalEncodingOriginal(d_model=(self.input_dim*2))
 
     def enumerate_spans_sorted(self, token_ids: List) -> List[tuple[int,int]]:
         assert self.max_span_width == 16
@@ -322,9 +332,15 @@ class SpanDefaultTransformerBiggerPosition(SpanDefaultTransformerBigger):
 
         # Encode the span embeddings
         # SHAPE: (batch_size, num_spans, span_dim)
-        all_possible_span_embeddings = self.pos_encoder(all_possible_span_embeddings)
+        all_possible_span_embeddings = encode_with_transformer(
+                                            sequence=all_possible_span_embeddings,
+                                            pos_encoder=self.pos_encoder,
+                                            transformer=self.transformer_encoder
+                                       )
         # SHAPE: (batch_size, num_spans, span_dim)
-        all_possible_span_embeddings = self.transformer_encoder(all_possible_span_embeddings)
+        # all_possible_span_embeddings = self.pos_encoder(all_possible_span_embeddings)
+        # # SHAPE: (batch_size, num_spans, span_dim)
+        # all_possible_span_embeddings = self.transformer_encoder(all_possible_span_embeddings)
 
         # SHAPE: (batch_size, num_spans, num_classes)
         predicted_all_possible_spans_logits_batch = self.classifier(all_possible_span_embeddings)

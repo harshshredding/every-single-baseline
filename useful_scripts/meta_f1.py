@@ -21,7 +21,7 @@ def read_meta_predictions_file(predictions_file_path) -> set:
 
 def meta_f1():
     for i in range(30):
-        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/all_mistakes_all_gold_adafactor/Apps/harshv_research_nlp/experiment_ncbi_meta_weighted_all_mistakes_all_gold_1_ncbi_sentence_all_mistakes_all_gold_model_meta_special_weighted_bio_test_epoch_{i}_predictions.tsv'
+        predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/adam_all_mistakes_all_gold_batch_16/Apps/harshv_research_nlp/experiment_ncbi_meta_weighted_all_mistakes_all_gold_bigger_batch_1_ncbi_sentence_all_mistakes_all_gold_model_meta_special_weighted_bio_test_epoch_{i}_predictions.tsv'
         meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path)
         gold_predictions = set()
 
