@@ -7,7 +7,6 @@ experiments = [
         dataset_config_name='multiconer_fine_vanilla',
         modifiers=[
             Epochs20Modifier(),
-            TestEveryEpochModifier(),
             SmallerSpanWidthModifier(),
             AdafactorModifier()
         ]
@@ -17,7 +16,6 @@ experiments = [
         dataset_config_name='multiconer_fine_vanilla',
         modifiers=[
             Epochs20Modifier(),
-            TestEveryEpochModifier(),
             SmallerSpanWidthModifier(),
             AdafactorModifier()
         ]
@@ -27,7 +25,6 @@ experiments = [
         dataset_config_name='multiconer_fine_vanilla',
         modifiers=[
             Epochs20Modifier(),
-            TestEveryEpochModifier(),
             SmallerSpanWidthModifier(),
             AdamModifier()
         ]
@@ -37,7 +34,6 @@ experiments = [
         dataset_config_name='multiconer_fine_vanilla',
         modifiers=[
             Epochs20Modifier(),
-            TestEveryEpochModifier(),
             SmallerSpanWidthModifier(),
             AdamModifier()
         ]
