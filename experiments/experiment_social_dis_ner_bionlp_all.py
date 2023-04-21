@@ -1,4 +1,4 @@
-from utils.config import AdafactorModifier, AdamModifier, EpochsCustomModifier, TinySpanWidthModifier, get_experiment_config, Epochs20Modifier, BiggerBatchModifier, TestEveryEpochModifier
+from utils.config import AdafactorModifier, AdamModifier, EpochsCustomModifier, SmallerSpanWidthModifier, TinySpanWidthModifier, get_experiment_config, Epochs20Modifier, BiggerBatchModifier, TestEveryEpochModifier
 
 
 experiments = [
@@ -8,6 +8,7 @@ experiments = [
         dataset_config_name='social_dis_ner_vanilla',
         modifiers=[
             Epochs20Modifier(),
+            SmallerSpanWidthModifier(),
             TestEveryEpochModifier(),
             AdafactorModifier()
         ]
@@ -17,6 +18,7 @@ experiments = [
         dataset_config_name='social_dis_ner_vanilla',
         modifiers=[
             Epochs20Modifier(),
+            SmallerSpanWidthModifier(),
             TestEveryEpochModifier(),
             AdamModifier()
         ]
