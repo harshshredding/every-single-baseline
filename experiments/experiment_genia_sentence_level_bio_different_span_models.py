@@ -9,6 +9,7 @@ experiments = [
             Epochs20Modifier(),
             TestEveryEpochModifier(),
             SmallerSpanWidthModifier(),
+            TinySpanWidthModifier(),
             AdafactorModifier()
         ]
     ),
@@ -29,6 +30,7 @@ experiments = [
         modifiers=[
             Epochs20Modifier(),
             TestEveryEpochModifier(),
+            TinySpanWidthModifier(),
             SmallerSpanWidthModifier(),
             AdafactorModifier()
         ]
