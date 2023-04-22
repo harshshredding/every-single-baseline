@@ -268,6 +268,12 @@ def get_dataset_config_by_name(dataset_config_name: str) -> DatasetConfig:
             assert found_dataset_config is None, f"Duplicate dataset config {dataset_config}"
             found_dataset_config = dataset_config
     assert found_dataset_config is not None, f"Should have been able to find dataset config with name {dataset_config_name}"
+    assert 'production' in found_dataset_config.train_samples_file_path
+    assert 'production' in found_dataset_config.test_samples_file_path
+    assert 'production' in found_dataset_config.valid_samples_file_path
+    assert 'json' in found_dataset_config.train_samples_file_path
+    assert 'json' in found_dataset_config.test_samples_file_path
+    assert 'json' in found_dataset_config.valid_samples_file_path
     return found_dataset_config
 
 
