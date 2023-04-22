@@ -3,7 +3,7 @@ from utils.config import AdafactorModifier, BiggerBatchModifier, EpochsCustomMod
 
 experiments = [
     get_experiment_config(
-        model_config_module_name='model_meta_special_weighted_bio',
+        model_config_module_name='model_meta_special_weighted',
         dataset_config_name='social_dis_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
@@ -13,7 +13,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_meta_special_weighted_bio',
+        model_config_module_name='model_meta_special_weighted',
         dataset_config_name='social_dis_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
@@ -24,7 +24,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_meta_special_weighted_bio',
+        model_config_module_name='model_meta_special_weighted',
         dataset_config_name='social_dis_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
@@ -35,7 +35,7 @@ experiments = [
         ]
     ),
     get_experiment_config(
-        model_config_module_name='model_meta_special_weighted_bio',
+        model_config_module_name='model_meta_special_weighted',
         dataset_config_name='social_dis_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
