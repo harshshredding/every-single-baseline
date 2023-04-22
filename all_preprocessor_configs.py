@@ -1,11 +1,11 @@
 from utils.config import PreprocessorConfig
-from annotators import get_chatgpt_disease_annotator, get_chatgpt_per_sample_disease_annotator, get_sentence_annotator,\
+from annotators import SentenceAnnotatorSpanish, get_chatgpt_disease_annotator, get_chatgpt_per_sample_disease_annotator, get_sentence_annotator,\
         get_umls_disease_annotator_exact, get_umls_disease_annotator_lowered_exact,\
         get_umls_disease_annotator_lowered_exact_word_boundaries, get_bigger_sliding_window_annotator,\
         get_umls_disease_smart_exact_word_boundaries_annotator,\
         get_sentence_annotator,\
         get_sliding_sentence_annotator, get_umls_with_gold_annotator, get_multiple_sentence_annotator
-        
+from structs import Dataset 
 import sys
 
 def config_socialdisner_vanilla_chatgpt_external() -> PreprocessorConfig:
@@ -332,4 +332,31 @@ def config_ncbi_meta_all_mistakes_all_gold() -> PreprocessorConfig:
         }
     )
 
+def config_living_ner_sentence() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.livingner_preprocessor.PreprocessLivingNER',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': [
+                SentenceAnnotatorSpanish()
+            ]
+        }
+    )
 
+
+def config_meta_social_dis_ner() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.meta.MetaPreprocessor',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': [],
+            'test_files_folder_full_path': '/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp',
+            'valid_files_folder_full_path': '/Users/harshverma/meta_bionlp/social_dis_ner/training/Apps/harshv_research_nlp',
+            'dataset_config_name': 'social_dis_ner_vanilla',
+            'dataset': Dataset.social_dis_ner
+        }
+    )

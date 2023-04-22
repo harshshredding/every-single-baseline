@@ -15,8 +15,8 @@ chat_gpt_response_dict = {
 }
 
     
-predictions_tsv_file = '/Users/harshverma/every-single-baseline/useful_scripts/no_chat_default/Apps/harshv_research_nlp/experiment_social_dis_ner_all_default_models_social_dis_ner_vanilla_model_span_large_default_test_epoch_19_predictions.tsv'
-output_file = './useful_scripts/span_vanilla_19.tsv'
+predictions_tsv_file = '/Users/harshverma/every-single-baseline/useful_scripts/social_union_bionlp_adafactor.tsv'
+output_file = './useful_scripts/union_bionlp_adafactor.tsv'
 
 predictions_df = pd.read_csv(predictions_tsv_file, sep='\t')
 

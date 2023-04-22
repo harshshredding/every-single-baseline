@@ -90,11 +90,11 @@ def majority_living_ner_window_combo():
 # ****************
 def union_social_dis_ner():
     test_prediction_file_paths = [
-        "/Users/harshverma/every-single-baseline/useful_scripts/vanilla_social_seq.tsv",
-        "/Users/harshverma/every-single-baseline/useful_scripts/vanilla_social_span.tsv"
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_0_social_dis_ner_vanilla_model_span_large_default_test_epoch_16_predictions.tsv",
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_2_social_dis_ner_vanilla_model_seq_large_default_test_epoch_5_predictions.tsv"
     ]
     union_predictions = get_union_predictions(test_prediction_file_paths)
-    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/vanilla_social_union.tsv'
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/social_union_bionlp_adafactor.tsv'
     with open(output_file_path, 'w') as output_tsv: 
         writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
         writer.writerow(['tweets_id', 'begin', 'end', 'type', 'extraction'])
@@ -108,14 +108,14 @@ def union_social_dis_ner():
 
 def majority_social_dis_ner():
     test_prediction_file_paths = [
-        "/Users/harshverma/every-single-baseline/useful_scripts/vanilla_social_seq.tsv",
-        "/Users/harshverma/every-single-baseline/useful_scripts/vanilla_social_span.tsv"
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_0_social_dis_ner_vanilla_model_span_large_default_test_epoch_16_predictions.tsv",
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_2_social_dis_ner_vanilla_model_seq_large_default_test_epoch_5_predictions.tsv"
     ]
     majority_prediction_counts = get_majority_vote_predictions(test_prediction_file_paths)
     majority_predictions = set([anno for anno in majority_prediction_counts])
     assert len(majority_predictions) == len(majority_prediction_counts)
 
-    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/vanilla_social_majority.tsv'
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/social_majority_bionlp_adafactor.tsv'
     with open(output_file_path, 'w') as output_tsv: 
         writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
         writer.writerow(['tweets_id', 'begin', 'end', 'type', 'extraction'])

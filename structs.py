@@ -115,6 +115,9 @@ class Sample:
     annos: AnnotationCollection
     features: dict = field(default_factory=dict)
 
+class PreprocessorRunType(Enum):
+    production = 0
+    dry_run = 1
 
 SampleAnnotations = Dict[str, List[Anno]]
 SampleId = str

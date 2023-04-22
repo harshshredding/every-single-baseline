@@ -142,6 +142,12 @@ class SentenceAnnotator(Annotator):
         return sentence_samples
 
 
+class SentenceAnnotatorSpanish(SentenceAnnotator):
+    def __init__(self) -> None:
+        super().__init__()
+        self.nlp = spacy.load('es_core_news_md')
+
+
 class TokenAnnotator(Annotator):
     def __init__(self) -> None:
         super().__init__("Token Annotator")
@@ -767,3 +773,6 @@ def get_multiple_sentence_annotator():
 
 def get_umls_with_gold_annotator(vanilla_dataset_config_name):
     return UmlsDiseaseExternalKnowledgeWithGold(vanilla_dataset_config_name=vanilla_dataset_config_name)
+
+def get_spanish_sentence_annotator():
+    return SentenceAnnotatorSpanish()
