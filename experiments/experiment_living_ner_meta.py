@@ -1,4 +1,4 @@
-from utils.config import AdafactorModifier, BiggerBatchModifier, EpochsCustomModifier, EvenBiggerBatchModifier, get_experiment_config, Epochs30Modifier, AccuracyEvaluationModifier, TestEveryEpochModifier, AdamModifier
+from utils.config import AdafactorModifier, BiggerBatchModifier, EpochsCustomModifier, EvenBiggerBatchModifier, TestFrequencyModifier, get_experiment_config, Epochs30Modifier, AccuracyEvaluationModifier, TestEveryEpochModifier, AdamModifier
 
 
 experiments = [
@@ -7,7 +7,7 @@ experiments = [
         dataset_config_name='living_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
-            TestEveryEpochModifier(),
+            TestFrequencyModifier(frequency=3),
             AdafactorModifier(),
             AccuracyEvaluationModifier(),
         ]
@@ -17,7 +17,7 @@ experiments = [
         dataset_config_name='living_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
-            TestEveryEpochModifier(),
+            TestFrequencyModifier(frequency=3),
             AdafactorModifier(),
             AccuracyEvaluationModifier(),
             BiggerBatchModifier(),
@@ -28,7 +28,7 @@ experiments = [
         dataset_config_name='living_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
-            TestEveryEpochModifier(),
+            TestFrequencyModifier(frequency=3),
             AdamModifier(),
             AccuracyEvaluationModifier(),
             BiggerBatchModifier(),
@@ -39,7 +39,7 @@ experiments = [
         dataset_config_name='living_ner_meta',
         modifiers=[
             EpochsCustomModifier(num_epochs=15),
-            TestEveryEpochModifier(),
+            TestFrequencyModifier(frequency=3),
             AdamModifier(),
             AccuracyEvaluationModifier(),
             EvenBiggerBatchModifier(),

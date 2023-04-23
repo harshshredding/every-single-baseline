@@ -149,6 +149,17 @@ class TestEveryEpochModifier(ExperimentModifier):
         experiment_config.testing_frequency = 1
         return experiment_config
 
+
+class TestFrequencyModifier(ExperimentModifier):
+    def __init__(self, frequency: int):
+        super().__init__()
+        self.frequency = frequency
+
+    def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
+        experiment_config.testing_frequency = self.frequency
+        return experiment_config
+
+
 class Epochs20Modifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
         experiment_config.num_epochs = 20
