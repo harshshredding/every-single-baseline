@@ -141,10 +141,29 @@ def union_social_dis_ner():
                              "extraction"])
 
 
+def union_social_dis_ner_all():
+    test_prediction_file_paths = [
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_0_social_dis_ner_vanilla_model_span_large_default_test_epoch_16_predictions.tsv",
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_2_social_dis_ner_vanilla_model_seq_large_default_test_epoch_5_predictions.tsv",
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_4_social_dis_ner_vanilla_model_seq_large_crf_test_epoch_16_predictions.tsv"
+    ]
+    union_predictions = get_union_predictions(test_prediction_file_paths)
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/social_union_bionlp_adafactor_all.tsv'
+    with open(output_file_path, 'w') as output_tsv: 
+        writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
+        writer.writerow(['tweets_id', 'begin', 'end', 'type', 'extraction'])
+        for union_prediction in union_predictions:
+            writer.writerow([union_prediction.sample_id,
+                             str(union_prediction.begin_offset),
+                             str(union_prediction.end_offset),
+                             union_prediction.type_string,
+                             "extraction"])
+
+
 def majority_social_dis_ner():
     test_prediction_file_paths = [
         "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_0_social_dis_ner_vanilla_model_span_large_default_test_epoch_16_predictions.tsv",
-        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_2_social_dis_ner_vanilla_model_seq_large_default_test_epoch_5_predictions.tsv"
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_2_social_dis_ner_vanilla_model_seq_large_default_test_epoch_5_predictions.tsv",
     ]
     majority_prediction_counts = get_majority_vote_predictions(test_prediction_file_paths)
     majority_predictions = set([anno for anno in majority_prediction_counts])
@@ -162,6 +181,26 @@ def majority_social_dis_ner():
                              "extraction"])
 
 
+def majority_social_dis_ner_all():
+    test_prediction_file_paths = [
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_0_social_dis_ner_vanilla_model_span_large_default_test_epoch_16_predictions.tsv",
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_2_social_dis_ner_vanilla_model_seq_large_default_test_epoch_5_predictions.tsv",
+        "/Users/harshverma/meta_bionlp/social_dis_ner/test/Apps/harshv_research_nlp/experiment_social_dis_ner_bionlp_all_4_social_dis_ner_vanilla_model_seq_large_crf_test_epoch_16_predictions.tsv"
+    ]
+    majority_prediction_counts = get_majority_vote_predictions(test_prediction_file_paths)
+    majority_predictions = set([anno for anno in majority_prediction_counts])
+    assert len(majority_predictions) == len(majority_prediction_counts)
+
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/social_majority_bionlp_adafactor_all.tsv'
+    with open(output_file_path, 'w') as output_tsv: 
+        writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
+        writer.writerow(['tweets_id', 'begin', 'end', 'type', 'extraction'])
+        for majority_prediction in majority_predictions:
+            writer.writerow([majority_prediction.sample_id,
+                             str(majority_prediction.begin_offset),
+                             str(majority_prediction.end_offset),
+                             majority_prediction.type_string,
+                             "extraction"])
 
 # ****************
 # MultiCoNER
@@ -212,15 +251,37 @@ def majority_multiconer_custom_tokenization_batched():
 # ************
 def union_genia_sentence():
     prediction_file_paths = [
-'/Users/harshverma/every-single-baseline/meta/genia/test/experiment_genia_sentence_level_bio_genia_config_vanilla_model_seq_large_bio_test_epoch_4_predictions.tsv',
-'/Users/harshverma/every-single-baseline/meta/genia/test/experiment_genia_sentence_level_bio_genia_config_vanilla_model_span_large_bio_default_test_epoch_7_predictions.tsv'
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_2_genia_config_vanilla_model_seq_large_bio_test_epoch_2_predictions.tsv",
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_1_genia_config_vanilla_model_span_large_bio_default_test_epoch_4_predictions.tsv"
     ]
     union_results(dataset_config_name='genia_config_vanilla', test_prediction_file_paths=prediction_file_paths)
 
 
 def majority_genia_sentence():
     prediction_file_paths = [
-'/Users/harshverma/every-single-baseline/meta/genia/test/experiment_genia_sentence_level_bio_genia_config_vanilla_model_seq_large_bio_test_epoch_4_predictions.tsv',
-'/Users/harshverma/every-single-baseline/meta/genia/test/experiment_genia_sentence_level_bio_genia_config_vanilla_model_span_large_bio_default_test_epoch_7_predictions.tsv'
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_2_genia_config_vanilla_model_seq_large_bio_test_epoch_2_predictions.tsv",
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_1_genia_config_vanilla_model_span_large_bio_default_test_epoch_4_predictions.tsv"
     ]
     get_majority_voting_results(dataset_config_name='genia_config_vanilla', test_prediction_file_paths=prediction_file_paths)
+
+
+
+def union_genia_sentence_all():
+    prediction_file_paths = [
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_2_genia_config_vanilla_model_seq_large_bio_test_epoch_2_predictions.tsv",
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_1_genia_config_vanilla_model_span_large_bio_default_test_epoch_4_predictions.tsv",
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_0_genia_config_vanilla_model_seq_large_crf_bio_test_epoch_2_predictions.tsv"
+    ]
+    union_results(dataset_config_name='genia_config_vanilla', test_prediction_file_paths=prediction_file_paths)
+
+
+def majority_genia_sentence_all():
+    prediction_file_paths = [
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_2_genia_config_vanilla_model_seq_large_bio_test_epoch_2_predictions.tsv",
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_1_genia_config_vanilla_model_span_large_bio_default_test_epoch_4_predictions.tsv",
+            "/Users/harshverma/meta_bionlp/genia/test/Apps/harshv_research_nlp/experiment_genia_bionlp_all_adafactor_0_genia_config_vanilla_model_seq_large_crf_bio_test_epoch_2_predictions.tsv"
+    ]
+    get_majority_voting_results(dataset_config_name='genia_config_vanilla', test_prediction_file_paths=prediction_file_paths)
+
+
+

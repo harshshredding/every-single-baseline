@@ -31,7 +31,7 @@ class MetaPreprocessor(Preprocessor):
         self.valid_prediction_file_paths = glob(f"{valid_files_folder_full_path}/*.tsv")
         self.dataset_config_name = dataset_config_name
         assert len(self.test_prediction_file_paths) == 2
-        assert len(self.valid_prediction_file_paths) == 26
+        assert len(self.valid_prediction_file_paths) == 40
 
 
     def create_meta_sample(self, sample: Sample, span: SampleAnno, label_type: str):
@@ -44,7 +44,7 @@ class MetaPreprocessor(Preprocessor):
 
         return Sample(
                 text= sample_text_with_special_tokens,
-                id=f"{sample.id}@@@{span.begin_offset}@@@{span.end_offset}",
+                id=f"{sample.id}@@@{span.begin_offset}@@@{span.end_offset}@@@{span.type_string}",
                 annos=AnnotationCollection(
                     gold=[Anno(
                         begin_offset=0,
