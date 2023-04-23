@@ -7,4 +7,4 @@ dataset_name: living_ner
 dataset_config_name: living_ner_meta
 expected_number_of_train_samples: 37074
 expected_number_of_valid_samples: 6543
-expected_number_of_test_samples: none
+expected_number_of_test_samples: 13312
