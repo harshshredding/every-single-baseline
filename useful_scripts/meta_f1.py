@@ -42,6 +42,21 @@ def meta_f1():
         print(i, get_f1_score_from_sets(gold_predictions, meta_predictions))
 
 
+def living_ner_meta():
+    filter_path = '/Users/harshverma/meta_bionlp/living_ner/filter/experiment_living_ner_meta_0_living_ner_meta_model_meta_special_weighted_test_epoch_8_predictions.tsv'
+    filtered_predictions = read_meta_predictions_file(predictions_file_path=filter_path, entity_type='DEFAULT')
+    filtered_predictions = set([(pred.sample_id, pred.begin_offset, pred.end_offset) for pred in filtered_predictions])
+    gold_samples = get_test_samples_by_dataset_name('living_ner_window')
+    gold_predictions = set()
+    for gold_sample in gold_samples:
+        for gold_anno in gold_sample.annos.gold:
+            gold_predictions.add((str(gold_sample.id), int(gold_anno.begin_offset), int(gold_anno.end_offset)))
+    print(get_f1_score_from_sets(gold_predictions, filtered_predictions))
+
+
+
+
+
 def social_dis_ner_meta():
     predictions_file_path = '/Users/harshverma/meta_bionlp/social_dis_ner/combined/Apps/harshv_research_nlp/experiment_social_dis_ner_meta_0_social_dis_ner_meta_model_meta_special_weighted_test_epoch_8_predictions.tsv'
     output_file_path = '/Users/harshverma/meta_bionlp/social_dis_ner/submission/social_meta_adafactor_epoch_8.tsv'
