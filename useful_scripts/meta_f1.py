@@ -1,8 +1,10 @@
 from utils.easy_testing import get_test_samples_by_dataset_name
 from utils.evaluation import get_f1_score_from_sets
 import pandas as pd
+from structs import SampleAnno
+import csv
 
-def read_meta_predictions_file(predictions_file_path) -> set:
+def read_meta_predictions_file(predictions_file_path, entity_type: 'str') -> set[SampleAnno]:
     df = pd.read_csv(predictions_file_path, sep='\t')
     ret = set()
     num_removed = 0
@@ -12,7 +14,7 @@ def read_meta_predictions_file(predictions_file_path) -> set:
         label = row['label']
         assert label in ['correct', 'incorrect']
         if label == 'correct':
-            ret.add((str(original_sample_id), int(start), int(end), 'Disease'))
+            ret.add(SampleAnno(str(original_sample_id), entity_type, int(start), int(end)))
         else:
             num_removed += 1
     print(f"removed {num_removed} predictions")
@@ -20,9 +22,10 @@ def read_meta_predictions_file(predictions_file_path) -> set:
 
 
 def meta_f1():
+    raise NotImplementedError()
     for i in range(30):
         predictions_file_path = f'/Users/harshverma/every-single-baseline/meta/ncbi/predictions/combined/adam_all_mistakes_all_gold_batch_16/Apps/harshv_research_nlp/experiment_ncbi_meta_weighted_all_mistakes_all_gold_bigger_batch_1_ncbi_sentence_all_mistakes_all_gold_model_meta_special_weighted_bio_test_epoch_{i}_predictions.tsv'
-        meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path)
+        meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path, entity_type='Disease')
         gold_predictions = set()
 
         gold_samples = get_test_samples_by_dataset_name('ncbi_disease_sentence')
@@ -37,3 +40,20 @@ def meta_f1():
         assert len(gold_predictions) and len(meta_predictions)
         
         print(i, get_f1_score_from_sets(gold_predictions, meta_predictions))
+
+
+def social_dis_ner_meta():
+    predictions_file_path = '/Users/harshverma/meta_bionlp/social_dis_ner/combined/Apps/harshv_research_nlp/experiment_social_dis_ner_meta_0_social_dis_ner_meta_model_meta_special_weighted_test_epoch_8_predictions.tsv'
+    output_file_path = '/Users/harshverma/meta_bionlp/social_dis_ner/submission/social_meta_adafactor_epoch_8.tsv'
+
+    meta_predictions = read_meta_predictions_file(predictions_file_path=predictions_file_path, entity_type='ENFERMEDAD')
+    with open(output_file_path, 'w') as output_tsv: 
+        writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
+        writer.writerow(['tweets_id', 'begin', 'end', 'type', 'extraction'])
+        for union_prediction in meta_predictions:
+            writer.writerow([union_prediction.sample_id,
+                             str(union_prediction.begin_offset),
+                             str(union_prediction.end_offset),
+                             union_prediction.type_string,
+                             "extraction"])
+

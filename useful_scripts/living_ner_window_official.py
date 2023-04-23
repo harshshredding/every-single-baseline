@@ -1,8 +1,9 @@
-from util import read_predictions_file
+from utils.general import read_predictions_file
 from collections import defaultdict
 from structs import Anno, Sample
 from utils.easy_testing import get_test_samples_by_dataset_name
 from utils.evaluation import get_f1_score_from_sets
+import csv
 
 
 def get_original_id_info_from_window_id(sample_id: str) -> tuple:
@@ -74,7 +75,9 @@ def get_gold_annos_set(samples: list[Sample]) -> set[tuple[str, str, int, int]]:
     return set(gold_annos)
 
 
-predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/living_ner_official_test/experiment_living_ner_combo_seq_more_testing_bigger_batch_living_ner_window_combo_model_seq_large_default_test_epoch_5_predictions.tsv'
+predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_majority_all.tsv'
+output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/official_living_majority_all.tsv'
+
 
 predictions_dict = read_predictions_file(predictions_file_path=predictions_file_path)
 original_predictions_dict = get_original_gold_annos_from_window_annos(predictions_dict)
@@ -88,3 +91,15 @@ test_gold_samples = get_test_samples_by_dataset_name('living_ner_vanilla')
 gold_annos_set = get_gold_annos_set(test_gold_samples)
 
 print(get_f1_score_from_sets(gold_set=gold_annos_set, predicted_set=predicted_annos_set))
+
+
+with open(output_file_path, 'w') as output_tsv: 
+    writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
+    writer.writerow(['filename', 'mark', 'label', 'off0', 'off1', 'span'])
+    for i, predicted_anno in enumerate(predicted_annos_set):
+        writer.writerow([str(predicted_anno[0]),
+                         f"T{i}",
+                         str(predicted_anno[1]),
+                         predicted_anno[2],
+                         predicted_anno[3],
+                         "extraction"])

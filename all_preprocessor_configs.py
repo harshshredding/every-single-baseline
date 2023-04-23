@@ -360,3 +360,19 @@ def config_meta_social_dis_ner() -> PreprocessorConfig:
             'dataset': Dataset.social_dis_ner
         }
     )
+
+
+def config_meta_living_ner() -> PreprocessorConfig:
+    name_of_this_function = sys._getframe().f_code.co_name
+    return PreprocessorConfig(
+        preprocessor_config_name=name_of_this_function,
+        preprocessor_class_path='preprocessors.meta.MetaPreprocessor',
+        preprocessor_class_init_params={
+            'preprocessor_type': name_of_this_function,
+            'annotators': [],
+            'test_files_folder_full_path': '/Users/harshverma/meta_bionlp/living_ner/test',
+            'valid_files_folder_full_path': '/Users/harshverma/meta_bionlp/living_ner/training',
+            'dataset_config_name': 'living_ner_window',
+            'dataset': Dataset.living_ner
+        }
+    )

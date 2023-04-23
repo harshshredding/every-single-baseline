@@ -20,7 +20,11 @@ def get_majority_vote_predictions(prediction_file_paths: list[str]):
 
     test_annos_majority_votes = {anno: count for anno, count in votes.items() if count > len(prediction_file_paths)//2 }
 
-    return test_annos_majority_votes
+
+    majority_predictions = set([anno for anno in test_annos_majority_votes])
+    assert len(majority_predictions) == len(test_annos_majority_votes)
+
+    return majority_predictions
 
 
 

@@ -1,7 +1,7 @@
 from collections import defaultdict
 from overrides import overrides
 from utils.preprocess import Preprocessor
-from structs import Anno, Sample, Dataset, DatasetSplit, PreprocessorRunType, AnnotationCollection
+from structs import Anno, Sample, Dataset, DatasetSplit, PreprocessorRunType, AnnotationCollection, SampleAnno
 from annotators import Annotator
 from random import shuffle
 from utils.general import read_predictions_file
@@ -31,20 +31,20 @@ class MetaPreprocessor(Preprocessor):
         self.valid_prediction_file_paths = glob(f"{valid_files_folder_full_path}/*.tsv")
         self.dataset_config_name = dataset_config_name
         assert len(self.test_prediction_file_paths) == 2
-        assert len(self.valid_prediction_file_paths) == 40
+        assert len(self.valid_prediction_file_paths) == 26
 
 
-    def create_meta_sample(self, sample: Sample, span: tuple[int, int], label_type: str):
+    def create_meta_sample(self, sample: Sample, span: SampleAnno, label_type: str):
         text = sample.text
         
-        text_before_entity = text[:span[0]]
-        text_after_entity = text[span[1]:]
-        entity_text = text[span[0]: span[1]]
-        sample_text_with_special_tokens = text_before_entity + ' <e> ' + entity_text + ' </e> ' + text_after_entity
+        text_before_entity = text[:span.begin_offset]
+        text_after_entity = text[span.end_offset:]
+        entity_text = text[span.begin_offset: span.end_offset]
+        sample_text_with_special_tokens = span.type_string + ' ' + text_before_entity + ' <e> ' + entity_text + ' </e> ' + text_after_entity
 
         return Sample(
                 text= sample_text_with_special_tokens,
-                id=f"{sample.id}@@@{span[0]}@@@{span[1]}",
+                id=f"{sample.id}@@@{span.begin_offset}@@@{span.end_offset}",
                 annos=AnnotationCollection(
                     gold=[Anno(
                         begin_offset=0,
@@ -59,6 +59,7 @@ class MetaPreprocessor(Preprocessor):
 
     def get_test_set_for_meta(self):
         all_predictions_dict = defaultdict(list)
+        assert len(self.test_prediction_file_paths) == 2
         for prediction_file_path in self.test_prediction_file_paths:
             predictions = read_predictions_file(prediction_file_path)
             for sample_id, annos in predictions.items():
@@ -74,10 +75,19 @@ class MetaPreprocessor(Preprocessor):
             sample = gold_samples[sample_id]
             all_prediction_spans = set()
             if sample_id in all_predictions_dict:
-                all_prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in all_predictions_dict[sample_id]])
+                all_prediction_spans = set([SampleAnno(
+                                                begin_offset=anno.begin_offset,
+                                                end_offset=anno.end_offset,
+                                                sample_id=sample_id,
+                                                type_string=anno.label_type
+                                            ) 
+                                            for anno in all_predictions_dict[sample_id]])
             for prediction_span in all_prediction_spans:
                 samples.append(
-                    self.create_meta_sample(sample=sample, span=prediction_span, label_type='correct')
+                    self.create_meta_sample(
+                        sample=sample,
+                        span=prediction_span,
+                        label_type='correct')
                 )
         shuffle(samples)
         return samples
@@ -105,10 +115,23 @@ class MetaPreprocessor(Preprocessor):
         meta_samples: list[Sample] = []
         for sample_id in gold_samples:
             sample = gold_samples[sample_id]
-            gold_spans = set([(anno.begin_offset, anno.end_offset) for anno in sample.annos.gold])
-            prediction_spans = set()
+            gold_spans = set([
+                                SampleAnno(
+                                    begin_offset=anno.begin_offset,
+                                    end_offset=anno.end_offset,
+                                    sample_id=sample_id,
+                                    type_string=anno.label_type
+                                ) 
+                                for anno in sample.annos.gold])
+            prediction_spans: set[SampleAnno] = set()
             if sample_id in all_predictions_dict:
-                prediction_spans = set([(anno.begin_offset, anno.end_offset) for anno in all_predictions_dict[sample_id]])
+                prediction_spans = set([SampleAnno(
+                                            begin_offset=anno.begin_offset,
+                                            end_offset=anno.end_offset,
+                                            sample_id=sample_id,
+                                            type_string=anno.label_type
+                                        )
+                                        for anno in all_predictions_dict[sample_id]])
 
             incorrect_prediction_spans = prediction_spans.difference(gold_spans)
             correct_prediction_spans = gold_spans

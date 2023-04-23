@@ -1,5 +1,5 @@
 from utils.evaluation import get_f1_score_from_sets, get_gold_annos_set, evaluate_predictions
-from structs import DatasetSplit
+from structs import DatasetSplit, SampleAnno
 from utils.ensemble import get_majority_vote_predictions, get_union_predictions, get_majority_voting_results, union_results
 import csv
 
@@ -60,27 +60,62 @@ def ncbi_evaluate_prediction_files():
 
 
 
-
+def write_predictions(predictions: set[SampleAnno], output_file_path: str):
+    with open(output_file_path, 'w') as output_tsv: 
+        writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
+        writer.writerow(['sample_id', 'begin', 'end', 'type', 'extraction'])
+        for prediction in predictions:
+            writer.writerow([prediction.sample_id,
+                             str(prediction.begin_offset),
+                             str(prediction.end_offset),
+                             prediction.type_string,
+                             "extraction"])
 
 
 
 # ************ 
 # LivingNER
 # ************
-def union_living_ner_window_combo():
+def union_living_ner_bionlp():
     prediction_file_paths = [
-        '/Users/harshverma/every-single-baseline/baseline_paper/predictions/living_ner/experiment_living_ner_combo_seq_more_testing_bigger_batch_living_ner_window_combo_model_seq_large_default_test_epoch_4_predictions.tsv',
-        '/Users/harshverma/every-single-baseline/baseline_paper/predictions/living_ner/experiment_living_ner_combo_window_span_fixed_width_more_testing_bigger_batch_living_ner_window_combo_model_span_large_default_test_epoch_4_predictions.tsv'
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_span_adafactor_0_living_ner_window_model_span_large_default_test_epoch_8_predictions.tsv',
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_seq_adafactor_0_living_ner_window_model_seq_large_default_test_epoch_9_predictions.tsv'
     ]
-    union_results(dataset_config_name='living_ner_window_combo', test_prediction_file_paths=prediction_file_paths)
+    union_predictions = get_union_predictions(prediction_file_paths=prediction_file_paths)
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_union.tsv'
+    write_predictions(predictions=union_predictions, output_file_path=output_file_path)
 
 
-def majority_living_ner_window_combo():
+def union_living_ner_bionlp_all():
     prediction_file_paths = [
-            '/Users/harshverma/every-single-baseline/baseline_paper/predictions/living_ner/experiment_living_ner_combo_seq_more_testing_bigger_batch_living_ner_window_combo_model_seq_large_default_test_epoch_4_predictions.tsv',
-            '/Users/harshverma/every-single-baseline/baseline_paper/predictions/living_ner/experiment_living_ner_combo_window_span_fixed_width_more_testing_bigger_batch_living_ner_window_combo_model_span_large_default_test_epoch_4_predictions.tsv'
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_span_adafactor_0_living_ner_window_model_span_large_default_test_epoch_8_predictions.tsv',
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_seq_adafactor_0_living_ner_window_model_seq_large_default_test_epoch_9_predictions.tsv',
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_living_ner_bionlp_adafactor_all_0_living_ner_window_model_seq_large_crf_test_epoch_8_predictions.tsv'
     ]
-    get_majority_voting_results(dataset_config_name='living_ner_window_combo', test_prediction_file_paths=prediction_file_paths)
+    union_predictions = get_union_predictions(prediction_file_paths=prediction_file_paths)
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_union_all.tsv'
+    write_predictions(predictions=union_predictions, output_file_path=output_file_path)
+
+
+def majority_living_ner_bionlp():
+    prediction_file_paths = [
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_span_adafactor_0_living_ner_window_model_span_large_default_test_epoch_8_predictions.tsv',
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_seq_adafactor_0_living_ner_window_model_seq_large_default_test_epoch_9_predictions.tsv'
+    ]
+    majority_predictions = get_majority_vote_predictions(prediction_file_paths=prediction_file_paths)
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_majority.tsv'
+    write_predictions(predictions=majority_predictions, output_file_path=output_file_path)
+
+
+def majority_living_ner_bionlp_all():
+    prediction_file_paths = [
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_span_adafactor_0_living_ner_window_model_span_large_default_test_epoch_8_predictions.tsv',
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_specific_living_ner_bionlp_seq_adafactor_0_living_ner_window_model_seq_large_default_test_epoch_9_predictions.tsv',
+        '/Users/harshverma/meta_bionlp/living_ner/test/experiment_living_ner_bionlp_adafactor_all_0_living_ner_window_model_seq_large_crf_test_epoch_8_predictions.tsv'
+    ]
+    majority_predictions = get_majority_vote_predictions(prediction_file_paths=prediction_file_paths)
+    output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_majority_all.tsv'
+    write_predictions(predictions=majority_predictions, output_file_path=output_file_path)
 
 
 
