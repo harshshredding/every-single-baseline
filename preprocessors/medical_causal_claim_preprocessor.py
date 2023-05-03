@@ -1,11 +1,11 @@
 from typing import List
-from structs import Anno, Sample, DatasetSplit, AnnotationCollection
+from structs import Annotation, Sample, DatasetSplit, AnnotationCollection
 from preprocess import Preprocessor
 import csv
 import json
 
 
-def parse_annos(annotation_json: str, sample_text: str) -> List[Anno]:
+def parse_annos(annotation_json: str, sample_text: str) -> List[Annotation]:
     parsed_json = json.loads(annotation_json)
     assert len(parsed_json) == 1
     assert len(parsed_json[0]) == 1
@@ -19,7 +19,7 @@ def parse_annos(annotation_json: str, sample_text: str) -> List[Anno]:
         end_offset = raw_anno['endOffset']
         label_type = raw_anno['label']
         extraction = sample_text[start_offset:end_offset]
-        result_annos.append(Anno(start_offset, end_offset, label_type, extraction))
+        result_annos.append(Annotation(start_offset, end_offset, label_type, extraction))
     return result_annos
 
 

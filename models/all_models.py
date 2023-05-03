@@ -6,7 +6,7 @@ from mi_rim import *
 from torch import Tensor
 import util
 from typing import List
-from structs import TokenData, Anno, Sample
+from structs import TokenData, Annotation, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import train_util
 from flair.models.sequence_tagger_utils.crf import CRF
@@ -557,7 +557,7 @@ class JustBert3Classes(torch.nn.Module):
         predicted_annos = []
         for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
             predicted_annos.append(
-                Anno(
+                Annotation(
                     span_char_offsets[0],
                     span_char_offsets[1],
                     span_char_offsets[2],
@@ -595,7 +595,7 @@ class JustBert3ClassesCRF(torch.nn.Module):
 
     def forward(self,
                 sample_token_data: List[TokenData],
-                sample_annos: List[Anno]
+                sample_annos: List[Annotation]
                 ):
         tokens = util.get_token_strings(sample_token_data)
         offsets_list = util.get_token_offsets(sample_token_data)
@@ -629,7 +629,7 @@ class JustBert3ClassesCRF(torch.nn.Module):
         predicted_annos = []
         for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
             predicted_annos.append(
-                Anno(
+                Annotation(
                     span_char_offsets[0],
                     span_char_offsets[1],
                     span_char_offsets[2],
@@ -639,7 +639,7 @@ class JustBert3ClassesCRF(torch.nn.Module):
         return loss, predicted_annos
 
 
-def heuristic_decode(predicted_annos: List[Anno]):
+def heuristic_decode(predicted_annos: List[Annotation]):
     to_remove = []
     for curr_anno in predicted_annos:
         overlapping_annos = [
@@ -717,8 +717,8 @@ class SpanBertCustomTokenizationNoBatch(torch.nn.Module):
             predicted_all_possible_spans_logits,
             all_possible_spans_list,
             bert_encoding: BatchEncoding,
-            token_annos: List[Anno],
-    ) -> List[Anno]:
+            token_annos: List[Annotation],
+    ) -> List[Annotation]:
         ret = []
         # SHAPE: (num_spans)
         pred_all_possible_spans_type_indices_list = torch \
@@ -744,7 +744,7 @@ class SpanBertCustomTokenizationNoBatch(torch.nn.Module):
                 all_token_strings = [token_anno.extraction for token_anno in token_annos]
                 span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
                 ret.append(
-                    Anno(
+                    Annotation(
                         span_start_char_offset,
                         span_end_char_offset,
                         self.idx_to_type[span_type_idx],
@@ -839,9 +839,9 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
             pred_all_possible_spans_type_indices_list,
             all_possible_spans_list,
             bert_encoding: BatchEncoding,
-            token_annos: List[Option[Anno]],
+            token_annos: List[Option[Annotation]],
             batch_idx
-    ) -> List[Anno]:
+    ) -> List[Annotation]:
         ret = []
         for i, span_type_idx in enumerate(pred_all_possible_spans_type_indices_list):
             if span_type_idx != self.type_to_idx['NO_TYPE']:
@@ -860,7 +860,7 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
                     all_token_strings = [token_anno.get_value().extraction for token_anno in token_annos]
                     span_text = " ".join(all_token_strings[span_start_token_idx: span_end_token_idx + 1])
                     ret.append(
-                        Anno(
+                        Annotation(
                             span_start_char_offset,
                             span_end_char_offset,
                             self.idx_to_type[span_type_idx],
@@ -874,9 +874,9 @@ class SpanBertCustomTokenizationBatched(SpanBertCustomTokenizationNoBatch):
             predicted_all_possible_spans_logits_batch,
             all_possible_spans_list_batch,
             bert_encoding: BatchEncoding,
-            token_annos: List[List[Option[Anno]]],
+            token_annos: List[List[Option[Annotation]]],
             samples
-    ) -> List[List[Anno]]:
+    ) -> List[List[Annotation]]:
         pred_all_possible_spans_type_indices_list_batch = torch \
             .argmax(predicted_all_possible_spans_logits_batch, dim=2) \
             .cpu() \
@@ -1055,7 +1055,7 @@ class SeqLabelerBatched(torch.nn.Module):
             predicted_annos = []
             for span_char_offsets, span_token_idx in zip(predicted_spans_char_offsets, predicted_spans_token_index):
                 predicted_annos.append(
-                    Anno(
+                    Annotation(
                         span_char_offsets[0],
                         span_char_offsets[1],
                         span_char_offsets[2],
@@ -1098,7 +1098,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         return bert_embeddings_batch
 
 
-    def check_if_tokens_overlap(self, token_annos: List[Option[Anno]], sample_id: str):
+    def check_if_tokens_overlap(self, token_annos: List[Option[Annotation]], sample_id: str):
         for idx_curr, curr_anno in enumerate(token_annos):
             for idx_other, other_anno in enumerate(token_annos):
                 if (idx_curr != idx_other) and (curr_anno.is_something() and other_anno.is_something()):
@@ -1114,8 +1114,8 @@ class SeqLabelerNoTokenization(ModelClaC):
                                            )
     
 
-    def remove_roberta_overlaps(self, tokens_batch: List[List[Option[Anno]]], model_config: ModelConfig) \
-        -> List[List[Option[Anno]]]:
+    def remove_roberta_overlaps(self, tokens_batch: List[List[Option[Annotation]]], model_config: ModelConfig) \
+        -> List[List[Option[Annotation]]]:
         if 'roberta' in model_config.pretrained_model_name:
             tokens_batch_without_overlaps = []
             for tokens in tokens_batch:
@@ -1139,7 +1139,7 @@ class SeqLabelerNoTokenization(ModelClaC):
 
 
 
-    def get_token_annos_batch(self, bert_encoding, samples: List[Sample]) -> List[List[Option[Anno]]]:
+    def get_token_annos_batch(self, bert_encoding, samples: List[Sample]) -> List[List[Option[Annotation]]]:
         expected_batch_size = len(samples)
         token_ids_matrix = bert_encoding['input_ids']
         batch_size = len(token_ids_matrix)
@@ -1147,7 +1147,7 @@ class SeqLabelerNoTokenization(ModelClaC):
         for batch_idx in range(batch_size):
             assert len(token_ids_matrix[batch_idx]) == num_tokens, "every sample should have the same number of tokens"
         assert batch_size == expected_batch_size
-        token_annos_batch: List[List[Option[Anno]]] = []
+        token_annos_batch: List[List[Option[Annotation]]] = []
         for batch_idx in range(batch_size):
             char_spans: List[Option[transformers.CharSpan]] = [
                 Option(bert_encoding.token_to_chars(batch_or_token_index=batch_idx, token_index=token_idx))
@@ -1156,7 +1156,7 @@ class SeqLabelerNoTokenization(ModelClaC):
 
             token_annos_batch.append(
                 [
-                    Option(Anno(begin_offset=span.get_value().start, end_offset=span.get_value().end,
+                    Option(Annotation(begin_offset=span.get_value().start, end_offset=span.get_value().end,
                                 label_type='BertTokenAnno', extraction=None))
                     if span.state == OptionState.Something else Option(None)
                     for span in char_spans
@@ -1204,7 +1204,7 @@ class SeqLabelerNoTokenization(ModelClaC):
             [self.idx_to_label[label_id] for label_id in predicted_label_indices]
             for predicted_label_indices in predicted_label_indices_batch
         ]
-        predicted_annos_batch: List[List[Anno]] = [
+        predicted_annos_batch: List[List[Annotation]] = [
             util.get_annos_from_bio_labels(
                 prediction_labels=predicted_labels,
                 batch_encoding=bert_encoding_for_batch,

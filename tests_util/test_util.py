@@ -1,9 +1,9 @@
 import util
 import train_util
-from structs import TokenData, Anno, Label, BioTag
+from structs import TokenData, Annotation, Label, BioTag
 from transformers import AutoTokenizer
 from transformers.tokenization_utils_base import BatchEncoding
-from structs import Sample, Anno, AnnotationCollection
+from structs import Sample, Annotation, AnnotationCollection
 from utils.config import get_dataset_config_by_name
 from utils.easy_testing import get_bert_tokenizer
 
@@ -11,23 +11,23 @@ from utils.easy_testing import get_bert_tokenizer
 def test_token_level_spans():
     assert len(util.get_token_level_spans([], [])) == 0
     # text  = "This is Harsh"
-    token_annos = [Anno(0, 4, "Token", "This"),
-                   Anno(5, 7, "Token", "is"),
-                   Anno(8, 13, "Token", "Harsh")
+    token_annos = [Annotation(0, 4, "Token", "This"),
+                   Annotation(5, 7, "Token", "is"),
+                   Annotation(8, 13, "Token", "Harsh")
                    ]
-    sample_annos = [Anno(8, 13, 'name', 'Harsh')]
+    sample_annos = [Annotation(8, 13, 'name', 'Harsh')]
     assert util.get_token_level_spans(
         token_annos, sample_annos) == [(2, 3, 'name')]
 
     # text = "This is Harsh Verma"
 
-    token_annos = [Anno(0, 4, "Token", "This"),
-                   Anno(5, 7, "Token", "is"),
-                   Anno(8, 13, "Token", "Harsh"),
-                   Anno(14, 19, "Token", "Verma")
+    token_annos = [Annotation(0, 4, "Token", "This"),
+                   Annotation(5, 7, "Token", "is"),
+                   Annotation(8, 13, "Token", "Harsh"),
+                   Annotation(14, 19, "Token", "Verma")
                    ]
-    sample_annos = [Anno(8, 13, 'name', 'Harsh'), Anno(
-        14, 19, 'name', 'Verma'), Anno(8, 19, 'name', 'Harsh Verma')]
+    sample_annos = [Annotation(8, 13, 'name', 'Harsh'), Annotation(
+        14, 19, 'name', 'Verma'), Annotation(8, 19, 'name', 'Harsh Verma')]
     assert util.get_token_level_spans(token_annos, sample_annos) == [
         (2, 3, 'name'), (3, 4, 'name'), (2, 4, 'name')]
 
@@ -53,7 +53,7 @@ def test_read_and_write_samples():
     test_sample = Sample("sample_text", "some_id",
                          AnnotationCollection(
                              gold=[
-                                 Anno(1, 10, 'DISEASE', 'HIV')
+                                 Annotation(1, 10, 'DISEASE', 'HIV')
                              ],
                              external=[]
                          )
@@ -76,10 +76,10 @@ def test_read_and_write_samples():
     another_test_sample = Sample("sample_text", "some_id",
                                  AnnotationCollection(
                                      gold=[
-                                         Anno(1, 10, 'DISEASE', 'HIV')
+                                         Annotation(1, 10, 'DISEASE', 'HIV')
                                      ],
                                      external=[
-                                         Anno(0, 2, 'Name', 'John')
+                                         Annotation(0, 2, 'Name', 'John')
                                      ]
                                  )
                                  )

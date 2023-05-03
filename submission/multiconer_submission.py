@@ -1,20 +1,20 @@
 import util
 import pandas as pd
-from structs import Anno, SampleId
+from structs import Annotation, SampleId
 from typing import List, Dict
 from preprocessors.multiconer_preprocessor import read_raw_data, read_raw_data_list
 
 test_data_file_path = "./multiconer-data-raw/public_data/EN-English/en_test.conll"
 
 
-def read_multiconer_predictions() -> dict[str, List[Anno]]:
+def read_multiconer_predictions() -> dict[str, List[Annotation]]:
     predictions_file_path = "/Users/harshverma/every-single-baseline/useful_scripts/multiconer_majority_custom_tokenization_batched.tsv"
     df = pd.read_csv(predictions_file_path, sep='\t')
     sample_to_annos = {}
     for _, row in df.iterrows():
         annos_list = sample_to_annos.get(str(row['sample_id']), [])
         annos_list.append(
-            Anno(
+            Annotation(
                 begin_offset=int(row['begin']),
                 end_offset=int(row['end']),
                 label_type=row['type'],
@@ -25,17 +25,17 @@ def read_multiconer_predictions() -> dict[str, List[Anno]]:
     return sample_to_annos
 
 
-def not_the_same_anno(curr_anno: Anno, other_anno: Anno):
+def not_the_same_anno(curr_anno: Annotation, other_anno: Annotation):
     return not ((other_anno.begin_offset == curr_anno.begin_offset)
                 and (other_anno.end_offset == curr_anno.end_offset)
                 )
 
 
-def curr_is_contained(curr_anno: Anno, other_anno: Anno):
+def curr_is_contained(curr_anno: Annotation, other_anno: Annotation):
     return (other_anno.begin_offset <= curr_anno.begin_offset) and (curr_anno.end_offset <= other_anno.end_offset)
 
 
-def remove_nesting(sample_annos: List[Anno]) -> List[Anno]:
+def remove_nesting(sample_annos: List[Annotation]) -> List[Annotation]:
     to_remove = []
     for curr_anno in sample_annos:
         containers = [
@@ -48,7 +48,7 @@ def remove_nesting(sample_annos: List[Anno]) -> List[Anno]:
     return [anno for anno in sample_annos if anno not in to_remove]
 
 
-def get_predictions_without_nesting() -> dict[str, List[Anno]]:
+def get_predictions_without_nesting() -> dict[str, List[Annotation]]:
     predictions = read_multiconer_predictions()
     return {sample_id: remove_nesting(annos) for sample_id, annos in predictions.items()}
 

@@ -139,26 +139,26 @@ def get_bert_tokenizer(model_config: ModelConfig):
     return AutoTokenizer.from_pretrained(model_config.pretrained_model_name)
 
 
-def get_train_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]:
+def get_train_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Annotation]]:
     return util.get_annos_dict(dataset_config.train_annos_file_path)
 
 
-def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Anno]]:
+def get_valid_annos_dict(dataset_config: DatasetConfig) -> Dict[str, List[Annotation]]:
     return util.get_annos_dict(dataset_config.valid_annos_file_path)
 
 
-def get_bio_labels_from_annos(token_annos: List[Option[Anno]],
+def get_bio_labels_from_annos(token_annos: List[Option[Annotation]],
                               batch_encoding,
-                              gold_annos: List[Anno]) -> List[Label]:
+                              gold_annos: List[Annotation]) -> List[Label]:
     labels = util.get_labels_bio_old(token_annos, gold_annos)
     expanded_labels = util.expand_labels_rich_batch(batch_encoding, labels, batch_idx=0)
     return expanded_labels
 
 
 def get_bio_labels_from_annos_batch(
-        token_annos_batch: List[List[Option[Anno]]],
+        token_annos_batch: List[List[Option[Annotation]]],
         batch_encoding,
-        gold_annos_batch: List[List[Anno]]
+        gold_annos_batch: List[List[Annotation]]
 ) -> List[List[Label]]:
     labels_batch = [util.get_labels_bio_old(token_annos, gold_annos)
                     for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
@@ -169,8 +169,8 @@ def get_bio_labels_from_annos_batch(
 
 
 def get_bio_labels_for_bert_tokens_batch(
-        token_annos_batch: List[List[Option[Anno]]],
-        gold_annos_batch: List[List[Anno]]
+        token_annos_batch: List[List[Option[Annotation]]],
+        gold_annos_batch: List[List[Annotation]]
 ):
     labels_batch = [util.get_labels_bio_new(token_annos, gold_annos)
                     for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
@@ -533,7 +533,7 @@ def prepare_predictions_file_header(predictions_file_writer):
 
 def store_predictions(
         sample: Sample,
-        predicted_annos_valid: List[Anno],
+        predicted_annos_valid: List[Annotation],
         predictions_file_writer
 ):
     # write predictions

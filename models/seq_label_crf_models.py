@@ -9,7 +9,7 @@ import torch
 import train_util
 from preamble import *
 import util
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from utils.model import SeqLabelPredictions
 
 
@@ -89,7 +89,7 @@ class SeqLabelerDefaultCRF(SeqLabelerNoTokenization):
 
         predicted_labels_batch = self.get_predicted_labels(predictions)
 
-        predicted_annos_batch: List[List[Anno]] = [
+        predicted_annos_batch: List[List[Annotation]] = [
             util.get_annos_from_bio_labels(
                 prediction_labels=predicted_labels,
                 batch_encoding=bert_encoding_for_batch,

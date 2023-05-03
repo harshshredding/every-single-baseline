@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from preamble import *
-from structs import Anno, Sample, AnnotationCollection, DatasetSplit, Dataset
+from structs import Annotation, Sample, AnnotationCollection, DatasetSplit, Dataset
 from utils.preprocess import Preprocessor, PreprocessorRunType
 from annotators import Annotator
 
@@ -17,7 +17,7 @@ def get_annotation_type(anno_soup: BeautifulSoup) -> str:
     return type_info.text
 
 
-def get_annos_from_passage(passage_soup: BeautifulSoup, passage_offset: int) -> List[Anno]:
+def get_annos_from_passage(passage_soup: BeautifulSoup, passage_offset: int) -> List[Annotation]:
     ret = []
     anno_soups = passage_soup.find_all('annotation')
     for anno_soup in anno_soups:
@@ -28,7 +28,7 @@ def get_annos_from_passage(passage_soup: BeautifulSoup, passage_offset: int) -> 
         anno_end -= passage_offset
         anno_text = anno_soup.find('text').text
         ret.append(
-            Anno(
+            Annotation(
                 begin_offset=anno_start,
                 end_offset=anno_end,
                 label_type=anno_type,

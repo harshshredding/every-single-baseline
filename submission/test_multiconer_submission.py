@@ -1,5 +1,5 @@
 import submission.multiconer_submission as multiconer_submission
-from structs import Anno
+from structs import Annotation
 
 
 def test_read_multiconer_predictions():
@@ -17,11 +17,11 @@ def test_read_multiconer_predictions():
 
 def test_remove_nesting_1():
     annos = [
-        Anno(0, 2, '', ''),
-        Anno(0, 1, '', ''),
-        Anno(0, 3, '', ''),
-        Anno(0, 5, '', ''),
-        Anno(0, 6, '', ''),
+        Annotation(0, 2, '', ''),
+        Annotation(0, 1, '', ''),
+        Annotation(0, 3, '', ''),
+        Annotation(0, 5, '', ''),
+        Annotation(0, 6, '', ''),
     ]
     remaining_annos = multiconer_submission.remove_nesting(annos)
     assert len(remaining_annos) == 1
@@ -31,10 +31,10 @@ def test_remove_nesting_1():
 
 def test_remove_nesting_2():
     annos = [
-        Anno(0, 2, '', ''),
-        Anno(2, 4, '', ''),
-        Anno(0, 3, '', ''),
-        Anno(2, 5, '', ''),
+        Annotation(0, 2, '', ''),
+        Annotation(2, 4, '', ''),
+        Annotation(0, 3, '', ''),
+        Annotation(2, 5, '', ''),
     ]
     remaining_annos = multiconer_submission.remove_nesting(annos)
     assert len(remaining_annos) == 2
@@ -44,10 +44,10 @@ def test_remove_nesting_2():
 
 def test_remove_nesting_3():
     annos = [
-        Anno(0, 2, '', ''),
-        Anno(1, 3, '', ''),
-        Anno(2, 4, '', ''),
-        Anno(3, 5, '', ''),
+        Annotation(0, 2, '', ''),
+        Annotation(1, 3, '', ''),
+        Annotation(2, 4, '', ''),
+        Annotation(3, 5, '', ''),
     ]
     remaining_annos = multiconer_submission.remove_nesting(annos)
     assert len(remaining_annos) == 4

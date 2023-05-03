@@ -1,7 +1,7 @@
 from collections import defaultdict
 from overrides import overrides
 from utils.preprocess import Preprocessor
-from structs import Anno, Sample, Dataset, DatasetSplit, PreprocessorRunType, AnnotationCollection, SampleAnno
+from structs import Annotation, Sample, Dataset, DatasetSplit, PreprocessorRunType, AnnotationCollection, SampleAnno
 from annotators import Annotator
 from random import shuffle
 from utils.general import read_predictions_file
@@ -46,7 +46,7 @@ class MetaPreprocessor(Preprocessor):
                 text= sample_text_with_special_tokens,
                 id=f"{sample.id}@@@{span.begin_offset}@@@{span.end_offset}@@@{span.type_string}",
                 annos=AnnotationCollection(
-                    gold=[Anno(
+                    gold=[Annotation(
                         begin_offset=0,
                         end_offset=len(sample.text),
                         label_type=label_type,

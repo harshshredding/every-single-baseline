@@ -41,6 +41,23 @@ def majority_vote_f1_ncbi_best_models():
     print(get_f1_score_from_sets(gold_set=gold_predictions, predicted_set=majority_predictions))
 
 
+
+def majority_vote_f1_ncbi_best_models_crf():
+    gold_predictions = get_gold_annos_set(dataset_config_name='ncbi_disease_sentence', split=DatasetSplit.test)
+
+    seq_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_test_epoch_10_predictions.tsv'
+    span_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_test_epoch_15_predictions.tsv'
+    crf_predicitons_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/crf/experiment_ncbi_bionlp_crf_1_ncbi_disease_sentence_model_seq_large_crf_bio_test_epoch_6_predictions.tsv'
+
+    test_prediction_file_paths = [seq_predictions_file_path, span_predictions_file_path, crf_predicitons_file_path]
+
+    majority_prediction_counts = get_majority_vote_predictions(test_prediction_file_paths)
+
+    majority_predictions = set([anno for anno in majority_prediction_counts])
+    assert len(majority_predictions) == len(majority_prediction_counts)
+    print(get_f1_score_from_sets(gold_set=gold_predictions, predicted_set=majority_predictions))
+
+
 def union_f1_ncbi_best_models():
     gold_predictions = get_gold_annos_set(dataset_config_name='ncbi_disease_sentence', split=DatasetSplit.test)
 
@@ -51,6 +68,22 @@ def union_f1_ncbi_best_models():
     union_predictions = get_union_predictions(test_prediction_file_paths)
 
     print(get_f1_score_from_sets(gold_set=gold_predictions, predicted_set=union_predictions))
+
+
+
+def union_f1_ncbi_best_models_crf():
+    gold_predictions = get_gold_annos_set(dataset_config_name='ncbi_disease_sentence', split=DatasetSplit.test)
+
+    seq_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_test_epoch_10_predictions.tsv'
+    span_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_span_large_bio_default_test_epoch_15_predictions.tsv'
+    crf_predicitons_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/crf/experiment_ncbi_bionlp_crf_1_ncbi_disease_sentence_model_seq_large_crf_bio_test_epoch_6_predictions.tsv'
+
+    test_prediction_file_paths = [seq_predictions_file_path, span_predictions_file_path, crf_predicitons_file_path]
+
+    union_predictions = get_union_predictions(test_prediction_file_paths)
+
+    print(get_f1_score_from_sets(gold_set=gold_predictions, predicted_set=union_predictions))
+
 
 def ncbi_evaluate_prediction_files():
     seq_predictions_file_path = '/Users/harshverma/every-single-baseline/meta/ncbi/predictions/test/experiment_ncbi_sentence_ncbi_disease_sentence_model_seq_large_bio_test_epoch_10_predictions.tsv'

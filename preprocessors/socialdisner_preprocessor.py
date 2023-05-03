@@ -4,7 +4,7 @@ Preprocessing for SocialDisNER dataset.
 import os
 from typing import Dict
 import pandas as pd
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
+from structs import Annotation, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from utils.preprocess import Preprocessor, PreprocessorRunType
 from preamble import *
 from annotators import Annotator
@@ -12,7 +12,7 @@ import json
 
 
 
-def get_tweet_annos_dict(dataset_split: DatasetSplit) -> Dict[SampleId, List[Anno]]:
+def get_tweet_annos_dict(dataset_split: DatasetSplit) -> Dict[SampleId, List[Annotation]]:
     """
     Read annotations for each sample from the given file and return
     a dict from sample_ids to corresponding annotations.
@@ -25,7 +25,7 @@ def get_tweet_annos_dict(dataset_split: DatasetSplit) -> Dict[SampleId, List[Ann
     for i, row in df.iterrows():
         annos_list = sample_to_annos.get(str(row['tweets_id']), [])
         annos_list.append(
-            Anno(row['begin'], row['end'], row['type'], row['extraction'])
+            Annotation(row['begin'], row['end'], row['type'], row['extraction'])
         )
         sample_to_annos[str(row['tweets_id'])] = annos_list
     return sample_to_annos

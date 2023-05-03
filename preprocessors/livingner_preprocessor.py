@@ -4,7 +4,7 @@ Preprocessing for LivingNER dataset. https://temu.bsc.es/livingner/
 import os
 from typing import List, Dict
 import pandas as pd
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
+from structs import Annotation, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from utils.preprocess import Preprocessor, PreprocessorRunType
 from annotators import Annotator
 
@@ -37,7 +37,7 @@ class PreprocessLivingNER(Preprocessor):
             case DatasetSplit.test:
                 self.raw_data_folder_path = './livingner-bundle_training_valid_test_background_multilingual/test'
 
-    def __get_annos_dict(self) -> Dict[SampleId, List[Anno]]:
+    def __get_annos_dict(self) -> Dict[SampleId, List[Annotation]]:
         """
         Read annotations for each sample from the given file and return
         a dict from sample_ids to corresponding annotations.
@@ -54,7 +54,7 @@ class PreprocessLivingNER(Preprocessor):
         for _, row in data_frame.iterrows():
             annos_list = sample_to_annos.get(str(row['filename']), [])
             annos_list.append(
-                Anno(row['off0'], row['off1'], row['label'], row['span']))
+                Annotation(row['off0'], row['off1'], row['label'], row['span']))
             sample_to_annos[str(row['filename'])] = annos_list
         return sample_to_annos
 

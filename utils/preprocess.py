@@ -8,11 +8,7 @@ from typing import Type
 import yaml
 from utils.config import PreprocessorConfig
 from annotators import Annotator
-
-class PreprocessorRunType(Enum):
-    production = 0
-    dry_run = 1
-
+from structs import PreprocessorRunType
 
 class Preprocessor(ABC):
     """

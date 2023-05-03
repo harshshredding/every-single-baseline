@@ -3,7 +3,7 @@ from models.span_default_models import SpanDefault
 from models.all_models import SeqLabelerNoTokenization
 from utils.config import ModelConfig, DatasetConfig
 import torch.nn as nn
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import torch
 from preamble import *

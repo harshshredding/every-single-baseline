@@ -1,6 +1,6 @@
 from utils.preprocess import Preprocessor, DatasetSplit, PreprocessorRunType
 from annotators import Annotator
-from structs import Dataset, Sample, AnnotationCollection, Anno
+from structs import Dataset, Sample, AnnotationCollection, Annotation
 from preamble import *
 from random import shuffle
 from utils.easy_testing import get_train_samples_by_dataset_name, get_valid_samples_by_dataset_name, get_test_samples_by_dataset_name
@@ -41,7 +41,7 @@ def get_ncbi_sample(sample_raw: list) -> Sample:
 
 
     disease_annos = [
-        Anno(
+        Annotation(
             begin_offset=start,
             end_offset=end,
             extraction=gold_extraction,
@@ -113,7 +113,7 @@ def create_meta_sample(sample: Sample, span: tuple[int, int], label_type: str):
             text= extraction + ' [SEP] ' + sample.text,
             id=f"{sample.id}@@@{span[0]}@@@{span[1]}",
             annos=AnnotationCollection(
-                gold=[Anno(
+                gold=[Annotation(
                     begin_offset=0,
                     end_offset=len(sample.text),
                     label_type=label_type,
@@ -329,7 +329,7 @@ class PreprocessNcbiDiseaseMetaBiggerValid(Preprocessor):
                 text= extraction + ' [SEP] ' + sample.text,
                 id=f"{sample.id}@@@{span[0]}@@@{span[1]}",
                 annos=AnnotationCollection(
-                    gold=[Anno(
+                    gold=[Annotation(
                         begin_offset=0,
                         end_offset=len(sample.text),
                         label_type=label_type,
@@ -465,7 +465,7 @@ class PreprocessNcbiDiseaseMetaSpecialTokens(PreprocessNcbiDiseaseMetaBiggerVali
                 text= sample_text_with_special_tokens,
                 id=f"{sample.id}@@@{span[0]}@@@{span[1]}",
                 annos=AnnotationCollection(
-                    gold=[Anno(
+                    gold=[Annotation(
                         begin_offset=0,
                         end_offset=len(sample.text),
                         label_type=label_type,

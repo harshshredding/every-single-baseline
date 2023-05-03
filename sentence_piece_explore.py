@@ -3,11 +3,11 @@ from utils.easy_testing import get_dataset_config_by_name, get_roberta_tokenizer
 from train_util import prepare_model
 from utils.config import get_experiment_config
 from preamble import *
-from structs import Anno, Sample
+from structs import Annotation, Sample
 import transformers
 
 
-def check_if_tokens_overlap(token_annos: List[Option[Anno]], sample_id: str):
+def check_if_tokens_overlap(token_annos: List[Option[Annotation]], sample_id: str):
     for idx_curr, curr_anno in enumerate(token_annos):
         for idx_other, other_anno in enumerate(token_annos):
             if (idx_curr != idx_other) and (curr_anno.is_something() and other_anno.is_something()):
@@ -22,8 +22,8 @@ def check_if_tokens_overlap(token_annos: List[Option[Anno]], sample_id: str):
                                        f"\n sampleId: {sample_id}"
                                        )
 
-def remove_roberta_overlaps(tokens_batch: List[List[Option[Anno]]], pretrained_model_name) \
-    -> List[List[Option[Anno]]]:
+def remove_roberta_overlaps(tokens_batch: List[List[Option[Annotation]]], pretrained_model_name) \
+    -> List[List[Option[Annotation]]]:
     if 'roberta' in pretrained_model_name:
         tokens_batch_without_overlaps = []
         for tokens in tokens_batch:
@@ -45,7 +45,7 @@ def remove_roberta_overlaps(tokens_batch: List[List[Option[Anno]]], pretrained_m
         return tokens_batch
 
 
-def get_token_annos_batch(bert_encoding, samples: List[Sample]) -> List[List[Option[Anno]]]:
+def get_token_annos_batch(bert_encoding, samples: List[Sample]) -> List[List[Option[Annotation]]]:
     expected_batch_size = len(samples)
     token_ids_matrix = bert_encoding['input_ids']
     batch_size = len(token_ids_matrix)
@@ -53,7 +53,7 @@ def get_token_annos_batch(bert_encoding, samples: List[Sample]) -> List[List[Opt
     for batch_idx in range(batch_size):
         assert len(token_ids_matrix[batch_idx]) == num_tokens, "every sample should have the same number of tokens"
     assert batch_size == expected_batch_size
-    token_annos_batch: List[List[Option[Anno]]] = []
+    token_annos_batch: List[List[Option[Annotation]]] = []
     for batch_idx in range(batch_size):
         char_spans: List[Option[transformers.CharSpan]] = [
             Option(bert_encoding.token_to_chars(batch_or_token_index=batch_idx, token_index=token_idx))
@@ -62,7 +62,7 @@ def get_token_annos_batch(bert_encoding, samples: List[Sample]) -> List[List[Opt
 
         token_annos_batch.append(
             [
-                Option(Anno(begin_offset=span.get_value().start, end_offset=span.get_value().end,
+                Option(Annotation(begin_offset=span.get_value().start, end_offset=span.get_value().end,
                             label_type='BertTokenAnno', extraction=None))
                 if span.state == OptionState.Something else Option(None)
                 for span in char_spans

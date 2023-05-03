@@ -1,11 +1,11 @@
 import PySimpleGUI as gui
 import train_util
 from utils.config import get_dataset_config_by_name
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from typing import List
 
 
-def get_sorted_annos(annos: List[Anno]) -> List[Anno]:
+def get_sorted_annos(annos: List[Annotation]) -> List[Annotation]:
     return sorted(annos, key=lambda anno: anno.begin_offset)
 
 

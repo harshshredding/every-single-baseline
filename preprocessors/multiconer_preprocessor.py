@@ -1,5 +1,5 @@
 import json
-from structs import Anno, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
+from structs import Annotation, Sample, DatasetSplit, SampleId, Dataset, AnnotationCollection
 from utils.preprocess import Preprocessor, PreprocessorRunType
 from typing import Dict
 from collections import Counter
@@ -155,12 +155,12 @@ class PreprocessMulticoner(Preprocessor):
     def __get_text(self, tokens: List[tuple]) -> str:
         return ' '.join([token_string for token_string, _ in tokens])
 
-    def __get_token_annos(self, tokens: List[tuple]) -> List[Anno]:
+    def __get_token_annos(self, tokens: List[tuple]) -> List[Annotation]:
         ret = []
         curr_offset = 0
         for token_string, _ in tokens:
             ret.append(
-                Anno(
+                Annotation(
                     begin_offset=curr_offset,
                     end_offset=curr_offset + len(token_string),
                     label_type="Token",
@@ -181,7 +181,7 @@ class PreprocessMulticoner(Preprocessor):
                 ret[fine] = coarse
         return ret
 
-    def __build_annos_dict(self, sample_to_tokens) -> Dict[SampleId, List[Anno]]:
+    def __build_annos_dict(self, sample_to_tokens) -> Dict[SampleId, List[Annotation]]:
         fine_to_coarse = self.__get_fine_to_coarse_dict()
         annos_dict = {}
         for sample_id in sample_to_tokens:
@@ -194,7 +194,7 @@ class PreprocessMulticoner(Preprocessor):
                     if curr_span_start is not None:
                         assert curr_span_type is not None
                         assert curr_span_text is not None
-                        spans.append(Anno(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
+                        spans.append(Annotation(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
                         curr_span_start, curr_span_type, curr_span_text = None, None, None
                 if token_label.startswith("B-"):
                     curr_span_start = token_offset
@@ -208,7 +208,7 @@ class PreprocessMulticoner(Preprocessor):
             if curr_span_start is not None:
                 assert curr_span_type is not None
                 assert curr_span_text is not None
-                spans.append(Anno(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
+                spans.append(Annotation(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
                 curr_span_start, curr_span_type, curr_span_text = None, None, None
             annos_dict[sample_id] = spans
         return annos_dict

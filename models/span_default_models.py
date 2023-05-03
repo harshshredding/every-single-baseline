@@ -3,7 +3,7 @@ import transformers
 from transformers import AutoModel, AutoTokenizer
 from allennlp.modules.span_extractors.endpoint_span_extractor import EndpointSpanExtractor
 import util
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 from utils.config import ModelConfig, DatasetConfig
 from utils.model import SeqLabelPredictions, ModelClaC
@@ -14,7 +14,7 @@ from utils.model import PositionalEncodingOriginal, get_bert_embeddings_for_batc
 
 
 
-def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) -> List[List[Anno]]:
+def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) -> list[list[Annotation]]:
     ret = []
     for batch_idx, sample in enumerate(samples):
         token_level_annos_for_sample = []
@@ -25,7 +25,7 @@ def get_annos_token_level(samples: List[Sample], batch_encoding: BatchEncoding) 
                                                          char_index=(gold_anno.end_offset - 1))
             if (start_token_idx is not None) and (end_token_idx is not None):
                 token_level_annos_for_sample.append(
-                    Anno(
+                    Annotation(
                         begin_offset=start_token_idx,
                         end_offset=end_token_idx + 1,
                         label_type=gold_anno.label_type,
@@ -146,7 +146,7 @@ class SpanDefault(ModelClaC):
             all_possible_spans_list_batch,
             batch_encoding: BatchEncoding,
             samples: List[Sample]
-    ) -> List[List[Anno]]:
+    ) -> List[List[Annotation]]:
         ret = []
         # SHAPE: (batch_size, num_spans)
         pred_all_possible_spans_type_indices_list_batch = torch \
@@ -175,7 +175,7 @@ class SpanDefault(ModelClaC):
                         span_start_char_offset = start_char_span.start
                         span_end_char_offset = end_char_span.end
                         sample_annos.append(
-                            Anno(
+                            Annotation(
                                 span_start_char_offset,
                                 span_end_char_offset,
                                 self.idx_to_type[span_type_idx],
@@ -203,7 +203,7 @@ class SpanDefault(ModelClaC):
     def _label_all_possible_spans_batch(
             self,
             all_possible_spans_list_batch: List[List[tuple]],
-            sub_token_level_annos_batch: List[List[Anno]]
+            sub_token_level_annos_batch: List[List[Annotation]]
     ):
         assert len(all_possible_spans_list_batch) == len(sub_token_level_annos_batch)
         ret = []

@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from utils.preprocess import Preprocessor, PreprocessorRunType
-from structs import Anno, Sample, DatasetSplit, Dataset, AnnotationCollection
+from structs import Annotation, Sample, DatasetSplit, Dataset, AnnotationCollection
 from annotators import Annotator
 from bs4 import BeautifulSoup
 
@@ -29,7 +29,7 @@ def get_text(tag):
     return ret
 
 
-def get_annos(tag, offset=None, token_strings=None) -> List[Anno]:
+def get_annos(tag, offset=None, token_strings=None) -> List[Annotation]:
     if offset is None:
         offset = [0]
         assert token_strings is None
@@ -46,7 +46,7 @@ def get_annos(tag, offset=None, token_strings=None) -> List[Anno]:
     anno_end_offset = offset[0]
     if (tag.name == 'cons') and ('sem' in tag.attrs) and (tag['sem'][0:2] == 'G#'):
         ret.append(
-            Anno(
+            Annotation(
                 anno_start_offset,
                 anno_end_offset,
                 tag['sem'],
@@ -55,7 +55,7 @@ def get_annos(tag, offset=None, token_strings=None) -> List[Anno]:
     return ret
 
 
-def get_parent_label_from_anno(anno: Anno) -> str | None:
+def get_parent_label_from_anno(anno: Annotation) -> str | None:
     anno_label_type = anno.label_type.lower()
     if anno_label_type.startswith('G#DNA'.lower()):
         return 'dna'
@@ -71,7 +71,7 @@ def get_parent_label_from_anno(anno: Anno) -> str | None:
         return None
 
 
-def get_parent_annos(anno_list: List[Anno]) -> List[Anno]:
+def get_parent_annos(anno_list: List[Annotation]) -> List[Annotation]:
     ret = []
     for anno in anno_list:
         if get_parent_label_from_anno(anno) is not None:
@@ -119,7 +119,7 @@ def make_sample_from_article(article_soup: BeautifulSoup) -> Sample:
     for sentence_sample in sentence_samples:
         article_sample_text = article_sample_text + sentence_sample.text + "  "
         adjusted_annos = [
-            Anno(
+            Annotation(
                 begin_offset=anno.begin_offset + sentence_offset,
                 end_offset=anno.end_offset + sentence_offset,
                 label_type=anno.label_type,

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 import benepar
-from structs import Dataset, Sample, Anno, Span, AnnotationCollection, DatasetSplit
+from structs import Dataset, Sample, Annotation, Span, AnnotationCollection, DatasetSplit
 from spacy.tokens.span import Span as SpacySpan
 import spacy
 import util
@@ -99,7 +99,7 @@ def get_sentence_sample(sentence: SpacySpan, sentence_idx: int, sample: Sample) 
     ]
 
     annos_with_corrected_offsets = [
-        Anno(
+        Annotation(
             begin_offset=(anno.begin_offset - sentence.start_char),
             end_offset=(anno.end_offset - sentence.start_char),
             label_type=anno.label_type,
@@ -164,7 +164,7 @@ class TokenAnnotator(Annotator):
                 start_offset = token.idx
                 end_offset = start_offset + len(token)
                 token_annos.append(
-                    Anno(start_offset, end_offset, "Token", str(token))
+                    Annotation(start_offset, end_offset, "Token", str(token))
                 )
             sample.annos.external.extend(token_annos)
         return samples
@@ -186,7 +186,7 @@ def get_focus_subsample(
     focus_text = sample_text[focus_span.begin:focus_span.end]
     tail_text = ' [SEP] ' + sample_text[tail_span.begin:tail_span.end]
     adjusted_annos_in_focus = [
-        Anno(
+        Annotation(
             begin_offset=(anno.begin_offset - focus_span.begin + len(head_text)),
             end_offset=(anno.end_offset - focus_span.begin + len(head_text)),
             label_type=anno.label_type,
@@ -253,7 +253,7 @@ class MultipleSentenceAnnotator(Annotator):
                 sample_end_char_idx = sentence_group[-1].end_char
                 sentence_sample_text = sample.text[sample_start_char_idx: sample_end_char_idx]
                 sentence_sample_annos = [
-                    Anno(
+                    Annotation(
                         begin_offset=gold_anno.begin_offset - sample_start_char_idx,
                         end_offset=gold_anno.end_offset - sample_start_char_idx,
                         label_type=gold_anno.label_type,
@@ -302,7 +302,7 @@ class SlidingWindowAnnotator(Annotator):
             focus_text = sample_text[focus_span.begin:focus_span.end]
             tail_text = ' [SEP] ' + sample_text[tail_span.begin:tail_span.end]
             adjusted_annos_in_focus = [
-                Anno(
+                Annotation(
                     begin_offset=(anno.begin_offset - focus_span.begin + len(head_text)),
                     end_offset=(anno.end_offset - focus_span.begin + len(head_text)),
                     label_type=anno.label_type,
@@ -359,7 +359,7 @@ class GoogleSearch(Annotator):
     def annotate_helper(self, samples: List[Sample]):
         print("Annotator: Google Search")
         for sample in show_progress(samples):
-            sample.annos.external.append(Anno(0, len(sample.text), 'OriginalSample', 'N/A'))
+            sample.annos.external.append(Annotation(0, len(sample.text), 'OriginalSample', 'N/A'))
             google_search_results = get_google_search_headings(sample.text)
             search_result_string = ".".join(google_search_results)
             sample.text = ".".join([sample.text, search_result_string])
@@ -394,13 +394,13 @@ def get_chatgpt_dictionary() -> set[str]:
     all_diseases = [remove_period(disease) for disease in all_diseases]
     return set(all_diseases)
 
-def get_matches(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno]:
+def get_matches(dictionary: set, sentence: str, knowlege_type: str) -> list[Annotation]:
     matches = []
     for entry in dictionary:
         for i in range(len(sentence)):
             if sentence[i:].startswith(entry):
                 matches.append(
-                    Anno(
+                    Annotation(
                         begin_offset=i, 
                         end_offset=(i + len(entry)),
                         label_type=knowlege_type,
@@ -409,13 +409,13 @@ def get_matches(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno
                 )
     return matches
 
-def get_matches_faster(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno]:
+def get_matches_faster(dictionary: set, sentence: str, knowlege_type: str) -> list[Annotation]:
     matches = []
     for entry in dictionary:
         for i in range(len(sentence)):
             if sentence.find(entry, i) == i:
                 matches.append(
-                    Anno(
+                    Annotation(
                         begin_offset=i, 
                         end_offset=(i + len(entry)),
                         label_type=knowlege_type,
@@ -425,14 +425,14 @@ def get_matches_faster(dictionary: set, sentence: str, knowlege_type: str) -> li
     return matches
 
 
-def get_matches_faster_2(dictionary: set, sentence: str, knowlege_type: str) -> list[Anno]:
+def get_matches_faster_2(dictionary: set, sentence: str, knowlege_type: str) -> list[Annotation]:
     matches = []
     for i in range(len(sentence)):
         for j in range(i+1, len(sentence)):
             substring = sentence[i:j]
             if substring in dictionary:
                 matches.append(
-                    Anno(
+                    Annotation(
                         begin_offset=i, 
                         end_offset=j,
                         label_type=knowlege_type,
@@ -697,7 +697,7 @@ def read_umls_disease_gazetteer_dict():
     list_without_extra_info = [remove_extra_info(disease_string) for disease_string in disease_list]
     return set(list_without_extra_info)
 
-def has_word_boundaries(anno: Anno, sentence: str) -> bool:
+def has_word_boundaries(anno: Annotation, sentence: str) -> bool:
     assert anno.begin_offset < anno.end_offset
     if anno.begin_offset > 0:
         if sentence[anno.begin_offset - 1].isalpha():

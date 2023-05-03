@@ -5,11 +5,19 @@ from typing import List, Dict, NamedTuple
 OUTSIDE_LABEL_STRING = 'o'
 
 class EvaluationType(Enum):
+    """
+    Different tasks can have different metrics for
+    evaluating performance. This enum attemps to
+    capture these differences.
+    """
     f1 = 0
     accuracy = 1
 
 class Span(NamedTuple):
-    """A span"""
+    """
+    A very general representation of a span/segment 
+    of _something_ .
+    """
     begin: int
     end: int
 
@@ -78,7 +86,7 @@ class Label:
 
 
 @dataclass
-class Anno:
+class Annotation:
     begin_offset: int
     end_offset: int
     label_type: str
@@ -104,8 +112,8 @@ class TokenData:
 
 @dataclass
 class AnnotationCollection:
-    gold: List[Anno]
-    external: List[Anno]
+    gold: list[Annotation]
+    external: list[Annotation]
 
 
 @dataclass
@@ -119,5 +127,5 @@ class PreprocessorRunType(Enum):
     production = 0
     dry_run = 1
 
-SampleAnnotations = Dict[str, List[Anno]]
+SampleAnnotations = Dict[str, List[Annotation]]
 SampleId = str

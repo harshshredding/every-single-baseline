@@ -5,7 +5,7 @@ from torch import Tensor
 from transformers.tokenization_utils_base import BatchEncoding
 from typing import Optional
 
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from typing import List
 from abc import ABC, abstractmethod
 from utils.config import ModelConfig, DatasetConfig
@@ -21,7 +21,7 @@ from allennlp.nn import util
 from allennlp.common.checks import ConfigurationError
 from preamble import *
 
-SeqLabelPredictions = List[List[Anno]]
+SeqLabelPredictions = List[List[Annotation]]
 ClassificationPredictions = List[str]
 
 

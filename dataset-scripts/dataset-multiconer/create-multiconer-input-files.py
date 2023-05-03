@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 import json
 import csv
-from structs import Anno
+from structs import Annotation
 import util
 from collections import Counter
 from args import args, curr_dataset
@@ -116,7 +116,7 @@ def create_annos_file(dataset_type, granularity: str):
         for token_string, token_label in token_data_list:
             if token_label == 'O' or token_label.startswith('B-'):
                 if curr_span_start is not None:
-                    spans.append(Anno(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
+                    spans.append(Annotation(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
                     curr_span_start, curr_span_type, curr_span_text = None, None, None
             if token_label.startswith("B-"):
                 curr_span_start = token_offset
@@ -126,7 +126,7 @@ def create_annos_file(dataset_type, granularity: str):
                 curr_span_text = " ".join([curr_span_text, token_string])
             token_offset += (len(token_string) + 1) # add one for one space between tokens 
         if curr_span_start is not None:
-            spans.append(Anno(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
+            spans.append(Annotation(curr_span_start, token_offset - 1, curr_span_type, curr_span_text))
             curr_span_start, curr_span_type, curr_span_text = None, None, None
         annos_dict[sample_id] = spans
 
@@ -151,7 +151,7 @@ def create_train_gate_input_file():
     if args['granularity'] == 'fine':
         for sample_id in annos_dict:
             gold_annos = annos_dict[sample_id]
-            coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
+            coarse_annos = [Annotation(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
             gold_annos.extend(coarse_annos)
     util.create_gate_file("multiconer_train", sample_to_token_data, annos_dict, 10000)
 
@@ -163,7 +163,7 @@ def create_valid_gate_input_file():
     if args['granularity'] == 'fine':
         for sample_id in annos_dict:
             gold_annos = annos_dict[sample_id]
-            coarse_annos = [Anno(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
+            coarse_annos = [Annotation(anno.begin_offset, anno.end_offset, fine_to_coarse_dict[anno.label_type], anno.extraction) for anno in gold_annos]
             gold_annos.extend(coarse_annos)
     util.create_gate_file("multiconer_valid", sample_to_token_data, annos_dict, 10000)
 

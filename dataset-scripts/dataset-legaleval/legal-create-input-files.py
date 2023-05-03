@@ -1,7 +1,7 @@
 import json
 import csv
 import spacy
-from structs import Anno, Sample, DatasetSplit
+from structs import Annotation, Sample, DatasetSplit
 from preprocess import Preprocessor
 from typing import List
 import util
@@ -38,9 +38,9 @@ class PreprocessLegal(Preprocessor):
     def __get_raw_annos(self, sample):
         return sample['annotations'][0]['result']
 
-    def __parse_anno_raw(self, anno_raw) -> Anno:
+    def __parse_anno_raw(self, anno_raw) -> Annotation:
         anno_raw = anno_raw['value']
-        return Anno(anno_raw['start'], anno_raw['end'], anno_raw['labels'][0], anno_raw['text']) 
+        return Annotation(anno_raw['start'], anno_raw['end'], anno_raw['labels'][0], anno_raw['text']) 
     
     def create_entity_types_file(self) -> None:
         types_set = set()

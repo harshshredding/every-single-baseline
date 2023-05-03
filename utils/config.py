@@ -20,7 +20,6 @@ class DatasetConfig:
     expected_number_of_valid_samples: int
     expected_number_of_test_samples: int
 
-
 @dataclass
 class ModelConfig:
     model_config_name: str
@@ -39,13 +38,20 @@ class ModelConfig:
     # External Anno type 
     external_feature_type: Optional[str] = None
 
-
 @dataclass
 class PreprocessorConfig:
     preprocessor_config_name: str
     preprocessor_class_path: str
     preprocessor_class_init_params: dict
 
+@dataclass
+class ExperimentConfig:
+    dataset_config: DatasetConfig
+    model_config: ModelConfig
+    testing_frequency: int
+    optimizer: str = 'Adam'
+    num_epochs: int = 20
+    evaluation_type: EvaluationType = EvaluationType.f1
 
 def get_large_model_config(
         model_config_name: str,
@@ -102,14 +108,6 @@ def get_small_model_config(
         learning_rate=1e-5
     )
 
-@dataclass
-class ExperimentConfig:
-    dataset_config: DatasetConfig
-    model_config: ModelConfig
-    testing_frequency: int
-    optimizer: str = 'Adam'
-    num_epochs: int = 20
-    evaluation_type: EvaluationType = EvaluationType.f1
 
 class ExperimentModifier:
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
@@ -165,7 +163,6 @@ class Epochs20Modifier(ExperimentModifier):
         experiment_config.num_epochs = 20
         return experiment_config
 
-
 class EpochsCustomModifier(ExperimentModifier):
     def __init__(self, num_epochs: int):
         super().__init__()
@@ -174,7 +171,6 @@ class EpochsCustomModifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
         experiment_config.num_epochs = self.num_epochs
         return experiment_config
-
 
 class Epochs30Modifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:
@@ -191,12 +187,10 @@ class AdamModifier(ExperimentModifier):
         experiment_config.optimizer = 'Adam'
         return experiment_config
 
-
 class AdafactorModifier(ExperimentModifier):
     def modify(self, experiment_config: ExperimentConfig) -> ExperimentConfig:  
         experiment_config.optimizer = 'Adafactor'
         return experiment_config
-
 
 def get_experiment_config(
         model_config_module_name: str,

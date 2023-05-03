@@ -1,5 +1,5 @@
 import json
-from structs import Anno, Sample, DatasetSplit, AnnotationCollection, Dataset
+from structs import Annotation, Sample, DatasetSplit, AnnotationCollection, Dataset
 from preprocess import Preprocessor
 import util
 from enum import Enum
@@ -41,9 +41,9 @@ class PreprocessLegal(Preprocessor):
     def __get_raw_annos(self, sample):
         return sample['annotations'][0]['result']
 
-    def __parse_anno_raw(self, anno_raw) -> Anno:
+    def __parse_anno_raw(self, anno_raw) -> Annotation:
         anno_raw = anno_raw['value']
-        return Anno(anno_raw['start'], anno_raw['end'], anno_raw['labels'][0], anno_raw['text'])
+        return Annotation(anno_raw['start'], anno_raw['end'], anno_raw['labels'][0], anno_raw['text'])
 
     def get_entity_types(self) -> List[str]:
         types_set = set()

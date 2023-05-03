@@ -1,6 +1,6 @@
 from utils.general import read_predictions_file
 from collections import defaultdict
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from utils.easy_testing import get_test_samples_by_dataset_name
 from utils.evaluation import get_f1_score_from_sets
 import csv
@@ -17,7 +17,7 @@ def get_original_id_info_from_window_id(sample_id: str) -> tuple:
     return original_sample_id, offset
 
 
-def get_original_gold_annos_from_window_annos(window_annos_dict: dict[str, list[Anno]]) -> dict[str, list[Anno]]:
+def get_original_gold_annos_from_window_annos(window_annos_dict: dict[str, list[Annotation]]) -> dict[str, list[Annotation]]:
     original_annos_dict = defaultdict(list)
     special_separator = ' [SEP] '
 
@@ -37,7 +37,7 @@ def get_original_gold_annos_from_window_annos(window_annos_dict: dict[str, list[
                 new_end_offset -= 50
 
             original_annos_list.append(
-                Anno(
+                Annotation(
                     begin_offset=new_begin_offset,
                     end_offset=new_end_offset,
                     label_type=window_anno.label_type,
@@ -47,7 +47,7 @@ def get_original_gold_annos_from_window_annos(window_annos_dict: dict[str, list[
     return original_annos_dict
 
 
-def remove_duplicate_annos_position(annos: list[Anno]) -> list[Anno]:
+def remove_duplicate_annos_position(annos: list[Annotation]) -> list[Annotation]:
     ret = []
     annos_dict = {}
     for anno in annos:
@@ -57,7 +57,7 @@ def remove_duplicate_annos_position(annos: list[Anno]) -> list[Anno]:
     return ret
 
 
-def get_annos_set(annos_dict: dict[str, list[Anno]]):
+def get_annos_set(annos_dict: dict[str, list[Annotation]]):
     ret = []
     for sample_id, annos in annos_dict.items():
         annos = [(sample_id, anno.label_type, anno.begin_offset, anno.end_offset)
@@ -75,8 +75,8 @@ def get_gold_annos_set(samples: list[Sample]) -> set[tuple[str, str, int, int]]:
     return set(gold_annos)
 
 
-predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_majority_all.tsv'
-output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/official_living_majority_all.tsv'
+predictions_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/bionlp_living_ner_meta.tsv'
+output_file_path = '/Users/harshverma/every-single-baseline/useful_scripts/official_living_meta.tsv'
 
 
 predictions_dict = read_predictions_file(predictions_file_path=predictions_file_path)

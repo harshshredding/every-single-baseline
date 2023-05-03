@@ -1,7 +1,7 @@
 from models.all_models import SeqLabelerNoTokenization
 from utils.config import ModelConfig, DatasetConfig
 import torch.nn as nn
-from structs import Anno, Sample
+from structs import Annotation, Sample
 from transformers.tokenization_utils_base import BatchEncoding
 import torch
 from preamble import *
@@ -13,7 +13,7 @@ from utils.model import PositionalEncodingOriginal
 def get_external_annos_of_type(sample: Sample, anno_type: str):
     return [anno for anno in sample.annos.external if anno.label_type == anno_type]
 
-def get_gazetteer_match_labels(batch_encoding: BatchEncoding, gazetteer_annos: list[Anno], batch_idx: int) -> list[list[int]]:
+def get_gazetteer_match_labels(batch_encoding: BatchEncoding, gazetteer_annos: list[Annotation], batch_idx: int) -> list[list[int]]:
     labels = [[1, 0] for _ in batch_encoding.tokens(batch_index=batch_idx)]
     char_spans = [
             batch_encoding.token_to_chars(token_idx) 
