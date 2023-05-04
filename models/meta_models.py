@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 from structs import Sample
 from preamble import *
-from overrides import override
+from overrides import overrides
 
 
 def check_samples_for_meta_labels(samples: list[Sample]):
@@ -19,6 +19,10 @@ def get_gold_meta_labels(samples: list[Sample], type_to_idx: dict[str, int]):
             for sample in samples]
 
 class MetaDefault(ModelClaC):
+    """
+    The base(basic) meta model that doesn't support special markers; lIt is just 
+    a simple binary classification model.
+    """
     def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(MetaDefault, self).__init__(model_config, dataset_config)
         assert set(all_types) == set(['correct', 'incorrect'])
@@ -86,6 +90,10 @@ class MetaDefault(ModelClaC):
 
 
 class MetaDefaultSpecialTokens(MetaDefault):
+    """
+    Identical to the basic model except that it can work with
+    special beginning and ending markers <e> and </e> respectively.
+    """
     def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(MetaDefaultSpecialTokens, self).__init__(
                 all_types=all_types,
@@ -101,7 +109,7 @@ class MetaDefaultSpecialTokens(MetaDefault):
 
         self.bert_model.resize_token_embeddings(len(self.bert_tokenizer))
 
-    @override
+    @overrides
     def get_bert_encoding(self, samples: list[Sample]):
         bert_encoding =  get_bert_encoding_for_batch(
                 samples=samples,
@@ -115,6 +123,10 @@ class MetaDefaultSpecialTokens(MetaDefault):
 
 
 class MetaSpecialWeightedLoss(MetaDefaultSpecialTokens):
+    """
+    This model additionally supports adding weights to the
+    CrossEntropyLoss for dealing with unbalanced classes.
+    """
     def __init__(self, 
                  all_types: list[str],
                  model_config: ModelConfig,
