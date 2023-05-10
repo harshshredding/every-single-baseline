@@ -100,14 +100,14 @@ def get_spans_from_bio_seq_labels_old(predictions_sub: List[Label], batch_encodi
 
 def ensure_no_sample_gets_truncated_by_bert(samples: List[Sample], dataset_config: DatasetConfig):
     bert_tokenizer = get_bert_tokenizer()
-    num_truncated = 0
+    # num_truncated = 0
     for sample in samples:
         num_tokens = len(bert_tokenizer(sample.text, truncation=True)['input_ids'])
         if num_tokens == bert_tokenizer.model_max_length:
-            print(f"WARN: In dataset {dataset_config.dataset_name}, the sample {sample.id} is being {red('Truncated')}")
-            num_truncated += 1
-    if num_truncated > 0:
-        print(blue(f"WARN: Total truncated samples : {num_truncated}"))
+            raise RuntimeError(f"WARN: In dataset {dataset_config.dataset_name}, the sample {sample.id} is being {red('Truncated')}")
+            # num_truncated += 1
+    # if num_truncated > 0:
+    #     print(blue(f"WARN: Total truncated samples : {num_truncated}"))
 
 
 def write_samples(samples: List[Sample], output_json_file_path: str):

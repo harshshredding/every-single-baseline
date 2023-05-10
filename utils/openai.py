@@ -35,6 +35,7 @@ def chatgpt_get_diseases_in_tweet(tweet_text) -> str:
             {"role": "user", "content": prompt2},
         ]
     )
+
     return result.choices[0].message.content
 
 

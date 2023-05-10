@@ -14,7 +14,7 @@ from flair.models.sequence_tagger_utils.viterbi import ViterbiLoss, ViterbiDecod
 from flair.data import Dictionary
 from utils.config import DatasetConfig, ModelConfig
 from utils.universal import Option, OptionState
-from utils.model import ModelClaC, SeqLabelPredictions, get_bert_embeddings_for_batch
+from utils.model import ModelBase, SeqLabelPredictions, get_bert_embeddings_for_batch
 from utils.config import get_experiment_config
 from pudb import set_trace
 
@@ -1066,7 +1066,7 @@ class SeqLabelerBatched(torch.nn.Module):
         return loss, predicted_annos_batch
 
 
-class SeqLabelerNoTokenization(ModelClaC):
+class SeqLabelerNoTokenization(ModelBase):
     def __init__(self, all_types: List[str], model_config: ModelConfig, dataset_config: DatasetConfig):
         super(SeqLabelerNoTokenization, self).__init__(model_config=model_config, dataset_config=dataset_config)
         self.bert_model = AutoModel.from_pretrained(model_config.pretrained_model_name)

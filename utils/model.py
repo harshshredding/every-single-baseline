@@ -21,11 +21,11 @@ from allennlp.nn import util
 from allennlp.common.checks import ConfigurationError
 from preamble import *
 
-SeqLabelPredictions = List[List[Annotation]]
-ClassificationPredictions = List[str]
+SeqLabelPredictions = list[list[Annotation]]
+ClassificationPredictions = list[str]
 
 
-class ModelClaC(ABC, torch.nn.Module):
+class ModelBase(ABC, torch.nn.Module):
     """
     The model abstraction used by the framework. Every model
     should inherit this abstraction.
@@ -36,7 +36,7 @@ class ModelClaC(ABC, torch.nn.Module):
             model_config: ModelConfig,
             dataset_config: DatasetConfig
     ):
-        super(ModelClaC, self).__init__()
+        super(ModelBase, self).__init__()
         self.model_config = model_config
         self.dataset_config = dataset_config
 

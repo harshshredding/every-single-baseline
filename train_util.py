@@ -29,6 +29,7 @@ def has_external_features(samples: list[Sample]) -> bool:
             return True
     return False
 
+
 def check_external_features(samples: list[Sample], external_feature_type: str):
     for sample in samples:
         for anno in sample.annos.external:
@@ -121,7 +122,7 @@ def check_label_types(train_samples: List[Sample], valid_samples: List[Sample], 
             assert anno.label_type in all_types, f"anno label type {anno.label_type} not expected"
 
 
-def get_batches(samples: List[Sample], batch_size: int) -> list[list[Sample]]:
+def get_batches(samples: list[Sample], batch_size: int) -> list[list[Sample]]:
     return [
         samples[batch_start_idx: batch_start_idx + batch_size]
         for batch_start_idx in range(0, len(samples), batch_size)
@@ -169,8 +170,8 @@ def get_bio_labels_from_annos_batch(
 
 
 def get_bio_labels_for_bert_tokens_batch(
-        token_annos_batch: List[List[Option[Annotation]]],
-        gold_annos_batch: List[List[Annotation]]
+        token_annos_batch: list[list[Option[Annotation]]],
+        gold_annos_batch: list[list[Annotation]]
 ):
     labels_batch = [util.get_labels_bio_new(token_annos, gold_annos)
                     for token_annos, gold_annos in zip(token_annos_batch, gold_annos_batch)]
@@ -430,46 +431,6 @@ def get_model_class(model_config: ModelConfig) -> type:
 
 
 def prepare_model(model_config: ModelConfig, dataset_config: DatasetConfig):
-    # if dataset_config['model_name'] == 'SeqLabelerAllResourcesSmallerTopK':
-    #     return SeqLabelerAllResourcesSmallerTopK(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-    #                                              pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    # if dataset_config['model_name'] == 'SeqLabelerDisGaz':
-    #     return SeqLabelerDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-    #                             pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    # if dataset_config['model_name'] == 'SeqLabelerUMLSDisGaz':
-    #     return SeqLabelerUMLSDisGaz(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-    #                                 pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    # if dataset_config['model_name'] == 'SeqLabelerUMLSDisGaz3Classes':
-    #     return SeqLabelerUMLSDisGaz3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-    #                                         pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    # if dataset_config['model_name'] == 'Silver3Classes':
-    #     return Silver3Classes(umls_pretrained=umls_embedding_dict, umls_to_idx=umls_key_to_index,
-    #                           pos_pretrained=pos_dict, pos_to_idx=pos_to_index).to(device)
-    # if dataset_config['model_name'] == 'LightWeightRIM3Classes':
-    #     return LightWeightRIM3Classes().to(device)
-    # if dataset_config['model_name'] == 'OneEncoder3Classes':
-    #     return OneEncoder3Classes().to(device)
-    # if dataset_config['model_name'] == 'TransformerEncoder3Classes':
-    #     return TransformerEncoder3Classes().to(device)
-    # if dataset_config['model_name'] == 'PositionalTransformerEncoder3Classes':
-    #     return PositionalTransformerEncoder3Classes().to(device)
-    # if dataset_config['model_name'] == 'SmallPositionalTransformerEncoder3Classes':
-    #     return SmallPositionalTransformerEncoder3Classes().to(device)
-    # if dataset_config['model_name'] == 'ComprehensivePositionalTransformerEncoder3Classes':
-    #     return ComprehensivePositionalTransformerEncoder3Classes(umls_pretrained=umls_embedding_dict,
-    #                                                              umls_to_idx=umls_key_to_index,
-    #                                                              pos_pretrained=pos_dict, pos_to_idx=pos_to_index) \
-    #         .to(device)
-    # if dataset_config['model_name'] == 'PosEncod3ClassesNoSilverNewGaz':
-    #     return PosEncod3ClassesNoSilverNewGaz().to(device)
-    # if dataset_config['model_name'] == 'PosEncod3ClassesNoSilverBig':
-    #     return PosEncod3ClassesNoSilverBig().to(device)
-    # if dataset_config['model_name'] == 'PosEncod3ClassesNoSilverSpanish':
-    #     return PosEncod3ClassesNoSilverSpanish().to(device)
-    # if dataset_config['model_name'] == 'PosEncod3ClassesOnlyRoberta':
-    #     return PosEncod3ClassesOnlyRoberta().to(device)
-    # if dataset_config['model_name'] == 'OnlyRoberta3Classes':
-    #     return OnlyRoberta3Classes().to(device)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
     model_class = get_model_class(model_config=model_config)
     return model_class(all_types, model_config=model_config, dataset_config=dataset_config).to(device)

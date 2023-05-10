@@ -1,6 +1,6 @@
 from transformers.models.auto.modeling_auto import AutoModel
 from transformers.models.auto.tokenization_auto import AutoTokenizer
-from utils.model import ClassificationPredictions, ModelClaC, SeqLabelPredictions, get_bert_encoding_for_batch
+from utils.model import ClassificationPredictions, ModelBase, SeqLabelPredictions, get_bert_encoding_for_batch
 from utils.config import ModelConfig, DatasetConfig
 import torch
 import torch.nn as nn
@@ -18,9 +18,9 @@ def get_gold_meta_labels(samples: list[Sample], type_to_idx: dict[str, int]):
     return [type_to_idx[sample.annos.gold[0].label_type] 
             for sample in samples]
 
-class MetaDefault(ModelClaC):
+class MetaDefault(ModelBase):
     """
-    The base(basic) meta model that doesn't support special markers; lIt is just 
+    The base(basic) meta model that doesn't support special markers; It is just 
     a simple binary classification model.
     """
     def __init__(self, all_types: list[str], model_config: ModelConfig, dataset_config: DatasetConfig):
