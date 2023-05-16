@@ -54,7 +54,7 @@ class PreprocessLegal(Preprocessor):
             types_set.update([anno.label_type for anno in sample.annos])
         print("num types: ", len(types_set))
         assert len(types_set) == 14
-        print(util.p_string(list(types_set)))
+        print(util.pretty_string(list(types_set)))
         with util.open_make_dirs(f'./datasets/legaleval/types.txt', 'w') as types_file:
             for type in types_set:
                 print(type, file=types_file) 

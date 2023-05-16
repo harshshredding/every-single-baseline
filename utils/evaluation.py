@@ -1,4 +1,4 @@
-from structs import DatasetSplit, Sample, SampleAnno, EvaluationType
+from structs import DatasetSplit, Sample, SampleAnnotation, EvaluationType
 import statistics
 from enum import Enum
 from utils.easy_testing import get_test_samples_by_dataset_name, get_train_samples_by_dataset_name, get_valid_samples_by_dataset_name
@@ -44,10 +44,10 @@ def get_gold_annos_set(dataset_config_name: str, split: DatasetSplit):
     return get_gold_annos_set_from_samples(samples)
 
 
-def get_gold_annos_set_from_samples(samples: list[Sample]) -> set[SampleAnno]:
+def get_gold_annos_set_from_samples(samples: list[Sample]) -> set[SampleAnnotation]:
     gold_annos = []
     for sample in samples:
-        annos = [SampleAnno(sample.id, anno.label_type, anno.begin_offset, anno.end_offset)
+        annos = [SampleAnnotation(sample.id, anno.label_type, anno.begin_offset, anno.end_offset)
                  for anno in sample.annos.gold]
         gold_annos.extend(annos)
     return set(gold_annos)
@@ -64,12 +64,12 @@ def get_predicted_annos_for_entity_type(predictions_file_path: str, entity_type:
     return set(predicted_annos)
 
 
-def get_predicted_annos_set(predictions_file_path: str) -> set[SampleAnno]:
+def get_predicted_annos_set(predictions_file_path: str) -> set[SampleAnnotation]:
     predictions_dict = read_predictions_file(predictions_file_path=predictions_file_path)
     predicted_annos = []
     for sample_id, annos in predictions_dict.items():
         predicted_annos.extend(
-                [SampleAnno(sample_id, anno.label_type, anno.begin_offset, anno.end_offset)
+                [SampleAnnotation(sample_id, anno.label_type, anno.begin_offset, anno.end_offset)
                  for anno in annos]
         )
     return set(predicted_annos)

@@ -1,5 +1,5 @@
 from utils.evaluation import get_f1_score_from_sets, get_gold_annos_set, evaluate_predictions
-from structs import DatasetSplit, SampleAnno
+from structs import DatasetSplit, SampleAnnotation
 from utils.ensemble import get_majority_vote_predictions, get_union_predictions, get_majority_voting_results, union_results
 import csv
 
@@ -93,7 +93,7 @@ def ncbi_evaluate_prediction_files():
 
 
 
-def write_predictions(predictions: set[SampleAnno], output_file_path: str):
+def write_predictions(predictions: set[SampleAnnotation], output_file_path: str):
     with open(output_file_path, 'w') as output_tsv: 
         writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
         writer.writerow(['sample_id', 'begin', 'end', 'type', 'extraction'])

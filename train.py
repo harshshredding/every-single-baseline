@@ -131,7 +131,7 @@ for experiment_idx, experiment_config in enumerate(experiments):
     model = train_util.prepare_model(model_config, dataset_config)
     optimizer = train_util.get_optimizer(model, experiment_config)
     all_types = util.get_all_types(dataset_config.types_file_path, dataset_config.num_types)
-    logger.debug(f"all types\n {util.p_string(list(all_types))}")
+    logger.debug(f"all types\n {util.pretty_string(list(all_types))}")
     logger.info("Finished model initialization.")
 
     # verify that all label types in annotations are valid types

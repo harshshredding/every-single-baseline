@@ -268,7 +268,7 @@ def get_extraction(tokens_data: List[TokenData], start_offset: int, end_offset: 
 
 
 def print_list(some_list):
-    print(p_string(some_list))
+    print(pretty_string(some_list))
 
 
 def create_gate_input_file(output_file_path, sample_to_token_data: Dict[str, List[TokenData]],
@@ -322,7 +322,7 @@ def create_gate_file(output_file_path: str, sample_to_token_data: Dict[str, List
     gate_document.save(output_file_path)
 
 
-def p_string(obj) -> str:
+def pretty_string(obj) -> str:
     return json.dumps(obj=obj, indent=4)
 
 

@@ -94,7 +94,7 @@ class Annotation:
     features: dict = field(default_factory=dict)
 
 
-class SampleAnno(NamedTuple):
+class SampleAnnotation(NamedTuple):
     sample_id: str
     type_string: str
     begin_offset: int

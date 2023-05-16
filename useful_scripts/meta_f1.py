@@ -2,12 +2,12 @@ from utils.easy_testing import get_test_samples_by_dataset_name
 from utils.evaluation import get_f1_score_from_sets
 from utils.general import read_predictions_file
 import pandas as pd
-from structs import SampleAnno, Annotation
+from structs import SampleAnnotation, Annotation
 import csv
 from collections import defaultdict
 
 
-def read_meta_predictions_file(predictions_file_path, entity_type: 'str') -> set[SampleAnno]:
+def read_meta_predictions_file(predictions_file_path, entity_type: 'str') -> set[SampleAnnotation]:
     df = pd.read_csv(predictions_file_path, sep='\t')
     ret = set()
     num_removed = 0
@@ -17,14 +17,14 @@ def read_meta_predictions_file(predictions_file_path, entity_type: 'str') -> set
         label = row['label']
         assert label in ['correct', 'incorrect']
         if label == 'correct':
-            ret.add(SampleAnno(str(original_sample_id), entity_type, int(start), int(end)))
+            ret.add(SampleAnnotation(str(original_sample_id), entity_type, int(start), int(end)))
         else:
             num_removed += 1
     print(f"removed {num_removed} predictions")
     return ret
 
 
-def read_meta_predictions_file_with_type_information(predictions_file_path) -> set[SampleAnno]:
+def read_meta_predictions_file_with_type_information(predictions_file_path) -> set[SampleAnnotation]:
     df = pd.read_csv(predictions_file_path, sep='\t')
     ret = set()
     num_removed = 0
@@ -34,7 +34,7 @@ def read_meta_predictions_file_with_type_information(predictions_file_path) -> s
         label = row['label']
         assert label in ['correct', 'incorrect']
         if label == 'correct':
-            ret.add(SampleAnno(str(original_sample_id), entity_type, int(start), int(end)))
+            ret.add(SampleAnnotation(str(original_sample_id), entity_type, int(start), int(end)))
         else:
             num_removed += 1
     print(f"removed {num_removed} predictions")
@@ -46,10 +46,10 @@ def meta_genia():
     meta_predictions_set = read_meta_predictions_file_with_type_information(meta_predictions_file_path)
 
     gold_samples = get_test_samples_by_dataset_name('genia_config_vanilla')
-    gold_predictions: set[SampleAnno] = set()
+    gold_predictions: set[SampleAnnotation] = set()
     for gold_sample in gold_samples:
         for gold_anno in gold_sample.annos.gold:
-            gold_predictions.add(SampleAnno(str(gold_sample.id), gold_anno.label_type, int(gold_anno.begin_offset), int(gold_anno.end_offset)))
+            gold_predictions.add(SampleAnnotation(str(gold_sample.id), gold_anno.label_type, int(gold_anno.begin_offset), int(gold_anno.end_offset)))
 
     print(get_f1_score_from_sets(gold_predictions, meta_predictions_set))
 
@@ -94,7 +94,7 @@ def living_ner_meta():
     filter_path = '/Users/harshverma/meta_bionlp/living_ner/filter/experiment_living_ner_meta_0_living_ner_meta_model_meta_special_weighted_test_epoch_8_predictions.tsv'
     filtered_predictions = read_meta_predictions_file(predictions_file_path=filter_path, entity_type='DEFAULT')
     filtered_predictions = set([(pred.sample_id, pred.begin_offset, pred.end_offset) for pred in filtered_predictions])
-    filtered_predictions_with_types: set[SampleAnno] = set()
+    filtered_predictions_with_types: set[SampleAnnotation] = set()
 
     all_test_predicitons = get_living_ner_all_test_predictions()
 
@@ -107,7 +107,7 @@ def living_ner_meta():
         ]
         assert len(corresponding_anno)
         filtered_predictions_with_types.add(
-                SampleAnno(
+                SampleAnnotation(
                     sample_id=sample_id,
                     type_string=corresponding_anno[0].label_type,
                     begin_offset=corresponding_anno[0].begin_offset,
@@ -117,11 +117,11 @@ def living_ner_meta():
 
     gold_samples = get_test_samples_by_dataset_name('living_ner_window')
 
-    gold_predictions: set[SampleAnno] = set()
+    gold_predictions: set[SampleAnnotation] = set()
 
     for gold_sample in gold_samples:
         for gold_anno in gold_sample.annos.gold:
-            gold_predictions.add(SampleAnno(str(gold_sample.id), gold_anno.label_type, int(gold_anno.begin_offset), int(gold_anno.end_offset)))
+            gold_predictions.add(SampleAnnotation(str(gold_sample.id), gold_anno.label_type, int(gold_anno.begin_offset), int(gold_anno.end_offset)))
 
     print(get_f1_score_from_sets(gold_predictions, filtered_predictions_with_types))
 
@@ -130,7 +130,7 @@ def living_ner_meta():
     write_predictions(filtered_predictions_with_types, output_file_path=out_file_path)
 
 
-def write_predictions(predictions: set[SampleAnno], output_file_path: str):
+def write_predictions(predictions: set[SampleAnnotation], output_file_path: str):
     with open(output_file_path, 'w') as output_tsv: 
         writer = csv.writer(output_tsv, delimiter='\t', lineterminator='\n')
         writer.writerow(['sample_id', 'begin', 'end', 'type', 'extraction'])

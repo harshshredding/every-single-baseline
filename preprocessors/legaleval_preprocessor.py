@@ -57,7 +57,7 @@ class PreprocessLegal(Preprocessor):
             types_set.update([anno.label_type for anno in sample.annos.gold])
         print("num types: ", len(types_set))
         assert len(types_set) == 14
-        print(util.p_string(list(types_set)))
+        print(util.pretty_string(list(types_set)))
         return list(types_set)
 
     def get_samples(self) -> List[Sample]:

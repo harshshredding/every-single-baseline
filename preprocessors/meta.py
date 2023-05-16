@@ -1,7 +1,7 @@
 from collections import defaultdict
 from overrides import overrides
 from utils.preprocess import Preprocessor
-from structs import Annotation, Sample, Dataset, DatasetSplit, PreprocessorRunType, AnnotationCollection, SampleAnno
+from structs import Annotation, Sample, Dataset, DatasetSplit, PreprocessorRunType, AnnotationCollection, SampleAnnotation
 from annotators import Annotator
 from random import shuffle
 from utils.general import read_predictions_file
@@ -34,7 +34,7 @@ class MetaPreprocessor(Preprocessor):
         assert len(self.valid_prediction_file_paths) == 40
 
 
-    def create_meta_sample(self, sample: Sample, span: SampleAnno, label_type: str):
+    def create_meta_sample(self, sample: Sample, span: SampleAnnotation, label_type: str):
         text = sample.text
         
         text_before_entity = text[:span.begin_offset]
@@ -75,7 +75,7 @@ class MetaPreprocessor(Preprocessor):
             sample = gold_samples[sample_id]
             all_prediction_spans = set()
             if sample_id in all_predictions_dict:
-                all_prediction_spans = set([SampleAnno(
+                all_prediction_spans = set([SampleAnnotation(
                                                 begin_offset=anno.begin_offset,
                                                 end_offset=anno.end_offset,
                                                 sample_id=sample_id,
@@ -116,16 +116,16 @@ class MetaPreprocessor(Preprocessor):
         for sample_id in gold_samples:
             sample = gold_samples[sample_id]
             gold_spans = set([
-                                SampleAnno(
+                                SampleAnnotation(
                                     begin_offset=anno.begin_offset,
                                     end_offset=anno.end_offset,
                                     sample_id=sample_id,
                                     type_string=anno.label_type
                                 ) 
                                 for anno in sample.annos.gold])
-            prediction_spans: set[SampleAnno] = set()
+            prediction_spans: set[SampleAnnotation] = set()
             if sample_id in all_predictions_dict:
-                prediction_spans = set([SampleAnno(
+                prediction_spans = set([SampleAnnotation(
                                             begin_offset=anno.begin_offset,
                                             end_offset=anno.end_offset,
                                             sample_id=sample_id,
