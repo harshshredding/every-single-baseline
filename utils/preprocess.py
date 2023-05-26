@@ -12,7 +12,9 @@ from structs import PreprocessorRunType
 
 class Preprocessor(ABC):
     """
-    An abstraction for preprocessing a dataset.
+    An abstraction for preprocessing a dataset. To preprocess 
+    a dataset, one needs to implement the `get_samples` and 
+    `get_entity_types` methods.
     """
 
     def __init__(

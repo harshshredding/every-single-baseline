@@ -54,6 +54,23 @@ def meta_genia():
     print(get_f1_score_from_sets(gold_predictions, meta_predictions_set))
 
 
+def evaluate_meta_predictions(meta_predictions_file_path: str, dataset_config_name: str):
+    """
+    Given meta's predictions in `meta_predictions_file_path` for a dataset
+    corresponding to `dataset_config_name`, evaluate meta's performance.
+    """
+    meta_predictions_set = read_meta_predictions_file_with_type_information(meta_predictions_file_path)
+    gold_samples = get_test_samples_by_dataset_name(dataset_config_name)
+    gold_predictions: set[SampleAnnotation] = set()
+    for gold_sample in gold_samples:
+        for gold_anno in gold_sample.annos.gold:
+            gold_predictions.add(SampleAnnotation(str(gold_sample.id), gold_anno.label_type, int(gold_anno.begin_offset), int(gold_anno.end_offset)))
+
+    print(get_f1_score_from_sets(gold_predictions, meta_predictions_set))
+
+
+
+
 def meta_f1():
     raise NotImplementedError()
     for i in range(30):

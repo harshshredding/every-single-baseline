@@ -77,3 +77,8 @@ class Option(Generic[T]):
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print("using device", device)
+
+
+
+def assert_equals(lhs, rhs, message=""):
+    assert lhs == rhs, f"{message} \n LHS: {lhs} \n RHS: {rhs}"

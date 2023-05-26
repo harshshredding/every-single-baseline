@@ -9,6 +9,9 @@ from utils.easy_testing import get_test_samples_by_dataset_name, get_valid_sampl
 from glob import glob
 
 class MetaPreprocessor(Preprocessor):
+    """This preprocessor uses the systems' predictions 
+    on the validation set to prepare input data for Meta.
+    """
     def __init__(
         self,
         preprocessor_type: str,
